@@ -1,0 +1,873 @@
+/* Custom Glassmorphism & UI Enhancements for Anugraha Eye Hospital */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --primary-teal: #0d4b43;
+  --primary-dark: #062c26;
+  --accent-coral: #f26549;
+  --accent-amber: #e88d38;
+  --bg-mint: #edf5f3;
+  --bg-light: #f6f9f8;
+  --text-dark: #0d1b2a;
+  --text-muted: #4a5568;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Glassmorphism Cards inspired by mockup */
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 20px 40px -15px rgba(13, 75, 67, 0.07);
+}
+
+.glass-card-dark {
+  background: rgba(6, 44, 38, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(13, 75, 67, 0.12);
+  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.04);
+}
+
+.glass-pill-dark {
+  background: rgba(13, 75, 67, 0.4);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Subtle floating animations for badges and 3D geometric shapes */
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+@keyframes floatReverse {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(8px) rotate(-1.5deg); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.05); }
+}
+
+.animate-float {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: floatReverse 7s ease-in-out 1s infinite;
+}
+
+.animate-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* 3D Glass Cylinder Visual Elements matching reference */
+.glass-cylinder-group {
+  position: relative;
+  perspective: 1000px;
+}
+
+.cylinder-bar {
+  background: linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(13,75,67,0.3) 100%);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.8);
+  border-radius: 999px;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.9), 0 15px 30px rgba(6,44,38,0.15);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #edf5f3;
+}
+::-webkit-scrollbar-thumb {
+  background: #0d4b43;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #062c26;
+}
+
+/* Card hover scaling */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 45px -10px rgba(13, 75, 67, 0.12);
+}
+
+/* Status Badges */
+.badge-coral {
+  background-color: #fff0ed;
+  color: #f26549;
+  border: 1px solid rgba(242, 101, 73, 0.2);
+}
+.badge-teal {
+  background-color: #e6f4f1;
+  color: #0d4b43;
+  border: 1px solid rgba(13, 75, 67, 0.2);
+}
+.badge-amber {
+  background-color: #fdf6ec;
+  color: #e88d38;
+  border: 1px solid rgba(232, 141, 56, 0.2);
+}
+
+/* Sticky Header Scroll Condensation Effect */
+.header-nav {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.header-nav.is-scrolled {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+  background: rgba(6, 44, 38, 0.95) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.35) !important;
+}
+
+.header-nav.is-scrolled .nav-text-link {
+  color: #e2e8f0 !important;
+}
+
+.header-nav.is-scrolled .nav-text-link:hover {
+  color: #34d399 !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.header-nav.is-scrolled .brand-title {
+  color: #ffffff !important;
+}
+
+.header-nav.is-scrolled .brand-subtitle {
+  color: #34d399 !important;
+}
+
+/* Call Now CTA Button: Deep Vision Blue -> Gold on Hover */
+.btn-call-now {
+  background-color: #062c26;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn-call-now:hover {
+  background-color: #e88d38;
+  color: #062c26;
+  border-color: #e88d38;
+  box-shadow: 0 10px 20px -5px rgba(232, 141, 56, 0.4);
+}
+
+/* Aperture Lens Hover Effect for Leadership Cards */
+.aperture-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aperture-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 1.5rem;
+  border: 2px solid transparent;
+  transition: all 0.5s ease;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.aperture-card:hover::before {
+  border-color: rgba(52, 211, 153, 0.5);
+  box-shadow: inset 0 0 30px rgba(13, 75, 67, 0.4);
+}
+
+.aperture-ring {
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aperture-card:hover .aperture-ring {
+  transform: scale(1.08) rotate(3deg);
+}
+
+/* LIGHT & DARK MODE THEME STYLING SYSTEM */
+html {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #031412 !important;
+  color: #e2e8f0 !important;
+}
+
+/* Dark Mode Glass Cards */
+html.dark .glass-card {
+  background: rgba(6, 32, 28, 0.88) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6) !important;
+  color: #f1f5f9 !important;
+}
+
+html.dark .glass-card-dark {
+  background: rgba(4, 20, 18, 0.95) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+html.dark .glass-pill {
+  background: rgba(13, 75, 67, 0.4) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #f1f5f9 !important;
+}
+
+/* Dark Mode Typography & Text Colors */
+html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark h6 {
+  color: #f8fafc !important;
+}
+
+html.dark .text-teal-950,
+html.dark .text-slate-800,
+html.dark .text-slate-900 {
+  color: #f1f5f9 !important;
+}
+
+html.dark .text-slate-600,
+html.dark .text-slate-700 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-teal-900,
+html.dark .text-teal-800 {
+  color: #5eead4 !important;
+}
+
+/* Dark Mode Container Backgrounds */
+html.dark .bg-teal-50,
+html.dark .bg-teal-50\/50,
+html.dark .bg-teal-50\/60,
+html.dark .bg-teal-50\/70,
+html.dark .bg-slate-50 {
+  background-color: rgba(15, 60, 53, 0.4) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+html.dark .border-teal-100,
+html.dark .border-teal-100\/80,
+html.dark .border-slate-200 {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Dark mode inputs & textareas */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: rgba(6, 32, 28, 0.9) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Floating Action Button Animations */
+.float-btn-shadow {
+  box-shadow: 0 10px 25px -3px rgba(13, 75, 67, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+}
+
+/* LENIS SMOOTH SCROLLING STYLES */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* MOTION TOKEN UTILITY CLASSES */
+.transition-motion-premium {
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.transition-motion-smooth {
+  transition-timing-function: cubic-bezier(0.65, 0, 0.35, 1) !important;
+}
+
+.duration-micro {
+  transition-duration: 140ms !important;
+}
+
+.duration-standard {
+  transition-duration: 280ms !important;
+}
+
+.duration-hero {
+  transition-duration: 600ms !important;
+}
+
+.duration-page {
+  transition-duration: 500ms !important;
+}
+
+/* TOP-OF-PAGE PROGRESS BAR GRADIENT */
+#top-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.top-progress-bar-inner {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #062c26 0%, #0d4b43 40%, #3c8b80 70%, #5eead4 100%);
+  box-shadow: 0 0 10px rgba(94, 234, 212, 0.6);
+  transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+}
+
+/* INITIAL BRANDED APERTURE IRIS LOADER */
+#aperture-initial-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background-color: #041a17;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.aperture-iris-circle {
+  transform-origin: center;
+  animation: apertureIrisRotate 1.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+.aperture-iris-blade {
+  transform-origin: center;
+  animation: apertureIrisPulse 0.8s cubic-bezier(0.22, 1, 0.36, 1) alternate infinite;
+}
+
+@keyframes apertureIrisRotate {
+  0% { transform: rotate(0deg) scale(0.95); }
+  50% { transform: rotate(180deg) scale(1.05); }
+  100% { transform: rotate(360deg) scale(0.95); }
+}
+
+@keyframes apertureIrisPulse {
+  0% { opacity: 0.7; transform: scale(0.96); }
+  100% { opacity: 1; transform: scale(1.04); }
+}
+
+/* PAGE-TO-PAGE ROUTE TRANSITIONS */
+#app {
+  transition: opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1), transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.page-exit {
+  opacity: 0 !important;
+  transform: translateY(10px) !important;
+}
+
+.page-enter {
+  opacity: 1 !important;
+  transform: translateY(0px) !important;
+}
+
+/* HERO CHOREOGRAPHY & WORD STAGGER */
+.hero-word-span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1), transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.hero-word-span.is-revealed {
+  opacity: 1 !important;
+  transform: translateY(0px) !important;
+}
+
+/* HERO SCROLL PARALLAX BG */
+.hero-parallax-bg {
+  transition: transform 0.1s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* DESKTOP MAGNETIC CTA BUTTONS */
+@media (pointer: fine) {
+  .magnetic-btn {
+    transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+}
+
+/* SITEWIDE SECTION SCROLL-REVEAL SYSTEM */
+.scroll-reveal-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1), transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal-section.is-revealed {
+  opacity: 1 !important;
+  transform: translateY(0px) !important;
+}
+
+/* ABOUT US FOUNDING TIMELINE SCROLL PROGRESS */
+.timeline-progress-line-bg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  transform: translateX(-50%);
+  background-color: rgba(13, 75, 67, 0.2);
+  z-index: 0;
+}
+
+.timeline-progress-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 3px;
+  height: 0%;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #0d4b43 0%, #3c8b80 50%, #5eead4 100%);
+  box-shadow: 0 0 8px rgba(94, 234, 212, 0.6);
+  transition: height 0.15s ease-out;
+  z-index: 1;
+}
+
+.timeline-milestone-dot {
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.timeline-milestone-dot.is-active {
+  background-color: #5eead4 !important;
+  border-color: #062c26 !important;
+  box-shadow: 0 0 0 4px rgba(94, 234, 212, 0.3), 0 0 15px rgba(94, 234, 212, 0.6) !important;
+  transform: scale(1.25) !important;
+}
+
+/* MEGA-MENU DROPDOWNS (SCALE + FADE OPEN 280ms, FAST CLOSE 140ms) */
+.mega-menu-dropdown {
+  display: block;
+  opacity: 0;
+  transform: scale(0.96) translateY(-4px);
+  pointer-events: none;
+  transition: opacity 0.14s cubic-bezier(0.22, 1, 0.36, 1), transform 0.14s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.group:hover .mega-menu-dropdown,
+.mega-menu-dropdown.is-open {
+  opacity: 1 !important;
+  transform: scale(1) translateY(0px) !important;
+  pointer-events: auto !important;
+  transition: opacity 0.28s cubic-bezier(0.65, 0, 0.35, 1), transform 0.28s cubic-bezier(0.65, 0, 0.35, 1) !important;
+}
+
+/* Submenu items stagger */
+.mega-menu-dropdown a {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1), transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.group:hover .mega-menu-dropdown a,
+.mega-menu-dropdown.is-open a {
+  opacity: 1;
+  transform: translateY(0px);
+}
+
+.group:hover .mega-menu-dropdown a:nth-child(1) { transition-delay: 30ms; }
+.group:hover .mega-menu-dropdown a:nth-child(2) { transition-delay: 60ms; }
+.group:hover .mega-menu-dropdown a:nth-child(3) { transition-delay: 90ms; }
+.group:hover .mega-menu-dropdown a:nth-child(4) { transition-delay: 120ms; }
+.group:hover .mega-menu-dropdown a:nth-child(5) { transition-delay: 150ms; }
+.group:hover .mega-menu-dropdown a:nth-child(6) { transition-delay: 180ms; }
+
+/* STICKY HERO-AWARE MOBILE BOTTOM CONTACT BAR */
+.mobile-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 45;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+  will-change: transform, opacity;
+}
+
+.mobile-bottom-bar.is-visible {
+  transform: translateY(0%) !important;
+  opacity: 1 !important;
+}
+
+/* RECURRING GENTLE WHATSAPP PULSE (SLOW, SPRING-BASED INVITATION) */
+.whatsapp-gentle-pulse {
+  animation: whatsappGentlePulse 4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+@keyframes whatsappGentlePulse {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.06); }
+  25% { transform: scale(0.98); }
+  35% { transform: scale(1.04); }
+  45% { transform: scale(1); }
+}
+
+/* REFINED TACTILE BUTTON STATES (-2px lift on hover, 0.97 scale on press) */
+.btn-tactile, button, .btn-call-now, a[class*="px-"][class*="py-"] {
+  transition: transform 0.14s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.14s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease;
+  will-change: transform;
+}
+
+.btn-tactile:hover, button:hover, .btn-call-now:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -6px rgba(13, 75, 67, 0.2);
+}
+
+.btn-tactile:active, button:active, .btn-call-now:active {
+  transform: scale(0.97) translateY(0px) !important;
+  transition-duration: 0.08s !important;
+}
+
+/* EDITORIAL CARD IMAGE SCALE (1.0 -> 1.04 over 500ms easeOutPremium) */
+.card-img-editorial {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  will-change: transform;
+}
+
+.glass-card:hover .card-img-editorial,
+.group:hover .card-img-editorial {
+  transform: scale(1.04) !important;
+}
+
+/* DOCTOR & STAFF PORTRAIT APERTURE LENS FOCUS MOTIF */
+.aperture-focus-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.aperture-focus-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 2px stroke rgba(94, 234, 212, 0.4);
+  opacity: 0.4;
+  transform: scale(1.08) rotate(0deg);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.aperture-focus-card:hover .aperture-focus-ring {
+  transform: scale(0.96) rotate(6deg) !important;
+  opacity: 0.9 !important;
+  box-shadow: inset 0 0 20px rgba(13, 75, 67, 0.5);
+}
+
+/* ANIMATED BODY LINK UNDERLINES */
+.animated-underline {
+  position: relative;
+  text-decoration: none !important;
+}
+
+.animated-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: currentColor;
+  transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.animated-underline:hover::after {
+  width: 100%;
+}
+
+/* GENTLE FORM ERROR SHAKE (3px max amplitude, quick decay) */
+.input-gentle-shake {
+  animation: gentleShake 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  border-color: #f26549 !important;
+}
+
+@keyframes gentleShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-3px); }
+  40% { transform: translateX(3px); }
+  60% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
+}
+
+/* LIGHTBOX SHARED-ELEMENT EXPANSION & SLIDE NAVIGATION */
+#lightbox-modal {
+  transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity;
+}
+
+#lightbox-img-wrapper {
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, width, height, top, left;
+}
+
+.lightbox-slide-next {
+  animation: lightboxSlideNext 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lightbox-slide-prev {
+  animation: lightboxSlidePrev 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes lightboxSlideNext {
+  0% { opacity: 0; transform: translateX(30px) scale(0.97); }
+  100% { opacity: 1; transform: translateX(0px) scale(1); }
+}
+
+@keyframes lightboxSlidePrev {
+  0% { opacity: 0; transform: translateX(-30px) scale(0.97); }
+  100% { opacity: 1; transform: translateX(0px) scale(1); }
+}
+
+/* ADMIN DASHBOARD WORKFLOW MOTION SYSTEM */
+
+/* CORNER TOAST NOTIFICATIONS */
+.admin-toast {
+  animation: toastSlideIn 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+.admin-toast.is-hiding {
+  animation: toastSlideOut 0.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes toastSlideIn {
+  0% { opacity: 0; transform: translateY(-16px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes toastSlideOut {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-16px) scale(0.95); }
+}
+
+/* SVG CHECKMARK DRAW ANIMATION */
+.admin-checkmark-path {
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: checkmarkDraw 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes checkmarkDraw {
+  100% { stroke-dashoffset: 0; }
+}
+
+/* CALM ERROR SHAKE & SOFT RED FLASH */
+.admin-error-shake {
+  animation: adminErrorShake 0.35s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes adminErrorShake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(3px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+
+/* REORDERABLE LIST DRAG & DROP PHYSICS */
+.admin-drag-item {
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+  user-select: none;
+}
+
+.admin-drag-item.is-dragging {
+  opacity: 0.6;
+  transform: scale(1.02);
+  box-shadow: 0 20px 25px -5px rgba(6, 44, 38, 0.25), 0 10px 10px -5px rgba(6, 44, 38, 0.15);
+  border-color: #0d4b43 !important;
+  cursor: grabbing;
+}
+
+.admin-drag-over {
+  border-color: #10b981 !important;
+  background-color: rgba(238, 248, 246, 0.8) !important;
+}
+
+/* WCAG 2.2 AA Minimum Touch Target Sizes (44px x 44px Minimum Interactive Area) */
+button,
+a,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+input[type="checkbox"],
+input[type="radio"],
+select,
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* WCAG 2.1 AA Visible Focus States for High-Contrast Keyboard Navigation */
+:focus-visible {
+  outline: 3px solid #059669 !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.25) !important;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #059669 !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.3) !important;
+}
+
+/* Reduced Motion Safeguards: Disable non-essential animations and substitute simple opacity fades */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-float,
+  .animate-float-delayed,
+  .animate-glow,
+  .animate-ping,
+  .animate-bounce,
+  .animate-pulse,
+  .aperture-iris-circle,
+  .aperture-iris-blade,
+  .whatsapp-gentle-pulse,
+  .input-gentle-shake,
+  .lightbox-slide-next,
+  .lightbox-slide-prev {
+    animation: none !important;
+  }
+
+  .aperture-ring,
+  .aperture-focus-ring,
+  #lightbox-img-wrapper {
+    transform: none !important;
+    transition: opacity 0.15s ease !important;
+  }
+
+  .hover-lift:hover,
+  .card-img-editorial {
+    transform: none !important;
+  }
+
+  #app {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .page-exit, .page-enter {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .hero-word-span {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .hero-parallax-bg {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .magnetic-btn {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .scroll-reveal-section {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .timeline-progress-bar-fill {
+    height: 100% !important;
+    transition: none !important;
+  }
+
+  .timeline-milestone-dot {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .mega-menu-dropdown,
+  .mega-menu-dropdown a,
+  .mobile-bottom-bar,
+  .admin-toast,
+  .admin-drag-item {
+    transform: none !important;
+    transition: opacity 0.15s ease !important;
+    opacity: 1 !important;
+  }
+
+  .admin-error-shake,
+  .admin-checkmark-path {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+}
+
+

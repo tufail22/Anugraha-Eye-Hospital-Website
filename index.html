@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anugraha Eye Hospital | Authentic. Affectionate. Affordable. Eye Care</title>
+  <meta name="description" content="Anugraha Eye Hospital founded in 2001 by Dr. Prabhugouda B. Lingadalli. Super-specialty eye hospitals in Vijayapura & Kalaburagi, and 7 rural Vision Centers across Karnataka." />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: {
+              50: '#eef8f6',
+              100: '#d7efeb',
+              200: '#b2ded6',
+              300: '#83c6bb',
+              400: '#56a79b',
+              500: '#3c8b80',
+              600: '#2d6f67',
+              700: '#265953',
+              800: '#224843',
+              900: '#0d4b43',
+              950: '#062c26'
+            },
+            coral: {
+              500: '#f26549',
+              600: '#e04f33'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body class="bg-[#f6f9f8] text-[#0d1b2a] antialiased selection:bg-teal-900 selection:text-emerald-300">
+
+  <!-- Slim Top-of-Page Progress Bar (Deep Vision Blue -> Clarity Teal Gradient) -->
+  <div id="top-progress-bar"><div class="top-progress-bar-inner" id="top-progress-bar-inner"></div></div>
+
+  <!-- Branded Initial-Load Sequence Shell (Aperture Iris Motif) -->
+  <div id="aperture-initial-loader">
+    <div class="relative flex flex-col items-center gap-4">
+      <svg class="w-20 h-20 text-emerald-400 aperture-iris-circle" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+        <!-- Aperture Iris Outer Ring -->
+        <circle cx="50" cy="50" r="44" stroke-width="3" stroke-dasharray="8 6" opacity="0.6"/>
+        <!-- Center Pupil/Iris Blades -->
+        <circle cx="50" cy="50" r="16" class="fill-emerald-400/20 aperture-iris-blade" stroke-width="2"/>
+        <path d="M50 6 A44 44 0 0 1 94 50 L50 50 Z" class="fill-teal-600/30 opacity-40"/>
+        <path d="M50 94 A44 44 0 0 1 6 50 L50 50 Z" class="fill-emerald-500/30 opacity-40"/>
+      </svg>
+      <div class="text-center space-y-1">
+        <div class="font-extrabold text-sm tracking-widest text-emerald-300 font-heading uppercase">Anugraha Eye Hospital</div>
+        <div class="text-[10px] tracking-wider text-teal-400/80 font-semibold uppercase">Authentic. Affectionate. Affordable.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header Shell -->
+  <div id="header-root"></div>
+
+  <!-- Main Dynamic Application Container -->
+  <main id="app" class="min-h-screen"></main>
+
+  <!-- Footer Shell -->
+  <div id="footer-root"></div>
+
+  <!-- Motion & Animation Libraries -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/motion@11.11.17/dist/motion.js"></script>
+
+  <!-- Motion Tokens & Application Logic Scripts -->
+  <script src="./js/motion-tokens.js"></script>
+  <script src="./js/store.js"></script>
+  <script src="./js/auth-client.js"></script>
+  <script src="./js/cms-client.js"></script>
+  <script src="./js/admin-components.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
