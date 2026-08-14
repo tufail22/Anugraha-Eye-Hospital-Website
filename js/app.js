@@ -300,8 +300,12 @@ document.addEventListener("DOMContentLoaded", () => {
     render();
   };
 
-  // Theme Manager (Light Mode & Dark Mode with LocalStorage Persistence)
-  window.currentTheme = localStorage.getItem('anugraha_theme_v1') || 'light';
+  // Theme Manager (Light & Dark Mode with System Preference Auto-Matching & LocalStorage Persistence)
+  window.getSystemTheme = function() {
+    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  };
+
+  window.currentTheme = localStorage.getItem('anugraha_theme_v1') || window.getSystemTheme();
 
   window.applyTheme = function() {
     if (window.currentTheme === 'dark') {
@@ -317,6 +321,17 @@ document.addEventListener("DOMContentLoaded", () => {
     window.applyTheme();
     render();
   };
+
+  // Listen to system color scheme changes if user hasn't set manual preference
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (!localStorage.getItem('anugraha_theme_v1')) {
+        window.currentTheme = e.matches ? 'dark' : 'light';
+        window.applyTheme();
+        render();
+      }
+    });
+  }
 
   // Initial Theme Execution
   window.applyTheme();
@@ -352,7 +367,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Render Header
   function renderHeader() {
     const brand = store.getBrand();
-    const dataGaps = store.getDataGaps();
     const isScrolled = window.scrollY > 80;
     const isDark = window.currentTheme === 'dark';
 
@@ -367,85 +381,100 @@ document.addEventListener("DOMContentLoaded", () => {
               <img src="assets/official_logo.jpg" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
             </div>
             <div>
-              <div class="brand-title font-extrabold text-base sm:text-lg text-teal-950 tracking-tight leading-none font-heading transition-colors">${brand.name}</div>
-              <div class="brand-subtitle text-[10px] sm:text-[11px] font-semibold text-teal-700 tracking-wider uppercase mt-0.5 transition-colors">${brand.tagline}</div>
+              <div class="brand-title font-extrabold text-base sm:text-lg text-teal-950 dark:text-teal-50 tracking-tight leading-none font-heading transition-colors">${brand.name}</div>
+              <div class="brand-subtitle text-[10px] sm:text-[11px] font-semibold text-teal-700 dark:text-emerald-400 tracking-wider uppercase mt-0.5 transition-colors">${brand.tagline}</div>
             </div>
           </a>
 
-          <!-- Primary Navigation Mega-Menus (Center / Right) -->
-          <div class="hidden lg:flex items-center gap-1 font-medium text-sm text-slate-700">
+          <!-- Primary Navigation Mega-Menus (Center) -->
+          <div class="hidden lg:flex items-center gap-1 font-medium text-sm text-slate-700 dark:text-slate-200">
             
             <!-- Home -->
-            <a href="#/" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 transition-colors ${currentPath === '/' ? 'text-teal-900 bg-teal-50 font-bold' : ''}">Home</a>
+            <a href="#/" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 dark:hover:bg-teal-900/40 transition-colors ${currentPath === '/' ? 'text-teal-900 bg-teal-50 font-bold' : ''}">Home</a>
             
             <!-- About Us (Mega-Menu) -->
             <div class="relative group">
-              <a href="#/about-us" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 transition-colors flex items-center gap-1 ${currentPath.startsWith('/about-us') ? 'text-teal-900 bg-teal-50 font-bold' : ''}">
+              <a href="#/about-us" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 dark:hover:bg-teal-900/40 transition-colors flex items-center gap-1 ${currentPath.startsWith('/about-us') ? 'text-teal-900 bg-teal-50 font-bold' : ''}">
                 About Us
                 <svg class="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </a>
               <div class="mega-menu-dropdown absolute top-full left-0 mt-1 w-64 glass-card rounded-2xl shadow-2xl py-2.5 hidden group-hover:block border border-teal-100/80 z-50">
-                <a href="#/about-us" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900 font-semibold">Our Story & Overview</a>
-                <a href="#/about-us/leadership" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Leadership & Awards</a>
-                <a href="#/about-us/administration" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Administration Team (6)</a>
-                <a href="#/about-us#vision-mission" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Vision & Mission</a>
-                <a href="#/about-us#geographical-spread" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Geographical Spread</a>
-                <a href="#/about-us#partnerships" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Community Partnerships</a>
+                <a href="#/about-us" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50 font-semibold">Our Story & Overview</a>
+                <a href="#/about-us/leadership" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Leadership & Awards</a>
+                <a href="#/about-us/administration" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Administration Team (6)</a>
+                <a href="#/about-us#vision-mission" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Vision & Mission</a>
+                <a href="#/about-us#geographical-spread" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Geographical Spread</a>
+                <a href="#/about-us#partnerships" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Community Partnerships</a>
               </div>
             </div>
 
             <!-- Hospitals Mega-Menu -->
             <div class="relative group">
-              <a href="#/hospitals/vijayapura" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 transition-colors flex items-center gap-1 ${currentPath.startsWith('/hospitals') ? 'text-teal-900 bg-teal-50 font-bold' : ''}">
+              <a href="#/hospitals/vijayapura" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 dark:hover:bg-teal-900/40 transition-colors flex items-center gap-1 ${currentPath.startsWith('/hospitals') ? 'text-teal-900 bg-teal-50 font-bold' : ''}">
                 Hospitals
                 <svg class="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </a>
               <div class="mega-menu-dropdown absolute top-full left-0 mt-1 w-72 glass-card rounded-2xl shadow-2xl py-2.5 hidden group-hover:block border border-teal-100/80 z-50">
-                <div class="px-4 py-1 text-[10px] font-bold uppercase tracking-wider text-teal-800">Base Tertiary Hospitals</div>
-                <a href="#/hospitals/vijayapura" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900 font-semibold">Vijayapura Base Hospital</a>
-                <a href="#/hospitals/kalaburagi" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900 font-semibold">Kalaburagi Base Hospital</a>
+                <div class="px-4 py-1 text-[10px] font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300">Base Tertiary Hospitals</div>
+                <a href="#/hospitals/vijayapura" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50 font-semibold">Vijayapura Base Hospital</a>
+                <a href="#/hospitals/kalaburagi" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50 font-semibold">Kalaburagi Base Hospital</a>
                 
-                <div class="my-1.5 border-t border-slate-100"></div>
-                <div class="px-4 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">8 Vision Centers Directory</div>
-                <a href="#/vision-centers/talikoti" class="block px-4 py-1.5 text-xs text-slate-600 hover:bg-teal-50 hover:text-teal-900">Talikoti Vision Center</a>
-                <a href="#/vision-centers/muddebihal" class="block px-4 py-1.5 text-xs text-slate-600 hover:bg-teal-50 hover:text-teal-900">Muddebihal Vision Center</a>
-                <a href="#/vision-centers/sindagi" class="block px-4 py-1.5 text-xs text-slate-600 hover:bg-teal-50 hover:text-teal-900">Sindagi Vision Center</a>
-                <a href="#/vision-centers/indi" class="block px-4 py-1.5 text-xs text-slate-600 hover:bg-teal-50 hover:text-teal-900">Indi Vision Center</a>
-                <a href="#/vision-centers/b-bagewadi" class="block px-4 py-1.5 text-xs text-slate-600 hover:bg-teal-50 hover:text-teal-900">B.Bagewadi Vision Center</a>
-                <a href="#/vision-centers/chadachan" class="block px-4 py-1.5 text-xs text-slate-600 hover:bg-teal-50 hover:text-teal-900">Chadachan Vision Center</a>
-                <a href="#/vision-centers/nalatwad" class="block px-4 py-1.5 text-xs text-slate-600 hover:bg-teal-50 hover:text-teal-900">Nalatwad Vision Center</a>
-                <a href="#/vision-centers/tikota" class="block px-4 py-1.5 text-xs text-slate-600 hover:bg-teal-50 hover:text-teal-900">Tikota Vision Center</a>
+                <div class="my-1.5 border-t border-slate-100 dark:border-slate-800"></div>
+                <div class="px-4 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">8 Vision Centers Directory</div>
+                <a href="#/vision-centers/talikoti" class="block px-4 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/50">Talikoti Vision Center</a>
+                <a href="#/vision-centers/muddebihal" class="block px-4 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/50">Muddebihal Vision Center</a>
+                <a href="#/vision-centers/sindagi" class="block px-4 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/50">Sindagi Vision Center</a>
+                <a href="#/vision-centers/indi" class="block px-4 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/50">Indi Vision Center</a>
+                <a href="#/vision-centers/b-bagewadi" class="block px-4 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/50">B.Bagewadi Vision Center</a>
+                <a href="#/vision-centers/chadachan" class="block px-4 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/50">Chadachan Vision Center</a>
+                <a href="#/vision-centers/nalatwad" class="block px-4 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/50">Nalatwad Vision Center</a>
+                <a href="#/vision-centers/tikota" class="block px-4 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/50">Tikota Vision Center</a>
               </div>
             </div>
 
             <!-- Services -->
-            <a href="#/services" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 transition-colors ${currentPath === '/services' ? 'text-teal-900 bg-teal-50 font-bold' : ''}">Services</a>
+            <a href="#/services" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 dark:hover:bg-teal-900/40 transition-colors ${currentPath === '/services' ? 'text-teal-900 bg-teal-50 font-bold' : ''}">Services</a>
 
             <!-- Academics -->
-            <a href="#/academics" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 transition-colors ${currentPath === '/academics' ? 'text-teal-900 bg-teal-50 font-bold' : ''}">Academics</a>
+            <a href="#/academics" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 dark:hover:bg-teal-900/40 transition-colors ${currentPath === '/academics' ? 'text-teal-900 bg-teal-50 font-bold' : ''}">Academics</a>
 
             <!-- More Dropdown -->
             <div class="relative group">
-              <button class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 transition-colors flex items-center gap-1 ${['/gallery', '/news', '/videos', '/contact', '/patient-resources'].some(p => currentPath.startsWith(p)) ? 'text-teal-900 bg-teal-50 font-bold' : ''}">
+              <button class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 dark:hover:bg-teal-900/40 transition-colors flex items-center gap-1 ${['/gallery', '/news', '/videos', '/contact', '/patient-resources'].some(p => currentPath.startsWith(p)) ? 'text-teal-900 bg-teal-50 font-bold' : ''}">
                 More
                 <svg class="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </button>
               <div class="mega-menu-dropdown absolute top-full left-0 mt-1 w-60 glass-card rounded-2xl shadow-2xl py-2.5 hidden group-hover:block border border-teal-100/80 z-50">
-                <a href="#/patient-resources/empanelments-and-insurance" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Empanelments & Insurance</a>
-                <a href="#/patient-resources/handouts" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Patient Handouts</a>
-                <div class="my-1 border-t border-slate-100"></div>
-                <a href="#/gallery" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Gallery</a>
-                <a href="#/news" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">News & Media</a>
-                <a href="#/videos" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Video Library</a>
-                <a href="#/contact" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Contact Us</a>
+                <a href="#/patient-resources/empanelments-and-insurance" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Empanelments & Insurance</a>
+                <a href="#/patient-resources/handouts" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Patient Handouts</a>
+                <div class="my-1 border-t border-slate-100 dark:border-slate-800"></div>
+                <a href="#/gallery" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Gallery</a>
+                <a href="#/news" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">News & Media</a>
+                <a href="#/videos" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Video Library</a>
+                <a href="#/contact" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Contact Us</a>
               </div>
             </div>
 
           </div>
 
-          <!-- Header Right Utilities (Mobile Hamburger) -->
-          <div class="flex items-center gap-2">
+          <!-- Header Right Utilities: Theme Toggle + Single Right Header CTA Button -->
+          <div class="flex items-center gap-2 sm:gap-3">
             
+            <!-- Sun ☀️ / Moon 🌙 Theme Toggle Button -->
+            <button onclick="window.toggleTheme()" aria-label="Toggle Light/Dark Theme" title="Toggle Theme (Auto-matches system by default)" class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-emerald-300 hover:scale-105 transition-all shadow-sm">
+              ${isDark ? `
+                <svg class="w-4 h-4 text-amber-400 fill-current" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 4.97 4.03 9 9 9 4.97 0 9-4.03 9-9 0-4.97-4.03-9-9-9zm0 16c-3.86 0-7-3.14-7-7 0-3.86 3.14-7 7-7 3.86 0 7 3.14 7 7 0 3.86-3.14 7-7 7z"/></svg>
+              ` : `
+                <svg class="w-4 h-4 text-slate-700 fill-current" viewBox="0 0 24 24"><path d="M12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 01-4.4 2.26 5.403 5.403 0 01-5.4-5.4c0-1.81.89-3.42 2.26-4.4C12.92 3.04 12.46 3 12 3z"/></svg>
+              `}
+            </button>
+
+            <!-- Single Right Header Primary CTA Button -->
+            <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="btn-call-now btn-shine-glow magnetic-btn hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs shadow-lg transition-transform">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+              <span>Call Helpline: ${brand.fallbackPhone}</span>
+            </a>
+
             <!-- Mobile Hamburger Button -->
             <button onclick="window.toggleMobileDrawer()" class="lg:hidden p-2 rounded-xl text-slate-800 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50 transition-colors">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -936,16 +965,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
               <!-- Hero Direct Contact CTAs with Magnetic Effect and easeSpring Settle (Step 5) -->
               <div class="hero-ctas flex flex-wrap items-center gap-4 pt-2 opacity-0 transform translate-y-6 transition-all duration-500">
-                <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="btn-call-now magnetic-btn px-6 py-4 rounded-2xl font-bold text-sm shadow-xl flex items-center gap-3 group">
+                <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="btn-call-now btn-shine-glow magnetic-btn px-6 py-4 rounded-2xl font-bold text-sm shadow-xl flex items-center gap-3 group">
                   <div class="w-8 h-8 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                   </div>
                   <span>Call Hospital: ${brand.fallbackPhone}</span>
                 </a>
 
-                <a href="#/vision-centers" class="magnetic-btn px-6 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm shadow-md transition-all flex items-center gap-2 border border-white/20 backdrop-blur-md">
-                  <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                  <span>Explore 7 Vision Centers</span>
+                <a href="#/vision-centers" class="btn-shine-glow magnetic-btn px-6 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm shadow-md transition-all flex items-center gap-2 border border-white/20 backdrop-blur-md group">
+                  <svg class="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                  <span>Explore 8 Vision Centers</span>
+                  <span class="icon-shift-right">&rarr;</span>
                 </a>
               </div>
 
@@ -971,7 +1001,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <!-- 2. TRUST DASHBOARD (6 Core Stats with Animated StatCounters in Mono Font) -->
         <section id="trust-dashboard" class="max-w-7xl mx-auto px-4">
-          <div class="glass-card rounded-3xl p-6 sm:p-8 border border-teal-100/80 shadow-xl">
+          <div class="bento-card-luxury rounded-3xl p-6 sm:p-8 border border-teal-100/80 shadow-xl">
             <div class="text-center mb-6">
               <span class="px-3 py-1 rounded-full badge-teal font-semibold text-xs uppercase tracking-wider">Verified Clinical Impact</span>
               <h2 class="text-2xl font-extrabold text-teal-950 font-heading mt-1">Core Trust & Outreach Metrics</h2>
@@ -980,7 +1010,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               
               <!-- Stat 1: Total Surgeries (2,28,951) -->
-              <div class="p-4 rounded-2xl bg-teal-50/60 border border-teal-100 hover-lift text-center">
+              <div class="spotlight-card p-4 rounded-2xl bg-white/70 border border-teal-100 text-center">
                 <div class="text-[11px] font-bold text-teal-800 uppercase tracking-wider">Total Surgeries</div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="228951" data-prefix="" data-suffix="">
                   0
@@ -989,7 +1019,7 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
 
               <!-- Stat 2: Outreach Camps (2,715) -->
-              <div class="p-4 rounded-2xl bg-teal-50/60 border border-teal-100 hover-lift text-center">
+              <div class="spotlight-card p-4 rounded-2xl bg-white/70 border border-teal-100 text-center">
                 <div class="text-[11px] font-bold text-teal-800 uppercase tracking-wider">Outreach Camps</div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="2715" data-prefix="" data-suffix="">
                   0
@@ -998,7 +1028,7 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
 
               <!-- Stat 3: Free Cataracts (50,000+) -->
-              <div class="p-4 rounded-2xl bg-teal-50/60 border border-teal-100 hover-lift text-center">
+              <div class="spotlight-card p-4 rounded-2xl bg-white/70 border border-teal-100 text-center">
                 <div class="text-[11px] font-bold text-teal-800 uppercase tracking-wider">Free Cataracts</div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="50000" data-prefix="" data-suffix="+">
                   0
@@ -1007,7 +1037,7 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
 
               <!-- Stat 4: Students Screened (10,000+) -->
-              <div class="p-4 rounded-2xl bg-teal-50/60 border border-teal-100 hover-lift text-center">
+              <div class="spotlight-card p-4 rounded-2xl bg-white/70 border border-teal-100 text-center">
                 <div class="text-[11px] font-bold text-teal-800 uppercase tracking-wider">Students Screened</div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="10000" data-prefix="" data-suffix="+">
                   0
@@ -1016,7 +1046,7 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
 
               <!-- Stat 5: Free Patients/Yr (~10,000) -->
-              <div class="p-4 rounded-2xl bg-teal-50/60 border border-teal-100 hover-lift text-center">
+              <div class="spotlight-card p-4 rounded-2xl bg-white/70 border border-teal-100 text-center">
                 <div class="text-[11px] font-bold text-teal-800 uppercase tracking-wider">Free Patients/Yr</div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="10000" data-prefix="~" data-suffix="">
                   0
@@ -1025,7 +1055,7 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
 
               <!-- Stat 6: Total Reach (~10 Lakh) -->
-              <div class="p-4 rounded-2xl bg-teal-50/60 border border-teal-100 hover-lift text-center">
+              <div class="spotlight-card p-4 rounded-2xl bg-white/70 border border-teal-100 text-center">
                 <div class="text-[11px] font-bold text-teal-800 uppercase tracking-wider">Total Reach</div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="10" data-prefix="~" data-suffix=" Lakh">
                   0
@@ -1048,7 +1078,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             
             <!-- Pillar 1: Authentic -->
-            <div class="glass-card p-8 rounded-3xl border border-teal-100 space-y-4 hover-lift">
+            <div class="spotlight-card p-8 rounded-3xl border border-teal-100 space-y-4">
               <div class="w-12 h-12 rounded-2xl bg-teal-900 text-emerald-400 flex items-center justify-center font-bold text-xl shadow-lg">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
               </div>
@@ -1059,7 +1089,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
 
             <!-- Pillar 2: Affectionate -->
-            <div class="glass-card p-8 rounded-3xl border border-teal-100 space-y-4 hover-lift">
+            <div class="spotlight-card p-8 rounded-3xl border border-teal-100 space-y-4">
               <div class="w-12 h-12 rounded-2xl bg-emerald-800 text-emerald-300 flex items-center justify-center font-bold text-xl shadow-lg">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
               </div>
@@ -1070,7 +1100,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
 
             <!-- Pillar 3: Affordable -->
-            <div class="glass-card p-8 rounded-3xl border border-teal-100 space-y-4 hover-lift">
+            <div class="spotlight-card p-8 rounded-3xl border border-teal-100 space-y-4">
               <div class="w-12 h-12 rounded-2xl bg-amber-700 text-amber-200 flex items-center justify-center font-bold text-xl shadow-lg">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
               </div>
@@ -1113,25 +1143,25 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="glass-card p-6 rounded-3xl border border-teal-100 space-y-3 hover-lift">
+            <div class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-3">
               <div class="text-xs font-bold text-teal-900 uppercase tracking-wider">Vijayapura Base Hospital</div>
               <div class="text-xs text-slate-500">Navabhag Main Road, Behind Central Bus Stand</div>
               <div class="text-xs font-semibold text-emerald-700">Hours: 8:00 AM – 9:00 PM daily</div>
-              <a href="#/hospitals/vijayapura" class="inline-block text-xs font-bold text-teal-900 hover:underline pt-2">View Campus Details &rarr;</a>
+              <a href="#/hospitals/vijayapura" class="inline-block text-xs font-bold text-teal-900 hover:underline pt-2 underline-animated">View Campus Details &rarr;</a>
             </div>
 
-            <div class="glass-card p-6 rounded-3xl border border-teal-100 space-y-3 hover-lift">
+            <div class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-3">
               <div class="text-xs font-bold text-teal-900 uppercase tracking-wider">Kalaburagi Base Hospital</div>
               <div class="text-xs text-slate-500">Tertiary Base Center & Optometry Institute</div>
               <div class="text-xs font-semibold text-emerald-700">Hours: 8:00 AM – 8:00 PM daily</div>
-              <a href="#/hospitals/kalaburagi" class="inline-block text-xs font-bold text-teal-900 hover:underline pt-2">View Campus Details &rarr;</a>
+              <a href="#/hospitals/kalaburagi" class="inline-block text-xs font-bold text-teal-900 hover:underline pt-2 underline-animated">View Campus Details &rarr;</a>
             </div>
 
-            <div class="glass-card p-6 rounded-3xl border border-teal-100 space-y-3 hover-lift bg-teal-50/50">
-              <div class="text-xs font-bold text-amber-900 uppercase tracking-wider">7 Rural Vision Centers</div>
-              <div class="text-xs text-slate-600">Talikoti, Muddebihal, Sindagi, Indi, B.Bagewadi, Chadachan, Nalatwad</div>
+            <div class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-3 bg-teal-50/50">
+              <div class="text-xs font-bold text-amber-900 uppercase tracking-wider">8 Rural Vision Centers</div>
+              <div class="text-xs text-slate-600">Talikoti, Muddebihal, Sindagi, Indi, B.Bagewadi, Chadachan, Nalatwad, Tikota</div>
               <div class="text-xs font-semibold text-emerald-800">Primary Care, Spectacles, 24x7 Emergency</div>
-              <a href="#/vision-centers" class="inline-block text-xs font-bold text-teal-900 hover:underline pt-2">View All 7 Centers &rarr;</a>
+              <a href="#/vision-centers" class="inline-block text-xs font-bold text-teal-900 hover:underline pt-2 underline-animated">View All 8 Centers &rarr;</a>
             </div>
           </div>
         </section>
@@ -1144,7 +1174,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <h2 class="text-3xl font-extrabold text-teal-950 font-heading mt-1">Super-Specialty Ophthalmic Services</h2>
               <p class="text-slate-600 text-sm">Advanced surgical and diagnostic eye care.</p>
             </div>
-            <a href="#/services" class="text-xs font-bold text-teal-900 hover:underline">View All Services &rarr;</a>
+            <a href="#/services" class="text-xs font-bold text-teal-900 hover:underline underline-animated">View All Services &rarr;</a>
           </div>
 
           <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-900 text-xs font-medium">
@@ -1161,13 +1191,16 @@ document.addEventListener("DOMContentLoaded", () => {
               { title: "Oculoplasty & Aesthetics", desc: "Eyelid surgery, lacrimal duct disorders, and trauma reconstruction." },
               { title: "Cornea & External Disease", desc: "Dry eye clinic, pterygium autograft, and corneal ulcer management." }
             ].map(s => `
-              <div class="glass-card p-6 rounded-3xl border border-teal-100 space-y-3 hover-lift flex flex-col justify-between">
+              <div class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-3 flex flex-col justify-between group">
                 <div>
                   <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-200">Pending Clinical Review</span>
-                  <h3 class="text-base font-extrabold text-teal-950 font-heading mt-2">${s.title}</h3>
+                  <h3 class="text-base font-extrabold text-teal-950 font-heading mt-2 group-hover:text-emerald-700 transition-colors">${s.title}</h3>
                   <p class="text-xs text-slate-600 mt-1 leading-relaxed">${s.desc}</p>
                 </div>
-                <a href="#/services" class="text-xs font-bold text-teal-900 hover:underline pt-2 border-t border-teal-100">Learn More &rarr;</a>
+                <a href="#/services" class="text-xs font-bold text-teal-900 hover:underline pt-2 border-t border-teal-100 flex items-center justify-between">
+                  <span>Learn More</span>
+                  <span class="icon-shift-right">&rarr;</span>
+                </a>
               </div>
             `).join('')}
           </div>
@@ -1184,7 +1217,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             
             <!-- Chairman Card with Aperture Effect -->
-            <div class="aperture-card glass-card p-8 rounded-3xl border border-teal-100 space-y-6 group">
+            <div class="spotlight-card aperture-card p-8 rounded-3xl border border-teal-100 space-y-6 group">
               <div class="flex items-center gap-6">
                 <div class="aperture-ring w-20 h-20 rounded-full bg-teal-950 text-white font-extrabold text-2xl flex items-center justify-center font-heading shadow-xl shrink-0 border-2 border-emerald-400">
                   DPL
@@ -1197,13 +1230,14 @@ document.addEventListener("DOMContentLoaded", () => {
               <p class="text-slate-600 text-sm leading-relaxed">
                 Pioneered mobile eye camps treating ~10,000 patients annually free of cost, reaching nearly 10 lakh individuals over 25 years. Recipient of 12 prestigious awards including the Government of Karnataka's Rajyostava Award (2021).
               </p>
-              <a href="#/about-us/leadership" class="inline-flex items-center gap-2 text-xs font-bold text-teal-900 hover:text-emerald-700">
-                <span>View Full Bio & 12 Conferred Awards</span> &rarr;
+              <a href="#/about-us/leadership" class="inline-flex items-center gap-2 text-xs font-bold text-teal-900 hover:text-emerald-700 group">
+                <span>View Full Bio & 12 Conferred Awards</span>
+                <span class="icon-shift-right">&rarr;</span>
               </a>
             </div>
 
             <!-- Medical Director Card with Aperture Effect -->
-            <div class="aperture-card glass-card p-8 rounded-3xl border border-teal-100 space-y-6 group">
+            <div class="spotlight-card aperture-card p-8 rounded-3xl border border-teal-100 space-y-6 group">
               <div class="flex items-center gap-6">
                 <div class="aperture-ring w-20 h-20 rounded-full bg-emerald-900 text-white font-extrabold text-2xl flex items-center justify-center font-heading shadow-xl shrink-0 border-2 border-emerald-400">
                   DMP
@@ -1216,8 +1250,9 @@ document.addEventListener("DOMContentLoaded", () => {
               <p class="text-slate-600 text-sm leading-relaxed">
                 Committed, compassionate leader with nearly two decades driving organizational development and elevating Anugraha Eye Hospital to national super-specialty standards.
               </p>
-              <a href="#/about-us/leadership" class="inline-flex items-center gap-2 text-xs font-bold text-emerald-800 hover:text-emerald-900">
-                <span>View Leadership Bio</span> &rarr;
+              <a href="#/about-us/leadership" class="inline-flex items-center gap-2 text-xs font-bold text-emerald-800 hover:text-emerald-900 group">
+                <span>View Leadership Bio</span>
+                <span class="icon-shift-right">&rarr;</span>
               </a>
             </div>
 
@@ -4400,6 +4435,60 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  window.handleAdminPhotoUpload = function(event, docId) {
+    /* FRONTEND-ONLY TRUST BOUNDARY: Client-side MIME type, size & pixel dimension validation */
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const nameLower = file.name.toLowerCase();
+    const rejectedExtensions = ['.webp', '.svg', '.gif', '.pdf', '.docx', '.exe', '.bmp', '.tiff'];
+    const isRejected = rejectedExtensions.some(ext => nameLower.endsWith(ext));
+
+    const validMimeTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    const isJpegOrPng = validMimeTypes.includes(file.type.toLowerCase()) || 
+                        nameLower.endsWith('.jpg') || 
+                        nameLower.endsWith('.jpeg') || 
+                        nameLower.endsWith('.png');
+
+    if (isRejected || !isJpegOrPng) {
+      window.showAdminToast("Invalid File Format: Admin accepts ONLY .jpg or .png images.", "error");
+      event.target.value = '';
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      window.showAdminToast("File size exceeds 5MB maximum limit.", "error");
+      event.target.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const base64Src = e.target.result;
+      const img = new Image();
+      img.onload = function() {
+        if (img.naturalWidth <= 0 || img.naturalHeight <= 0) {
+          window.showAdminToast("Corrupted image file.", "error");
+          return;
+        }
+        const store = window.appStore;
+        const leaders = store.data.leadership || [];
+        const doc = leaders.find(d => d.id === docId);
+        if (doc) {
+          doc.photo = base64Src;
+          store.save();
+          window.showAdminToast(`Uploaded photo for ${doc.name}`, "success");
+          render();
+        }
+      };
+      img.onerror = function() {
+        window.showAdminToast("Failed to decode image pixels.", "error");
+      };
+      img.src = base64Src;
+    };
+    reader.readAsDataURL(file);
+  };
+
   window.saveSiteSettings = function(e) {
     e.preventDefault();
     const primaryPhone = document.getElementById('site-primaryPhone')?.value;
@@ -5190,6 +5279,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Linear / Apple-inspired Interactive Spotlight Cursor Tracker
+  function initSpotlightHoverTracker() {
+    const cards = document.querySelectorAll('.spotlight-card, .bento-card-luxury');
+    if (cards.length === 0) return;
+
+    cards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+  }
+
   // Central Render Loop
   function render() {
     updatePageSEO(currentPath);
@@ -5207,6 +5312,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initFormValidationShake();
     initPhysicsDragCarousel();
     initAdminListDragAndDrop();
+    initSpotlightHoverTracker();
   }
 
   // Initial Run

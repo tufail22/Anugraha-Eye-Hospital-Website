@@ -10,6 +10,8 @@
   --bg-light: #f6f9f8;
   --text-dark: #0d1b2a;
   --text-muted: #4a5568;
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 body {
@@ -17,10 +19,185 @@ body {
   background-color: var(--bg-light);
   color: var(--text-dark);
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3, h4, h5, h6, .font-heading {
   font-family: 'Outfit', sans-serif;
+}
+
+/* Theme Dark Mode Tokens (System & Manual Preference) */
+html.dark {
+  --bg-light: #061e1b;
+  --text-dark: #f0fdfa;
+  --text-muted: #94a3b8;
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #041614 !important;
+  color: #f0fdfa !important;
+}
+
+html.dark .spotlight-card {
+  background: rgba(8, 38, 33, 0.88) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark .glass-card {
+  background: rgba(8, 38, 33, 0.88) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #f0fdfa !important;
+}
+
+html.dark .bento-card-luxury {
+  background: linear-gradient(135deg, rgba(13, 48, 43, 0.95) 0%, rgba(6, 30, 27, 0.85) 100%) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #f0fdfa !important;
+}
+
+html.dark .header-nav {
+  background: rgba(6, 30, 27, 0.92) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+html.dark .brand-title {
+  color: #f0fdfa !important;
+}
+
+html.dark .brand-subtitle {
+  color: #34d399 !important;
+}
+
+html.dark .nav-text-link {
+  color: #cbd5e1 !important;
+}
+
+html.dark .nav-text-link:hover {
+  color: #34d399 !important;
+  background-color: rgba(13, 148, 136, 0.2) !important;
+}
+
+/* Linear/Apple-inspired Spotlight Card Hover Effect */
+.spotlight-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(13, 75, 67, 0.08);
+  box-shadow: 0 20px 40px -15px rgba(13, 75, 67, 0.06), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
+}
+
+.spotlight-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(16, 185, 129, 0.14), transparent 40%);
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.spotlight-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 30px 60px -20px rgba(13, 75, 67, 0.14), 0 0 25px rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.spotlight-card:hover::before {
+  opacity: 1;
+}
+
+/* Bento Glass Luxury Cards */
+.bento-card-luxury {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(246, 249, 248, 0.85) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9), 0 20px 40px -15px rgba(13, 75, 67, 0.08);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bento-card-luxury:hover {
+  transform: translateY(-5px);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 1), 0 35px 70px -20px rgba(13, 75, 67, 0.16);
+}
+
+/* Metallic/Glow Border Sweep Button */
+.btn-shine-glow {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-shine-glow::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 70%
+  );
+  transform: rotate(30deg) translateX(-100%);
+  transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.btn-shine-glow:hover {
+  transform: scale(1.025);
+  box-shadow: 0 12px 28px -6px rgba(13, 75, 67, 0.25);
+}
+
+.btn-shine-glow:hover::after {
+  transform: rotate(30deg) translateX(100%);
+}
+
+/* Gradient Text Effect */
+.gradient-text-emerald {
+  background: linear-gradient(135deg, #0d4b43 0%, #10b981 50%, #062c26 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Animated Underline Sweep */
+.underline-animated {
+  position: relative;
+}
+
+.underline-animated::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #10b981, #0d4b43);
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.underline-animated:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* Arrow Micro-Shift */
+.icon-shift-right {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.group:hover .icon-shift-right {
+  transform: translateX(4px);
 }
 
 /* Glassmorphism Cards inspired by mockup */
