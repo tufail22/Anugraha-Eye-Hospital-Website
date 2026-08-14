@@ -19,64 +19,99 @@ body {
   background-color: var(--bg-light);
   color: var(--text-dark);
   overflow-x: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 h1, h2, h3, h4, h5, h6, .font-heading {
   font-family: 'Outfit', sans-serif;
 }
 
-/* Theme Dark Mode Tokens (System & Manual Preference) */
+/* Complete Dark Mode System Overrides (.dark class on html) */
 html.dark {
-  --bg-light: #061e1b;
-  --text-dark: #f0fdfa;
-  --text-muted: #94a3b8;
   color-scheme: dark;
 }
 
 html.dark body {
-  background-color: #041614 !important;
-  color: #f0fdfa !important;
+  background-color: #03100e !important;
+  color: #f1f7f6 !important;
 }
 
-html.dark .spotlight-card {
-  background: rgba(8, 38, 33, 0.88) !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4) !important;
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark .text-teal-950 {
+  color: #f8fafc !important;
 }
 
-html.dark .glass-card {
-  background: rgba(8, 38, 33, 0.88) !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
-  color: #f0fdfa !important;
-}
-
-html.dark .bento-card-luxury {
-  background: linear-gradient(135deg, rgba(13, 48, 43, 0.95) 0%, rgba(6, 30, 27, 0.85) 100%) !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
-  color: #f0fdfa !important;
-}
-
-html.dark .header-nav {
-  background: rgba(6, 30, 27, 0.92) !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
-}
-
-html.dark .brand-title {
-  color: #f0fdfa !important;
-}
-
-html.dark .brand-subtitle {
-  color: #34d399 !important;
+html.dark p,
+html.dark .text-slate-600,
+html.dark .text-slate-700,
+html.dark .text-slate-500 {
+  color: #cbd5e1 !important;
 }
 
 html.dark .nav-text-link {
-  color: #cbd5e1 !important;
+  color: #e2e8f0 !important;
 }
 
 html.dark .nav-text-link:hover {
   color: #34d399 !important;
-  background-color: rgba(13, 148, 136, 0.2) !important;
+  background-color: rgba(16, 185, 129, 0.15) !important;
+}
+
+html.dark .header-nav,
+html.dark .glass-card {
+  background: rgba(6, 36, 31, 0.88) !important;
+  border-color: rgba(16, 185, 129, 0.22) !important;
+  color: #f1f7f6 !important;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.dark .spotlight-card {
+  background: rgba(6, 36, 31, 0.85) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  color: #f1f7f6 !important;
+}
+
+html.dark .spotlight-card:hover {
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.7), 0 0 25px rgba(16, 185, 129, 0.2) !important;
+  border-color: rgba(52, 211, 153, 0.4) !important;
+}
+
+html.dark .bento-card-luxury {
+  background: linear-gradient(135deg, rgba(8, 44, 38, 0.95) 0%, rgba(4, 24, 20, 0.9) 100%) !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
+  color: #f1f7f6 !important;
+}
+
+html.dark .mega-menu-dropdown {
+  background: rgba(4, 21, 18, 0.96) !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+html.dark .mega-menu-dropdown a {
+  color: #cbd5e1 !important;
+}
+
+html.dark .mega-menu-dropdown a:hover {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+}
+
+html.dark input[type="text"],
+html.dark input[type="password"],
+html.dark input[type="email"],
+html.dark select,
+html.dark textarea {
+  background-color: #020c0a !important;
+  color: #f1f7f6 !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+html.dark .admin-upload-zone {
+  background-color: #041a16 !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
 }
 
 /* Linear/Apple-inspired Spotlight Card Hover Effect */

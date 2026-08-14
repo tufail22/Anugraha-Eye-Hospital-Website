@@ -300,33 +300,51 @@ document.addEventListener("DOMContentLoaded", () => {
     render();
   };
 
-  // Theme Manager (Light & Dark Mode with System Preference Auto-Matching & LocalStorage Persistence)
-  window.getSystemTheme = function() {
-    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  // Theme Manager (System Match by default + LocalStorage User Mode Override)
+  window.getThemePreference = function() {
+    return localStorage.getItem('anugraha_theme_v1') || 'system';
   };
 
-  window.currentTheme = localStorage.getItem('anugraha_theme_v1') || window.getSystemTheme();
+  window.getEffectiveTheme = function() {
+    const pref = window.getThemePreference();
+    if (pref === 'dark') return 'dark';
+    if (pref === 'light') return 'light';
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  };
 
   window.applyTheme = function() {
-    if (window.currentTheme === 'dark') {
+    const effective = window.getEffectiveTheme();
+    if (effective === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
   };
 
-  window.toggleTheme = function() {
-    window.currentTheme = window.currentTheme === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('anugraha_theme_v1', window.currentTheme);
+  window.cycleTheme = function() {
+    const current = window.getThemePreference();
+    let next = 'dark';
+    if (current === 'system') {
+      const effective = window.getEffectiveTheme();
+      next = effective === 'dark' ? 'light' : 'dark';
+    } else if (current === 'dark') {
+      next = 'light';
+    } else {
+      next = 'system';
+    }
+    localStorage.setItem('anugraha_theme_v1', next);
     window.applyTheme();
     render();
+    if (window.showAdminToast) {
+      const label = next === 'system' ? 'System Theme' : `${next.charAt(0).toUpperCase() + next.slice(1)} Mode`;
+      window.showAdminToast(`Switched theme to ${label}`, 'success');
+    }
   };
 
-  // Listen to system color scheme changes if user hasn't set manual preference
+  // Listen to OS System Color Scheme Changes
   if (window.matchMedia) {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (!localStorage.getItem('anugraha_theme_v1')) {
-        window.currentTheme = e.matches ? 'dark' : 'light';
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (window.getThemePreference() === 'system') {
         window.applyTheme();
         render();
       }
@@ -367,6 +385,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Render Header
   function renderHeader() {
     const brand = store.getBrand();
+    const dataGaps = store.getDataGaps();
     const isScrolled = window.scrollY > 80;
     const isDark = window.currentTheme === 'dark';
 
@@ -381,99 +400,95 @@ document.addEventListener("DOMContentLoaded", () => {
               <img src="assets/official_logo.jpg" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
             </div>
             <div>
-              <div class="brand-title font-extrabold text-base sm:text-lg text-teal-950 dark:text-teal-50 tracking-tight leading-none font-heading transition-colors">${brand.name}</div>
-              <div class="brand-subtitle text-[10px] sm:text-[11px] font-semibold text-teal-700 dark:text-emerald-400 tracking-wider uppercase mt-0.5 transition-colors">${brand.tagline}</div>
+              <div class="brand-title font-extrabold text-base sm:text-lg text-teal-950 tracking-tight leading-none font-heading transition-colors">${brand.name}</div>
+              <div class="brand-subtitle text-[10px] sm:text-[11px] font-semibold text-teal-700 tracking-wider uppercase mt-0.5 transition-colors">${brand.tagline}</div>
             </div>
           </a>
 
-          <!-- Primary Navigation Mega-Menus (Center) -->
-          <div class="hidden lg:flex items-center gap-1 font-medium text-sm text-slate-700 dark:text-slate-200">
+          <!-- Primary Navigation Mega-Menus (Center / Right) -->
+          <div class="hidden lg:flex items-center gap-1 font-medium text-sm text-slate-700">
             
             <!-- Home -->
-            <a href="#/" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 dark:hover:bg-teal-900/40 transition-colors ${currentPath === '/' ? 'text-teal-900 bg-teal-50 font-bold' : ''}">Home</a>
+            <a href="#/" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 transition-colors ${currentPath === '/' ? 'text-teal-900 bg-teal-50 font-bold' : ''}">Home</a>
             
             <!-- About Us (Mega-Menu) -->
             <div class="relative group">
-              <a href="#/about-us" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 dark:hover:bg-teal-900/40 transition-colors flex items-center gap-1 ${currentPath.startsWith('/about-us') ? 'text-teal-900 bg-teal-50 font-bold' : ''}">
+              <a href="#/about-us" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 transition-colors flex items-center gap-1 ${currentPath.startsWith('/about-us') ? 'text-teal-900 bg-teal-50 font-bold' : ''}">
                 About Us
                 <svg class="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </a>
               <div class="mega-menu-dropdown absolute top-full left-0 mt-1 w-64 glass-card rounded-2xl shadow-2xl py-2.5 hidden group-hover:block border border-teal-100/80 z-50">
-                <a href="#/about-us" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50 font-semibold">Our Story & Overview</a>
-                <a href="#/about-us/leadership" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Leadership & Awards</a>
-                <a href="#/about-us/administration" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Administration Team (6)</a>
-                <a href="#/about-us#vision-mission" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Vision & Mission</a>
-                <a href="#/about-us#geographical-spread" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Geographical Spread</a>
-                <a href="#/about-us#partnerships" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Community Partnerships</a>
+                <a href="#/about-us" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900 font-semibold">Our Story & Overview</a>
+                <a href="#/about-us/leadership" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Leadership & Awards</a>
+                <a href="#/about-us/administration" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Administration Team (6)</a>
+                <a href="#/about-us#vision-mission" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Vision & Mission</a>
+                <a href="#/about-us#geographical-spread" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Geographical Spread</a>
+                <a href="#/about-us#partnerships" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Community Partnerships</a>
               </div>
             </div>
 
             <!-- Hospitals Mega-Menu -->
             <div class="relative group">
-              <a href="#/hospitals/vijayapura" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 dark:hover:bg-teal-900/40 transition-colors flex items-center gap-1 ${currentPath.startsWith('/hospitals') ? 'text-teal-900 bg-teal-50 font-bold' : ''}">
+              <a href="#/hospitals/vijayapura" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 transition-colors flex items-center gap-1 ${currentPath.startsWith('/hospitals') ? 'text-teal-900 bg-teal-50 font-bold' : ''}">
                 Hospitals
                 <svg class="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </a>
               <div class="mega-menu-dropdown absolute top-full left-0 mt-1 w-72 glass-card rounded-2xl shadow-2xl py-2.5 hidden group-hover:block border border-teal-100/80 z-50">
-                <div class="px-4 py-1 text-[10px] font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300">Base Tertiary Hospitals</div>
-                <a href="#/hospitals/vijayapura" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50 font-semibold">Vijayapura Base Hospital</a>
-                <a href="#/hospitals/kalaburagi" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50 font-semibold">Kalaburagi Base Hospital</a>
+                <div class="px-4 py-1 text-[10px] font-bold uppercase tracking-wider text-teal-800">Base Tertiary Hospitals</div>
+                <a href="#/hospitals/vijayapura" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900 font-semibold">Vijayapura Base Hospital</a>
+                <a href="#/hospitals/kalaburagi" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900 font-semibold">Kalaburagi Base Hospital</a>
                 
-                <div class="my-1.5 border-t border-slate-100 dark:border-slate-800"></div>
-                <div class="px-4 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">8 Vision Centers Directory</div>
-                <a href="#/vision-centers/talikoti" class="block px-4 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/50">Talikoti Vision Center</a>
-                <a href="#/vision-centers/muddebihal" class="block px-4 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/50">Muddebihal Vision Center</a>
-                <a href="#/vision-centers/sindagi" class="block px-4 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/50">Sindagi Vision Center</a>
-                <a href="#/vision-centers/indi" class="block px-4 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/50">Indi Vision Center</a>
-                <a href="#/vision-centers/b-bagewadi" class="block px-4 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/50">B.Bagewadi Vision Center</a>
-                <a href="#/vision-centers/chadachan" class="block px-4 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/50">Chadachan Vision Center</a>
-                <a href="#/vision-centers/nalatwad" class="block px-4 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/50">Nalatwad Vision Center</a>
-                <a href="#/vision-centers/tikota" class="block px-4 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:bg-teal-900/50">Tikota Vision Center</a>
+                <div class="my-1.5 border-t border-slate-100"></div>
+                <div class="px-4 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-700">8 Vision Centers Directory</div>
+                <a href="#/vision-centers/talikoti" class="block px-4 py-1.5 text-xs text-slate-600 hover:bg-teal-50 hover:text-teal-900">Talikoti Vision Center</a>
+                <a href="#/vision-centers/muddebihal" class="block px-4 py-1.5 text-xs text-slate-600 hover:bg-teal-50 hover:text-teal-900">Muddebihal Vision Center</a>
+                <a href="#/vision-centers/sindagi" class="block px-4 py-1.5 text-xs text-slate-600 hover:bg-teal-50 hover:text-teal-900">Sindagi Vision Center</a>
+                <a href="#/vision-centers/indi" class="block px-4 py-1.5 text-xs text-slate-600 hover:bg-teal-50 hover:text-teal-900">Indi Vision Center</a>
+                <a href="#/vision-centers/b-bagewadi" class="block px-4 py-1.5 text-xs text-slate-600 hover:bg-teal-50 hover:text-teal-900">B.Bagewadi Vision Center</a>
+                <a href="#/vision-centers/chadachan" class="block px-4 py-1.5 text-xs text-slate-600 hover:bg-teal-50 hover:text-teal-900">Chadachan Vision Center</a>
+                <a href="#/vision-centers/nalatwad" class="block px-4 py-1.5 text-xs text-slate-600 hover:bg-teal-50 hover:text-teal-900">Nalatwad Vision Center</a>
+                <a href="#/vision-centers/tikota" class="block px-4 py-1.5 text-xs text-slate-600 hover:bg-teal-50 hover:text-teal-900">Tikota Vision Center</a>
               </div>
             </div>
 
             <!-- Services -->
-            <a href="#/services" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 dark:hover:bg-teal-900/40 transition-colors ${currentPath === '/services' ? 'text-teal-900 bg-teal-50 font-bold' : ''}">Services</a>
+            <a href="#/services" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 transition-colors ${currentPath === '/services' ? 'text-teal-900 bg-teal-50 font-bold' : ''}">Services</a>
 
             <!-- Academics -->
-            <a href="#/academics" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 dark:hover:bg-teal-900/40 transition-colors ${currentPath === '/academics' ? 'text-teal-900 bg-teal-50 font-bold' : ''}">Academics</a>
+            <a href="#/academics" class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 transition-colors ${currentPath === '/academics' ? 'text-teal-900 bg-teal-50 font-bold' : ''}">Academics</a>
 
             <!-- More Dropdown -->
             <div class="relative group">
-              <button class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 dark:hover:bg-teal-900/40 transition-colors flex items-center gap-1 ${['/gallery', '/news', '/videos', '/contact', '/patient-resources'].some(p => currentPath.startsWith(p)) ? 'text-teal-900 bg-teal-50 font-bold' : ''}">
+              <button class="nav-text-link px-3 py-2 rounded-lg hover:text-teal-900 hover:bg-teal-50/80 transition-colors flex items-center gap-1 ${['/gallery', '/news', '/videos', '/contact', '/patient-resources'].some(p => currentPath.startsWith(p)) ? 'text-teal-900 bg-teal-50 font-bold' : ''}">
                 More
                 <svg class="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </button>
               <div class="mega-menu-dropdown absolute top-full left-0 mt-1 w-60 glass-card rounded-2xl shadow-2xl py-2.5 hidden group-hover:block border border-teal-100/80 z-50">
-                <a href="#/patient-resources/empanelments-and-insurance" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Empanelments & Insurance</a>
-                <a href="#/patient-resources/handouts" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Patient Handouts</a>
-                <div class="my-1 border-t border-slate-100 dark:border-slate-800"></div>
-                <a href="#/gallery" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Gallery</a>
-                <a href="#/news" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">News & Media</a>
-                <a href="#/videos" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Video Library</a>
-                <a href="#/contact" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50">Contact Us</a>
+                <a href="#/patient-resources/empanelments-and-insurance" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Empanelments & Insurance</a>
+                <a href="#/patient-resources/handouts" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Patient Handouts</a>
+                <div class="my-1 border-t border-slate-100"></div>
+                <a href="#/gallery" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Gallery</a>
+                <a href="#/news" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">News & Media</a>
+                <a href="#/videos" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Video Library</a>
+                <a href="#/contact" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Contact Us</a>
               </div>
             </div>
 
           </div>
 
-          <!-- Header Right Utilities: Theme Toggle + Single Right Header CTA Button -->
-          <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Header Right Utilities (Premium Theme Toggle Button + Mobile Hamburger) -->
+          <div class="flex items-center gap-2">
             
-            <!-- Sun ☀️ / Moon 🌙 Theme Toggle Button -->
-            <button onclick="window.toggleTheme()" aria-label="Toggle Light/Dark Theme" title="Toggle Theme (Auto-matches system by default)" class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-emerald-300 hover:scale-105 transition-all shadow-sm">
-              ${isDark ? `
-                <svg class="w-4 h-4 text-amber-400 fill-current" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 4.97 4.03 9 9 9 4.97 0 9-4.03 9-9 0-4.97-4.03-9-9-9zm0 16c-3.86 0-7-3.14-7-7 0-3.86 3.14-7 7-7 3.86 0 7 3.14 7 7 0 3.86-3.14 7-7 7z"/></svg>
+            <!-- Premium Light/Dark Theme Switcher Button (Right Header) -->
+            <button onclick="window.cycleTheme()" title="Switch Theme (Light Mode / Dark Mode / System)" aria-label="Switch Theme Mode" class="btn-shine-glow p-2 px-3 rounded-xl bg-teal-900/10 dark:bg-emerald-900/40 hover:bg-teal-900/20 dark:hover:bg-emerald-800/60 border border-teal-900/20 dark:border-emerald-400/40 text-teal-950 dark:text-emerald-300 flex items-center gap-1.5 text-xs font-bold transition-all shadow-sm active:scale-95">
+              ${window.getEffectiveTheme() === 'dark' ? `
+                <svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                <span class="hidden sm:inline font-mono">${window.getThemePreference() === 'system' ? 'System 🌙' : 'Dark'}</span>
               ` : `
-                <svg class="w-4 h-4 text-slate-700 fill-current" viewBox="0 0 24 24"><path d="M12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 01-4.4 2.26 5.403 5.403 0 01-5.4-5.4c0-1.81.89-3.42 2.26-4.4C12.92 3.04 12.46 3 12 3z"/></svg>
+                <svg class="w-4 h-4 text-teal-800 dark:text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                <span class="hidden sm:inline font-mono">${window.getThemePreference() === 'system' ? 'System ☀️' : 'Light'}</span>
               `}
             </button>
-
-            <!-- Single Right Header Primary CTA Button -->
-            <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="btn-call-now btn-shine-glow magnetic-btn hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs shadow-lg transition-transform">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-              <span>Call Helpline: ${brand.fallbackPhone}</span>
-            </a>
 
             <!-- Mobile Hamburger Button -->
             <button onclick="window.toggleMobileDrawer()" class="lg:hidden p-2 rounded-xl text-slate-800 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50 transition-colors">

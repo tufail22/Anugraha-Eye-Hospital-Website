@@ -3,3 +3,6 @@ node_modules/
 Thumbs.db
 *.log
 portable-git/
+min-git/
+gh-cli/
+.system_generated/
