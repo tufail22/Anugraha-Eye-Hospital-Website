@@ -1224,79 +1224,65 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </section>
 
-        <!-- 7. LEADERSHIP TEASER (Luxury Halo & Bento Design) -->
-        <section class="max-w-7xl mx-auto px-4 space-y-8">
-          <div class="text-center space-y-3 max-w-2xl mx-auto">
-            <span class="px-3.5 py-1.5 rounded-full badge-emerald font-semibold text-xs uppercase tracking-wider">Medical Leadership</span>
-            <h2 class="text-3xl font-extrabold text-teal-950 dark:text-white font-heading">Hospital Founders & Medical Leadership</h2>
-            <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm">Pioneering authentic, affectionate, and affordable eye care across North Karnataka since 2001.</p>
+        <!-- 7. LEADERSHIP TEASER (ACCURATE ASYMMETRIC CUTOUT CARDS MATCHING REFERENCE DESIGN) -->
+        <section class="max-w-7xl mx-auto px-4 space-y-12 py-6">
+          <div class="text-center space-y-3">
+            <span class="px-3 py-1 rounded-full badge-coral font-semibold text-xs uppercase tracking-wider">Medical Leadership</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-teal-950 dark:text-white font-heading">Hospital Founders & Medical Directors</h2>
+            <p class="text-slate-600 dark:text-slate-300 text-sm max-w-xl mx-auto">Pioneering compassionate, high-volume ophthalmic care since 2001.</p>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="space-y-16 lg:space-y-24">
             
-            <!-- Chairman Card with Luxury Bento Glass Effect -->
-            <div class="leadership-card-luxury p-8 rounded-3xl space-y-6 group relative overflow-hidden flex flex-col justify-between">
-              <div class="space-y-4">
-                <div class="flex items-center gap-5">
-                  <div class="relative w-20 h-20 rounded-2xl overflow-hidden p-1 bg-gradient-to-tr from-emerald-400 via-teal-600 to-amber-300 shadow-xl shrink-0">
-                    ${chairman && chairman.photo ? `
-                      <img src="${chairman.photo}" alt="${chairman.name}" class="w-full h-full object-cover rounded-xl" />
-                    ` : `
-                      <div class="w-full h-full rounded-xl bg-teal-950 text-amber-300 font-extrabold text-2xl flex items-center justify-center font-heading">
-                        DPL
-                      </div>
-                    `}
-                  </div>
-                  <div>
-                    <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-900 dark:text-emerald-300 font-bold text-[10px] uppercase">Chairman & Founder</span>
-                    <h3 class="text-xl font-extrabold text-teal-950 dark:text-white font-heading mt-1 group-hover:text-emerald-700 transition-colors">Dr. Prabhugouda B. Lingadalli</h3>
-                    <div class="text-xs font-mono text-emerald-800 dark:text-emerald-400 font-bold">MBBS, MS, DNB, FAEH, MCHS</div>
-                  </div>
+            <!-- Chairman Card (Asymmetric Top-Left Curve, Doctor Portrait on Right Side) -->
+            <div class="relative max-w-6xl mx-auto">
+              <div class="bg-[#093327] text-white p-8 sm:p-12 lg:py-14 lg:pl-14 lg:pr-[360px] rounded-tl-[70px] sm:rounded-tl-[110px] rounded-tr-[28px] rounded-bl-[28px] rounded-br-[28px] shadow-2xl space-y-5 border border-emerald-800/40 relative z-0 overflow-visible">
+                <div>
+                  <h3 class="text-2xl sm:text-4xl font-extrabold text-white font-heading tracking-tight">Dr. Prabhugouda B. Lingadalli</h3>
+                  <div class="text-xs sm:text-sm font-bold text-[#2dd4bf] mt-1.5 font-sans">Chairman & Founder &bull; MBBS, MS, DNB, FAEH, MCHS</div>
                 </div>
-                <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">
-                  Pioneered mobile eye camps treating ~10,000 patients annually free of cost, reaching nearly 10 lakh individuals over 25 years. Conferred 12 awards including the Rajyostava Award (2021).
+
+                <p class="text-xs sm:text-base text-slate-100/90 leading-relaxed font-normal max-w-2xl">
+                  Pioneered mobile eye camps treating ~10,000 patients annually free of cost, reaching nearly 10 lakh individuals over 25 years. Recipient of 12 prestigious awards including the Government of Karnataka's Rajyostava Award (2021).
                 </p>
-              </div>
-              
-              <div class="pt-4 border-t border-teal-100 dark:border-teal-900 flex items-center justify-between">
-                <span class="text-[10px] font-mono text-amber-600 dark:text-amber-300 font-bold">🏆 Rajyostava Awardee</span>
-                <a href="#/about-us/leadership" class="text-xs font-extrabold text-teal-900 dark:text-emerald-300 hover:underline flex items-center gap-1">
-                  <span>View Full Leadership Page</span>
-                  <span class="icon-shift-right">&rarr;</span>
-                </a>
+
+                <div class="pt-2">
+                  <a href="#/about-us/leadership" class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white hover:text-[#2dd4bf] transition-colors group font-mono tracking-wide">
+                    <span>View Full Bio --&gt;</span>
+                  </a>
+                </div>
+
+                <!-- Right Side Breakout Doctor Portrait -->
+                <div class="lg:absolute lg:right-6 lg:-bottom-6 lg:-top-16 lg:w-[340px] flex justify-center mt-6 lg:mt-0 pointer-events-none z-10">
+                  <img src="assets/dr_lingadalli.jpg" alt="Dr. Prabhugouda B. Lingadalli" class="h-80 sm:h-[400px] lg:h-[430px] w-auto object-cover object-top drop-shadow-2xl rounded-2xl lg:rounded-b-none" />
+                </div>
               </div>
             </div>
 
-            <!-- Medical Director Card with Luxury Bento Glass Effect -->
-            <div class="leadership-card-luxury p-8 rounded-3xl space-y-6 group relative overflow-hidden flex flex-col justify-between">
-              <div class="space-y-4">
-                <div class="flex items-center gap-5">
-                  <div class="relative w-20 h-20 rounded-2xl overflow-hidden p-1 bg-gradient-to-tr from-emerald-400 via-teal-600 to-emerald-300 shadow-xl shrink-0">
-                    ${medicalDirector && medicalDirector.photo ? `
-                      <img src="${medicalDirector.photo}" alt="${medicalDirector.name}" class="w-full h-full object-cover rounded-xl" />
-                    ` : `
-                      <div class="w-full h-full rounded-xl bg-emerald-950 text-emerald-300 font-extrabold text-2xl flex items-center justify-center font-heading">
-                        DMP
-                      </div>
-                    `}
-                  </div>
-                  <div>
-                    <span class="px-2.5 py-0.5 rounded-full bg-teal-100 dark:bg-teal-900/40 text-teal-900 dark:text-emerald-300 font-bold text-[10px] uppercase">Medical Director</span>
-                    <h3 class="text-xl font-extrabold text-teal-950 dark:text-white font-heading mt-1 group-hover:text-emerald-700 transition-colors">Dr. Malini P L</h3>
-                    <div class="text-xs font-mono text-emerald-800 dark:text-emerald-400 font-bold">MBBS, DO, FGO</div>
-                  </div>
+            <!-- Medical Director Card (Asymmetric Top-Right Curve, Doctor Portrait on Left Side) -->
+            <div class="relative max-w-6xl mx-auto">
+              <div class="bg-[#093327] text-white p-8 sm:p-12 lg:py-14 lg:pr-14 lg:pl-[360px] rounded-tr-[70px] sm:rounded-tr-[110px] rounded-tl-[28px] rounded-bl-[28px] rounded-br-[28px] shadow-2xl space-y-5 border border-emerald-800/40 relative z-0 overflow-visible">
+                
+                <!-- Left Side Breakout Doctor Portrait -->
+                <div class="lg:absolute lg:left-6 lg:-bottom-6 lg:-top-16 lg:w-[340px] flex justify-center mb-6 lg:mb-0 pointer-events-none z-10">
+                  <img src="assets/dr_malini.jpg" alt="Dr. Malini P L" class="h-80 sm:h-[400px] lg:h-[430px] w-auto object-cover object-top drop-shadow-2xl rounded-2xl lg:rounded-b-none" />
                 </div>
-                <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">
-                  Committed, compassionate leader with nearly two decades driving organizational development, clinical quality, and national super-specialty standards across Vijayapura & Kalaburagi campuses.
-                </p>
-              </div>
 
-              <div class="pt-4 border-t border-teal-100 dark:border-teal-900 flex items-center justify-between">
-                <span class="text-[10px] font-mono text-emerald-700 dark:text-emerald-400 font-bold">20+ Yrs Clinical Governance</span>
-                <a href="#/about-us/leadership" class="text-xs font-extrabold text-teal-900 dark:text-emerald-300 hover:underline flex items-center gap-1">
-                  <span>View Full Leadership Page</span>
-                  <span class="icon-shift-right">&rarr;</span>
-                </a>
+                <div>
+                  <h3 class="text-2xl sm:text-4xl font-extrabold text-white font-heading tracking-tight">Dr. Malini P L</h3>
+                  <div class="text-xs sm:text-sm font-bold text-[#2dd4bf] mt-1.5 font-sans">Medical Director &bull; MBBS, DO, FGO</div>
+                </div>
+
+                <p class="text-xs sm:text-base text-slate-100/90 leading-relaxed font-normal max-w-2xl">
+                  Committed, compassionate leader with nearly two decades driving organizational development and super-specialty upgrades. Guiding clinical quality and patient-first care across Vijayapura and Kalaburagi campuses.
+                </p>
+
+                <div class="pt-2 text-left lg:text-right">
+                  <a href="#/about-us/leadership" class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white hover:text-[#2dd4bf] transition-colors group font-mono tracking-wide">
+                    <span>View Full Bio --&gt;</span>
+                  </a>
+                </div>
+
               </div>
             </div>
 
@@ -1638,210 +1624,55 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // 3. LEADERSHIP View (Luxury Healthcare Design inspired by Reference Style Guide)
+  // 3. LEADERSHIP View (Redesigned Bold Editorial Layout inspired by Reference Mockup)
   function renderLeadershipPage() {
     const leadership = store.data.leadership;
     const chairman = leadership.find(l => l.id === 'dr-lingadalli');
     const medicalDirector = leadership.find(l => l.id === 'dr-malini');
     const brand = store.getBrand();
-    const stats = store.data.stats || {};
 
     return `
-      <div class="max-w-7xl mx-auto px-4 py-8 sm:py-12 space-y-16 sm:space-y-24 font-sans">
+      <div class="max-w-7xl mx-auto px-4 py-10 space-y-24 font-sans">
         
-        <!-- SECTION 1: LUXURY HERO HEADER WITH HALO AURA (Inspired by Row 1 of Reference Mockup) -->
-        <div class="relative rounded-3xl p-8 sm:p-14 text-white overflow-hidden shadow-2xl bg-gradient-to-br from-[#041a17] via-[#062c26] to-[#0d4b43] border border-teal-800/80">
-          
-          <!-- Background Ambient Halo Glow Aura -->
-          <div class="leadership-halo-aura"></div>
-          
-          <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            
-            <!-- Left Hero Text & Conversion CTAs -->
-            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-              
-              <!-- Eyebrow Tag Pill -->
-              <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-xs uppercase tracking-wider border border-emerald-500/40 backdrop-blur-md shadow-sm">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                <span>Founding Leadership & Clinical Governance</span>
-              </div>
+        <!-- Bold Editorial Hero Header -->
+        <div class="glass-card-dark rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden shadow-2xl">
+          <div class="absolute -right-10 -bottom-10 opacity-10 text-7xl sm:text-9xl font-extrabold font-heading text-white pointer-events-none select-none">
+            LEADERSHIP
+          </div>
 
-              <!-- Main Title -->
-              <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white font-heading leading-tight tracking-tight">
-                Hospital Founders & <br class="hidden sm:inline" />
-                <span class="bg-gradient-to-r from-emerald-300 via-teal-200 to-amber-300 bg-clip-text text-transparent">Medical Leadership</span>
-              </h1>
-
-              <!-- Subtitle -->
-              <p class="text-slate-200 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                Pioneering authentic, affectionate, and affordable super-specialty eye care across North Karnataka. Guided by 25 years of surgical excellence, Aravind Eye Hospital fellowship legacy, and award-winning community governance.
-              </p>
-
-              <!-- Social Proof Avatar Stack & Trust Line -->
-              <div class="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                <div class="flex -space-x-3 overflow-hidden">
-                  <img class="inline-block h-10 w-10 rounded-full ring-2 ring-emerald-400 object-cover" src="assets/official_logo.jpg" alt="Anugraha Logo" />
-                  <div class="inline-block h-10 w-10 rounded-full ring-2 ring-emerald-400 bg-teal-900 text-amber-300 font-extrabold text-xs flex items-center justify-center font-heading">DPL</div>
-                  <div class="inline-block h-10 w-10 rounded-full ring-2 ring-emerald-400 bg-emerald-950 text-emerald-300 font-extrabold text-xs flex items-center justify-center font-heading">DMP</div>
-                </div>
-                <div class="text-left text-xs font-semibold text-slate-300">
-                  <div class="font-extrabold text-white">Over 2,28,951 Surgeries Restored</div>
-                  <div class="text-emerald-300 text-[11px]">50,000+ Free Cataracts & 2,715 Community Camps</div>
-                </div>
-              </div>
-
-              <!-- CTA Buttons -->
-              <div class="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-4">
-                <a href="#about-us/leadership#dr-lingadalli" onclick="document.getElementById('dr-lingadalli')?.scrollIntoView({behavior:'smooth'})" class="btn-shine-glow px-6 py-3.5 rounded-2xl bg-emerald-500 text-slate-950 font-extrabold text-xs hover:bg-emerald-400 transition-all shadow-xl flex items-center gap-2 active:scale-95">
-                  <span>Meet Our Leadership</span>
-                  <span>✦</span>
-                </a>
-
-                <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="px-6 py-3.5 rounded-2xl bg-white/10 text-white font-bold text-xs hover:bg-white/20 transition-all border border-white/20 backdrop-blur-md flex items-center gap-2">
-                  <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                  <span>Book Consultation: ${brand.fallbackPhone}</span>
-                </a>
-              </div>
-
+          <div class="relative z-10 max-w-3xl space-y-4">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-xs uppercase tracking-wider border border-emerald-500/30">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              <span>Institutional Founders & Clinical Governance</span>
             </div>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white font-heading leading-tight">
+              Hospital Founders & Medical Leadership
+            </h1>
+            <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+              Guiding Anugraha Eye Hospital's surgical excellence, academic credentials, and 25-year philanthropic footprint across Karnataka and Maharashtra.
+            </p>
 
-            <!-- Right Hero Featured Leadership Portrait Card with Halo Glow -->
-            <div class="lg:col-span-5 relative flex justify-center">
-              <div class="relative w-full max-w-sm">
-                <!-- Circular Halo Ambient Backing -->
-                <div class="absolute inset-0 rounded-3xl bg-gradient-to-tr from-emerald-500/40 via-teal-400/30 to-amber-400/40 blur-xl"></div>
-                
-                <div class="relative rounded-3xl p-6 bg-slate-950/80 backdrop-blur-xl border border-teal-500/40 space-y-4 shadow-2xl text-center">
-                  <div class="relative w-44 h-44 sm:w-52 sm:h-52 mx-auto rounded-2xl overflow-hidden p-1.5 bg-gradient-to-tr from-emerald-400 via-teal-600 to-amber-300 shadow-xl">
-                    ${chairman.photo ? `
-                      <img src="${chairman.photo}" alt="${chairman.name}" class="w-full h-full rounded-xl object-cover" />
-                    ` : `
-                      <div class="w-full h-full rounded-xl bg-teal-950 text-amber-300 font-extrabold text-4xl flex items-center justify-center font-heading border border-emerald-400">
-                        DPL
-                      </div>
-                    `}
-                  </div>
-
-                  <div class="space-y-1">
-                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-extrabold text-[10px] uppercase tracking-wider border border-emerald-500/30">
-                      ${chairman.title}
-                    </span>
-                    <h3 class="text-xl font-extrabold text-white font-heading">${chairman.name}</h3>
-                    <div class="text-xs font-mono text-emerald-400 font-bold">${chairman.degrees}</div>
-                  </div>
-
-                  <!-- Credential Tags -->
-                  <div class="pt-2 border-t border-teal-900/80 flex flex-wrap items-center justify-center gap-2 text-[10px] font-bold">
-                    <span class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30">🏆 Rajyostava Awardee 2021</span>
-                    <span class="px-2.5 py-1 rounded-lg bg-teal-900 text-slate-200 border border-teal-700">Aravind Eye Hospital Fellow</span>
-                  </div>
-                </div>
-              </div>
+            <div class="pt-4 flex flex-wrap items-center gap-4 text-xs font-bold text-emerald-300">
+              <div class="px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">12 State & National Conferred Awards</div>
+              <div class="px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">Aravind Eye Hospital Alumnus</div>
+              <div class="px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">RGUHS & NBEMS Recognized</div>
             </div>
-
           </div>
         </div>
 
-        <!-- SECTION 2: TRUST & MILESTONES STAT BAR (Inspired by Row 2 of Reference Mockup) -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-          <div class="leadership-card-luxury p-6 rounded-3xl text-center space-y-1">
-            <div class="text-3xl sm:text-4xl font-extrabold text-teal-950 dark:text-emerald-400 font-heading">25+ Years</div>
-            <div class="text-xs font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Clinical Legacy</div>
-            <p class="text-[11px] text-slate-500 leading-tight hidden sm:block">Serving North Karnataka since 2001</p>
-          </div>
-
-          <div class="leadership-card-luxury p-6 rounded-3xl text-center space-y-1">
-            <div class="text-3xl sm:text-4xl font-extrabold text-teal-950 dark:text-emerald-400 font-heading">2.28 Lakh+</div>
-            <div class="text-xs font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Surgeries Performed</div>
-            <p class="text-[11px] text-slate-500 leading-tight hidden sm:block">High-volume surgical precision</p>
-          </div>
-
-          <div class="leadership-card-luxury p-6 rounded-3xl text-center space-y-1">
-            <div class="text-3xl sm:text-4xl font-extrabold text-teal-950 dark:text-emerald-400 font-heading">50,000+</div>
-            <div class="text-xs font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Free Cataracts</div>
-            <p class="text-[11px] text-slate-500 leading-tight hidden sm:block">Philanthropic community vision</p>
-          </div>
-
-          <div class="leadership-card-luxury p-6 rounded-3xl text-center space-y-1">
-            <div class="text-3xl sm:text-4xl font-extrabold text-teal-950 dark:text-emerald-400 font-heading">12 Conferred</div>
-            <div class="text-xs font-extrabold text-slate-600 dark:text-slate-300 uppercase tracking-wider">State Awards</div>
-            <p class="text-[11px] text-slate-500 leading-tight hidden sm:block">Rajyostava & State honors</p>
-          </div>
-        </div>
-
-        <!-- SECTION 3: 6 LEADERSHIP PILLARS / FEATURE CARDS (Inspired by Row 3 of Reference Mockup) -->
-        <div class="space-y-8">
-          <div class="text-center space-y-3 max-w-2xl mx-auto">
-            <span class="px-3.5 py-1.5 rounded-full badge-emerald font-semibold text-xs uppercase tracking-wider">Our Core Pillars</span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-teal-950 dark:text-white font-heading">Principles of Medical Leadership</h2>
-            <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm">Six foundational pillars driving clinical quality, surgical volume, and patient governance across all campuses.</p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            
-            <div class="leadership-card-luxury p-6 sm:p-8 rounded-3xl space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-teal-900 text-emerald-300 flex items-center justify-center font-bold text-xl shadow-md">👁️</div>
-              <h3 class="text-xl font-extrabold text-teal-950 dark:text-white font-heading">1. Founder Vision</h3>
-              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                Pioneering a high-volume, low-cost ophthalmic delivery model restoring sight to thousands without compromising super-specialty surgical quality.
-              </p>
-            </div>
-
-            <div class="leadership-card-luxury p-6 sm:p-8 rounded-3xl space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-emerald-900 text-emerald-300 flex items-center justify-center font-bold text-xl shadow-md">🔬</div>
-              <h3 class="text-xl font-extrabold text-teal-950 dark:text-white font-heading">2. Clinical Excellence</h3>
-              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                Micro-incision phacoemulsification suites, MyAlcon verified Contoura Vision LASIK, OCT macula scanners, and HEPA-filtered laminar OTs.
-              </p>
-            </div>
-
-            <div class="leadership-card-luxury p-6 sm:p-8 rounded-3xl space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-amber-900 text-amber-300 flex items-center justify-center font-bold text-xl shadow-md">❤️</div>
-              <h3 class="text-xl font-extrabold text-teal-950 dark:text-white font-heading">3. Patient-Centered Care</h3>
-              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                Authentic, affectionate, and affordable care embedded into every patient interaction across base hospitals and 8 rural vision centers.
-              </p>
-            </div>
-
-            <div class="leadership-card-luxury p-6 sm:p-8 rounded-3xl space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-teal-900 text-emerald-300 flex items-center justify-center font-bold text-xl shadow-md">👨‍⚕️</div>
-              <h3 class="text-xl font-extrabold text-teal-950 dark:text-white font-heading">4. Advanced Expertise</h3>
-              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                Decades of specialized consultant leadership spanning Cornea, Vitreo-Retina, Glaucoma, Pediatric Strabismus, and Oculoplasty.
-              </p>
-            </div>
-
-            <div class="leadership-card-luxury p-6 sm:p-8 rounded-3xl space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-emerald-900 text-emerald-300 flex items-center justify-center font-bold text-xl shadow-md">⚖️</div>
-              <h3 class="text-xl font-extrabold text-teal-950 dark:text-white font-heading">5. Ethical Governance</h3>
-              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                Transparent NABH quality accreditation standards, RGUHS university degree affiliations, and NBE post-graduate residency seats.
-              </p>
-            </div>
-
-            <div class="leadership-card-luxury p-6 sm:p-8 rounded-3xl space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-amber-900 text-amber-300 flex items-center justify-center font-bold text-xl shadow-md">🤝</div>
-              <h3 class="text-xl font-extrabold text-teal-950 dark:text-white font-heading">6. Community Outreach</h3>
-              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                2,715 completed mobile eye screening camps and district-wide school programs reaching over 10,000 children annually.
-              </p>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- SECTION 4: DETAILED FOUNDER PROFILES (Dr. Lingadalli & Dr. Malini) -->
-        <section id="dr-lingadalli" class="space-y-12 scroll-mt-28">
+        <!-- PROFILE 1: Dr. Prabhugouda B. Lingadalli (Chairman & Founder) -->
+        <section id="dr-lingadalli" class="space-y-12">
           
-          <!-- Chairman Profile Box -->
+          <!-- Split Screen Editorial Layout (Reference Mockup Style) -->
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            <!-- Left Portrait & Credentials Box -->
+            <!-- Left Portrait Card Box -->
             <div class="lg:col-span-5 glass-card-dark rounded-3xl p-8 text-white space-y-6 relative overflow-hidden shadow-2xl">
               <div class="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-emerald-500/20 blur-2xl pointer-events-none"></div>
 
               <div class="relative z-10 space-y-6 text-center lg:text-left">
                 
+                <!-- Portrait Image / Avatar Frame with Aperture Lens Focus Motif -->
                 <div class="aperture-focus-card relative w-48 h-48 sm:w-56 sm:h-56 mx-auto rounded-3xl p-2 bg-gradient-to-tr from-emerald-500 via-teal-700 to-amber-400 shadow-2xl overflow-hidden group">
                   <div class="aperture-focus-ring"></div>
                   ${chairman.photo ? `
@@ -1892,14 +1723,18 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
             </div>
 
-            <!-- Right Biography & Narrative Content -->
-            <div class="lg:col-span-7 leadership-card-luxury rounded-3xl p-8 sm:p-10 shadow-xl space-y-6 relative overflow-hidden">
-              
-              <blockquote class="relative z-10 text-lg sm:text-xl font-bold text-teal-950 dark:text-white font-heading leading-relaxed bg-teal-50/80 dark:bg-teal-950/60 p-6 rounded-2xl border-l-4 border-emerald-600">
+            <!-- Right Bio & Narrative Content -->
+            <div class="lg:col-span-7 glass-card rounded-3xl p-8 sm:p-10 border border-teal-100/80 shadow-xl space-y-6 relative overflow-hidden">
+              <div class="absolute -right-8 -top-8 text-8xl font-extrabold text-teal-900/5 font-heading pointer-events-none select-none">
+                FOUNDER
+              </div>
+
+              <!-- Signature Quote Callout (Reference Mockup Style) -->
+              <blockquote class="relative z-10 text-xl sm:text-2xl font-bold text-teal-950 font-heading leading-relaxed bg-teal-50/70 p-6 rounded-2xl border-l-4 border-teal-800">
                 "Our foundational commitment has always been simple — no person in North Karnataka should suffer from preventable blindness due to lack of affordable, super-specialty eye care."
               </blockquote>
 
-              <div class="relative z-10 prose max-w-none text-slate-700 dark:text-slate-200 space-y-4 leading-relaxed text-sm sm:text-base">
+              <div class="relative z-10 prose prose-teal max-w-none text-slate-700 space-y-4 leading-relaxed text-sm sm:text-base">
                 <p>
                   <strong>Dr. Prabhugouda B. Lingadalli</strong> (MBBS, MS, DNB, FAEH, MCHS) is the Founder and Chairman of Anugraha Eye Hospital across both the Vijayapura and Kalaburagi campuses. He pioneered a high-quality, high-volume, low-cost ophthalmic service delivery model restoring sight to thousands of underprivileged individuals across Karnataka and Maharashtra.
                 </p>
@@ -1912,18 +1747,18 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
 
               <!-- Quick Highlights Badges -->
-              <div class="relative z-10 pt-4 border-t border-teal-100 dark:border-teal-900 grid grid-cols-2 sm:grid-cols-3 gap-3">
-                <div class="p-3 rounded-xl bg-teal-50/60 dark:bg-teal-900/40 border border-teal-100 dark:border-teal-800 text-center">
-                  <div class="text-lg font-extrabold text-teal-950 dark:text-emerald-300 font-mono">25 Years</div>
-                  <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Surgical Legacy</div>
+              <div class="relative z-10 pt-4 border-t border-teal-100 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div class="p-3 rounded-xl bg-teal-50/60 border border-teal-100 text-center">
+                  <div class="text-lg font-extrabold text-teal-950 font-mono">25 Years</div>
+                  <div class="text-[10px] font-bold text-slate-500 uppercase">Surgical Legacy</div>
                 </div>
-                <div class="p-3 rounded-xl bg-teal-50/60 dark:bg-teal-900/40 border border-teal-100 dark:border-teal-800 text-center">
-                  <div class="text-lg font-extrabold text-teal-950 dark:text-emerald-300 font-mono">50,000+</div>
-                  <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Free Cataracts</div>
+                <div class="p-3 rounded-xl bg-teal-50/60 border border-teal-100 text-center">
+                  <div class="text-lg font-extrabold text-teal-950 font-mono">50,000+</div>
+                  <div class="text-[10px] font-bold text-slate-500 uppercase">Free Cataracts</div>
                 </div>
-                <div class="p-3 rounded-xl bg-teal-50/60 dark:bg-teal-900/40 border border-teal-100 dark:border-teal-800 text-center col-span-2 sm:col-span-1">
-                  <div class="text-lg font-extrabold text-teal-950 dark:text-emerald-300 font-mono">10 Lakh</div>
-                  <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Total Reach</div>
+                <div class="p-3 rounded-xl bg-teal-50/60 border border-teal-100 text-center col-span-2 sm:col-span-1">
+                  <div class="text-lg font-extrabold text-teal-950 font-mono">10 Lakh</div>
+                  <div class="text-[10px] font-bold text-slate-500 uppercase">Total Reach</div>
                 </div>
               </div>
 
@@ -1931,7 +1766,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           </div>
 
-          <!-- HONORS & AWARDS GRID -->
+          <!-- HONORS & AWARDS SECTION (Styled like filmography / honors list in mockup) -->
           <div class="glass-card-dark rounded-3xl p-8 sm:p-10 text-white space-y-8 shadow-2xl relative overflow-hidden">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-slate-800">
               <div>
@@ -1963,30 +1798,34 @@ document.addEventListener("DOMContentLoaded", () => {
         </section>
 
         <!-- PROFILE 2: Dr. Malini P L (Medical Director) -->
-        <section id="dr-malini" class="space-y-8 scroll-mt-28">
+        <section id="dr-malini" class="space-y-8">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
             <!-- Left Bio & Narrative Content -->
-            <div class="lg:col-span-7 leadership-card-luxury rounded-3xl p-8 sm:p-10 shadow-xl space-y-6 relative overflow-hidden">
+            <div class="lg:col-span-7 glass-card rounded-3xl p-8 sm:p-10 border border-teal-100/80 shadow-xl space-y-6 relative overflow-hidden">
+              <div class="absolute -right-8 -top-8 text-8xl font-extrabold text-teal-900/5 font-heading pointer-events-none select-none">
+                DIRECTOR
+              </div>
+
               <div>
-                <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300 font-extrabold text-xs border border-emerald-200 uppercase tracking-wider">
+                <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 font-extrabold text-xs border border-emerald-200 uppercase tracking-wider">
                   ${medicalDirector.title}
                 </span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-teal-950 dark:text-white font-heading mt-2 leading-tight">
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-teal-950 font-heading mt-2 leading-tight">
                   ${medicalDirector.name}
                 </h2>
-                <div class="text-sm font-bold text-emerald-800 dark:text-emerald-400 mt-1 font-mono">
+                <div class="text-sm font-bold text-emerald-800 mt-1 font-mono">
                   Credentials: ${medicalDirector.degrees}
                 </div>
               </div>
 
               <!-- Quote Block -->
-              <blockquote class="text-slate-700 dark:text-slate-200 text-base italic leading-relaxed bg-teal-50/80 dark:bg-teal-950/60 p-5 rounded-2xl border-l-4 border-emerald-700">
+              <blockquote class="text-slate-700 text-base italic leading-relaxed bg-teal-50/70 p-5 rounded-2xl border-l-4 border-emerald-700">
                 "Clinical governance, cutting-edge surgical technology, and compassionate care define our two-decade operational promise to North Karnataka."
               </blockquote>
 
-              <!-- Full Bio Text -->
-              <div class="prose max-w-none text-slate-700 dark:text-slate-200 space-y-4 leading-relaxed text-sm sm:text-base">
+              <!-- Full Bio Text (PROJECT-CONTEXT.md exact narrative) -->
+              <div class="prose prose-teal max-w-none text-slate-700 space-y-4 leading-relaxed text-sm sm:text-base">
                 <p>
                   <strong>Dr. Malini P L</strong> (MBBS, DO, FGO) is the Medical Director of Anugraha Eye Hospital. A committed and compassionate clinical leader with nearly two decades of administrative and surgical governance experience, she has played an instrumental role driving organizational development and elevating the hospital to national super-specialty standards.
                 </p>
@@ -1995,8 +1834,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 </p>
               </div>
 
-              <div class="pt-4 border-t border-teal-100 dark:border-teal-900 flex items-center justify-between">
-                <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="text-xs font-bold text-teal-900 dark:text-emerald-300 hover:underline flex items-center gap-2">
+              <div class="pt-4 border-t border-teal-100 flex items-center justify-between">
+                <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="text-xs font-bold text-teal-900 hover:text-emerald-700 flex items-center gap-2">
                   <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                   <span>Contact Medical Director's Office</span>
                 </a>
@@ -2008,6 +1847,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-teal-500/20 blur-2xl pointer-events-none"></div>
 
               <div class="relative z-10 space-y-6 text-center">
+                <!-- Portrait Image / Avatar Frame with Aperture Lens Focus Motif -->
                 <div class="aperture-focus-card relative w-48 h-48 sm:w-56 sm:h-56 mx-auto rounded-3xl p-2 bg-gradient-to-tr from-emerald-400 via-teal-600 to-emerald-300 shadow-2xl overflow-hidden group">
                   <div class="aperture-focus-ring"></div>
                   ${medicalDirector.photo ? `
@@ -2040,102 +1880,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
           </div>
         </section>
-
-        <!-- SECTION 5: VERIFIED PATIENT REVIEWS & CLINICAL TESTIMONIALS (Inspired by Row 4 of Reference Mockup) -->
-        <div class="space-y-8">
-          <div class="text-center space-y-3 max-w-2xl mx-auto">
-            <span class="px-3.5 py-1.5 rounded-full badge-teal font-semibold text-xs uppercase tracking-wider">Verified Clinical Outcomes</span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-teal-950 dark:text-white font-heading">What Our Patients Say</h2>
-            <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm">Verified clinical testimonials from cataract, LASIK, and community camp patients across Karnataka.</p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            <div class="leadership-card-luxury p-6 sm:p-8 rounded-3xl space-y-4 flex flex-col justify-between">
-              <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                  <div class="text-amber-500 font-bold text-sm">★★★★★</div>
-                  <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-900 dark:text-emerald-300 font-bold text-[10px]">Verified Cataract Surgery</span>
-                </div>
-                <blockquote class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed italic">
-                  "Dr. Lingadalli operated on both my eyes for cataract. The phaco procedure was completely painless and my vision was fully restored the very next morning. Exceptional care!"
-                </blockquote>
-              </div>
-              <div class="pt-4 border-t border-teal-100 dark:border-teal-900 flex items-center justify-between text-xs">
-                <div>
-                  <div class="font-extrabold text-teal-950 dark:text-white">Basavaraj Patil</div>
-                  <div class="text-[11px] text-slate-500">Vijayapura Patient</div>
-                </div>
-                <span class="text-[10px] font-mono text-emerald-700 dark:text-emerald-400 font-bold">20/20 Vision Restored</span>
-              </div>
-            </div>
-
-            <div class="leadership-card-luxury p-6 sm:p-8 rounded-3xl space-y-4 flex flex-col justify-between">
-              <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                  <div class="text-amber-500 font-bold text-sm">★★★★★</div>
-                  <span class="px-2.5 py-0.5 rounded-full bg-teal-100 dark:bg-teal-900/50 text-teal-900 dark:text-emerald-300 font-bold text-[10px]">Verified LASIK Patient</span>
-                </div>
-                <blockquote class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed italic">
-                  "I underwent Contoura Vision laser treatment under Dr. Malini's guidance. I was free from my heavy spectacles in less than 24 hours. World-class technology right in Vijayapura."
-                </blockquote>
-              </div>
-              <div class="pt-4 border-t border-teal-100 dark:border-teal-900 flex items-center justify-between text-xs">
-                <div>
-                  <div class="font-extrabold text-teal-950 dark:text-white">Pooja Kulkarni</div>
-                  <div class="text-[11px] text-slate-500">Kalaburagi Candidate</div>
-                </div>
-                <span class="text-[10px] font-mono text-emerald-700 dark:text-emerald-400 font-bold">Freedom From Glasses</span>
-              </div>
-            </div>
-
-            <div class="leadership-card-luxury p-6 sm:p-8 rounded-3xl space-y-4 flex flex-col justify-between">
-              <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                  <div class="text-amber-500 font-bold text-sm">★★★★★</div>
-                  <span class="px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-900 dark:text-amber-300 font-bold text-[10px]">Verified Outreach Camp</span>
-                </div>
-                <blockquote class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed italic">
-                  "Anugraha hospital organized a free eye camp in our village near Talikoti. My mother's cataract surgery and lens implantation were done completely free of charge."
-                </blockquote>
-              </div>
-              <div class="pt-4 border-t border-teal-100 dark:border-teal-900 flex items-center justify-between text-xs">
-                <div>
-                  <div class="font-extrabold text-teal-950 dark:text-white">Sharanappa Biradar</div>
-                  <div class="text-[11px] text-slate-500">Talikoti Outreach Camp</div>
-                </div>
-                <span class="text-[10px] font-mono text-emerald-700 dark:text-emerald-400 font-bold">100% Free Surgical Care</span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- SECTION 6: LUXURY BOTTOM CONVERSION CTA BANNER (Inspired by Row 5 of Reference Mockup) -->
-        <div class="relative rounded-3xl p-8 sm:p-12 text-white overflow-hidden shadow-2xl bg-gradient-to-r from-teal-950 via-[#062c26] to-emerald-950 border border-teal-800">
-          <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-            <div class="space-y-2 max-w-xl">
-              <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-xs uppercase tracking-wider border border-emerald-500/30">
-                Super-Specialty Ophthalmic Care
-              </span>
-              <h3 class="text-2xl sm:text-3xl font-extrabold text-white font-heading">
-                Experience World-Class Eye Care Built on 25 Years of Trust.
-              </h3>
-              <p class="text-slate-300 text-xs sm:text-sm">
-                Consult with our founding doctors at Vijayapura or Kalaburagi base hospitals today.
-              </p>
-            </div>
-
-            <div class="flex flex-col sm:flex-row items-center gap-3 shrink-0">
-              <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="btn-shine-glow w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-emerald-500 text-slate-950 font-extrabold text-xs hover:bg-emerald-400 transition-all shadow-xl active:scale-95 text-center">
-                Book an Appointment &rarr;
-              </a>
-              <a href="#/contact" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white/10 text-white font-bold text-xs hover:bg-white/20 transition-all border border-white/20 text-center">
-                View Hospital Directions
-              </a>
-            </div>
-          </div>
-        </div>
 
       </div>
     `;
