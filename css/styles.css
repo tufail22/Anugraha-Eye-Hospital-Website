@@ -1111,55 +1111,10 @@ textarea:focus-visible,
   }
 
   /* Mobile Drawer Z-Index Overlay Safeguard */
-}
-
-/* Luxury Leadership Halo Aura & Bento Card Styling (Inspired by Reference Mockup) */
-.leadership-halo-aura {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.35) 0%, rgba(13, 75, 67, 0.2) 50%, transparent 75%);
-  filter: blur(40px);
-  pointer-events-none: none;
-  z-index: 0;
-}
-
-@media (min-width: 640px) {
-  .leadership-halo-aura {
-    width: 440px;
-    height: 440px;
+  .fixed.inset-0.z-50 {
+    z-index: 9999 !important;
   }
 }
-
-.leadership-card-luxury {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(13, 75, 67, 0.12);
-  box-shadow: 0 20px 40px -15px rgba(6, 44, 38, 0.07);
-  transition: transform 0.4s var(--ease-spring), box-shadow 0.4s var(--ease-spring), border-color 0.4s var(--ease-spring);
-}
-
-.leadership-card-luxury:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 30px 60px -20px rgba(6, 44, 38, 0.15), 0 0 20px rgba(16, 185, 129, 0.15);
-  border-color: rgba(16, 185, 129, 0.35);
-}
-
-html.dark .leadership-card-luxury {
-  background: rgba(6, 36, 31, 0.9);
-  border-color: rgba(16, 185, 129, 0.25);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
-}
-
-html.dark .leadership-card-luxury:hover {
-  border-color: rgba(52, 211, 153, 0.5);
-  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.8), 0 0 25px rgba(16, 185, 129, 0.25);
-}
-
 
 
 
