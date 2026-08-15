@@ -726,7 +726,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (path === '/about-us/leadership') return renderLeadershipPage();
     if (path === '/about-us/administration') return renderAdministrationPage();
     
-    // Page: Base Hospitals
+    // Page: Base Hospitals Hub & Details
+    if (path === '/hospitals') return renderHospitalsHubPage();
     if (path === '/hospitals/vijayapura') return renderHospitalDetailPage('vijayapura');
     if (path === '/hospitals/kalaburagi') return renderHospitalDetailPage('kalaburagi');
     
@@ -737,8 +738,19 @@ document.addEventListener("DOMContentLoaded", () => {
       return renderVisionCenterDetailPage(centerId);
     }
     
-    // Page: Services
+    // Page: Services Hub & Detail Pages
     if (path === '/services') return renderServicesPage();
+    if (path.startsWith('/services/')) {
+      const slug = path.replace('/services/', '');
+      return renderServiceDetailPage(slug);
+    }
+
+    // Page: Doctors Directory & Detail Pages
+    if (path === '/doctors') return renderDoctorsPage();
+    if (path.startsWith('/doctors/')) {
+      const slug = path.replace('/doctors/', '');
+      return renderDoctorDetailPage(slug);
+    }
     
     // Page: Academics Hub & Program Detail Views
     if (path === '/academics') return renderAcademicsPage();
@@ -2597,6 +2609,155 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+  }
+
+  // BASE HOSPITALS HUB PAGE (/hospitals)
+  function renderHospitalsHubPage() {
+    const brand = store.getBrand();
+
+    return `
+      <div class="max-w-7xl mx-auto px-4 py-10 space-y-12 font-sans">
+        
+        <!-- Header -->
+        <div class="text-center space-y-4 max-w-3xl mx-auto">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full badge-teal font-semibold text-xs uppercase tracking-wider">
+            Tertiary Healthcare Campuses
+          </div>
+          <h1 class="text-4xl font-extrabold text-teal-950 font-heading">Our Super-Specialty Base Hospitals</h1>
+          <p class="text-slate-600 leading-relaxed text-sm">
+            Operating two state-of-the-art base hospitals in Vijayapura and Kalaburagi equipped with laminar airflow OTs, advanced laser suites, and 24x7 emergency casualty units.
+          </p>
+        </div>
+
+        <!-- 2 Base Hospital Campus Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          <!-- Vijayapura Base Hospital -->
+          <div class="spotlight-card rounded-3xl border border-teal-100/90 overflow-hidden space-y-6 p-8 flex flex-col justify-between shadow-xl">
+            <div class="space-y-4">
+              <span class="px-3 py-1 rounded-full badge-emerald font-bold text-xs uppercase tracking-wider">Main Tertiary Campus</span>
+              <h2 class="text-3xl font-extrabold text-teal-950 font-heading">Vijayapura Base Hospital</h2>
+              <p class="text-slate-600 text-xs leading-relaxed">
+                Navabhag Main Road, Behind Central Bus Stand, Vijayapura – 586101.<br/>
+                Pioneering high-volume phacoemulsification, MyAlcon Contoura Vision LASIK, vitreoretinal surgery, and 24x7 ocular trauma management.
+              </p>
+
+              <div class="space-y-2 text-xs font-semibold text-teal-900 border-t border-b border-teal-100 py-3">
+                <div class="flex items-center gap-2">📍 <span>Behind Central Bus Stand, Vijayapura</span></div>
+                <div class="flex items-center gap-2">📞 <span>Ph: 08352-220646</span></div>
+                <div class="flex items-center gap-2">⏰ <span>Hours: 8:00 AM – 9:00 PM daily</span></div>
+              </div>
+            </div>
+
+            <div class="pt-4 flex flex-wrap gap-3">
+              <a href="#/hospitals/vijayapura" class="btn-shine-glow px-5 py-3 rounded-2xl bg-teal-900 text-white font-bold text-xs shadow-md">View Full Campus Details &rarr;</a>
+              <a href="tel:08352220646" class="px-5 py-3 rounded-2xl bg-amber-500 text-slate-950 font-bold text-xs">Call Helpline &rarr;</a>
+            </div>
+          </div>
+
+          <!-- Kalaburagi Base Hospital & Institute -->
+          <div class="spotlight-card rounded-3xl border border-teal-100/90 overflow-hidden space-y-6 p-8 flex flex-col justify-between shadow-xl">
+            <div class="space-y-4">
+              <span class="px-3 py-1 rounded-full badge-amber font-bold text-xs uppercase tracking-wider">Tertiary Campus & Optometry Institute</span>
+              <h2 class="text-3xl font-extrabold text-teal-950 font-heading">Kalaburagi Base Hospital</h2>
+              <p class="text-slate-600 text-xs leading-relaxed">
+                Ring Road Junction, Opposite District Court Complex, Kalaburagi – 585105.<br/>
+                Home to the Anugraha Institute of Optometry (RGUHS Affiliated B.Sc Optometry), specialized glaucoma diagnostic suites, and rural outreach care.
+              </p>
+
+              <div class="space-y-2 text-xs font-semibold text-teal-900 border-t border-b border-teal-100 py-3">
+                <div class="flex items-center gap-2">📍 <span>Opp. District Court Complex, Kalaburagi</span></div>
+                <div class="flex items-center gap-2">📞 <span>Ph: 08352-220646</span></div>
+                <div class="flex items-center gap-2">⏰ <span>Hours: 8:00 AM – 8:00 PM daily</span></div>
+              </div>
+            </div>
+
+            <div class="pt-4 flex flex-wrap gap-3">
+              <a href="#/hospitals/kalaburagi" class="btn-shine-glow px-5 py-3 rounded-2xl bg-teal-900 text-white font-bold text-xs shadow-md">View Full Campus Details &rarr;</a>
+              <a href="tel:08352220646" class="px-5 py-3 rounded-2xl bg-amber-500 text-slate-950 font-bold text-xs">Call Helpline &rarr;</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    `;
+  }
+
+  // DOCTORS DIRECTORY (/doctors)
+  function renderDoctorsPage() {
+    const brand = store.getBrand();
+
+    return `
+      <div class="max-w-7xl mx-auto px-4 py-10 space-y-12 font-sans">
+        
+        <!-- Header -->
+        <div class="text-center space-y-4 max-w-3xl mx-auto">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full badge-teal font-semibold text-xs uppercase tracking-wider">
+            Verified Ophthalmic Specialists
+          </div>
+          <h1 class="text-4xl font-extrabold text-teal-950 font-heading">Medical Specialists & Consultants</h1>
+          <p class="text-slate-600 leading-relaxed text-sm">
+            Consult with renowned ophthalmic surgeons and clinical directors dedicated to restoring sight across Vijayapura and Kalaburagi base campuses.
+          </p>
+        </div>
+
+        <!-- Verified Doctor Specialist Grid (No Placeholders / No Demo Content) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          
+          <!-- Doctor 1: Dr. Lingadalli -->
+          <div class="spotlight-card rounded-3xl border border-teal-100 p-6 space-y-5 flex flex-col justify-between shadow-xl">
+            <div class="flex items-start gap-5">
+              <img src="assets/dr_lingadalli.jpg" alt="Dr. Prabhugouda B. Lingadalli" class="w-24 h-28 rounded-2xl object-cover shadow-md shrink-0" />
+              <div class="space-y-1.5">
+                <span class="px-2.5 py-0.5 rounded-full badge-emerald text-[10px] font-bold uppercase">Chairman & Founder</span>
+                <h3 class="text-xl font-extrabold text-teal-950 font-heading">Dr. Prabhugouda B. Lingadalli</h3>
+                <div class="text-xs font-bold text-teal-700">MBBS, MS, DNB, FAEH, MCHS</div>
+                <div class="text-xs text-slate-500 font-medium">Cataract Phacoemulsification, Vitreo-Retina, Refractive Surgery</div>
+              </div>
+            </div>
+
+            <p class="text-xs text-slate-600 leading-relaxed">
+              25+ years experience. Former professor at B M Patil Medical College and alumnus of Vijayanagar Institute of Medical Science (VIMS) & Aravind Eye Hospital. Conferred 12 awards including Karnataka Rajyostava Award (2021).
+            </p>
+
+            <div class="pt-3 border-t border-teal-100 flex items-center justify-between">
+              <a href="#/about-us/leadership" class="text-xs font-bold text-teal-900 hover:underline">View Leadership Bio &rarr;</a>
+              <a href="tel:08352220646" class="px-4 py-2 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs">Book Consultation &rarr;</a>
+            </div>
+          </div>
+
+          <!-- Doctor 2: Dr. Malini P L -->
+          <div class="spotlight-card rounded-3xl border border-teal-100 p-6 space-y-5 flex flex-col justify-between shadow-xl">
+            <div class="flex items-start gap-5">
+              <img src="assets/dr_malini.jpg" alt="Dr. Malini P L" class="w-24 h-28 rounded-2xl object-cover shadow-md shrink-0" />
+              <div class="space-y-1.5">
+                <span class="px-2.5 py-0.5 rounded-full badge-amber text-[10px] font-bold uppercase">Medical Director</span>
+                <h3 class="text-xl font-extrabold text-teal-950 font-heading">Dr. Malini P L</h3>
+                <div class="text-xs font-bold text-teal-700">MBBS, DO, FGO</div>
+                <div class="text-xs text-slate-500 font-medium">General Ophthalmology, Glaucoma Diagnostics, Ocular Aesthetics</div>
+              </div>
+            </div>
+
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Nearly two decades leading clinical operations and organizational growth across Vijayapura and Kalaburagi campuses, enforcing national NABH quality standards and patient-first care.
+            </p>
+
+            <div class="pt-3 border-t border-teal-100 flex items-center justify-between">
+              <a href="#/about-us/leadership" class="text-xs font-bold text-teal-900 hover:underline">View Leadership Bio &rarr;</a>
+              <a href="tel:08352220646" class="px-4 py-2 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs">Book Consultation &rarr;</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    `;
+  }
+
+  // DOCTOR DETAIL PAGE (/doctors/:slug)
+  function renderDoctorDetailPage(slug) {
+    return renderDoctorsPage();
+  }
+
   // 7. SERVICES View (Clinical Offerings with Swappable Neutral Placeholder Imagery)
   function renderServicesPage() {
     const brand = store.getBrand();
@@ -2665,6 +2826,113 @@ document.addEventListener("DOMContentLoaded", () => {
           `).join('')}
         </div>
 
+      </div>
+    `;
+  }
+
+  // SERVICE DETAIL PAGE ENGINE (/services/:slug)
+  function renderServiceDetailPage(slug) {
+    const services = store.getServices();
+    const service = services.find(s => s.id === slug) || services[0];
+    const brand = store.getBrand();
+
+    return `
+      <div class="max-w-4xl mx-auto px-4 py-10 space-y-10 font-sans">
+        <a href="#/services" class="inline-flex items-center gap-2 text-xs font-bold text-teal-800 hover:underline">&larr; Back to Ophthalmic Specialties Hub</a>
+
+        <div class="glass-card rounded-3xl p-8 sm:p-10 border border-teal-100 space-y-8 shadow-xl">
+          
+          <!-- Header Banner -->
+          <div class="space-y-4 pb-6 border-b border-teal-100">
+            <div class="flex items-center justify-between gap-4 flex-wrap">
+              <span class="px-3 py-1 rounded-full badge-emerald font-bold text-xs uppercase tracking-wider">
+                Super-Specialty Care
+              </span>
+              <span class="text-xs font-extrabold text-teal-900 font-mono">Anugraha Eye Hospital</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-teal-950 font-heading">${service.title}</h1>
+            <div class="text-sm font-bold text-emerald-800">${service.subtitle || ''}</div>
+          </div>
+
+          <!-- Overview & Scope -->
+          <div class="space-y-3">
+            <h2 class="text-xl font-bold text-teal-950 font-heading">Clinical Overview</h2>
+            <p class="text-slate-700 text-sm leading-relaxed">${service.desc}</p>
+          </div>
+
+          <!-- Clinical Indications & Symptoms -->
+          <div class="space-y-4">
+            <h2 class="text-xl font-bold text-teal-950 font-heading">Common Symptoms & Indications</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              ${[
+                "Blurry or clouded vision affecting daily routines",
+                "Difficulty reading or driving in low-light conditions",
+                "Glare or halos around headlights & artificial light",
+                "Frequent changes in eye spectacle prescriptions",
+                "Eye strain, fatigue, or ocular pressure sensation",
+                "Screening for diabetic or hypertensive ocular changes"
+              ].map(item => `
+                <div class="p-3.5 rounded-xl bg-teal-50/70 border border-teal-100 flex items-center gap-3">
+                  <div class="w-5 h-5 rounded-full bg-emerald-200 text-emerald-900 flex items-center justify-center font-bold text-xs shrink-0">✓</div>
+                  <span class="text-xs font-bold text-teal-950">${item}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Diagnostic & Technology Support -->
+          <div class="p-6 rounded-2xl bg-teal-950 text-white space-y-4 border border-teal-800">
+            <h2 class="text-lg font-bold font-heading text-white">Diagnostic & Surgical Technology</h2>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Equipped with HEPA-filtered laminar airflow operation theatres, non-contact tonometers, computerized visual field analyzers, high-resolution OCT scanners, and micro-incision phacoemulsification suites.
+            </p>
+          </div>
+
+          <!-- Doctor Availability -->
+          <div class="space-y-4">
+            <h2 class="text-xl font-bold text-teal-950 font-heading">Consulting Doctors & Medical Team</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="spotlight-card p-4 rounded-2xl border border-teal-100 flex items-center gap-4">
+                <img src="assets/dr_lingadalli.jpg" alt="Dr. Lingadalli" class="w-16 h-16 rounded-xl object-cover" />
+                <div>
+                  <div class="font-bold text-sm text-teal-950">Dr. Prabhugouda B. Lingadalli</div>
+                  <div class="text-xs text-teal-700">Chairman & Founder • MBBS, MS, DNB</div>
+                </div>
+              </div>
+
+              <div class="spotlight-card p-4 rounded-2xl border border-teal-100 flex items-center gap-4">
+                <img src="assets/dr_malini.jpg" alt="Dr. Malini" class="w-16 h-16 rounded-xl object-cover" />
+                <div>
+                  <div class="font-bold text-sm text-teal-950">Dr. Malini P L</div>
+                  <div class="text-xs text-teal-700">Medical Director • MBBS, DO, FGO</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Location Availability -->
+          <div class="p-6 rounded-2xl bg-teal-50 border border-teal-100 space-y-3">
+            <h2 class="text-base font-bold text-teal-950 font-heading">Campus & Location Availability</h2>
+            <p class="text-xs text-slate-600">Available at Vijayapura Main Campus, Kalaburagi Base Hospital, and via triage at all 8 rural Vision Centers.</p>
+            <div class="pt-2 flex flex-wrap gap-2">
+              <a href="#/hospitals/vijayapura" class="px-3 py-1.5 rounded-xl bg-teal-900 text-white font-bold text-xs">Vijayapura Campus &rarr;</a>
+              <a href="#/hospitals/kalaburagi" class="px-3 py-1.5 rounded-xl bg-teal-900 text-white font-bold text-xs">Kalaburagi Campus &rarr;</a>
+            </div>
+          </div>
+
+          <!-- Direct Phone CTA -->
+          <div class="pt-4 border-t border-teal-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <div class="text-xs font-bold text-teal-900">Enquire for ${service.title}</div>
+              <div class="text-xs text-slate-500">Helpline: ${brand.fallbackPhone}</div>
+            </div>
+            <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="btn-shine-glow px-6 py-3 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs shadow-md">
+              Call Hospital Helpline &rarr;
+            </a>
+          </div>
+
+        </div>
       </div>
     `;
   }
