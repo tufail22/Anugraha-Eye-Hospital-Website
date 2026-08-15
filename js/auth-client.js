@@ -36,6 +36,14 @@
       return !!(s && s.authenticated);
     }
 
+    getCurrentUser() {
+      const s = this.getCurrentSession();
+      if (s && s.authenticated) {
+        return { username: s.username, role: s.role || "SuperAdmin" };
+      }
+      return null;
+    }
+
     getCurrentSession() {
       if (!this.session) {
         this.session = this.loadSession();
@@ -97,5 +105,7 @@
     }
   }
 
-  window.authClient = new AuthClient();
+  const client = new AuthClient();
+  window.authClient = client;
+  window.authService = client;
 })();
