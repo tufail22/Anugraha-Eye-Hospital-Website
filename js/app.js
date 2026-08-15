@@ -3791,7 +3791,7 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // 11. ADMIN LOGIN PAGE (Premium Healthcare SaaS CMS Login View)
+  // 11. ADMIN LOGIN PAGE (Clean, Medical, Minimal Split-Screen Login View)
   function renderAdminLoginPage() {
     // If already authenticated, redirect to /admin/dashboard immediately
     if (window.authClient && window.authClient.isAuthenticated()) {
@@ -3805,75 +3805,117 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return `
       <div class="min-h-[85vh] flex items-center justify-center px-4 py-12 font-sans">
-        <div class="w-full max-w-md space-y-8">
+        <div class="w-full max-w-5xl rounded-3xl overflow-hidden border border-teal-900/30 shadow-2xl bg-[#062c26] text-white grid grid-cols-1 lg:grid-cols-12 min-h-[550px]">
           
-          <!-- SaaS Card Wrapper -->
-          <div class="glass-card-dark p-8 md:p-10 rounded-3xl border border-teal-800/80 shadow-2xl space-y-6 text-white relative overflow-hidden">
-            
-            <div class="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none"></div>
-            
-            <!-- Hospital Logo & Eyebrow -->
-            <div class="text-center space-y-3">
-              <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center p-1 shadow-lg mx-auto overflow-hidden">
-                <img src="assets/official_logo.jpg" alt="Official Hospital Logo" class="w-full h-full object-contain" />
+          <!-- LEFT SIDE (Desktop Branding Column - 5 cols) -->
+          <div class="hidden lg:flex lg:col-span-5 relative bg-gradient-to-br from-[#041a17] via-[#062c26] to-[#0d4b43] p-10 flex-col justify-between border-r border-teal-800/60 overflow-hidden">
+            <!-- Subtle Radial Aura -->
+            <div class="absolute -top-20 -left-20 w-64 h-64 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-teal-400/10 blur-3xl pointer-events-none"></div>
+
+            <!-- Top Hospital Brand -->
+            <div class="relative z-10 space-y-4">
+              <div class="w-16 h-16 rounded-2xl bg-white p-1 shadow-2xl overflow-hidden">
+                <img src="assets/official_logo.jpg" alt="Anugraha Eye Hospital Logo" class="w-full h-full object-contain" />
               </div>
               <div>
-                <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-[11px] uppercase tracking-wider font-mono">CMS Admin Portal</span>
-                <h1 class="text-2xl font-extrabold font-heading text-white mt-2">Sign in to Admin Dashboard</h1>
-                <p class="text-xs text-slate-300 mt-1">Marketing & Informational Website Content Management System</p>
+                <h2 class="text-2xl font-extrabold font-heading text-white tracking-tight">Anugraha Eye Hospital</h2>
+                <p class="text-xs font-mono text-emerald-400 font-semibold tracking-wider uppercase mt-1">Management Portal</p>
               </div>
             </div>
 
-            <!-- Error Banner Container -->
-            <div id="admin-login-error" class="hidden p-3.5 rounded-2xl bg-red-950/80 border border-red-500/60 text-red-300 text-xs font-bold text-center">
-              Invalid username or password.
-            </div>
-
-            <!-- Login Form -->
-            <form onsubmit="window.handleAdminLoginSubmit(event)" class="space-y-4">
-              <div class="space-y-1.5">
-                <label for="admin-username" class="block text-xs font-bold text-slate-200">Username</label>
-                <div class="relative">
-                  <input type="text" id="admin-username" placeholder="web@admin" required autocomplete="username" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 text-white placeholder-slate-500 text-sm border border-slate-700/80 focus:ring-2 focus:ring-emerald-400 focus:border-transparent outline-none transition-all" />
-                </div>
-              </div>
-
-              <div class="space-y-1.5">
-                <label for="admin-password" class="block text-xs font-bold text-slate-200">Password</label>
-                <div class="relative">
-                  <input type="password" id="admin-password" placeholder="••••••••" required autocomplete="current-password" class="w-full px-4 py-3 pr-12 rounded-xl bg-slate-900/90 text-white placeholder-slate-500 text-sm border border-slate-700/80 focus:ring-2 focus:ring-emerald-400 focus:border-transparent outline-none transition-all" />
-                  <button type="button" onclick="window.toggleAdminPasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 p-1 text-xs font-bold font-mono">
-                    Show
-                  </button>
-                </div>
-              </div>
-
-              <div class="flex items-center justify-between pt-1 text-xs">
-                <label class="flex items-center gap-2 cursor-pointer text-slate-300 font-medium">
-                  <input type="checkbox" id="admin-remember" checked class="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-400 bg-slate-900 border-slate-700" />
-                  <span>Remember this browser</span>
-                </label>
-                <button type="button" onclick="window.toggleForgotPasswordNotice()" class="text-xs font-bold text-emerald-400 hover:underline">
-                  Forgot password?
-                </button>
-              </div>
-
-              <!-- Forgot Password Inline Notice -->
-              <div id="forgot-password-notice" class="hidden p-3 rounded-xl bg-teal-900/80 border border-teal-700 text-xs text-amber-300 text-center font-bold">
-                Contact your website administrator
-              </div>
-
-              <!-- Submit Button -->
-              <button type="submit" id="admin-login-submit" class="w-full py-3.5 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-sm hover:bg-emerald-400 transition-all shadow-lg flex items-center justify-center gap-2">
-                <span id="admin-login-btn-text">Sign In</span>
-              </button>
-            </form>
-
-            <!-- Prototype Notice Footer -->
-            <div class="pt-4 border-t border-slate-800/80 text-center">
-              <p class="text-[10px] text-slate-400 leading-relaxed font-mono">
-                /* Frontend Prototype Notice: Local session persistence enabled. Credentials: web@admin / Admin@2001 */
+            <!-- Middle Value Statement -->
+            <div class="relative z-10 space-y-3">
+              <div class="text-xs font-bold text-amber-300 uppercase tracking-widest font-mono">Authentic &bull; Affectionate &bull; Affordable</div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Central Content Management Console for Vijayapura and Kalaburagi base campuses, regional Vision Centers, and academic programs.
               </p>
+            </div>
+
+            <!-- Bottom Back to Website Link -->
+            <div class="relative z-10 pt-4 border-t border-teal-800/80">
+              <a href="#/" class="inline-flex items-center gap-2 text-xs font-bold text-emerald-300 hover:text-white transition-colors group font-mono">
+                <span>&larr; Back to Public Website</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- RIGHT SIDE (Desktop Form / Mobile Single-Column Panel - 7 cols) -->
+          <div class="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-between bg-[#062c26]/95 relative">
+            
+            <!-- Mobile Brand Header (Visible on Mobile/Tablet only) -->
+            <div class="lg:hidden flex items-center justify-between pb-6 border-b border-teal-800/60 mb-6">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-white p-0.5 shadow-md overflow-hidden shrink-0">
+                  <img src="assets/official_logo.jpg" alt="Logo" class="w-full h-full object-contain" />
+                </div>
+                <div>
+                  <div class="text-sm font-extrabold font-heading text-white">Anugraha Eye Hospital</div>
+                  <div class="text-[10px] text-emerald-400 font-mono">CMS Admin Console</div>
+                </div>
+              </div>
+              <a href="#/" class="text-xs font-bold text-emerald-300 hover:underline font-mono">&larr; Public Site</a>
+            </div>
+
+            <div class="space-y-6">
+              <div>
+                <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-[11px] uppercase tracking-wider font-mono border border-emerald-500/30">Secure Administrator Portal</span>
+                <h1 class="text-2xl sm:text-3xl font-extrabold font-heading text-white mt-2 tracking-tight">Sign in to Admin Dashboard</h1>
+                <p class="text-xs text-slate-300 mt-1">Authorized personnel authentication console</p>
+              </div>
+
+              <!-- Error Banner Container -->
+              <div id="admin-login-error" class="hidden p-4 rounded-2xl bg-red-950/90 border border-red-500/60 text-red-200 text-xs font-bold flex items-center gap-2 shadow-lg">
+                <svg class="w-4 h-4 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Invalid username or password. Please check your credentials and try again.</span>
+              </div>
+
+              <!-- Login Form -->
+              <form onsubmit="window.handleAdminLoginSubmit(event)" class="space-y-5">
+                
+                <!-- Username Field -->
+                <div class="space-y-1.5">
+                  <label for="admin-username" class="block text-xs font-bold text-slate-200">Username</label>
+                  <div class="relative">
+                    <input type="text" id="admin-username" placeholder="Username" required autocomplete="username" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 text-white placeholder-slate-500 text-sm border border-slate-700/80 focus:ring-2 focus:ring-emerald-400 focus:border-transparent outline-none transition-all" />
+                  </div>
+                </div>
+
+                <!-- Password Field with Show/Hide Toggle -->
+                <div class="space-y-1.5">
+                  <label for="admin-password" class="block text-xs font-bold text-slate-200">Password</label>
+                  <div class="relative">
+                    <input type="password" id="admin-password" placeholder="••••••••" required autocomplete="current-password" class="w-full px-4 py-3 pr-16 rounded-xl bg-slate-900/90 text-white placeholder-slate-500 text-sm border border-slate-700/80 focus:ring-2 focus:ring-emerald-400 focus:border-transparent outline-none transition-all" />
+                    <button type="button" onclick="window.toggleAdminPasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-bold font-mono transition-colors">
+                      Show
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Remember Me Checkbox -->
+                <div class="flex items-center justify-between pt-1 text-xs">
+                  <label class="flex items-center gap-2 cursor-pointer text-slate-300 font-medium">
+                    <input type="checkbox" id="admin-remember" checked class="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-400 bg-slate-900 border-slate-700" />
+                    <span>Remember this session</span>
+                  </label>
+                </div>
+
+                <!-- Sign In Button -->
+                <button type="submit" id="admin-login-submit" class="btn-shine-glow w-full py-3.5 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-sm hover:bg-emerald-400 transition-all shadow-xl flex items-center justify-center gap-2 active:scale-98">
+                  <span id="admin-login-btn-text">Sign In to Dashboard</span>
+                  <span id="admin-login-spinner" class="hidden">
+                    <svg class="animate-spin h-4 w-4 text-slate-950" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  </span>
+                </button>
+              </form>
+            </div>
+
+            <!-- Footer Navigation Link (Desktop & Mobile) -->
+            <div class="pt-6 border-t border-teal-800/60 mt-6 flex items-center justify-between text-xs text-slate-400 font-mono">
+              <a href="#/" class="text-emerald-400 hover:underline flex items-center gap-1">
+                <span>&larr; Back to Public Website</span>
+              </a>
+              <span class="text-slate-500 text-[10px]">Anugraha CMS v2.0</span>
             </div>
 
           </div>
