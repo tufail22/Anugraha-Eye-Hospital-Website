@@ -1075,11 +1075,46 @@ textarea:focus-visible,
     opacity: 1 !important;
   }
 
-  .admin-error-shake,
-  .admin-checkmark-path {
-    animation: none !important;
-    stroke-dashoffset: 0 !important;
+}
+
+/* Mobile Interface UX Hardening (320px, 375px, 390px, 414px, 768px Viewports) */
+@media (max-width: 768px) {
+  /* Minimum 44px Touch Target Size Enforcement */
+  button, 
+  a, 
+  input[type="button"], 
+  input[type="submit"], 
+  .nav-text-link,
+  .btn-shine-glow {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Prevent text clipping and horizontal scrolling */
+  h1, h2, h3, h4, p, span, div {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* Responsive Table Container Horizontal Scroll Safeguard */
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Mobile Bottom Bar Elevation & Padding Offset */
+  body {
+    padding-bottom: 72px;
+  }
+
+  /* Mobile Drawer Z-Index Overlay Safeguard */
+  .fixed.inset-0.z-50 {
+    z-index: 9999 !important;
   }
 }
+
 
 

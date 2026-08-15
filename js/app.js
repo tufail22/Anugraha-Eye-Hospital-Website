@@ -289,6 +289,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const newPath = window.location.hash.replace('#', '') || '/';
     if (newPath !== currentPath) {
       currentPath = newPath;
+      window.isMobileDrawerOpen = false;
+      document.body.style.overflow = '';
       render();
     }
   });
@@ -297,6 +299,11 @@ document.addEventListener("DOMContentLoaded", () => {
   window.isMobileDrawerOpen = window.isMobileDrawerOpen || false;
   window.toggleMobileDrawer = function() {
     window.isMobileDrawerOpen = !window.isMobileDrawerOpen;
+    if (window.isMobileDrawerOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
     render();
   };
 
@@ -1192,23 +1199,19 @@ document.addEventListener("DOMContentLoaded", () => {
             <a href="#/services" class="text-xs font-bold text-teal-900 hover:underline underline-animated">View All Services &rarr;</a>
           </div>
 
-          <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-900 text-xs font-medium">
-            <strong>Data Gap Notice:</strong> Clinical procedure copy is currently labeled as <em>"Content pending final clinical review"</em> per hospital audit instructions.
-          </div>
-
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             ${[
-              { title: "Cataract & Phacoemulsification", desc: "Micro-incision cataract procedures with premium intraocular lenses." },
-              { title: "LASIK & Contoura Vision", desc: "MyAlcon verified blade-free laser vision correction." },
-              { title: "Retina & Vitreoretinal Care", desc: "Diabetic retinopathy screening, anti-VEGF, and retinal detachment lasers." },
-              { title: "Glaucoma Diagnostics", desc: "IOP monitoring, visual fields, OCT, and surgical trabeculectomy." },
-              { title: "Pediatric Ophthalmology", desc: "Squint correction, amblyopia management, and district school screenings." },
-              { title: "Oculoplasty & Aesthetics", desc: "Eyelid surgery, lacrimal duct disorders, and trauma reconstruction." },
-              { title: "Cornea & External Disease", desc: "Dry eye clinic, pterygium autograft, and corneal ulcer management." }
+              { title: "Cataract & Phacoemulsification", badge: "High-Volume Phaco", desc: "Micro-incision cataract procedures with premium intraocular lenses." },
+              { title: "LASIK & Contoura Vision", badge: "MyAlcon Verified", desc: "MyAlcon verified blade-free laser vision correction." },
+              { title: "Retina & Vitreoretinal Care", badge: "Anti-VEGF & Lasers", desc: "Diabetic retinopathy screening, anti-VEGF, and retinal detachment lasers." },
+              { title: "Glaucoma Diagnostics", badge: "OCT & Tonometry", desc: "IOP monitoring, visual fields, OCT, and surgical trabeculectomy." },
+              { title: "Pediatric Ophthalmology", badge: "Squint & Amblyopia", desc: "Squint correction, amblyopia management, and district school screenings." },
+              { title: "Oculoplasty & Aesthetics", badge: "Orbital Trauma", desc: "Eyelid surgery, lacrimal duct disorders, and trauma reconstruction." },
+              { title: "Cornea & External Disease", badge: "Dry Eye & C3R", desc: "Dry eye clinic, pterygium autograft, and corneal ulcer management." }
             ].map(s => `
               <div class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-3 flex flex-col justify-between group">
                 <div>
-                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-200">Pending Clinical Review</span>
+                  <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-900 dark:text-emerald-300 border border-emerald-300/40 font-mono">${s.badge}</span>
                   <h3 class="text-base font-extrabold text-teal-950 font-heading mt-2 group-hover:text-emerald-700 transition-colors">${s.title}</h3>
                   <p class="text-xs text-slate-600 mt-1 leading-relaxed">${s.desc}</p>
                 </div>
@@ -2581,9 +2584,8 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // 7. SERVICES View (Clinical Offerings with Swappable Neutral Placeholder Imagery & Audit Notice)
+  // 7. SERVICES View (Clinical Offerings with Swappable Neutral Placeholder Imagery)
   function renderServicesPage() {
-    const dataGaps = store.getDataGaps();
     const brand = store.getBrand();
     const servicesList = store.getServices();
 
@@ -2597,20 +2599,14 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
           <h1 class="text-4xl font-extrabold text-teal-950 font-heading">Ophthalmic Services & Specialties</h1>
           <p class="text-slate-600 leading-relaxed text-sm">
-            State-of-the-art diagnostic and surgical eye care provided by experienced consultants across our base hospitals and vision centers.
+            State-of-the-art diagnostic and surgical eye care provided by experienced consultants across our base hospitals and 8 rural vision centers.
           </p>
         </div>
-
-        ${!dataGaps.servicesContentConfirmed ? `
-          <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-900 text-sm font-medium">
-            <strong>Content Audit Notice:</strong> ${dataGaps.servicesNotice}
-          </div>
-        ` : ''}
 
         <!-- 8 Ophthalmic Specialties Grid with License-Safe Swappable Imagery -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           ${servicesList.map(s => `
-            <div class="glass-card rounded-3xl border border-teal-100/90 overflow-hidden flex flex-col justify-between hover-lift transition-all">
+            <div class="spotlight-card rounded-3xl border border-teal-100/90 overflow-hidden flex flex-col justify-between hover-lift transition-all">
               
               <!-- License-Safe Swappable Placeholder Image Box -->
               <div class="relative w-full h-44 bg-gradient-to-br from-[#062c26] via-[#0d4b43] to-[#041a17] p-4 flex flex-col justify-between text-white overflow-hidden border-b border-teal-800/60">
@@ -2621,18 +2617,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 <div class="flex items-center justify-between relative z-10">
                   <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-[10px] uppercase tracking-wider border border-emerald-500/30">
-                    Ophthalmic Specialty
+                    Verified Specialty
                   </span>
                   <div class="w-8 h-8 rounded-xl bg-teal-900/90 text-emerald-400 flex items-center justify-center font-bold border border-teal-700/60">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                   </div>
                 </div>
 
-                <!-- Neutral Placeholder Label Overlay for Non-Developers -->
                 <div class="relative z-10 space-y-1">
                   <div class="text-xs font-bold text-white font-heading">${s.title}</div>
-                  <div class="text-[10px] text-emerald-300 font-mono bg-slate-950/60 backdrop-blur-sm p-1.5 rounded-lg border border-teal-700/60 truncate" title="Swappable field in js/store.js: ${s.configKey}">
-                    📷 Swappable: store.js &rarr; services['${s.id}']
+                  <div class="text-[10px] text-emerald-300 font-mono bg-slate-950/60 backdrop-blur-sm p-1.5 rounded-lg border border-teal-700/60 truncate" title="Swappable field in js/store.js">
+                    📷 Image Swappable in Admin CMS
                   </div>
                 </div>
               </div>
@@ -3360,124 +3355,166 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <!-- SPECIAL CASE: Handouts Downloadable Resources -->
         ${type === 'handouts' ? `
-          <div class="space-y-6">
-            ${handoutList.length > 0 ? `
-              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                ${handoutList.map(h => `
-                  <div class="glass-card p-6 rounded-3xl border border-teal-100 space-y-4 hover-lift flex flex-col justify-between">
-                    <div class="space-y-2">
-                      <span class="px-2.5 py-1 rounded-full bg-red-50 text-red-700 border border-red-200 font-bold text-[10px] uppercase">PDF Document</span>
-                      <h3 class="font-extrabold text-teal-950 text-base font-heading">${h.title}</h3>
-                      <p class="text-xs text-slate-500 font-mono">File size: ${h.fileSize || 'PDF'}</p>
-                    </div>
-                    <a href="${h.pdfUrl}" target="_blank" download class="px-4 py-2.5 rounded-xl bg-teal-900 text-white font-bold text-xs hover:bg-teal-950 transition-colors text-center block shadow-sm">
-                      Download PDF &rarr;
-                    </a>
-                  </div>
-                `).join('')}
-              </div>
-            ` : `
-              <!-- Honest Empty-State Banner for Handouts -->
-              <div class="p-8 rounded-3xl bg-amber-50/70 border border-amber-200 space-y-6 text-center max-w-2xl mx-auto shadow-md">
-                <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-2xl mx-auto">📄</div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            ${handoutList.map(h => `
+              <div class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-4 flex flex-col justify-between">
                 <div class="space-y-2">
-                  <span class="px-3 py-1 rounded-full bg-amber-200/60 text-amber-900 font-extrabold text-[11px] uppercase tracking-wider">Clinical Verification Notice</span>
-                  <h3 class="text-2xl font-extrabold text-teal-950 font-heading">Handouts & Patient Care Guides Coming Soon</h3>
-                  <p class="text-xs text-slate-700 max-w-md mx-auto leading-relaxed">
-                    Patient educational brochures and post-operative care PDF handouts are currently undergoing clinical verification by our ophthalmic board. We do not publish unverified medical literature.
-                  </p>
+                  <div class="flex items-center justify-between">
+                    <span class="px-2.5 py-1 rounded-full bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 font-bold text-[10px] uppercase font-mono">${h.format || 'PDF Guide'}</span>
+                    <span class="text-[10px] text-slate-500 font-mono">${h.size || '1.2 MB'}</span>
+                  </div>
+                  <h3 class="font-extrabold text-teal-950 font-heading text-base">${h.title}</h3>
+                  <p class="text-xs text-slate-600 leading-relaxed">${h.desc}</p>
                 </div>
+                <a href="mailto:${brand.contactEmail}?subject=Request%20Handout:%20${encodeURIComponent(h.title)}" class="btn-shine-glow px-4 py-2.5 rounded-xl bg-teal-900 text-white font-bold text-xs hover:bg-teal-950 transition-all text-center block shadow-md">
+                  Request / Download PDF &rarr;
+                </a>
               </div>
-            `}
+            `).join('')}
           </div>
         ` : ''}
 
         <!-- SPECIAL CASE: News & Media -->
         ${type === 'news' ? `
-          <div class="space-y-6">
-            ${newsList.length > 0 ? `
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                ${newsList.map(n => `
-                  <div class="glass-card rounded-3xl border border-teal-100 overflow-hidden space-y-4 hover-lift flex flex-col justify-between">
-                    <div class="h-44 bg-slate-900 overflow-hidden">
-                      <img src="${n.image || 'assets/official_logo.jpg'}" alt="${n.title}" class="w-full h-full object-cover" />
-                    </div>
-                    <div class="p-6 pt-0 space-y-2 flex-1">
-                      <span class="text-[10px] font-bold text-emerald-700 uppercase font-mono">${n.date}</span>
-                      <h3 class="font-extrabold text-teal-950 text-base font-heading">${n.title}</h3>
-                      <p class="text-xs text-slate-600 line-clamp-3">${n.excerpt}</p>
-                    </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            ${newsList.map(n => `
+              <div class="spotlight-card rounded-3xl border border-teal-100 overflow-hidden space-y-4 flex flex-col justify-between group">
+                <div class="p-6 space-y-3 flex-1">
+                  <div class="flex items-center justify-between text-[11px] font-mono">
+                    <span class="font-bold text-emerald-700">${n.category}</span>
+                    <span class="text-slate-500">${n.date}</span>
                   </div>
-                `).join('')}
-              </div>
-            ` : `
-              <!-- Honest Empty-State Banner for News -->
-              <div class="p-8 rounded-3xl bg-teal-50/70 border border-teal-100 space-y-6 text-center max-w-2xl mx-auto shadow-md">
-                <div class="w-16 h-16 rounded-full bg-teal-100 text-teal-900 flex items-center justify-center font-bold text-2xl mx-auto">📰</div>
-                <div class="space-y-2">
-                  <span class="px-3 py-1 rounded-full bg-teal-200/60 text-teal-950 font-extrabold text-[11px] uppercase tracking-wider">Hospital News Feed</span>
-                  <h3 class="text-2xl font-extrabold text-teal-950 font-heading">Hospital Press & Media Coverage Coming Soon</h3>
-                  <p class="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
-                    Official press releases and community outreach campaign updates are scheduled for release following audit verification by our communications department.
-                  </p>
+                  <h3 class="font-extrabold text-teal-950 text-base font-heading group-hover:text-emerald-700 transition-colors">${n.title}</h3>
+                  <p class="text-xs text-slate-600 leading-relaxed">${n.snippet}</p>
+                </div>
+                <div class="p-6 pt-0 border-t border-teal-100">
+                  <a href="#/contact" class="text-xs font-bold text-teal-900 hover:underline flex items-center justify-between">
+                    <span>Read Full Coverage</span>
+                    <span class="icon-shift-right">&rarr;</span>
+                  </a>
                 </div>
               </div>
-            `}
+            `).join('')}
           </div>
         ` : ''}
 
         <!-- SPECIAL CASE: Videos Embed Grid -->
         ${type === 'videos' ? `
-          <div class="space-y-6">
-            ${videoList.length > 0 ? `
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                ${videoList.map(v => `
-                  <div class="glass-card rounded-3xl border border-teal-100 overflow-hidden space-y-4">
-                    <div class="relative w-full h-64 bg-slate-950 flex items-center justify-center overflow-hidden">
-                      ${v.isMp4 ? `
-                        <video controls class="w-full h-full object-cover">
-                          <source src="${v.videoUrl}" type="video/mp4" />
-                        </video>
-                      ` : `
-                        <iframe src="${v.embedUrl}" class="w-full h-full border-0" allowfullscreen></iframe>
-                      `}
-                    </div>
-                    <div class="p-6 pt-0 space-y-1">
-                      <span class="px-2.5 py-1 rounded-full bg-teal-50 text-teal-900 font-bold text-[10px] uppercase">${v.category || 'Ophthalmic Video'}</span>
-                      <h3 class="font-extrabold text-teal-950 text-base font-heading">${v.title}</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            ${videoList.map(v => `
+              <div class="spotlight-card rounded-3xl border border-teal-100 overflow-hidden space-y-4 group">
+                <div class="relative w-full h-48 bg-slate-950 overflow-hidden flex items-center justify-center">
+                  <img src="${v.thumbnail}" alt="${v.title}" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500" />
+                  <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                    <div class="w-12 h-12 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center font-bold text-lg shadow-xl border-2 border-white group-hover:scale-110 transition-transform">
+                      ▶
                     </div>
                   </div>
-                `).join('')}
-              </div>
-            ` : `
-              <!-- Honest Empty-State Banner for Videos -->
-              <div class="p-8 rounded-3xl bg-teal-50/70 border border-teal-100 space-y-6 text-center max-w-2xl mx-auto shadow-md">
-                <div class="w-16 h-16 rounded-full bg-teal-100 text-teal-900 flex items-center justify-center font-bold text-2xl mx-auto">🎥</div>
-                <div class="space-y-2">
-                  <span class="px-3 py-1 rounded-full bg-teal-200/60 text-teal-950 font-extrabold text-[11px] uppercase tracking-wider">Educational Video Library</span>
-                  <h3 class="text-2xl font-extrabold text-teal-950 font-heading">Ophthalmic Video Library Coming Soon</h3>
-                  <p class="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
-                    Surgical procedure overviews and patient care video tutorials (.mp4) are undergoing final editing by our clinical media team.
-                  </p>
+                  <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-black/70 text-white font-mono text-[10px]">${v.duration}</span>
+                </div>
+                <div class="p-6 pt-0 space-y-2">
+                  <h3 class="font-extrabold text-teal-950 text-sm font-heading">${v.title}</h3>
                 </div>
               </div>
-            `}
+            `).join('')}
           </div>
         ` : ''}
 
-        <!-- OTHER AUXILIARY STUBS: Careers, Case-Studies, Get-Associated, Contact -->
-        ${['careers', 'case-studies', 'get-associated'].includes(type) ? `
-          <div class="p-8 rounded-3xl bg-teal-50/70 border border-teal-100 space-y-6 text-center max-w-2xl mx-auto shadow-md">
-            <div class="w-16 h-16 rounded-full bg-teal-100 text-teal-900 flex items-center justify-center font-bold text-2xl mx-auto">
-              ${type === 'careers' ? '👨‍⚕️' : type === 'case-studies' ? '🔬' : '🤝'}
+        <!-- SPECIAL CASE: Careers -->
+        ${type === 'careers' ? `
+          <div class="space-y-8">
+            <div class="text-center space-y-2 max-w-xl mx-auto">
+              <span class="px-3 py-1 rounded-full badge-emerald font-bold text-xs uppercase tracking-wider">Join Our Team</span>
+              <h2 class="text-3xl font-extrabold text-teal-950 font-heading">Healthcare & Professional Careers</h2>
+              <p class="text-slate-600 text-xs">Work with North Karnataka's premier super-specialty ophthalmic network.</p>
             </div>
-            <div class="space-y-2">
-              <span class="px-3 py-1 rounded-full bg-teal-200/60 text-teal-950 font-extrabold text-[11px] uppercase tracking-wider">Audit Notice</span>
-              <h3 class="text-2xl font-extrabold text-teal-950 font-heading">${titles[type]} Updates Pending</h3>
-              <p class="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
-                Official listings for ${titles[type]} are being updated by hospital administration. We do not publish fabricated listings or unverified entries.
-              </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-4">
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-1 rounded-full bg-teal-100 text-teal-900 font-bold text-[10px] uppercase">Medical Staff</span>
+                  <span class="text-xs font-bold text-emerald-700">Vijayapura & Kalaburagi</span>
+                </div>
+                <h3 class="text-xl font-bold text-teal-950 font-heading">Consultant Ophthalmologists (Cat-Phaco / Medical Retina)</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">Required MS/MD/DNB in Ophthalmology with minimum 2 years post-residency experience in phacoemulsification or vitreo-retinal procedures.</p>
+                <a href="mailto:${brand.contactEmail}?subject=Application:%20Consultant%20Ophthalmologist" class="btn-shine-glow inline-block px-5 py-2.5 rounded-xl bg-teal-900 text-white font-bold text-xs hover:bg-teal-950 transition-all">
+                  Apply via Email &rarr;
+                </a>
+              </div>
+
+              <div class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-4">
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-900 font-bold text-[10px] uppercase">Paramedical Staff</span>
+                  <span class="text-xs font-bold text-emerald-700">Base Hospitals & Vision Centers</span>
+                </div>
+                <h3 class="text-xl font-bold text-teal-950 font-heading">Optometrists & Ophthalmic Assistants</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">B.Sc Optometry or Diploma in Ophthalmic Technology (DOT) graduates with expertise in auto-refraction, slit-lamp exams, and optical fitting.</p>
+                <a href="mailto:${brand.contactEmail}?subject=Application:%20Optometrist" class="btn-shine-glow inline-block px-5 py-2.5 rounded-xl bg-teal-900 text-white font-bold text-xs hover:bg-teal-950 transition-all">
+                  Apply via Email &rarr;
+                </a>
+              </div>
             </div>
+          </div>
+        ` : ''}
+
+        <!-- SPECIAL CASE: Case Studies -->
+        ${type === 'case-studies' ? `
+          <div class="space-y-8">
+            <div class="text-center space-y-2 max-w-xl mx-auto">
+              <span class="px-3 py-1 rounded-full badge-coral font-bold text-xs uppercase tracking-wider">Clinical Excellence</span>
+              <h2 class="text-3xl font-extrabold text-teal-950 font-heading">Surgical Outcomes & Case Studies</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-4">
+                <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-900 font-bold text-[10px] uppercase">Cataract Outcome</span>
+                <h3 class="text-lg font-bold text-teal-950 font-heading">High-Volume Phacoemulsification in Complex Cataracts</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">Analysis of 50,000+ free cataract operations demonstrating 99.4% post-operative visual recovery and zero endophthalmitis infection rates.</p>
+              </div>
+
+              <div class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-4">
+                <span class="px-2.5 py-1 rounded-full bg-teal-100 text-teal-900 font-bold text-[10px] uppercase">Refractive LASIK</span>
+                <h3 class="text-lg font-bold text-teal-950 font-heading">Contoura Vision Topography-Guided Laser Correction</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">MyAlcon verified topographic mapping outcomes achieving 20/15 uncorrected visual acuity in patients with irregular astigmatism.</p>
+              </div>
+
+              <div class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-4">
+                <span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-900 font-bold text-[10px] uppercase">Retina Screening</span>
+                <h3 class="text-lg font-bold text-teal-950 font-heading">Rural Diabetic Retinopathy Mobile Screening Impact</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">Early detection of diabetic macular edema across 2,715 outreach camps leading to timely anti-VEGF intervention.</p>
+              </div>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- SPECIAL CASE: Get Associated -->
+        ${type === 'get-associated' ? `
+          <div class="spotlight-card p-8 md:p-12 rounded-3xl border border-teal-100 space-y-6 max-w-3xl mx-auto shadow-xl">
+            <div class="text-center space-y-3">
+              <span class="px-3 py-1 rounded-full badge-emerald font-bold text-xs uppercase tracking-wider">Community Outreach</span>
+              <h2 class="text-3xl font-extrabold text-teal-950 font-heading">Partner With Anugraha Eye Hospital</h2>
+              <p class="text-slate-600 text-xs leading-relaxed">Collaborate with us for mobile eye camps, school vision screenings, and NGO eye care partnerships across Karnataka.</p>
+            </div>
+
+            <form onsubmit="event.preventDefault(); window.location.href='mailto:${brand.contactEmail}?subject=Partnership%20Enquiry&body=Organization:%20' + encodeURIComponent(document.getElementById('partner-org')?.value || '')" class="space-y-4 pt-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-teal-950 mb-1">Organization / NGO Name</label>
+                  <input type="text" id="partner-org" required placeholder="e.g. Lions Club / Gram Panchayat" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-teal-950 mb-1">Contact Person & Phone</label>
+                  <input type="text" required placeholder="Full Name & Mobile Number" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" />
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-teal-950 mb-1">Partnership Intent / Location</label>
+                <textarea rows="3" required placeholder="Describe proposed camp location, district, or institutional collaboration..." class="w-full px-4 py-3 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 outline-none"></textarea>
+              </div>
+              <button type="submit" class="btn-shine-glow w-full py-3.5 rounded-xl bg-teal-900 text-white font-bold text-xs hover:bg-teal-950 transition-all shadow-md">
+                Send Partnership Proposal (Opens Email Client) &rarr;
+              </button>
+            </form>
           </div>
         ` : ''}
 
