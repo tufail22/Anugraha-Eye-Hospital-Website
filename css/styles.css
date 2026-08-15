@@ -33,11 +33,48 @@ body {
   background-color: var(--bg-soft-medical);
   color: var(--text-deep);
   overflow-x: hidden;
+  font-size: 16px;
+  line-height: 1.6;
   transition: background-color 0.4s var(--ease-spring), color 0.4s var(--ease-spring);
 }
 
 h1, h2, h3, h4, h5, h6, .font-heading {
   font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.015em;
+}
+
+/* Healthcare Type Hierarchy Tokens */
+.text-hero-headline {
+  font-size: clamp(32px, 5vw, 64px);
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+.text-section-heading {
+  font-size: clamp(28px, 3.8vw, 48px);
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.text-body-editorial {
+  font-size: clamp(16px, 1.1vw, 18px);
+  line-height: 1.65;
+  font-weight: 400;
+}
+
+.text-supporting-editorial {
+  font-size: clamp(14px, 1vw, 16px);
+  line-height: 1.55;
+  font-weight: 500;
+}
+
+/* Standardized Site Container (Max-Width: 1280px with 16px Mobile / 32px Tablet / 48px Desktop Padding) */
+.site-container-max {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(16px, 3.5vw, 48px);
+  padding-right: clamp(16px, 3.5vw, 48px);
 }
 
 /* Complete Dark Mode System Overrides (.dark class on html) */
