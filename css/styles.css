@@ -1068,72 +1068,14 @@ textarea:focus-visible,
   .mega-menu-dropdown,
   .mega-menu-dropdown a,
   .mobile-bottom-bar,
-}
+  .admin-toast,
+  .admin-drag-item {
+    transform: none !important;
+    transition: opacity 0.15s ease !important;
+    opacity: 1 !important;
+  }
 
-/* LUXURY HEALTHCARE LEADERSHIP STYLE SYSTEM (Inspired by Reference Layout) */
-.leadership-hero-banner {
-  background: linear-gradient(135deg, #041d19 0%, #083832 50%, #031411 100%);
-  border: 1px solid rgba(52, 211, 153, 0.25);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
-
-html.dark .leadership-hero-banner {
-  background: linear-gradient(135deg, #020d0b 0%, #062621 50%, #010807 100%) !important;
-  border-color: rgba(52, 211, 153, 0.3) !important;
-}
-
-.pillar-card-luxury {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(13, 75, 67, 0.12);
-  border-radius: 1.5rem;
-  padding: 1.5rem;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 10px 25px -5px rgba(13, 75, 67, 0.05);
-}
-
-.pillar-card-luxury:hover {
-  transform: translateY(-5px);
-  border-color: rgba(16, 185, 129, 0.4);
-  box-shadow: 0 20px 40px -10px rgba(13, 75, 67, 0.15), 0 0 15px rgba(52, 211, 153, 0.15);
-}
-
-html.dark .pillar-card-luxury {
-  background: rgba(6, 36, 31, 0.9) !important;
-  border-color: rgba(16, 185, 129, 0.2) !important;
-  color: #f1f7f6 !important;
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5) !important;
-}
-
-html.dark .pillar-card-luxury:hover {
-  border-color: rgba(52, 211, 153, 0.45) !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 20px rgba(16, 185, 129, 0.25) !important;
-}
-
-.ticket-cta-banner {
-  background: linear-gradient(135deg, #09332d 0%, #0d4b43 100%);
-  border: 1px solid rgba(232, 141, 56, 0.3);
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4);
-}
-
-.review-card-luxury {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(13, 75, 67, 0.12);
-  border-radius: 1.5rem;
-  padding: 1.5rem;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.review-card-luxury:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 30px -10px rgba(13, 75, 67, 0.12);
-}
-
-html.dark .review-card-luxury {
-  background: rgba(8, 44, 38, 0.9) !important;
-  border-color: rgba(16, 185, 129, 0.25) !important;
-  color: #f1f7f6 !important;
-}
-
 
 /* Mobile Interface UX Hardening (320px, 375px, 390px, 414px, 768px Viewports) */
 @media (max-width: 768px) {
@@ -1169,10 +1111,55 @@ html.dark .review-card-luxury {
   }
 
   /* Mobile Drawer Z-Index Overlay Safeguard */
-  .fixed.inset-0.z-50 {
-    z-index: 9999 !important;
+}
+
+/* Luxury Leadership Halo Aura & Bento Card Styling (Inspired by Reference Mockup) */
+.leadership-halo-aura {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.35) 0%, rgba(13, 75, 67, 0.2) 50%, transparent 75%);
+  filter: blur(40px);
+  pointer-events-none: none;
+  z-index: 0;
+}
+
+@media (min-width: 640px) {
+  .leadership-halo-aura {
+    width: 440px;
+    height: 440px;
   }
 }
+
+.leadership-card-luxury {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(13, 75, 67, 0.12);
+  box-shadow: 0 20px 40px -15px rgba(6, 44, 38, 0.07);
+  transition: transform 0.4s var(--ease-spring), box-shadow 0.4s var(--ease-spring), border-color 0.4s var(--ease-spring);
+}
+
+.leadership-card-luxury:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px -20px rgba(6, 44, 38, 0.15), 0 0 20px rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+html.dark .leadership-card-luxury {
+  background: rgba(6, 36, 31, 0.9);
+  border-color: rgba(16, 185, 129, 0.25);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+}
+
+html.dark .leadership-card-luxury:hover {
+  border-color: rgba(52, 211, 153, 0.5);
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.8), 0 0 25px rgba(16, 185, 129, 0.25);
+}
+
 
 
 
