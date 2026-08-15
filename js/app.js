@@ -747,7 +747,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return renderAcademicDetailPage(slug);
     }
     
-    // Page: Empanelments & Resources
+    // Page: Empanelments & Resources Hub
+    if (path === '/patient-resources') return renderPatientResourcesHub();
     if (path === '/patient-resources/empanelments-and-insurance' || path === '/empanelments') return renderEmpanelmentsPage();
     if (path === '/patient-resources/handouts') return renderAuxiliaryPage('handouts');
     
@@ -2915,6 +2916,111 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
         </div>
+      </div>
+    `;
+  }
+
+  // PATIENT RESOURCES HUB View (/patient-resources)
+  function renderPatientResourcesHub() {
+    const brand = store.getBrand();
+
+    return `
+      <div class="max-w-7xl mx-auto px-4 py-10 space-y-12 font-sans">
+        
+        <!-- Header -->
+        <div class="text-center space-y-4 max-w-3xl mx-auto">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full badge-teal font-semibold text-xs uppercase tracking-wider">
+            Patient Support & Information
+          </div>
+          <h1 class="text-4xl font-extrabold text-teal-950 font-heading">Patient Resources & Services Guide</h1>
+          <p class="text-slate-600 leading-relaxed text-sm">
+            Everything you need for your visit to Anugraha Eye Hospital — cashless insurance empanelments, pre-visit instructions, downloadable care manuals, and hospital emergency contact details.
+          </p>
+        </div>
+
+        <!-- 4 Key Resource Gateway Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <a href="#/patient-resources/empanelments-and-insurance" class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-3 hover-lift block group">
+            <div class="w-12 h-12 rounded-2xl bg-teal-900 text-emerald-400 flex items-center justify-center font-bold text-xl shadow-md">
+              💳
+            </div>
+            <h3 class="text-lg font-extrabold text-teal-950 font-heading group-hover:text-emerald-700 transition-colors">Insurance & Schemes</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">29+ empaneled government health schemes (Ayushman Bharat, ABY, JSS) & cashless private TPA partners.</p>
+            <span class="text-xs font-bold text-teal-900 group-hover:underline inline-block pt-2">View 29+ Empanelments &rarr;</span>
+          </a>
+
+          <a href="#/patient-resources/handouts" class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-3 hover-lift block group">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-800 text-emerald-300 flex items-center justify-center font-bold text-xl shadow-md">
+              📄
+            </div>
+            <h3 class="text-lg font-extrabold text-teal-950 font-heading group-hover:text-emerald-700 transition-colors">Care Handouts & PDFs</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">Post-cataract recovery guides, diabetic retinopathy manuals, and pediatric amblyopia patching schedules.</p>
+            <span class="text-xs font-bold text-teal-900 group-hover:underline inline-block pt-2">Download PDF Manuals &rarr;</span>
+          </a>
+
+          <a href="#/vision-centers" class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-3 hover-lift block group">
+            <div class="w-12 h-12 rounded-2xl bg-amber-700 text-amber-200 flex items-center justify-center font-bold text-xl shadow-md">
+              📍
+            </div>
+            <h3 class="text-lg font-extrabold text-teal-950 font-heading group-hover:text-emerald-700 transition-colors">8 Rural Vision Centers</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">Locate primary vision centers in Talikoti, Muddebihal, Sindagi, Indi, B.Bagewadi, Chadachan, Nalatwad, and Tikota.</p>
+            <span class="text-xs font-bold text-teal-900 group-hover:underline inline-block pt-2">Find Nearest Vision Center &rarr;</span>
+          </a>
+
+          <a href="#/contact" class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-3 hover-lift block group">
+            <div class="w-12 h-12 rounded-2xl bg-teal-950 text-white flex items-center justify-center font-bold text-xl shadow-md">
+              📞
+            </div>
+            <h3 class="text-lg font-extrabold text-teal-950 font-heading group-hover:text-emerald-700 transition-colors">Helpline & Contacts</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">Vijayapura Base Hospital: 08352-220646 & 24x7 WhatsApp triage desk for patient inquiries.</p>
+            <span class="text-xs font-bold text-teal-900 group-hover:underline inline-block pt-2">Contact Hospital Desk &rarr;</span>
+          </a>
+        </div>
+
+        <!-- FREQUENTLY ASKED QUESTIONS (FAQ ACCORDION - SECTION 14) -->
+        <section class="space-y-6 pt-6">
+          <div class="text-center space-y-2 max-w-xl mx-auto">
+            <span class="px-3 py-1 rounded-full badge-emerald font-bold text-xs uppercase tracking-wider">Patient Care Guidance</span>
+            <h2 class="text-3xl font-extrabold text-teal-950 font-heading">Frequently Asked Questions</h2>
+            <p class="text-slate-600 text-xs">Verified answers regarding consultations, OPD timings, insurance, and vision centers.</p>
+          </div>
+
+          <div class="max-w-4xl mx-auto space-y-4">
+            ${[
+              {
+                q: "How do I book a consultation or appointment at Anugraha Eye Hospital?",
+                a: "You can book an appointment by calling our Vijayapura helpline directly at 08352-220646, messaging our WhatsApp desk (+91 74839 00963), or using our persistent online appointment portal link. Walk-in OPD consultations are also available daily from 8:00 AM to 9:00 PM."
+              },
+              {
+                q: "Where are your main base hospitals and Vision Centers located?",
+                a: "Our primary super-specialty base hospital is located on Navabhag Main Road (Behind Central Bus Stand), Vijayapura. Our tertiary campus is in Kalaburagi. We also operate 8 rural Vision Centers in Talikoti, Muddebihal, Sindagi, Indi, B.Bagewadi, Chadachan, Nalatwad, and Tikota."
+              },
+              {
+                q: "What government health schemes and insurance policies are accepted for cashless treatment?",
+                a: "Anugraha Eye Hospital is empaneled with major government health schemes including Ayushman Bharat Arogya Karnataka (AB-ARK), Arogya Bhagya Yojane (ABY), Jyoti Sanjiveeni Scheme (JSS), Yeshasvini, RBSK, and SKDRDP. We also accept leading private insurance policies and TPAs (Star Health, ICICI Lombard, Niva Bupa, Bajaj Allianz, Vidal, Paramount, FHPL, etc.)."
+              },
+              {
+                q: "What services and doctor visit schedules are available at rural Vision Centers?",
+                a: "Our rural Vision Centers provide primary vision examination, computerized refraction, prescription glasses, contact lens fitting, essential eye drops, and 24x7 emergency triage. Specialist doctors conduct dedicated OPD visits (e.g. Free Sunday Specialist OPD at Talikoti & Nalatwad, Saturdays at Muddebihal, Tuesdays at Indi)."
+              },
+              {
+                q: "How can students apply for academic programs and optometry courses?",
+                a: "Students can apply for RGUHS-affiliated B.Sc Optometry at our Kalaburagi Optometry Institute, NBEMS DNB Post-Graduate Residency at Vijayapura, or Paramedical Board DOT Diplomas by contacting our Academic Cell directly at 08352-220646 or emailing contactus@anugrahaeyehospital.com."
+              }
+            ].map((faq, idx) => `
+              <details class="glass-card rounded-2xl border border-teal-100 p-5 space-y-3 group cursor-pointer">
+                <summary class="font-extrabold text-teal-950 text-base font-heading flex items-center justify-between outline-none">
+                  <span>${faq.q}</span>
+                  <span class="w-6 h-6 rounded-full bg-teal-100 text-teal-900 flex items-center justify-center text-xs font-bold shrink-0 transition-transform group-open:rotate-180">+</span>
+                </summary>
+                <p class="text-xs text-slate-600 leading-relaxed pt-2 border-t border-teal-100/60">
+                  ${faq.a}
+                </p>
+              </details>
+            `).join('')}
+          </div>
+        </section>
+
       </div>
     `;
   }
