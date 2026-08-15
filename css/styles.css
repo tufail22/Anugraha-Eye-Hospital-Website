@@ -2,24 +2,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --primary-teal: #0d4b43;
-  --primary-dark: #062c26;
-  --accent-coral: #f26549;
-  --accent-amber: #e88d38;
-  --bg-mint: #edf5f3;
-  --bg-light: #f6f9f8;
-  --text-dark: #0d1b2a;
-  --text-muted: #4a5568;
+  /* Editorial Healthcare Palette Design Tokens */
+  --primary-navy: #0B1F33;
+  --primary-teal: #0F766E;
+  --secondary-teal: #159A91;
+  --bg-soft-medical: #F4F8F8;
+  --bg-white: #FFFFFF;
+  --text-deep: #14212B;
+  --text-secondary: #5C6B73;
+  --border-soft: #DCE6E8;
+  --accent-gold: #B9965B;
+  --accent-emergency: #B42318;
+  --accent-success: #18794E;
+
+  /* Legacy System Mappings for Complete Backward Compatibility */
+  --primary-dark: var(--primary-navy);
+  --bg-mint: var(--bg-soft-medical);
+  --bg-light: var(--bg-soft-medical);
+  --text-dark: var(--text-deep);
+  --text-muted: var(--text-secondary);
+  --accent-coral: var(--accent-emergency);
+  --accent-amber: var(--accent-gold);
+
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background-color: var(--bg-light);
-  color: var(--text-dark);
+  background-color: var(--bg-soft-medical);
+  color: var(--text-deep);
   overflow-x: hidden;
-  transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.4s var(--ease-spring), color 0.4s var(--ease-spring);
 }
 
 h1, h2, h3, h4, h5, h6, .font-heading {
