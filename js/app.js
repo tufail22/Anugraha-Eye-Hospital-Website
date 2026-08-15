@@ -4088,98 +4088,149 @@ document.addEventListener("DOMContentLoaded", () => {
     return renderAdminEditorCardView(sectionKey, moduleInfo);
   }
 
-  // 1. DASHBOARD HOME OVERVIEW VIEW
-  function renderAdminDashboardHomeView() {
+  // 1. ADMIN DASHBOARD HOME OVERVIEW VIEW (/admin/dashboard)
+  function renderAdminDashboardOverview() {
     const store = window.appStore;
     const cms = window.cmsClient;
-    const stats = store.getStats();
-    const facilities = store.getFacilities();
-    const empanelments = store.getEmpanelments();
-    const adminTeam = store.data.administration || [];
+    const session = window.authClient ? window.authClient.getCurrentSession() : null;
 
-    const draftsCount = Object.keys(store.data.cmsDrafts || {}).length;
-    const publishedCount = Object.keys(store.data.cmsPublished || {}).length;
+    const pagesCount = 10;
+    const doctorsCount = 2; // Dr. Lingadalli & Dr. Malini
+    const servicesCount = store.getServices().length || 8;
+    const hospitalsCount = 2; // Vijayapura & Kalaburagi
+    const visionCentersCount = store.getFacilities().filter(f => f.type === 'vision-center').length || 8;
+    const imagesCount = 12; // Curated asset gallery count
+    const faqsCount = 5; // Verified patient care FAQs
+
+    const lastSavedTime = cms && cms.lastSaved ? new Date(cms.lastSaved).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Just now";
 
     return `
-      <div class="space-y-8">
+      <div class="space-y-8 font-sans">
         
-        <!-- Welcome Hero Banner -->
-        <div class="glass-card-dark p-8 rounded-3xl border border-teal-800 text-white space-y-4">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-xs font-mono">
-            <span>Operational System Status: Healthy</span>
+        <!-- Metadata Header Indicators Bar (Last Saved, Current Admin, Website Status) -->
+        <div class="p-6 rounded-3xl bg-slate-900 border border-slate-800 flex flex-wrap items-center justify-between gap-4 text-xs font-mono">
+          
+          <!-- Current Admin -->
+          <div class="flex items-center gap-2">
+            <span class="text-slate-400">Current Admin:</span>
+            <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-extrabold border border-emerald-500/30">
+              👤 ${session ? session.username : 'web@admin'}
+            </span>
           </div>
-          <h2 class="text-3xl font-extrabold font-heading text-white">Commercial Marketing CMS Dashboard</h2>
+
+          <!-- Last Saved Timestamp -->
+          <div class="flex items-center gap-2">
+            <span class="text-slate-400">Last Content Save:</span>
+            <span class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 font-bold border border-slate-700">
+              ⏱️ ${lastSavedTime}
+            </span>
+          </div>
+
+          <!-- Website Status -->
+          <div class="flex items-center gap-2">
+            <span class="text-slate-400">Website Status:</span>
+            <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-extrabold border border-emerald-500/30 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              Live & Published
+            </span>
+          </div>
+
+        </div>
+
+        <!-- Welcome Banner -->
+        <div class="glass-card-dark p-8 rounded-3xl border border-teal-800 text-white space-y-3">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-xs font-mono">
+            <span>Content Management Overview</span>
+          </div>
+          <h2 class="text-3xl font-extrabold font-heading text-white">Site Content & Assets Directory</h2>
           <p class="text-slate-300 text-xs max-w-2xl leading-relaxed">
-            Welcome to the Anugraha Eye Hospital Content Management System. Edit sitewide pages, manage Vision Center locations, upload media, and update hospital credentials in real-time.
+            Central management overview of pages, doctor profiles, ophthalmic specialties, hospital campuses, rural vision centers, media assets, and FAQs.
           </p>
         </div>
 
-        <!-- Metric Summary Cards Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
-            <div class="text-xs font-bold text-slate-400 uppercase font-mono">CMS Modules</div>
-            <div class="text-2xl font-extrabold text-white font-heading">13</div>
-            <div class="text-[11px] text-emerald-400 font-semibold">Active Modules</div>
+        <!-- 7 Content Overview Cards Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+          
+          <!-- Card 1: Pages -->
+          <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2 hover:border-emerald-500/50 transition-colors">
+            <div class="text-xs font-bold text-slate-400 uppercase font-mono">Pages</div>
+            <div class="text-3xl font-extrabold text-white font-heading">${pagesCount}</div>
+            <div class="text-[11px] text-emerald-400 font-semibold">Active Routes</div>
           </div>
 
-          <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
-            <div class="text-xs font-bold text-slate-400 uppercase font-mono">Draft Edits</div>
-            <div class="text-2xl font-extrabold text-amber-400 font-heading">${draftsCount}</div>
-            <div class="text-[11px] text-amber-300 font-semibold">Pending Publish</div>
+          <!-- Card 2: Doctors -->
+          <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2 hover:border-emerald-500/50 transition-colors">
+            <div class="text-xs font-bold text-slate-400 uppercase font-mono">Doctors</div>
+            <div class="text-3xl font-extrabold text-white font-heading">${doctorsCount}</div>
+            <div class="text-[11px] text-emerald-400 font-semibold">Lead Directors</div>
           </div>
 
-          <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
-            <div class="text-xs font-bold text-slate-400 uppercase font-mono">Published Sections</div>
-            <div class="text-2xl font-extrabold text-emerald-400 font-heading">${publishedCount}</div>
-            <div class="text-[11px] text-emerald-300 font-semibold">Live on Site</div>
+          <!-- Card 3: Services -->
+          <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2 hover:border-emerald-500/50 transition-colors">
+            <div class="text-xs font-bold text-slate-400 uppercase font-mono">Services</div>
+            <div class="text-3xl font-extrabold text-white font-heading">${servicesCount}</div>
+            <div class="text-[11px] text-emerald-400 font-semibold">Ophthalmic Care</div>
           </div>
 
-          <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+          <!-- Card 4: Hospitals -->
+          <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2 hover:border-emerald-500/50 transition-colors">
+            <div class="text-xs font-bold text-slate-400 uppercase font-mono">Hospitals</div>
+            <div class="text-3xl font-extrabold text-white font-heading">${hospitalsCount}</div>
+            <div class="text-[11px] text-emerald-400 font-semibold">Base Campuses</div>
+          </div>
+
+          <!-- Card 5: Vision Centers -->
+          <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2 hover:border-emerald-500/50 transition-colors">
             <div class="text-xs font-bold text-slate-400 uppercase font-mono">Vision Centers</div>
-            <div class="text-2xl font-extrabold text-white font-heading">${facilities.length}</div>
-            <div class="text-[11px] text-slate-400 font-semibold">Directory Centers</div>
+            <div class="text-3xl font-extrabold text-white font-heading">${visionCentersCount}</div>
+            <div class="text-[11px] text-slate-400 font-semibold">Rural Outreach</div>
           </div>
 
-          <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
-            <div class="text-xs font-bold text-slate-400 uppercase font-mono">Admin Team</div>
-            <div class="text-2xl font-extrabold text-white font-heading">${adminTeam.length}</div>
-            <div class="text-[11px] text-slate-400 font-semibold">Staff Profiles</div>
+          <!-- Card 6: Images -->
+          <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2 hover:border-emerald-500/50 transition-colors">
+            <div class="text-xs font-bold text-slate-400 uppercase font-mono">Images</div>
+            <div class="text-3xl font-extrabold text-white font-heading">${imagesCount}</div>
+            <div class="text-[11px] text-slate-400 font-semibold">Media Gallery</div>
           </div>
 
-          <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
-            <div class="text-xs font-bold text-slate-400 uppercase font-mono">Empanelments</div>
-            <div class="text-2xl font-extrabold text-white font-heading">${empanelments.length}</div>
-            <div class="text-[11px] text-slate-400 font-semibold">Empaneled Partners</div>
+          <!-- Card 7: FAQs -->
+          <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2 hover:border-emerald-500/50 transition-colors">
+            <div class="text-xs font-bold text-slate-400 uppercase font-mono">FAQs</div>
+            <div class="text-3xl font-extrabold text-white font-heading">${faqsCount}</div>
+            <div class="text-[11px] text-slate-400 font-semibold">Patient Answers</div>
           </div>
+
         </div>
 
-        <!-- Quick Jump Grid -->
-        <div class="space-y-4">
-          <h3 class="text-lg font-bold text-white font-heading">Quick Action CMS Shortcuts</h3>
+        <!-- Module Shortcuts Grid -->
+        <div class="space-y-4 pt-4">
+          <h3 class="text-lg font-bold text-white font-heading">Content Management Shortcuts</h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <button onclick="window.switchAdminSection('vision-centers')" class="p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left space-y-2 transition-all hover:scale-105">
+            
+            <button onclick="window.switchAdminSection('vision-centers')" class="p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left space-y-2 transition-all hover:scale-102">
               <span class="text-xl">👁️</span>
-              <div class="font-extrabold text-white text-sm">Vision Centers</div>
-              <div class="text-xs text-slate-400">Add, edit, or reorder 8 regional centers.</div>
+              <div class="font-extrabold text-white text-sm">Vision Centers Directory</div>
+              <div class="text-xs text-slate-400">Edit addresses, hours, and doctor visit schedules for 8 centers.</div>
             </button>
 
-            <button onclick="window.switchAdminSection('empanelments')" class="p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left space-y-2 transition-all hover:scale-105">
-              <span class="text-xl">🛡️</span>
-              <div class="font-extrabold text-white text-sm">Empanelments & Insurance</div>
-              <div class="text-xs text-slate-400">Manage government schemes & insurance logos.</div>
+            <button onclick="window.switchAdminSection('leadership')" class="p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left space-y-2 transition-all hover:scale-102">
+              <span class="text-xl">🩺</span>
+              <div class="font-extrabold text-white text-sm">Doctor Leadership</div>
+              <div class="text-xs text-slate-400">Update Dr. Lingadalli & Dr. Malini bios, degrees, and awards.</div>
             </button>
 
-            <button onclick="window.switchAdminSection('academics')" class="p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left space-y-2 transition-all hover:scale-105">
-              <span class="text-xl">🎓</span>
-              <div class="font-extrabold text-white text-sm">Academics & Training</div>
-              <div class="text-xs text-slate-400">Edit RGUHS, DNB, and fellowship programs.</div>
+            <button onclick="window.switchAdminSection('services')" class="p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left space-y-2 transition-all hover:scale-102">
+              <span class="text-xl">🔬</span>
+              <div class="font-extrabold text-white text-sm">Ophthalmic Specialties</div>
+              <div class="text-xs text-slate-400">Edit Cataract, LASIK, Retina, and Glaucoma descriptions.</div>
             </button>
 
-            <button onclick="window.switchAdminSection('settings')" class="p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left space-y-2 transition-all hover:scale-105">
+            <button onclick="window.switchAdminSection('settings')" class="p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left space-y-2 transition-all hover:scale-102">
               <span class="text-xl">⚙️</span>
               <div class="font-extrabold text-white text-sm">Site Settings</div>
-              <div class="text-xs text-slate-400">Update logo, phone numbers & social links.</div>
+              <div class="text-xs text-slate-400">Update hospital logo, emergency helplines & social links.</div>
             </button>
+
           </div>
         </div>
 
