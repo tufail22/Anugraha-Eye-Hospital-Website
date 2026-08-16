@@ -4248,8 +4248,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.activeAdminTab = 'overview';
 
+  function isSystemAdminAuthenticated() {
+    if (sessionStorage.getItem('anugraha_admin_auth') === 'true') return true;
+    
+    // Check 8-hour persistent localStorage session
+    const localAuth = localStorage.getItem('anugraha_admin_session');
+    if (localAuth) {
+      try {
+        const data = JSON.parse(localAuth);
+        if (data.expiry && Date.now() < data.expiry) {
+          sessionStorage.setItem('anugraha_admin_auth', 'true');
+          return true;
+        }
+      } catch(e) {}
+      localStorage.removeItem('anugraha_admin_session');
+    }
+    
+    // Check browser-close sessionStorage
+    const sessionAuth = sessionStorage.getItem('anugraha_admin_session');
+    if (sessionAuth) {
+      try {
+        const data = JSON.parse(sessionAuth);
+        if (data.authenticated) {
+          sessionStorage.setItem('anugraha_admin_auth', 'true');
+          return true;
+        }
+      } catch(e) {}
+      sessionStorage.removeItem('anugraha_admin_session');
+    }
+
+    return false;
+  }
+
   function renderAdminPage() {
-    const isAuthenticated = sessionStorage.getItem('anugraha_admin_auth') === 'true';
+    const isAuthenticated = isSystemAdminAuthenticated();
 
     if (!isAuthenticated) {
       return renderAdminLoginGate();
@@ -4315,39 +4347,125 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // 1. Password Gate View
+  // 1. Password Gate View (Accurate UI matching reference slide design, WCAG 2.1 AA compliant)
   function renderAdminLoginGate() {
     return `
-      <div class="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4 font-sans">
-        <div class="w-full max-w-md bg-slate-900 border border-slate-800 p-8 rounded-3xl space-y-6 shadow-2xl">
+      <div class="min-h-screen bg-gradient-to-br from-[#062c26] via-[#094237] to-[#041c18] flex items-center justify-center p-4 sm:p-6 font-sans">
+        
+        <!-- Centered Split Card Matching Uploaded Reference Layout -->
+        <div class="max-w-4xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[520px] border border-teal-900/20">
           
-          <div class="text-center space-y-3">
-            <div class="w-16 h-16 rounded-full bg-white p-1 mx-auto shadow-xl overflow-hidden">
-              <img src="assets/official_logo.jpg" alt="Logo" class="w-full h-full object-contain" />
+          <!-- Left Brand Panel with Curve Cutout & Decorative Shapes -->
+          <div class="bg-gradient-to-br from-teal-900 via-teal-950 to-emerald-950 text-white p-8 md:p-12 flex flex-col justify-between relative overflow-hidden md:w-5/12 shrink-0">
+            <!-- Background Layered Shapes -->
+            <div class="absolute -top-12 -left-12 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="absolute -bottom-16 -right-16 w-64 h-64 bg-teal-400/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 space-y-6">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-white p-1 shadow-lg overflow-hidden shrink-0">
+                  <img src="assets/official_logo.jpg" alt="Anugraha Logo" class="w-full h-full object-contain" />
+                </div>
+                <div>
+                  <h2 class="font-extrabold text-lg text-white font-heading tracking-tight leading-none">Anugraha</h2>
+                  <div class="text-[11px] font-semibold text-emerald-400 uppercase tracking-widest mt-0.5">Eye Hospital</div>
+                </div>
+              </div>
+
+              <div class="pt-6 space-y-2">
+                <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-[10px] uppercase tracking-wider font-mono">CMS Access Gate</span>
+                <h1 class="text-2xl font-extrabold text-white font-heading leading-tight">Admin Content Management</h1>
+                <p class="text-xs text-slate-300 leading-relaxed font-medium">
+                  Authentic. Affectionate. Affordable. Eye Care for North Karnataka.
+                </p>
+              </div>
             </div>
-            <h1 class="text-2xl font-extrabold text-white font-heading">Admin Content Editor</h1>
-            <p class="text-xs text-slate-400 leading-relaxed">
-              Client-side access gate for Anugraha Eye Hospital website content management.
-            </p>
+
+            <!-- Tab Indicator Matching Reference Slide -->
+            <div class="relative z-10 pt-8 border-t border-teal-800/80 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="text-xs font-bold text-emerald-300 uppercase tracking-wider font-mono">SIGN IN MODE</span>
+              </div>
+              <span class="text-[11px] text-slate-400">v2.0</span>
+            </div>
           </div>
 
-          <form onsubmit="window.handleAdminLoginSubmit(event)" class="space-y-4">
-            <div class="space-y-1">
-              <label class="block text-xs font-bold text-slate-300">Username</label>
-              <input type="text" id="admin-user-input" value="admin" required class="w-full p-3 rounded-xl bg-slate-950 text-white text-xs border border-slate-700 focus:ring-2 focus:ring-emerald-400 outline-none" />
+          <!-- Right Form Panel Matching Reference Design -->
+          <div class="p-8 md:p-12 flex-1 flex flex-col justify-center space-y-6 bg-white">
+            
+            <!-- Top Circle Avatar Icon -->
+            <div class="text-center space-y-2">
+              <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-teal-800 to-emerald-600 text-white flex items-center justify-center mx-auto shadow-xl ring-4 ring-teal-50">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+              </div>
+              <h2 class="text-2xl font-black text-teal-950 font-heading tracking-wider uppercase">LOGIN</h2>
+              <p class="text-xs text-slate-500 font-medium">Enter your hospital administrator credentials</p>
             </div>
 
-            <div class="space-y-1">
-              <label class="block text-xs font-bold text-slate-300">Access Key / Password</label>
-              <input type="password" id="admin-pass-input" value="anugraha2021" required class="w-full p-3 rounded-xl bg-slate-950 text-white text-xs border border-slate-700 focus:ring-2 focus:ring-emerald-400 outline-none" />
+            <!-- Form with WCAG 2.1 AA Compliant Labels & Focus States -->
+            <form onsubmit="window.handleAdminLoginSubmit(event)" class="space-y-5" aria-label="Admin Authentication Form">
+              
+              <!-- Username Field -->
+              <div class="space-y-1.5">
+                <label for="admin-user-input" class="block text-xs font-bold text-slate-700">Username / Email</label>
+                <div class="relative flex items-center border-b-2 border-slate-200 focus-within:border-teal-700 transition-colors pb-1">
+                  <svg class="w-4 h-4 text-slate-400 mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                  </svg>
+                  <input type="text" id="admin-user-input" value="web@admin" required aria-required="true" autocomplete="username" placeholder="web@admin" class="w-full py-1.5 bg-transparent text-slate-900 font-semibold text-xs focus:outline-none focus:ring-0" />
+                </div>
+              </div>
+
+              <!-- Password Field -->
+              <div class="space-y-1.5">
+                <label for="admin-pass-input" class="block text-xs font-bold text-slate-700">Password</label>
+                <div class="relative flex items-center border-b-2 border-slate-200 focus-within:border-teal-700 transition-colors pb-1">
+                  <svg class="w-4 h-4 text-slate-400 mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                  </svg>
+                  <input type="password" id="admin-pass-input" value="Admin@2001" required aria-required="true" autocomplete="current-password" placeholder="••••••••" class="w-full py-1.5 bg-transparent text-slate-900 font-semibold text-xs focus:outline-none focus:ring-0" />
+                </div>
+              </div>
+
+              <!-- Options Row: Remember Me & Forgot Password -->
+              <div class="flex items-center justify-between text-xs pt-1">
+                <label class="flex items-center gap-2 cursor-pointer text-slate-600 font-semibold select-none">
+                  <input type="checkbox" id="admin-remember-me" checked class="w-4 h-4 rounded text-teal-800 focus:ring-teal-600 border-slate-300" />
+                  <span>Remember Me (8 Hours)</span>
+                </label>
+
+                <button type="button" onclick="window.showForgotPassHint()" class="text-teal-800 hover:text-teal-950 font-bold hover:underline transition-colors focus:outline-none focus:ring-2 focus:ring-teal-600 rounded px-1">
+                  Forgot Password?
+                </button>
+              </div>
+
+              <!-- Error Box -->
+              <div id="admin-login-error" class="hidden p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-bold text-center" role="alert"></div>
+
+              <!-- Submit Button Matching Reference Slide Pill Style -->
+              <div class="pt-2 flex justify-end">
+                <button type="submit" class="w-full sm:w-auto px-10 py-3.5 rounded-full bg-gradient-to-r from-teal-800 to-emerald-700 hover:from-teal-700 hover:to-emerald-600 text-white font-extrabold text-xs tracking-wider uppercase shadow-lg active:scale-95 transition-all focus:outline-none focus:ring-4 focus:ring-teal-600/40">
+                  LOGIN
+                </button>
+              </div>
+
+            </form>
+
+            <!-- Verified Credentials Hint Footnote -->
+            <div class="pt-4 border-t border-slate-100 text-center text-[11px] text-slate-500 font-mono">
+              Default Credentials: <strong class="text-teal-900 font-extrabold">web@admin</strong> / <strong class="text-teal-900 font-extrabold">Admin@2001</strong>
             </div>
 
-            <div id="admin-login-error" class="hidden p-3 rounded-xl bg-red-950 border border-red-800 text-red-300 text-xs font-bold text-center"></div>
+          </div>
 
-            <button type="submit" class="w-full py-3.5 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs hover:bg-emerald-400 transition-colors shadow-lg">
-              Sign In to CMS Console
-            </button>
-          </form>
+        </div>
+
+      </div>
+    `;
+  }
 
           <div class="pt-4 border-t border-slate-800 text-center text-[11px] text-slate-500 font-mono">
             Default Key: <strong class="text-emerald-400">admin</strong> / <strong class="text-emerald-400">anugraha2021</strong>
@@ -4805,17 +4923,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.handleAdminLoginSubmit = function(e) {
     e.preventDefault();
-    const user = document.getElementById('admin-user-input')?.value;
+    const user = document.getElementById('admin-user-input')?.value?.trim();
     const pass = document.getElementById('admin-pass-input')?.value;
+    const rememberMe = document.getElementById('admin-remember-me')?.checked;
     const err = document.getElementById('admin-login-error');
 
-    if (user === 'admin' && (pass === 'anugraha2021' || pass === 'admin')) {
+    // Primary Credentials: web@admin / Admin@2001 (also supports fallback admin / anugraha2021)
+    if ((user === 'web@admin' && pass === 'Admin@2001') || (user === 'admin' && (pass === 'anugraha2021' || pass === 'admin'))) {
+      const expiry = rememberMe ? (Date.now() + 8 * 60 * 60 * 1000) : 'session';
+      const authData = JSON.stringify({ authenticated: true, expiry, user });
+      
+      if (rememberMe) {
+        localStorage.setItem('anugraha_admin_session', authData);
+      } else {
+        sessionStorage.setItem('anugraha_admin_session', authData);
+      }
       sessionStorage.setItem('anugraha_admin_auth', 'true');
+
+      if (err) err.classList.add('hidden');
       window.showAdminToast("Authenticated successfully. Opening CMS Console...", "success");
       render();
     } else {
       if (err) {
-        err.textContent = "Invalid Key/Password. Use default: admin / anugraha2021";
+        err.textContent = "Invalid Username or Password. Please verify credentials.";
         err.classList.remove('hidden');
       }
     }
@@ -4823,8 +4953,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.handleAdminLogout = function() {
     sessionStorage.removeItem('anugraha_admin_auth');
+    sessionStorage.removeItem('anugraha_admin_session');
+    localStorage.removeItem('anugraha_admin_session');
     window.showAdminToast("Signed out of CMS Console", "success");
     render();
+  };
+
+  window.showForgotPassHint = function() {
+    alert("🔐 Credential Reset Notice:\n\nFor security reasons, password resets must be issued by the Anugraha Hospital IT Cell.\n\nContact IT Support:\n📞 Helpline: 08352-220646\n📧 Email: contactus@anugrahaeyehospital.com\n📍 Vijayapura Base Hospital");
   };
 
   window.switchAdminTab = function(tabId) {
