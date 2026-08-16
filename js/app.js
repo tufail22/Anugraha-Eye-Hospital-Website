@@ -1719,250 +1719,363 @@ document.addEventListener("DOMContentLoaded", () => {
     const brand = store.getBrand();
 
     return `
-      <div class="max-w-7xl mx-auto px-4 py-10 space-y-24 font-sans">
+      <div class="max-w-7xl mx-auto px-4 py-10 space-y-20 font-sans">
         
-        <!-- Bold Editorial Hero Header -->
+        <!-- Header Banner -->
         <div class="glass-card-dark rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden shadow-2xl">
-          <div class="absolute -right-10 -bottom-10 opacity-10 text-7xl sm:text-9xl font-extrabold font-heading text-white pointer-events-none select-none">
-            LEADERSHIP
-          </div>
-
           <div class="relative z-10 max-w-3xl space-y-4">
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-xs uppercase tracking-wider border border-emerald-500/30">
               <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-              <span>Institutional Founders & Clinical Governance</span>
+              <span>Institutional Founders & Medical Governance</span>
             </div>
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white font-heading leading-tight">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-white font-heading leading-tight">
               Hospital Founders & Medical Leadership
             </h1>
             <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
-              Guiding Anugraha Eye Hospital's surgical excellence, academic credentials, and 25-year philanthropic footprint across Karnataka and Maharashtra.
+              Pioneering compassionate, high-volume ophthalmic care, academic credentials, and 25-year philanthropic footprint across Karnataka and Maharashtra.
             </p>
-
-            <div class="pt-4 flex flex-wrap items-center gap-4 text-xs font-bold text-emerald-300">
-              <div class="px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">12 State & National Conferred Awards</div>
-              <div class="px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">Aravind Eye Hospital Alumnus</div>
-              <div class="px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800">RGUHS & NBEMS Recognized</div>
-            </div>
           </div>
         </div>
 
-        <!-- PROFILE 1: Dr. Prabhugouda B. Lingadalli (Chairman & Founder) -->
-        <section id="dr-lingadalli" class="space-y-12">
-          
-          <!-- Split Screen Editorial Layout (Reference Mockup Style) -->
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- ========================================== -->
+        <!-- PROFILE 1: CHAIRMAN & FOUNDER DR. LINGADALLI -->
+        <!-- ========================================== -->
+        <section id="dr-lingadalli" class="space-y-8">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch bg-white dark:bg-[#06241f] rounded-3xl overflow-hidden border border-teal-100 dark:border-teal-900/40 shadow-2xl">
             
-            <!-- Left Portrait Card Box -->
-            <div class="lg:col-span-5 glass-card-dark rounded-3xl p-8 text-white space-y-6 relative overflow-hidden shadow-2xl">
-              <div class="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-emerald-500/20 blur-2xl pointer-events-none"></div>
+            <!-- LEFT BANNER: Dark Green Background Panel with Cutout Portrait (Matching Reference Slide) -->
+            <div class="lg:col-span-5 bg-[#093327] text-white p-8 sm:p-10 flex flex-col justify-between relative overflow-visible min-h-[480px]">
+              
+              <!-- Subtle Background Graphics -->
+              <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-black/40 pointer-events-none"></div>
 
-              <div class="relative z-10 space-y-6 text-center lg:text-left">
-                
-                <!-- Portrait Image / Avatar Frame with Aperture Lens Focus Motif -->
-                <div class="aperture-focus-card relative w-48 h-48 sm:w-56 sm:h-56 mx-auto rounded-3xl p-2 bg-gradient-to-tr from-emerald-500 via-teal-700 to-amber-400 shadow-2xl overflow-hidden group">
-                  <div class="aperture-focus-ring"></div>
-                  ${chairman.photo ? `
-                    <img src="${chairman.photo}" alt="${chairman.name}" class="card-img-editorial w-full h-full rounded-2xl object-cover shadow-inner group-hover:scale-105 transition-transform duration-500" />
-                  ` : `
-                    <div class="w-full h-full rounded-2xl bg-teal-950 text-amber-300 font-extrabold text-5xl flex items-center justify-center font-heading border-2 border-emerald-400 shadow-inner">
-                      DPL
-                    </div>
-                  `}
+              <div class="relative z-10 space-y-3">
+                <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-[#2dd4bf] font-mono font-bold text-xs uppercase tracking-wider border border-emerald-500/30">
+                  ${chairman.title}
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-heading tracking-tight">
+                  ${chairman.name}
+                </h2>
+                <div class="text-xs sm:text-sm font-bold text-[#2dd4bf] font-sans">
+                  ${chairman.degrees}
                 </div>
-
-                <div class="space-y-2">
-                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-extrabold text-xs uppercase tracking-wider">
-                    ${chairman.title}
-                  </span>
-                  <h2 class="text-3xl font-extrabold text-white font-heading leading-tight">
-                    ${chairman.name}
-                  </h2>
-                  <div class="text-xs font-mono text-emerald-400 font-bold">
-                    ${chairman.degrees}
-                  </div>
-                </div>
-
-                <div class="pt-4 border-t border-slate-800 space-y-3 text-xs text-slate-300">
-                  <div class="flex items-center justify-between">
-                    <span>Ophthalmology Training:</span>
-                    <span class="text-white font-bold">VIMS Bellary (1998)</span>
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span>Diplomate of National Board:</span>
-                    <span class="text-white font-bold">DNB Cleared (2000)</span>
-                  </div>
-                  <div class="flex items-center justify-between">
-                    <span>Fellowship Training:</span>
-                    <span class="text-emerald-400 font-bold">Aravind Eye Hospital Madurai</span>
-                  </div>
-                </div>
-
-                <div class="pt-2 flex flex-col gap-2">
-                  <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="block w-full py-3.5 text-center rounded-2xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400 transition-colors shadow-lg">
-                    Contact Chairman's Office: ${brand.fallbackPhone}
-                  </a>
-                  <a href="#/admin" class="text-center text-[11px] font-semibold text-emerald-400 hover:underline pt-1">
-                    Admin Photo Upload (.jpg / .png) &rarr;
-                  </a>
-                </div>
-
-              </div>
-            </div>
-
-            <!-- Right Bio & Narrative Content -->
-            <div class="lg:col-span-7 glass-card rounded-3xl p-8 sm:p-10 border border-teal-100/80 shadow-xl space-y-6 relative overflow-hidden">
-              <div class="absolute -right-8 -top-8 text-8xl font-extrabold text-teal-900/5 font-heading pointer-events-none select-none">
-                FOUNDER
               </div>
 
-              <!-- Signature Quote Callout (Reference Mockup Style) -->
-              <blockquote class="relative z-10 text-xl sm:text-2xl font-bold text-teal-950 font-heading leading-relaxed bg-teal-50/70 p-6 rounded-2xl border-l-4 border-teal-800">
-                "Our foundational commitment has always been simple — no person in North Karnataka should suffer from preventable blindness due to lack of affordable, super-specialty eye care."
-              </blockquote>
-
-              <div class="relative z-10 prose prose-teal max-w-none text-slate-700 space-y-4 leading-relaxed text-sm sm:text-base">
-                <p>
-                  <strong>Dr. Prabhugouda B. Lingadalli</strong> (MBBS, MS, DNB, FAEH, MCHS) is the Founder and Chairman of Anugraha Eye Hospital across both the Vijayapura and Kalaburagi campuses. He pioneered a high-quality, high-volume, low-cost ophthalmic service delivery model restoring sight to thousands of underprivileged individuals across Karnataka and Maharashtra.
-                </p>
-                <p>
-                  He completed his MBBS from B M Patil Medical College, Vijayapura, followed by MS Ophthalmology from Vijayanagar Institute of Medical Sciences, Bellary in 1998, and cleared the prestigious DNB examination in 2000. Dr. Lingadalli dedicated 2 years of intensive fellowship training at the world-renowned <strong>Aravind Eye Hospital, Madurai</strong>, mastering high-volume micro-incision cataract surgery and community eye care administration.
-                </p>
-                <p>
-                  He served in academia as Lecturer and progressed to Professor at B M Patil Medical College over a decade. In 2001, he founded Anugraha Eye Hospital in Vijayapura and established a landmark mobile eye camp network that treats ~10,000 patients annually free of cost, impacting nearly <strong>10 lakh individuals</strong> over a 25-year institutional footprint.
-                </p>
+              <!-- Breakout Cutout Portrait Image -->
+              <div class="relative z-10 my-6 flex justify-center">
+                <div class="w-56 h-72 sm:w-64 sm:h-80 rounded-2xl p-2 bg-gradient-to-t from-[#2dd4bf]/40 via-transparent to-transparent shadow-2xl overflow-hidden group">
+                  <img src="assets/dr_lingadalli.jpg" alt="${chairman.name}" class="w-full h-full object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500" />
+                </div>
               </div>
 
-              <!-- Quick Highlights Badges -->
-              <div class="relative z-10 pt-4 border-t border-teal-100 grid grid-cols-2 sm:grid-cols-3 gap-3">
-                <div class="p-3 rounded-xl bg-teal-50/60 border border-teal-100 text-center">
-                  <div class="text-lg font-extrabold text-teal-950 font-mono">25 Years</div>
-                  <div class="text-[10px] font-bold text-slate-500 uppercase">Surgical Legacy</div>
+              <div class="relative z-10 pt-4 border-t border-emerald-800/80 text-xs text-slate-200 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Institutional Role:</span>
+                  <span class="font-bold text-white">Founder & Chairman</span>
                 </div>
-                <div class="p-3 rounded-xl bg-teal-50/60 border border-teal-100 text-center">
-                  <div class="text-lg font-extrabold text-teal-950 font-mono">50,000+</div>
-                  <div class="text-[10px] font-bold text-slate-500 uppercase">Free Cataracts</div>
-                </div>
-                <div class="p-3 rounded-xl bg-teal-50/60 border border-teal-100 text-center col-span-2 sm:col-span-1">
-                  <div class="text-lg font-extrabold text-teal-950 font-mono">10 Lakh</div>
-                  <div class="text-[10px] font-bold text-slate-500 uppercase">Total Reach</div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Surgical Tenure:</span>
+                  <span class="font-bold text-[#2dd4bf]">25+ Years Legacy</span>
                 </div>
               </div>
 
             </div>
 
-          </div>
-
-          <!-- HONORS & AWARDS SECTION (Styled like filmography / honors list in mockup) -->
-          <div class="glass-card-dark rounded-3xl p-8 sm:p-10 text-white space-y-8 shadow-2xl relative overflow-hidden">
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+            <!-- RIGHT PANEL: 4-Card Structured Grid (Matching Reference Slide) -->
+            <div class="lg:col-span-7 p-6 sm:p-10 space-y-8 flex flex-col justify-between">
+              
               <div>
-                <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-bold text-xs uppercase tracking-wider">State & National Conferred Honors</span>
-                <h3 class="text-3xl font-extrabold text-white font-heading mt-1">Conferred Institutional Honors & Awards</h3>
-                <p class="text-xs text-slate-300">Listing of 12 prestigious awards conferred upon Dr. Prabhugouda B. Lingadalli for healthcare excellence.</p>
+                <h3 class="text-3xl font-extrabold text-teal-950 dark:text-white font-heading tracking-tight">
+                  Biography & Clinical Profile
+                </h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  Comprehensive credentials, academic milestones, and community outreach leadership.
+                </p>
               </div>
-              <div class="px-4 py-2 rounded-xl bg-amber-500 text-slate-950 font-extrabold text-xs shrink-0">
-                12 Conferred Awards
-              </div>
-            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              ${chairman.awards.map((award, aIdx) => `
-                <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-start gap-4 hover:border-amber-500/50 transition-all">
-                  <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 font-extrabold text-sm flex items-center justify-center font-mono shrink-0">
-                    ${aIdx + 1}
+              <!-- 4 ROUNDED PILL HEADER CARDS GRID (Reference Slide Layout) -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                
+                <!-- CARD 1: CONTACT & COORDINATES -->
+                <div class="p-6 rounded-2xl bg-[#edf5f3] dark:bg-teal-950/60 border border-teal-100 dark:border-teal-900/50 space-y-4">
+                  <div class="inline-block px-4 py-1.5 rounded-full bg-[#0f766e] text-white font-extrabold text-xs uppercase tracking-wider shadow-sm">
+                    Contact & Coordinates
                   </div>
-                  <div class="space-y-1">
-                    <h4 class="font-extrabold text-white text-sm sm:text-base font-heading leading-tight">${award.title}</h4>
-                    <div class="text-xs font-semibold text-slate-400">${award.organization}</div>
-                    ${award.year !== '-' ? `<span class="inline-block text-[10px] font-bold text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 mt-1">Year: ${award.year}</span>` : ''}
+
+                  <div class="space-y-2.5 text-xs text-slate-700 dark:text-slate-300">
+                    <div>
+                      <div class="font-bold text-teal-950 dark:text-teal-200">Main Campus Base Hospital</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Navabhag Main Road, Behind Central Bus Stand, Vijayapura – 586101</div>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-teal-200/50 pt-2">
+                      <span class="text-slate-500">Helpline:</span>
+                      <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="font-bold text-teal-900 dark:text-teal-300 hover:underline">${brand.fallbackPhone}</a>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-teal-200/50 pt-2">
+                      <span class="text-slate-500">WhatsApp Triage:</span>
+                      <span class="font-bold text-emerald-700 dark:text-emerald-400">${brand.whatsappPhone}</span>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-teal-200/50 pt-2">
+                      <span class="text-slate-500">Direct Email:</span>
+                      <span class="font-bold text-teal-900 dark:text-teal-300 truncate max-w-[140px]">${brand.contactEmail}</span>
+                    </div>
                   </div>
                 </div>
-              `).join('')}
-            </div>
-          </div>
 
+                <!-- CARD 2: EXPERIENCE & MILESTONES -->
+                <div class="p-6 rounded-2xl bg-[#edf5f3] dark:bg-teal-950/60 border border-teal-100 dark:border-teal-900/50 space-y-4">
+                  <div class="inline-block px-4 py-1.5 rounded-full bg-[#0f766e] text-white font-extrabold text-xs uppercase tracking-wider shadow-sm">
+                    Experience & Milestones
+                  </div>
+
+                  <div class="space-y-2.5 text-xs text-slate-700 dark:text-slate-300">
+                    <div>
+                      <div class="font-bold text-teal-950 dark:text-teal-200">2001 – Present</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Founder & Chairman, Anugraha Eye Hospital Network</div>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-teal-200/50 pt-2">
+                      <span class="text-slate-500">Lifetime Surgeries:</span>
+                      <span class="font-bold text-teal-900 dark:text-teal-300 font-mono">2,28,951+</span>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-teal-200/50 pt-2">
+                      <span class="text-slate-500">Free Cataracts:</span>
+                      <span class="font-bold text-emerald-700 dark:text-emerald-400 font-mono">50,000+</span>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-teal-200/50 pt-2">
+                      <span class="text-slate-500">Academic Tenure:</span>
+                      <span class="font-bold text-teal-900 dark:text-teal-300">Prof. B M Patil Med Coll</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CARD 3: EDUCATION & CREDENTIALS -->
+                <div class="p-6 rounded-2xl bg-[#edf5f3] dark:bg-teal-950/60 border border-teal-100 dark:border-teal-900/50 space-y-4">
+                  <div class="inline-block px-4 py-1.5 rounded-full bg-[#0f766e] text-white font-extrabold text-xs uppercase tracking-wider shadow-sm">
+                    Education & Credentials
+                  </div>
+
+                  <div class="space-y-2 text-xs text-slate-700 dark:text-slate-300">
+                    <div class="border-b border-teal-200/50 pb-1.5">
+                      <div class="font-bold text-teal-950 dark:text-teal-200">MBBS</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400">B M Patil Medical College, Vijayapura</div>
+                    </div>
+                    <div class="border-b border-teal-200/50 pb-1.5">
+                      <div class="font-bold text-teal-950 dark:text-teal-200">MS Ophthalmology (1998)</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400">Vijayanagar Institute of Med Sciences (VIMS Bellary)</div>
+                    </div>
+                    <div class="border-b border-teal-200/50 pb-1.5">
+                      <div class="font-bold text-teal-950 dark:text-teal-200">DNB Ophthalmology (2000)</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400">Diplomate of National Board Examination</div>
+                    </div>
+                    <div>
+                      <div class="font-bold text-emerald-800 dark:text-emerald-300">FAEH Fellowship</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400">Aravind Eye Hospital, Madurai (2 Years)</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CARD 4: SPECIALTIES & HONORS -->
+                <div class="p-6 rounded-2xl bg-[#edf5f3] dark:bg-teal-950/60 border border-teal-100 dark:border-teal-900/50 space-y-4">
+                  <div class="inline-block px-4 py-1.5 rounded-full bg-[#0f766e] text-white font-extrabold text-xs uppercase tracking-wider shadow-sm">
+                    Specialties & Honors
+                  </div>
+
+                  <div class="space-y-2 text-xs text-slate-700 dark:text-slate-300">
+                    <div class="border-b border-teal-200/50 pb-1.5">
+                      <div class="font-bold text-teal-950 dark:text-teal-200">High-Volume Phacoemulsification</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400">Micro-incision cataract surgery</div>
+                    </div>
+                    <div class="border-b border-teal-200/50 pb-1.5">
+                      <div class="font-bold text-amber-800 dark:text-amber-300">12 Conferred Awards</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400">Govt of Karnataka Rajyostava Award (2021)</div>
+                    </div>
+                    <div>
+                      <div class="font-bold text-teal-950 dark:text-teal-200">2,715 Outreach Camps</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400">Reaching ~10 Lakh regional patients</div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- 12 CONFERRED AWARDS ACCORDION / TOGGLE -->
+              <details class="p-5 rounded-2xl bg-teal-900/10 border border-teal-200 dark:border-teal-800 space-y-3 cursor-pointer group">
+                <summary class="font-extrabold text-teal-950 dark:text-white text-sm font-heading flex items-center justify-between outline-none">
+                  <span>View All 12 Conferred State & National Awards</span>
+                  <span class="w-6 h-6 rounded-full bg-teal-800 text-white flex items-center justify-center text-xs font-bold shrink-0 transition-transform group-open:rotate-180">+</span>
+                </summary>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-3 border-t border-teal-200 dark:border-teal-800 text-xs">
+                  ${chairman.awards.map((award, aIdx) => `
+                    <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-teal-100 dark:border-teal-900 flex items-start gap-2.5">
+                      <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300 font-mono font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">${aIdx + 1}</span>
+                      <div>
+                        <div class="font-bold text-teal-950 dark:text-white text-[11px]">${award.title}</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400">${award.organization} ${award.year !== '-' ? `(${award.year})` : ''}</div>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              </details>
+
+            </div>
+
+          </div>
         </section>
 
-        <!-- PROFILE 2: Dr. Malini P L (Medical Director) -->
+        <!-- ========================================== -->
+        <!-- PROFILE 2: MEDICAL DIRECTOR DR. MALINI P L -->
+        <!-- ========================================== -->
         <section id="dr-malini" class="space-y-8">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch bg-white dark:bg-[#06241f] rounded-3xl overflow-hidden border border-teal-100 dark:border-teal-900/40 shadow-2xl">
             
-            <!-- Left Bio & Narrative Content -->
-            <div class="lg:col-span-7 glass-card rounded-3xl p-8 sm:p-10 border border-teal-100/80 shadow-xl space-y-6 relative overflow-hidden">
-              <div class="absolute -right-8 -top-8 text-8xl font-extrabold text-teal-900/5 font-heading pointer-events-none select-none">
-                DIRECTOR
-              </div>
+            <!-- LEFT BANNER: Dark Green Background Panel with Cutout Portrait (Matching Reference Slide) -->
+            <div class="lg:col-span-5 bg-[#093327] text-white p-8 sm:p-10 flex flex-col justify-between relative overflow-visible min-h-[480px]">
+              
+              <!-- Subtle Background Graphics -->
+              <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-black/40 pointer-events-none"></div>
 
-              <div>
-                <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 font-extrabold text-xs border border-emerald-200 uppercase tracking-wider">
+              <div class="relative z-10 space-y-3">
+                <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-[#2dd4bf] font-mono font-bold text-xs uppercase tracking-wider border border-emerald-500/30">
                   ${medicalDirector.title}
                 </span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-teal-950 font-heading mt-2 leading-tight">
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-heading tracking-tight">
                   ${medicalDirector.name}
                 </h2>
-                <div class="text-sm font-bold text-emerald-800 mt-1 font-mono">
-                  Credentials: ${medicalDirector.degrees}
+                <div class="text-xs sm:text-sm font-bold text-[#2dd4bf] font-sans">
+                  ${medicalDirector.degrees}
                 </div>
+              </div>
+
+              <!-- Breakout Cutout Portrait Image -->
+              <div class="relative z-10 my-6 flex justify-center">
+                <div class="w-56 h-72 sm:w-64 sm:h-80 rounded-2xl p-2 bg-gradient-to-t from-[#2dd4bf]/40 via-transparent to-transparent shadow-2xl overflow-hidden group">
+                  <img src="assets/dr_malini.jpg" alt="${medicalDirector.name}" class="w-full h-full object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500" />
+                </div>
+              </div>
+
+              <div class="relative z-10 pt-4 border-t border-emerald-800/80 text-xs text-slate-200 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Institutional Role:</span>
+                  <span class="font-bold text-white">Medical Director</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Clinical Leadership:</span>
+                  <span class="font-bold text-[#2dd4bf]">20+ Years Governance</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- RIGHT PANEL: 4-Card Structured Grid (Matching Reference Slide) -->
+            <div class="lg:col-span-7 p-6 sm:p-10 space-y-8 flex flex-col justify-between">
+              
+              <div>
+                <h3 class="text-3xl font-extrabold text-teal-950 dark:text-white font-heading tracking-tight">
+                  Biography & Medical Governance
+                </h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  Clinical quality oversight, NABH accreditation leadership, and consultant management.
+                </p>
+              </div>
+
+              <!-- 4 ROUNDED PILL HEADER CARDS GRID (Reference Slide Layout) -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                
+                <!-- CARD 1: CONTACT & COORDINATES -->
+                <div class="p-6 rounded-2xl bg-[#edf5f3] dark:bg-teal-950/60 border border-teal-100 dark:border-teal-900/50 space-y-4">
+                  <div class="inline-block px-4 py-1.5 rounded-full bg-[#0f766e] text-white font-extrabold text-xs uppercase tracking-wider shadow-sm">
+                    Contact & Coordinates
+                  </div>
+
+                  <div class="space-y-2.5 text-xs text-slate-700 dark:text-slate-300">
+                    <div>
+                      <div class="font-bold text-teal-950 dark:text-teal-200">Medical Director's Office</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Vijayapura Main Campus & Kalaburagi Base Hospital</div>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-teal-200/50 pt-2">
+                      <span class="text-slate-500">Helpline:</span>
+                      <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="font-bold text-teal-900 dark:text-teal-300 hover:underline">${brand.fallbackPhone}</a>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-teal-200/50 pt-2">
+                      <span class="text-slate-500">WhatsApp Desk:</span>
+                      <span class="font-bold text-emerald-700 dark:text-emerald-400">${brand.whatsappPhone}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CARD 2: EXPERIENCE & MILESTONES -->
+                <div class="p-6 rounded-2xl bg-[#edf5f3] dark:bg-teal-950/60 border border-teal-100 dark:border-teal-900/50 space-y-4">
+                  <div class="inline-block px-4 py-1.5 rounded-full bg-[#0f766e] text-white font-extrabold text-xs uppercase tracking-wider shadow-sm">
+                    Experience & Milestones
+                  </div>
+
+                  <div class="space-y-2.5 text-xs text-slate-700 dark:text-slate-300">
+                    <div>
+                      <div class="font-bold text-teal-950 dark:text-teal-200">Nearly 2 Decades</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Clinical & Administrative Leadership</div>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-teal-200/50 pt-2">
+                      <span class="text-slate-500">Campus Oversight:</span>
+                      <span class="font-bold text-teal-900 dark:text-teal-300">Vijayapura & Kalaburagi</span>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-teal-200/50 pt-2">
+                      <span class="text-slate-500">Quality Standards:</span>
+                      <span class="font-bold text-emerald-700 dark:text-emerald-400">NABH Alignment</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CARD 3: EDUCATION & CREDENTIALS -->
+                <div class="p-6 rounded-2xl bg-[#edf5f3] dark:bg-teal-950/60 border border-teal-100 dark:border-teal-900/50 space-y-4">
+                  <div class="inline-block px-4 py-1.5 rounded-full bg-[#0f766e] text-white font-extrabold text-xs uppercase tracking-wider shadow-sm">
+                    Education & Credentials
+                  </div>
+
+                  <div class="space-y-2 text-xs text-slate-700 dark:text-slate-300">
+                    <div class="border-b border-teal-200/50 pb-1.5">
+                      <div class="font-bold text-teal-950 dark:text-teal-200">MBBS</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400">Bachelor of Medicine & Bachelor of Surgery</div>
+                    </div>
+                    <div class="border-b border-teal-200/50 pb-1.5">
+                      <div class="font-bold text-teal-950 dark:text-teal-200">DO</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400">Diploma in Ophthalmology</div>
+                    </div>
+                    <div>
+                      <div class="font-bold text-emerald-800 dark:text-emerald-300">FGO Fellowship</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400">Fellowship in General Ophthalmology</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CARD 4: CLINICAL GOVERNANCE & RESPONSIBILITIES -->
+                <div class="p-6 rounded-2xl bg-[#edf5f3] dark:bg-teal-950/60 border border-teal-100 dark:border-teal-900/50 space-y-4">
+                  <div class="inline-block px-4 py-1.5 rounded-full bg-[#0f766e] text-white font-extrabold text-xs uppercase tracking-wider shadow-sm">
+                    Governance & Leadership
+                  </div>
+
+                  <div class="space-y-2 text-xs text-slate-700 dark:text-slate-300">
+                    <div class="border-b border-teal-200/50 pb-1.5">
+                      <div class="font-bold text-teal-950 dark:text-teal-200">Surgical Audit Oversight</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400">Ensuring zero-infection modular OT standards</div>
+                    </div>
+                    <div class="border-b border-teal-200/50 pb-1.5">
+                      <div class="font-bold text-teal-950 dark:text-teal-200">Consultant Accreditation</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400">Continuous medical education & training</div>
+                    </div>
+                    <div>
+                      <div class="font-bold text-emerald-800 dark:text-emerald-300">Patient First Safety</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400">Compassionate, ethical clinical care</div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
 
               <!-- Quote Block -->
-              <blockquote class="text-slate-700 text-base italic leading-relaxed bg-teal-50/70 p-5 rounded-2xl border-l-4 border-emerald-700">
+              <blockquote class="text-slate-700 dark:text-slate-300 text-sm italic leading-relaxed bg-[#edf5f3] dark:bg-teal-950/40 p-5 rounded-2xl border-l-4 border-emerald-600">
                 "Clinical governance, cutting-edge surgical technology, and compassionate care define our two-decade operational promise to North Karnataka."
               </blockquote>
 
-              <!-- Full Bio Text (PROJECT-CONTEXT.md exact narrative) -->
-              <div class="prose prose-teal max-w-none text-slate-700 space-y-4 leading-relaxed text-sm sm:text-base">
-                <p>
-                  <strong>Dr. Malini P L</strong> (MBBS, DO, FGO) is the Medical Director of Anugraha Eye Hospital. A committed and compassionate clinical leader with nearly two decades of administrative and surgical governance experience, she has played an instrumental role driving organizational development and elevating the hospital to national super-specialty standards.
-                </p>
-                <p>
-                  She reinforces the hospital's 25-year institutional legacy, overseeing clinical protocols, consultant accreditation, and patient safety across base hospitals in Vijayapura and Kalaburagi. Dr. Malini emphasizes the strategic advantage of the hospital's city-center locations, cutting-edge micro-surgical technology, and a dedicated team of highly trained, compassionate healthcare professionals.
-                </p>
-              </div>
-
-              <div class="pt-4 border-t border-teal-100 flex items-center justify-between">
-                <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="text-xs font-bold text-teal-900 hover:text-emerald-700 flex items-center gap-2">
-                  <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                  <span>Contact Medical Director's Office</span>
-                </a>
-              </div>
-            </div>
-
-            <!-- Right Portrait Card Box -->
-            <div class="lg:col-span-5 glass-card-dark rounded-3xl p-8 text-white space-y-6 relative overflow-hidden shadow-2xl">
-              <div class="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-teal-500/20 blur-2xl pointer-events-none"></div>
-
-              <div class="relative z-10 space-y-6 text-center">
-                <!-- Portrait Image / Avatar Frame with Aperture Lens Focus Motif -->
-                <div class="aperture-focus-card relative w-48 h-48 sm:w-56 sm:h-56 mx-auto rounded-3xl p-2 bg-gradient-to-tr from-emerald-400 via-teal-600 to-emerald-300 shadow-2xl overflow-hidden group">
-                  <div class="aperture-focus-ring"></div>
-                  ${medicalDirector.photo ? `
-                    <img src="${medicalDirector.photo}" alt="${medicalDirector.name}" class="card-img-editorial w-full h-full rounded-2xl object-cover shadow-inner group-hover:scale-105 transition-transform duration-500" />
-                  ` : `
-                    <div class="w-full h-full rounded-2xl bg-emerald-950 text-emerald-300 font-extrabold text-5xl flex items-center justify-center font-heading border-2 border-emerald-400 shadow-inner">
-                      DMP
-                    </div>
-                  `}
-                </div>
-
-                <div class="space-y-2">
-                  <h3 class="text-2xl font-extrabold text-white font-heading">${medicalDirector.name}</h3>
-                  <div class="text-xs font-mono text-emerald-300 font-bold">${medicalDirector.degrees}</div>
-                  <div class="text-xs text-slate-300 font-semibold">${medicalDirector.title}</div>
-                </div>
-
-                <div class="pt-4 border-t border-slate-800 text-xs text-slate-300 space-y-2">
-                  <div>Over 18 Years Ophthalmic Governance</div>
-                  <div class="text-emerald-400 font-bold">NABH & Clinical Accreditation Oversight</div>
-                </div>
-
-                <div class="pt-2">
-                  <a href="#/admin" class="text-xs font-semibold text-emerald-400 hover:underline">
-                    Admin Photo Upload (.jpg / .png) &rarr;
-                  </a>
-                </div>
-              </div>
             </div>
 
           </div>
