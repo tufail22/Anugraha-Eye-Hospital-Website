@@ -4247,6 +4247,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================================================================
 
   window.activeAdminTab = 'overview';
+  window.isAdminMobileDrawerOpen = false;
 
   function renderAdminPage() {
     const isAuthenticated = sessionStorage.getItem('anugraha_admin_auth') === 'true';
@@ -4258,61 +4259,123 @@ document.addEventListener("DOMContentLoaded", () => {
     const activeTab = window.activeAdminTab || 'overview';
 
     return `
-      <div class="min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col md:flex-row">
+      <div class="min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col selection:bg-emerald-500 selection:text-slate-950">
         
-        <!-- Sidebar Navigation -->
-        <aside class="w-full md:w-72 bg-slate-900/90 border-r border-slate-800 p-6 flex flex-col justify-between shrink-0">
-          <div class="space-y-6">
-            
-            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-              <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-full bg-white p-0.5 overflow-hidden shrink-0 shadow-md">
-                  <img src="assets/official_logo.jpg" alt="Logo" class="w-full h-full object-contain" />
-                </div>
-                <div>
-                  <div class="font-extrabold text-sm text-white font-heading">Anugraha CMS</div>
-                  <div class="text-[10px] text-emerald-400 font-mono font-bold">Frontend Editor v2.0</div>
-                </div>
+        <!-- 1. FULL-WIDTH TOP HEADER -->
+        <header class="w-full bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-3.5 flex items-center justify-between sticky top-0 z-50 shrink-0 shadow-md">
+          <div class="flex items-center gap-3">
+            <!-- Mobile Drawer Toggle Button (Only visible on mobile md:hidden) -->
+            <button onclick="window.toggleAdminMobileDrawer()" aria-label="Toggle Admin Menu" class="md:hidden p-2 rounded-xl bg-slate-800 text-slate-200 hover:bg-slate-700 min-h-[44px]">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-full bg-white p-0.5 overflow-hidden shrink-0 shadow-md">
+                <img src="assets/official_logo.jpg" alt="Logo" class="w-full h-full object-contain" />
+              </div>
+              <div>
+                <div class="font-extrabold text-sm sm:text-base text-white font-heading tracking-tight">Anugraha Content Editor</div>
+                <div class="text-[10px] text-emerald-400 font-mono font-bold">Static CMS Console</div>
               </div>
             </div>
+          </div>
 
+          <!-- Header Right Controls -->
+          <div class="flex items-center gap-3">
+            <a href="#/" target="_blank" rel="noopener" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition-colors">
+              <span>Preview Live Website</span>
+              <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+
+            <button onclick="window.handleAdminLogout()" class="px-3.5 py-2 rounded-xl bg-red-950/80 hover:bg-red-900 text-red-200 font-bold text-xs border border-red-800/50 transition-colors">
+              Sign Out
+            </button>
+          </div>
+        </header>
+
+        <!-- 2. MAIN LAYOUT CONTAINER (Sidebar + Main Content) -->
+        <div class="flex-1 flex flex-col md:flex-row min-h-0 relative">
+          
+          <!-- DESKTOP SIDEBAR (w-60, hidden on mobile) -->
+          <aside class="w-60 bg-slate-900/80 border-r border-slate-800/80 p-4 hidden md:flex flex-col justify-between shrink-0 overflow-y-auto">
             <nav class="space-y-1 text-xs font-bold font-heading">
               ${[
-                { id: 'overview', label: '📊 Dashboard Overview' },
-                { id: 'brand', label: '🏥 Hospital Credentials' },
-                { id: 'stats', label: '📈 Lifetime Metrics' },
-                { id: 'leadership', label: '👨‍⚕️ Founders & Leadership' },
-                { id: 'administration', label: '👥 Administration Team' },
-                { id: 'facilities', label: '👁️ Vision Centers (8)' },
-                { id: 'services', label: '🩺 Services & Specialties' },
-                { id: 'empanelments', label: '🛡️ Insurance & Schemes' },
-                { id: 'backup', label: '💾 Backup & Restore (JSON)' }
-              ].map(tab => `
-                <button onclick="window.switchAdminTab('${tab.id}')" class="w-full text-left px-3.5 py-3 rounded-xl transition-all flex items-center justify-between ${activeTab === tab.id ? 'bg-emerald-500 text-slate-950 font-extrabold shadow-lg scale-[1.02]' : 'text-slate-400 hover:text-white hover:bg-slate-800/80'}">
-                  <span>${tab.label}</span>
+                { id: 'overview', label: '📊 Dashboard' },
+                { id: 'homepage', label: '🏠 Homepage' },
+                { id: 'about', label: 'ℹ️ About' },
+                { id: 'hospitals', label: '🏥 Hospitals' },
+                { id: 'facilities', label: '👁️ Vision Centers' },
+                { id: 'services', label: '🩺 Services' },
+                { id: 'doctors', label: '👨‍⚕️ Doctors' },
+                { id: 'academics', label: '🎓 Academics' },
+                { id: 'empanelments', label: '🛡️ Patient Resources' },
+                { id: 'faqs', label: '❓ FAQs' },
+                { id: 'media', label: '🖼️ Media' },
+                { id: 'backup', label: '⚙️ Settings' }
+              ].map(item => `
+                <button onclick="window.switchAdminTab('${item.id}')" class="w-full text-left px-3.5 py-2.5 rounded-xl transition-all flex items-center justify-between ${activeTab === item.id ? 'bg-emerald-500 text-slate-950 font-extrabold shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
+                  <span>${item.label}</span>
                 </button>
               `).join('')}
             </nav>
 
-          </div>
+            <div class="pt-4 border-t border-slate-800/80">
+              <button onclick="window.handleAdminLogout()" class="w-full text-left px-3.5 py-2.5 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-950/40 transition-colors font-bold text-xs flex items-center gap-2">
+                <span>🚪 Sign Out</span>
+              </button>
+            </div>
+          </aside>
 
-          <div class="pt-6 border-t border-slate-800 space-y-3">
-            <a href="#/" target="_blank" rel="noopener" class="block w-full text-center py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition-colors">
-              Preview Live Site &rarr;
-            </a>
-            <button onclick="window.handleAdminLogout()" class="block w-full py-2.5 rounded-xl bg-red-950/80 hover:bg-red-900 text-red-200 font-bold text-xs border border-red-800/50 transition-colors">
-              Sign Out
-            </button>
-          </div>
-        </aside>
+          <!-- MOBILE DRAWER MENU (Overlays top on mobile when opened) -->
+          ${window.isAdminMobileDrawerOpen ? `
+            <div class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md p-6 overflow-y-auto md:hidden flex flex-col justify-between font-sans">
+              <div class="space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                  <span class="font-extrabold text-base font-heading text-white">Admin Navigation</span>
+                  <button onclick="window.toggleAdminMobileDrawer()" class="p-2 rounded-xl bg-slate-800 text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                  </button>
+                </div>
 
-        <!-- Main Content Area -->
-        <main class="flex-1 p-6 sm:p-10 overflow-y-auto space-y-8 min-w-0">
-          ${renderAdminTabContent(activeTab)}
-        </main>
+                <div class="grid grid-cols-2 gap-2 text-xs font-bold font-heading">
+                  ${[
+                    { id: 'overview', label: '📊 Dashboard' },
+                    { id: 'homepage', label: '🏠 Homepage' },
+                    { id: 'about', label: 'ℹ️ About' },
+                    { id: 'hospitals', label: '🏥 Hospitals' },
+                    { id: 'facilities', label: '👁️ Vision Centers' },
+                    { id: 'services', label: '🩺 Services' },
+                    { id: 'doctors', label: '👨‍⚕️ Doctors' },
+                    { id: 'academics', label: '🎓 Academics' },
+                    { id: 'empanelments', label: '🛡️ Patient Resources' },
+                    { id: 'faqs', label: '❓ FAQs' },
+                    { id: 'media', label: '🖼️ Media' },
+                    { id: 'backup', label: '⚙️ Settings' }
+                  ].map(item => `
+                    <button onclick="window.switchAdminTab('${item.id}'); window.toggleAdminMobileDrawer();" class="text-left p-3.5 rounded-xl border border-slate-800 transition-all ${activeTab === item.id ? 'bg-emerald-500 text-slate-950 font-extrabold' : 'bg-slate-900 text-slate-200'}">
+                      ${item.label}
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
 
+              <div class="pt-6 border-t border-slate-800 space-y-3">
+                <a href="#/" target="_blank" class="block w-full py-3 text-center rounded-xl bg-slate-800 text-white font-bold text-xs">
+                  Preview Live Site &rarr;
+                </a>
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- MAIN CONTENT AREA -->
+          <main class="flex-1 p-6 sm:p-8 overflow-y-auto space-y-8 min-w-0">
+            ${renderAdminTabContent(activeTab)}
+          </main>
+
+        </div>
       </div>
     `;
+  }
   }
 
   // 1. Premium Split-Panel Password Gate View (Matching Reference Image Layout)
@@ -5017,14 +5080,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  window.toggleAdminMobileDrawer = function() {
+    window.isAdminMobileDrawerOpen = !window.isAdminMobileDrawerOpen;
+    render();
+  };
+
   window.handleAdminLogout = function() {
+    window.isAdminMobileDrawerOpen = false;
     sessionStorage.removeItem('anugraha_admin_auth');
     window.showAdminToast("Signed out of CMS Console", "success");
     render();
   };
 
   window.switchAdminTab = function(tabId) {
-    window.activeAdminTab = tabId;
+    let resolvedTab = tabId;
+    if (tabId === 'doctors') resolvedTab = 'leadership';
+    if (tabId === 'homepage') resolvedTab = 'brand';
+    window.activeAdminTab = resolvedTab;
     render();
   };
 
