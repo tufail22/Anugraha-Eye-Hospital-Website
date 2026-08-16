@@ -242,12 +242,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (path === '/patient-resources/empanelments-and-insurance') {
       title = "Insurance & Government Scheme Empanelments | Anugraha Eye Hospital";
       description = "Cashless eye treatment for Ayushman Bharat (AB-ARK), ABY, JSS, Star Health, ICICI Lombard, Niva Bupa, Bajaj Allianz, and major TPAs.";
-    } else if (path === '/admin') {
-      title = "Admin Portal Sign In | Anugraha Eye Hospital CMS";
-      description = "Gated administrative management portal for sitewide content editing.";
-    } else if (path.startsWith('/admin/dashboard')) {
-      title = "Admin Dashboard | Anugraha Eye Hospital CMS Console";
-      description = "Authenticated Content Management Console.";
     }
 
     document.title = title;
@@ -796,7 +790,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           </div>
 
-          <!-- Bottom Bar: Dynamic Year Copyright + Single Low-Emphasis "Admin Login" Link -->
+          <!-- Bottom Bar: Dynamic Year Copyright -->
           <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
             <div>
               &copy; ${currentYear} ${brand.name}. All rights reserved. North Karnataka's Premier Super-Specialty Eye Network.
@@ -3776,19 +3770,88 @@ document.addEventListener("DOMContentLoaded", () => {
 
       </div>
     `;
-  // Admin memory purge helper to clear legacy session tokens
-  (function purgeAdminMemory() {
-    try {
-      localStorage.removeItem('admin_session');
-      localStorage.removeItem('cms_draft_data');
-      localStorage.removeItem('anugraha_admin_token');
-      localStorage.removeItem('anugraha_state');
-    } catch (e) {
-      // Ignore storage errors
-    }
-  })();
+              </div>
 
-  // Lenis Inertia Smooth Scroll Engine with prefers-reduced-motion Safeguard
+              <!-- Forgot Password Inline Notice -->
+              <div id="forgot-password-notice" class="hidden p-3 rounded-xl bg-teal-900/80 border border-teal-700 text-xs text-amber-300 text-center font-bold">
+                Contact your website administrator
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" id="admin-login-submit" class="w-full py-3.5 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-sm hover:bg-emerald-400 transition-all shadow-lg flex items-center justify-center gap-2">
+                <span id="admin-login-btn-text">Sign In</span>
+              </button>
+            </form>
+
+            <!-- Prototype Notice Footer -->
+            <div class="pt-4 border-t border-slate-800/80 text-center">
+              <p class="text-[10px] text-slate-400 leading-relaxed font-mono">
+                /* Frontend Prototype Notice: Local session persistence enabled. Credentials: web@admin / Admin@2001 */
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    `;
+                </div>
+                <div>
+                  <div class="text-xs font-extrabold text-white font-mono">${session ? session.username : 'web@admin'}</div>
+                  <div class="text-[10px] text-slate-400 font-mono">Authenticated Admin</div>
+                </div>
+              </div>
+              <button onclick="window.handleAdminLogout()" class="p-2 rounded-xl bg-slate-800 hover:bg-red-500/20 hover:text-red-400 text-slate-300 transition-colors" title="Sign Out">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+              </button>
+            </div>
+
+            <button onclick="window.handleAdminLogout()" class="w-full py-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 font-bold text-xs hover:bg-red-500/20 transition-colors flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+              <span>Sign Out of CMS</span>
+            </button>
+          </div>
+
+        </aside>
+
+        <!-- MAIN DASHBOARD CONTENT WORKSPACE -->
+        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+          
+          <!-- Top Header Bar -->
+          <header class="p-6 bg-slate-900/60 border-b border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2 text-xs text-slate-400 font-mono">
+                <span>Admin CMS</span>
+                <span>/</span>
+                <span class="text-emerald-400 font-bold">${currentMod.label}</span>
+              </div>
+              <h1 class="text-2xl font-extrabold text-white font-heading mt-1">${currentMod.label} CMS Manager</h1>
+            </div>
+
+            <div class="flex items-center gap-3">
+              ${currentMod.publicRoute ? `
+                <a href="${currentMod.publicRoute}" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition-colors flex items-center gap-1.5 border border-slate-700">
+                  <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                  <span>Preview on Site</span>
+                </a>
+              ` : ''}
+              
+              <button onclick="window.resetAdminStore()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold transition-colors">
+                Reset Store
+              </button>
+            </div>
+          </header>
+
+          <!-- Dynamic Workspace Content View -->
+          <div class="p-6 md:p-8 space-y-8 flex-1">
+            ${renderAdminSectionContent(activeSection, currentMod)}
+          </div>
+
+        </main>
+
+      </div>
+    `;
+  }
 
   // Lenis Inertia Smooth Scroll Engine with prefers-reduced-motion Safeguard
   function initLenisSmoothScroll() {
@@ -4023,6 +4086,243 @@ document.addEventListener("DOMContentLoaded", () => {
     initMobileBottomBar();
     initFormValidationShake();
     initPhysicsDragCarousel();
+    initSpotlightHoverTracker();
+  }
+
+  // Lenis Inertia Smooth Scroll Engine with prefers-reduced-motion Safeguard
+  function initLenisSmoothScroll() {
+    const motionSafe = window.useMotionSafe ? window.useMotionSafe() : { isMotionSafe: true };
+    
+    // Disable smooth-scroll entirely for reduced-motion users (native scroll is safer for them)
+    if (!motionSafe.isMotionSafe || !window.Lenis) {
+      if (window.lenisInstance) {
+        window.lenisInstance.destroy();
+        window.lenisInstance = null;
+      }
+      return;
+    }
+
+    if (!window.lenisInstance) {
+      window.lenisInstance = new window.Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        touchMultiplier: 1.5,
+      });
+
+      function raf(time) {
+        if (window.lenisInstance) {
+          window.lenisInstance.raf(time);
+          requestAnimationFrame(raf);
+        }
+      }
+      requestAnimationFrame(raf);
+    }
+  }
+
+  // Sitewide Major Section Scroll-Reveal Observer (~18% viewport threshold)
+  function initSectionScrollReveals() {
+    const sections = document.querySelectorAll('section');
+    if (sections.length === 0) return;
+
+    const motionSafe = window.useMotionSafe ? window.useMotionSafe() : { isMotionSafe: true };
+
+    // Reduced motion safeguard: reveal sections immediately
+    if (!motionSafe.isMotionSafe) {
+      sections.forEach(sec => sec.classList.add('is-revealed'));
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+          obs.unobserve(entry.target); // Reveal once per element, never re-trigger on scroll-back-up
+        }
+      });
+    }, { threshold: 0.18 });
+
+    sections.forEach(sec => {
+      if (!sec.classList.contains('scroll-reveal-section')) {
+        sec.classList.add('scroll-reveal-section');
+      }
+      observer.observe(sec);
+    });
+  }
+
+  // Card Grid Capped Staggering (Max 500ms total cascade spread)
+  function initGridStaggers() {
+    const grids = document.querySelectorAll('.grid, [class*="grid-cols-"]');
+    const motionSafe = window.useMotionSafe ? window.useMotionSafe() : { isMotionSafe: true };
+
+    grids.forEach(grid => {
+      const items = grid.children;
+      const totalCount = items.length;
+      if (totalCount === 0) return;
+
+      Array.from(items).forEach((item, idx) => {
+        if (!motionSafe.isMotionSafe) {
+          item.style.transitionDelay = '0ms';
+          return;
+        }
+
+        // Cap total stagger cascade spread at 500ms max regardless of item count
+        const calculatedDelay = Math.min(idx * 70, 500 * (idx / Math.max(totalCount - 1, 1)));
+        item.style.transitionDelay = `${Math.round(calculatedDelay)}ms`;
+      });
+    });
+  }
+
+  // About Us Founding Timeline Scroll Progress Line & Milestone Dot Activation
+  function initTimelineScrollProgress() {
+    const timeline = document.querySelector('.founding-timeline-wrapper, #founding-timeline');
+    const fillLine = document.querySelector('.timeline-progress-bar-fill');
+    const milestoneDots = document.querySelectorAll('.timeline-milestone-dot');
+
+    if (!timeline || !fillLine) return;
+
+    const motionSafe = window.useMotionSafe ? window.useMotionSafe() : { isMotionSafe: true };
+    if (!motionSafe.isMotionSafe) {
+      fillLine.style.height = '100%';
+      milestoneDots.forEach(dot => dot.classList.add('is-active'));
+      return;
+    }
+
+    function updateTimelineProgress() {
+      const rect = timeline.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+
+      // Calculate scroll progress percentage through the timeline element
+      const totalHeight = rect.height;
+      const startPoint = viewportHeight * 0.7; // Start filling when 30% into view
+      const currentPos = startPoint - rect.top;
+      let progressRatio = Math.max(0, Math.min(1, currentPos / totalHeight));
+
+      fillLine.style.height = `${(progressRatio * 100).toFixed(1)}%`;
+
+      // Activate milestone dots as scroll passes each dot's vertical position
+      milestoneDots.forEach(dot => {
+        const dotRect = dot.getBoundingClientRect();
+        if (dotRect.top < viewportHeight * 0.65) {
+          dot.classList.add('is-active');
+        } else {
+          dot.classList.remove('is-active');
+        }
+      });
+    }
+
+    window.removeEventListener('scroll', window.timelineScrollHandler);
+    window.timelineScrollHandler = updateTimelineProgress;
+    window.addEventListener('scroll', updateTimelineProgress, { passive: true });
+    updateTimelineProgress();
+  }
+
+  // Layered Motion Token Reveal Observer (Framer Motion / Motion Tokens Pattern)
+  function initMotionReveals() {
+    const motionSafe = window.useMotionSafe ? window.useMotionSafe() : { isMotionSafe: true };
+    if (!motionSafe.isMotionSafe) return;
+
+    const cards = document.querySelectorAll('.glass-card, .hover-lift, section > div');
+    cards.forEach((card, idx) => {
+      if (!card.hasAttribute('data-motion-applied')) {
+        card.setAttribute('data-motion-applied', 'true');
+        card.classList.add('transition-motion-premium', 'duration-standard');
+        
+        // Apply motion token stagger delay (70ms increment between sibling elements)
+        const staggerDelay = (idx % 8) * 70;
+        card.style.transitionDelay = `${staggerDelay}ms`;
+      }
+    });
+  }
+
+  // Branded Initial-Load Sequence Controller (Aperture Iris Motif)
+  function initInitialApertureLoader() {
+    const loader = document.getElementById("aperture-initial-loader");
+    if (!loader) return;
+
+    // Skip sequence on subsequent internal route navigations (first-paint moment only)
+    const isAlreadyLoaded = sessionStorage.getItem("anugraha_loaded_v1");
+    if (isAlreadyLoaded) {
+      loader.remove();
+      return;
+    }
+
+    const motionSafe = window.useMotionSafe ? window.useMotionSafe() : { isMotionSafe: true };
+
+    // Reduced-motion safeguard: shorten loader to simple 150ms opacity fade
+    const displayDuration = motionSafe.isMotionSafe ? 650 : 150;
+
+    setTimeout(() => {
+      loader.style.opacity = "0";
+      setTimeout(() => {
+        loader.remove();
+        sessionStorage.setItem("anugraha_loaded_v1", "true");
+      }, 300);
+    }, displayDuration);
+  }
+
+  function render404Page() {
+    return `
+      <div class="max-w-md mx-auto px-4 py-20 text-center space-y-4">
+        <div class="text-5xl font-extrabold text-teal-900 font-heading">404</div>
+        <h1 class="text-xl font-bold text-slate-800">Page Not Found</h1>
+        <p class="text-xs text-slate-500">The requested route does not exist or has been relocated via 301 redirect.</p>
+        <a href="#/" class="inline-block px-5 py-2.5 rounded-xl bg-teal-900 text-white font-bold text-xs">Return to Homepage</a>
+      </div>
+    `;
+  }
+
+  // Form Field Validation Shake Handler (Gentle horizontal shake on invalid inputs)
+  function initFormValidationShake() {
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+      form.addEventListener('submit', (e) => {
+        const inputs = form.querySelectorAll('input[required], textarea[required], select[required]');
+        inputs.forEach(input => {
+          if (!input.value.trim()) {
+            input.classList.remove('input-gentle-shake');
+            void input.offsetWidth; // Force reflow for keyframe animation restart
+            input.classList.add('input-gentle-shake');
+            setTimeout(() => input.classList.remove('input-gentle-shake'), 350);
+          }
+        });
+      });
+    });
+  }
+
+  // Linear / Apple-inspired Interactive Spotlight Cursor Tracker
+  function initSpotlightHoverTracker() {
+    const cards = document.querySelectorAll('.spotlight-card, .bento-card-luxury');
+    if (cards.length === 0) return;
+
+    cards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+  }
+
+  // Central Render Loop
+  function render() {
+    updatePageSEO(currentPath);
+    headerContainer.innerHTML = renderHeader();
+    appContainer.innerHTML = renderPage();
+    footerContainer.innerHTML = renderFooter();
+
+    // Initialize Smooth Scroll, Sitewide Observers, Navigation & Motion Tokens on render
+    initLenisSmoothScroll();
+    initSectionScrollReveals();
+    initGridStaggers();
+    initMotionReveals();
+    initTimelineScrollProgress();
+    initMobileBottomBar();
+    initFormValidationShake();
+    initPhysicsDragCarousel();
+    initAdminListDragAndDrop();
     initSpotlightHoverTracker();
   }
 
