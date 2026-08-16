@@ -976,7 +976,7 @@ const DEFAULT_DATA = {
 
 class Store {
   constructor() {
-    this.key = "anugraha_hospital_store_v1";
+    this.key = "anugraha_hospital_store_v2";
     this.data = this.load();
   }
 
@@ -1007,9 +1007,9 @@ class Store {
           stats: { ...DEFAULT_DATA.stats, ...(parsed.stats || {}) },
           patientResources: { ...DEFAULT_DATA.patientResources, ...(parsed.patientResources || {}) },
           facilities: parsed.facilities || DEFAULT_DATA.facilities,
-          services: parsed.services || DEFAULT_DATA.services,
-          leadership: parsed.leadership || DEFAULT_DATA.leadership,
-          administration: parsed.administration || DEFAULT_DATA.administration,
+          services: (parsed.services && parsed.services.length >= DEFAULT_DATA.services.length) ? parsed.services : DEFAULT_DATA.services,
+          leadership: (parsed.leadership && parsed.leadership.length >= DEFAULT_DATA.leadership.length) ? parsed.leadership : DEFAULT_DATA.leadership,
+          administration: (parsed.administration && parsed.administration.length >= DEFAULT_DATA.administration.length) ? parsed.administration : DEFAULT_DATA.administration,
           academics: parsed.academics || DEFAULT_DATA.academics,
           faqs: parsed.faqs || DEFAULT_DATA.faqs,
           empanelments: parsed.empanelments || DEFAULT_DATA.empanelments,
