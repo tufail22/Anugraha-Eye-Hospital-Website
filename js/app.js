@@ -1860,10 +1860,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 3. LEADERSHIP View (Redesigned Bold Editorial Layout inspired by Reference Mockup)
   function renderLeadershipPage() {
-    const leadership = store.data.leadership;
-    const chairman = leadership.find(l => l.id === 'dr-lingadalli');
-    const medicalDirector = leadership.find(l => l.id === 'dr-malini');
+    const leadership = store.getLeadership();
+    const chairman = leadership.find(l => l.id === 'dr-lingadalli') || leadership[0] || {};
+    const medicalDirector = leadership.find(l => l.id === 'dr-malini') || leadership[1] || {};
     const brand = store.getBrand();
+    const stats = store.getStats();
 
     return `
       <div class="max-w-7xl mx-auto px-4 py-10 space-y-20 font-sans">
@@ -2282,7 +2283,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 4. ADMINISTRATION View (Consolidated 6 Bios ON ONE PAGE with Left-Hand Sticky Anchor Jump Menu)
   function renderAdministrationPage() {
-    const adminTeam = store.data.administration;
+    const adminTeam = store.getAdministration() || [];
     const brand = store.getBrand();
 
     // Array of soft pastel backdrop variants
