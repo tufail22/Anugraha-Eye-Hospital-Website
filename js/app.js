@@ -790,11 +790,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
           </div>
 
-          <!-- Bottom Bar: Dynamic Year Copyright -->
+          <!-- Bottom Bar: Dynamic Year Copyright + Single Low-Emphasis "Admin Login" Link -->
           <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
             <div>
               &copy; ${currentYear} ${brand.name}. All rights reserved. North Karnataka's Premier Super-Specialty Eye Network.
             </div>
+            
+            <div></div>
           </div>
 
         </div>
@@ -845,6 +847,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (['/news', '/videos', '/careers', '/case-studies', '/get-associated', '/contact'].includes(path)) {
       return renderAuxiliaryPage(path.replace('/', ''));
     }
+
+
 
     // 404 Fallback
     return render404Page();
@@ -3768,241 +3772,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </div>
 
-      </div>
-  // Lenis Inertia Smooth Scroll Engine with prefers-reduced-motion Safeguard
-  function initLenisSmoothScroll() {
-    const motionSafe = window.useMotionSafe ? window.useMotionSafe() : { isMotionSafe: true };
-    
-    // Disable smooth-scroll entirely for reduced-motion users (native scroll is safer for them)
-    if (!motionSafe.isMotionSafe || !window.Lenis) {
-      if (window.lenisInstance) {
-        window.lenisInstance.destroy();
-        window.lenisInstance = null;
-      }
-      return;
-    }
-
-    if (!window.lenisInstance) {
-      window.lenisInstance = new window.Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        touchMultiplier: 1.5,
-      });
-
-      function raf(time) {
-        if (window.lenisInstance) {
-          window.lenisInstance.raf(time);
-          requestAnimationFrame(raf);
-        }
-      }
-      requestAnimationFrame(raf);
-    }
-  }
-
-  // Sitewide Major Section Scroll-Reveal Observer (~18% viewport threshold)
-  function initSectionScrollReveals() {
-    const sections = document.querySelectorAll('section');
-    if (sections.length === 0) return;
-
-    const motionSafe = window.useMotionSafe ? window.useMotionSafe() : { isMotionSafe: true };
-
-    // Reduced motion safeguard: reveal sections immediately
-    if (!motionSafe.isMotionSafe) {
-      sections.forEach(sec => sec.classList.add('is-revealed'));
-      return;
-    }
-
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-revealed');
-          obs.unobserve(entry.target); // Reveal once per element, never re-trigger on scroll-back-up
-        }
-      });
-    }, { threshold: 0.18 });
-
-    sections.forEach(sec => {
-      if (!sec.classList.contains('scroll-reveal-section')) {
-        sec.classList.add('scroll-reveal-section');
-      }
-      observer.observe(sec);
-    });
-  }
-
-  // Card Grid Capped Staggering (Max 500ms total cascade spread)
-  function initGridStaggers() {
-    const grids = document.querySelectorAll('.grid, [class*="grid-cols-"]');
-    const motionSafe = window.useMotionSafe ? window.useMotionSafe() : { isMotionSafe: true };
-
-    grids.forEach(grid => {
-      const items = grid.children;
-      const totalCount = items.length;
-      if (totalCount === 0) return;
-
-      Array.from(items).forEach((item, idx) => {
-        if (!motionSafe.isMotionSafe) {
-          item.style.transitionDelay = '0ms';
-          return;
-        }
-
-        // Cap total stagger cascade spread at 500ms max regardless of item count
-        const calculatedDelay = Math.min(idx * 70, 500 * (idx / Math.max(totalCount - 1, 1)));
-        item.style.transitionDelay = `${Math.round(calculatedDelay)}ms`;
-      });
-    });
-  }
-
-  // About Us Founding Timeline Scroll Progress Line & Milestone Dot Activation
-  function initTimelineScrollProgress() {
-    const timeline = document.querySelector('.founding-timeline-wrapper, #founding-timeline');
-    const fillLine = document.querySelector('.timeline-progress-bar-fill');
-    const milestoneDots = document.querySelectorAll('.timeline-milestone-dot');
-
-    if (!timeline || !fillLine) return;
-
-    const motionSafe = window.useMotionSafe ? window.useMotionSafe() : { isMotionSafe: true };
-    if (!motionSafe.isMotionSafe) {
-      fillLine.style.height = '100%';
-      milestoneDots.forEach(dot => dot.classList.add('is-active'));
-      return;
-    }
-
-    function updateTimelineProgress() {
-      const rect = timeline.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-
-      // Calculate scroll progress percentage through the timeline element
-      const totalHeight = rect.height;
-      const startPoint = viewportHeight * 0.7; // Start filling when 30% into view
-      const currentPos = startPoint - rect.top;
-      let progressRatio = Math.max(0, Math.min(1, currentPos / totalHeight));
-
-      fillLine.style.height = `${(progressRatio * 100).toFixed(1)}%`;
-
-      // Activate milestone dots as scroll passes each dot's vertical position
-      milestoneDots.forEach(dot => {
-        const dotRect = dot.getBoundingClientRect();
-        if (dotRect.top < viewportHeight * 0.65) {
-          dot.classList.add('is-active');
-        } else {
-          dot.classList.remove('is-active');
-        }
-      });
-    }
-
-    window.removeEventListener('scroll', window.timelineScrollHandler);
-    window.timelineScrollHandler = updateTimelineProgress;
-    window.addEventListener('scroll', updateTimelineProgress, { passive: true });
-    updateTimelineProgress();
-  }
-
-  // Layered Motion Token Reveal Observer (Framer Motion / Motion Tokens Pattern)
-  function initMotionReveals() {
-    const motionSafe = window.useMotionSafe ? window.useMotionSafe() : { isMotionSafe: true };
-    if (!motionSafe.isMotionSafe) return;
-
-    const cards = document.querySelectorAll('.glass-card, .hover-lift, section > div');
-    cards.forEach((card, idx) => {
-      if (!card.hasAttribute('data-motion-applied')) {
-        card.setAttribute('data-motion-applied', 'true');
-        card.classList.add('transition-motion-premium', 'duration-standard');
-        
-        // Apply motion token stagger delay (70ms increment between sibling elements)
-        const staggerDelay = (idx % 8) * 70;
-        card.style.transitionDelay = `${staggerDelay}ms`;
-      }
-    });
-  }
-
-  // Branded Initial-Load Sequence Controller (Aperture Iris Motif)
-  function initInitialApertureLoader() {
-    const loader = document.getElementById("aperture-initial-loader");
-    if (!loader) return;
-
-    // Skip sequence on subsequent internal route navigations (first-paint moment only)
-    const isAlreadyLoaded = sessionStorage.getItem("anugraha_loaded_v1");
-    if (isAlreadyLoaded) {
-      loader.remove();
-      return;
-    }
-
-    const motionSafe = window.useMotionSafe ? window.useMotionSafe() : { isMotionSafe: true };
-
-    // Reduced-motion safeguard: shorten loader to simple 150ms opacity fade
-    const displayDuration = motionSafe.isMotionSafe ? 650 : 150;
-
-    setTimeout(() => {
-      loader.style.opacity = "0";
-      setTimeout(() => {
-        loader.remove();
-        sessionStorage.setItem("anugraha_loaded_v1", "true");
-      }, 300);
-    }, displayDuration);
-  }
-
-  function render404Page() {
-    return `
-      <div class="max-w-md mx-auto px-4 py-20 text-center space-y-4">
-        <div class="text-5xl font-extrabold text-teal-900 font-heading">404</div>
-        <h1 class="text-xl font-bold text-slate-800">Page Not Found</h1>
-        <p class="text-xs text-slate-500">The requested route does not exist or has been relocated via 301 redirect.</p>
-        <a href="#/" class="inline-block px-5 py-2.5 rounded-xl bg-teal-900 text-white font-bold text-xs">Return to Homepage</a>
-      </div>
     `;
-  }
-
-  // Form Field Validation Shake Handler (Gentle horizontal shake on invalid inputs)
-  function initFormValidationShake() {
-    const forms = document.querySelectorAll('form');
-    forms.forEach(form => {
-      form.addEventListener('submit', (e) => {
-        const inputs = form.querySelectorAll('input[required], textarea[required], select[required]');
-        inputs.forEach(input => {
-          if (!input.value.trim()) {
-            input.classList.remove('input-gentle-shake');
-            void input.offsetWidth; // Force reflow for keyframe animation restart
-            input.classList.add('input-gentle-shake');
-            setTimeout(() => input.classList.remove('input-gentle-shake'), 350);
-          }
-        });
-      });
-    });
-  }
-
-  // Linear / Apple-inspired Interactive Spotlight Cursor Tracker
-  function initSpotlightHoverTracker() {
-    const cards = document.querySelectorAll('.spotlight-card, .bento-card-luxury');
-    if (cards.length === 0) return;
-
-    cards.forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
-      });
-    });
-  }
-
-  // Central Render Loop
-  function render() {
-    updatePageSEO(currentPath);
-    headerContainer.innerHTML = renderHeader();
-    appContainer.innerHTML = renderPage();
-    footerContainer.innerHTML = renderFooter();
-
-    // Initialize Smooth Scroll, Sitewide Observers, Navigation & Motion Tokens on render
-    initLenisSmoothScroll();
-    initSectionScrollReveals();
-    initGridStaggers();
-    initMotionReveals();
-    initTimelineScrollProgress();
-    initMobileBottomBar();
-    initFormValidationShake();
-    initPhysicsDragCarousel();
-    initSpotlightHoverTracker();
   }
 
   // Lenis Inertia Smooth Scroll Engine with prefers-reduced-motion Safeguard
@@ -4238,6 +4008,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initMobileBottomBar();
     initFormValidationShake();
     initPhysicsDragCarousel();
+
     initSpotlightHoverTracker();
   }
 
