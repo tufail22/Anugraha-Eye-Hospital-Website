@@ -4624,105 +4624,173 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderAdminTabContent(tabId) {
     const store = window.appStore;
 
-    // MODULE 1: DASHBOARD / OVERVIEW
+    // MODULE 1: DASHBOARD / OVERVIEW (Content Dashboard - Simple Overview)
     if (tabId === 'dashboard' || tabId === 'overview') {
-      const stats = store.getStats();
       const facilities = store.getFacilities();
-      const empanelments = store.getEmpanelments();
+      const doctorsCount = (store.data.leadership || []).length;
+      const servicesCount = (store.getServices() || []).length;
+      const baseHospitalsCount = facilities.filter(f => f.type === 'base').length;
+      const visionCentersCount = facilities.filter(f => f.type === 'vision-center').length;
+      const imagesCount = servicesCount + doctorsCount;
+      const lastSavedTime = localStorage.getItem('anugraha_last_saved_time') || 'Active Session (Synced)';
 
       return `
         <div class="space-y-6 font-sans">
           
-          <!-- Jobie UI Vibrant Summary Stat Pills (Blue, Purple, Emerald, Amber) -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            
-            <div class="p-6 rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg space-y-2 flex items-center justify-between">
-              <div>
-                <div class="text-xs font-bold font-mono opacity-80 uppercase">Lifetime Surgeries</div>
-                <div class="text-3xl font-extrabold font-heading mt-1">${stats.lifetimeSurgeries}</div>
-                <div class="text-[11px] opacity-90">Micro-Incision Phaco & Retina</div>
+          <!-- System Metadata & Status Strip -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl font-bold border border-emerald-400/40 shrink-0">
+                🌐
               </div>
-              <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-2xl shrink-0">👁️</div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="font-extrabold text-slate-900 dark:text-white text-base font-heading">Website Status:</span>
+                  <span class="px-3 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-extrabold text-xs font-mono flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Live & Synchronized
+                  </span>
+                </div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Anugraha Eye Hospital Public Website (Frontend SPA Build)</div>
+              </div>
             </div>
 
-            <div class="p-6 rounded-3xl bg-gradient-to-r from-teal-600 to-emerald-700 text-white shadow-lg space-y-2 flex items-center justify-between">
+            <div class="flex items-center gap-6 text-xs font-mono border-t md:border-t-0 border-slate-100 dark:border-slate-800 pt-3 md:pt-0 w-full md:w-auto justify-between md:justify-end">
               <div>
-                <div class="text-xs font-bold font-mono opacity-80 uppercase">Outreach Camps</div>
-                <div class="text-3xl font-extrabold font-heading mt-1">${stats.outreachCamps}</div>
-                <div class="text-[11px] opacity-90">Mobile Rural Eye Screening</div>
+                <div class="text-slate-400 text-[10px] uppercase font-bold">Current Admin</div>
+                <div class="font-extrabold text-teal-900 dark:text-emerald-400">web@admin</div>
               </div>
-              <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-2xl shrink-0">🚐</div>
-            </div>
-
-            <div class="p-6 rounded-3xl bg-gradient-to-r from-emerald-700 to-teal-800 text-white shadow-lg space-y-2 flex items-center justify-between">
-              <div>
-                <div class="text-xs font-bold font-mono opacity-80 uppercase">Vision Centers</div>
-                <div class="text-3xl font-extrabold font-heading mt-1">${facilities.length}</div>
-                <div class="text-[11px] opacity-90">Rural & Primary Care Hubs</div>
+              <div class="border-l border-slate-200 dark:border-slate-800 pl-6">
+                <div class="text-slate-400 text-[10px] uppercase font-bold">Last Saved</div>
+                <div class="font-bold text-slate-700 dark:text-slate-200">${lastSavedTime}</div>
               </div>
-              <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-2xl shrink-0">🏢</div>
             </div>
-
-            <div class="p-6 rounded-3xl bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg space-y-2 flex items-center justify-between">
-              <div>
-                <div class="text-xs font-bold font-mono opacity-80 uppercase">Google Rating</div>
-                <div class="text-3xl font-extrabold font-heading mt-1">4.8 ★</div>
-                <div class="text-[11px] opacity-90">1,200+ Verified Patient Reviews</div>
-              </div>
-              <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-2xl shrink-0">⭐</div>
-            </div>
-
           </div>
 
-          <!-- Middle Split: Activity Overview & Quick Content Manager -->
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Section Header -->
+          <div class="flex items-center justify-between pt-2">
+            <div>
+              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Content Module Overview</h2>
+              <p class="text-xs text-slate-500">Summary of published site content modules and asset count.</p>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono text-xs font-bold">
+              7 Content Modules
+            </span>
+          </div>
+
+          <!-- 7 REQUIRED SUMMARY CARDS GRID -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             
-            <div class="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-4 shadow-sm">
-              <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
-                <h3 class="font-extrabold text-slate-900 dark:text-white text-base font-heading">CMS Operational Status</h3>
-                <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-mono font-bold">LocalStorage Active</span>
+            <!-- 1. Pages Card -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-3 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="w-10 h-10 rounded-2xl bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl shrink-0">📄</span>
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[11px] font-mono font-bold">12 Routes</span>
               </div>
-              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                All changes saved in this admin console are saved directly into your browser's persistent storage and update the live hospital website in real-time. Use the <strong>Settings & Backup</strong> tab to export or import complete site backup files.
-              </p>
-              
-              <!-- Quick Stats Table -->
-              <div class="grid grid-cols-3 gap-3 pt-2 text-xs font-mono">
-                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 text-center">
-                  <div class="text-slate-400 text-[10px]">Free Cataracts</div>
-                  <div class="font-bold text-emerald-600 dark:text-emerald-400 text-base mt-0.5">${stats.freeCataracts}</div>
-                </div>
-                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 text-center">
-                  <div class="text-slate-400 text-[10px]">Total Reach</div>
-                  <div class="font-bold text-blue-600 dark:text-blue-400 text-base mt-0.5">${stats.totalPeopleReached}</div>
-                </div>
-                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 text-center">
-                  <div class="text-slate-400 text-[10px]">Empanelments</div>
-                  <div class="font-bold text-amber-600 dark:text-amber-400 text-base mt-0.5">${empanelments.length}</div>
-                </div>
+              <div>
+                <div class="text-2xl font-extrabold text-slate-900 dark:text-white font-heading">Pages</div>
+                <div class="text-xs text-slate-500 mt-0.5">Home, About, Services, Hospitals & Resources</div>
               </div>
+              <button onclick="window.switchAdminTab('homepage')" class="w-full py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-1 transition-colors">
+                <span>Manage Pages</span>
+                <span>&rarr;</span>
+              </button>
             </div>
 
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-4 shadow-sm">
-              <h3 class="font-extrabold text-slate-900 dark:text-white text-base font-heading">Direct Module Shortcuts</h3>
-              <div class="space-y-2 text-xs font-bold">
-                <button onclick="window.switchAdminTab('doctors')" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 text-left flex items-center justify-between transition-colors">
-                  <span>👨‍⚕️ Doctor Profiles & Photos</span>
-                  <span>&rarr;</span>
-                </button>
-                <button onclick="window.switchAdminTab('vision-centers')" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 text-left flex items-center justify-between transition-colors">
-                  <span>👁️ 8 Vision Centers Directory</span>
-                  <span>&rarr;</span>
-                </button>
-                <button onclick="window.switchAdminTab('services')" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 text-left flex items-center justify-between transition-colors">
-                  <span>🩺 8 Ophthalmic Specialties</span>
-                  <span>&rarr;</span>
-                </button>
-                <button onclick="window.switchAdminTab('settings')" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 text-left flex items-center justify-between transition-colors">
-                  <span>⚙️ JSON Backup & Telephony</span>
-                  <span>&rarr;</span>
-                </button>
+            <!-- 2. Doctors Card -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-3 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="w-10 h-10 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl shrink-0">👨‍⚕️</span>
+                <span class="px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-[11px] font-mono font-bold">${doctorsCount} Profiles</span>
               </div>
+              <div>
+                <div class="text-2xl font-extrabold text-slate-900 dark:text-white font-heading">Doctors</div>
+                <div class="text-xs text-slate-500 mt-0.5">Dr. Lingadalli & Dr. Malini bios & photos</div>
+              </div>
+              <button onclick="window.switchAdminTab('doctors')" class="w-full py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-1 transition-colors">
+                <span>Manage Doctors</span>
+                <span>&rarr;</span>
+              </button>
+            </div>
+
+            <!-- 3. Services Card -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-3 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="w-10 h-10 rounded-2xl bg-teal-100 dark:bg-teal-950 text-teal-600 dark:text-teal-400 flex items-center justify-center text-xl shrink-0">🩺</span>
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[11px] font-mono font-bold">${servicesCount} Specialties</span>
+              </div>
+              <div>
+                <div class="text-2xl font-extrabold text-slate-900 dark:text-white font-heading">Services</div>
+                <div class="text-xs text-slate-500 mt-0.5">Cataract, LASIK, Retina & Glaucoma Care</div>
+              </div>
+              <button onclick="window.switchAdminTab('services')" class="w-full py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-1 transition-colors">
+                <span>Manage Services</span>
+                <span>&rarr;</span>
+              </button>
+            </div>
+
+            <!-- 4. Hospitals Card -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-3 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="w-10 h-10 rounded-2xl bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl shrink-0">🏥</span>
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[11px] font-mono font-bold">${baseHospitalsCount} Campuses</span>
+              </div>
+              <div>
+                <div class="text-2xl font-extrabold text-slate-900 dark:text-white font-heading">Hospitals</div>
+                <div class="text-xs text-slate-500 mt-0.5">Vijayapura Main & Kalaburagi Campuses</div>
+              </div>
+              <button onclick="window.switchAdminTab('hospitals')" class="w-full py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-1 transition-colors">
+                <span>Manage Hospitals</span>
+                <span>&rarr;</span>
+              </button>
+            </div>
+
+            <!-- 5. Vision Centers Card -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-3 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="w-10 h-10 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl shrink-0">👁️</span>
+                <span class="px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 text-[11px] font-mono font-bold">${visionCentersCount} Centers</span>
+              </div>
+              <div>
+                <div class="text-2xl font-extrabold text-slate-900 dark:text-white font-heading">Vision Centers</div>
+                <div class="text-xs text-slate-500 mt-0.5">Talikoti, Muddebihal, Sindagi, Indi & 4 More</div>
+              </div>
+              <button onclick="window.switchAdminTab('vision-centers')" class="w-full py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-1 transition-colors">
+                <span>Manage Vision Centers</span>
+                <span>&rarr;</span>
+              </button>
+            </div>
+
+            <!-- 6. Images Card -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-3 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="w-10 h-10 rounded-2xl bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xl shrink-0">🖼️</span>
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[11px] font-mono font-bold">${imagesCount} Assets</span>
+              </div>
+              <div>
+                <div class="text-2xl font-extrabold text-slate-900 dark:text-white font-heading">Images</div>
+                <div class="text-xs text-slate-500 mt-0.5">Doctor cutouts, service photos & media</div>
+              </div>
+              <button onclick="window.switchAdminTab('media')" class="w-full py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-1 transition-colors">
+                <span>Manage Images</span>
+                <span>&rarr;</span>
+              </button>
+            </div>
+
+            <!-- 7. FAQs Card -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-3 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="w-10 h-10 rounded-2xl bg-rose-100 dark:bg-rose-950 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xl shrink-0">❓</span>
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[11px] font-mono font-bold">10 FAQs</span>
+              </div>
+              <div>
+                <div class="text-2xl font-extrabold text-slate-900 dark:text-white font-heading">FAQs</div>
+                <div class="text-xs text-slate-500 mt-0.5">Patient guidance & clinical recovery FAQs</div>
+              </div>
+              <button onclick="window.switchAdminTab('faqs')" class="w-full py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-1 transition-colors">
+                <span>Manage FAQs</span>
+                <span>&rarr;</span>
+              </button>
             </div>
 
           </div>

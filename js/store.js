@@ -510,6 +510,7 @@ class Store {
   save() {
     try {
       localStorage.setItem(this.key, JSON.stringify(this.data));
+      localStorage.setItem('anugraha_last_saved_time', new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
     } catch (e) {
       console.error("Failed to save store to localStorage", e);
     }
