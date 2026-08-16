@@ -811,13 +811,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
           </div>
 
-          <!-- Bottom Bar: Dynamic Year Copyright + Single Low-Emphasis "Admin Login" Link -->
+          <!-- Bottom Bar: Dynamic Year Copyright + Admin Login Link -->
           <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
             <div>
               &copy; ${currentYear} ${brand.name}. All rights reserved. North Karnataka's Premier Super-Specialty Eye Network.
             </div>
             
-            <div></div>
+            <a href="#/admin" class="hover:text-slate-300 text-[11px] transition-colors font-mono font-bold">Admin CMS Console &rarr;</a>
           </div>
 
         </div>
@@ -829,6 +829,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderPage() {
     const path = currentPath;
     
+    // Page: Admin Content Editor Console
+    if (path === '/admin' || path.startsWith('/admin/')) return renderAdminPage();
+
     // Page: Home
     if (path === '/') return renderHomePage();
     
@@ -4239,9 +4242,874 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // =========================================================================
+  // FRONTEND-ONLY ADMIN CONTENT EDITOR ENGINE (Zero Backend, 100% Static)
+  // =========================================================================
+
+  window.activeAdminTab = 'overview';
+
+  function renderAdminPage() {
+    const isAuthenticated = sessionStorage.getItem('anugraha_admin_auth') === 'true';
+
+    if (!isAuthenticated) {
+      return renderAdminLoginGate();
+    }
+
+    const activeTab = window.activeAdminTab || 'overview';
+
+    return `
+      <div class="min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col md:flex-row">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-72 bg-slate-900/90 border-r border-slate-800 p-6 flex flex-col justify-between shrink-0">
+          <div class="space-y-6">
+            
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-white p-0.5 overflow-hidden shrink-0 shadow-md">
+                  <img src="assets/official_logo.jpg" alt="Logo" class="w-full h-full object-contain" />
+                </div>
+                <div>
+                  <div class="font-extrabold text-sm text-white font-heading">Anugraha CMS</div>
+                  <div class="text-[10px] text-emerald-400 font-mono font-bold">Frontend Editor v2.0</div>
+                </div>
+              </div>
+            </div>
+
+            <nav class="space-y-1 text-xs font-bold font-heading">
+              ${[
+                { id: 'overview', label: '📊 Dashboard Overview' },
+                { id: 'brand', label: '🏥 Hospital Credentials' },
+                { id: 'stats', label: '📈 Lifetime Metrics' },
+                { id: 'leadership', label: '👨‍⚕️ Founders & Leadership' },
+                { id: 'administration', label: '👥 Administration Team' },
+                { id: 'facilities', label: '👁️ Vision Centers (8)' },
+                { id: 'services', label: '🩺 Services & Specialties' },
+                { id: 'empanelments', label: '🛡️ Insurance & Schemes' },
+                { id: 'backup', label: '💾 Backup & Restore (JSON)' }
+              ].map(tab => `
+                <button onclick="window.switchAdminTab('${tab.id}')" class="w-full text-left px-3.5 py-3 rounded-xl transition-all flex items-center justify-between ${activeTab === tab.id ? 'bg-emerald-500 text-slate-950 font-extrabold shadow-lg scale-[1.02]' : 'text-slate-400 hover:text-white hover:bg-slate-800/80'}">
+                  <span>${tab.label}</span>
+                </button>
+              `).join('')}
+            </nav>
+
+          </div>
+
+          <div class="pt-6 border-t border-slate-800 space-y-3">
+            <a href="#/" target="_blank" rel="noopener" class="block w-full text-center py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition-colors">
+              Preview Live Site &rarr;
+            </a>
+            <button onclick="window.handleAdminLogout()" class="block w-full py-2.5 rounded-xl bg-red-950/80 hover:bg-red-900 text-red-200 font-bold text-xs border border-red-800/50 transition-colors">
+              Sign Out
+            </button>
+          </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 p-6 sm:p-10 overflow-y-auto space-y-8 min-w-0">
+          ${renderAdminTabContent(activeTab)}
+        </main>
+
+      </div>
+    `;
+  }
+
+  // 1. Password Gate View
+  function renderAdminLoginGate() {
+    return `
+      <div class="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4 font-sans">
+        <div class="w-full max-w-md bg-slate-900 border border-slate-800 p-8 rounded-3xl space-y-6 shadow-2xl">
+          
+          <div class="text-center space-y-3">
+            <div class="w-16 h-16 rounded-full bg-white p-1 mx-auto shadow-xl overflow-hidden">
+              <img src="assets/official_logo.jpg" alt="Logo" class="w-full h-full object-contain" />
+            </div>
+            <h1 class="text-2xl font-extrabold text-white font-heading">Admin Content Editor</h1>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Client-side access gate for Anugraha Eye Hospital website content management.
+            </p>
+          </div>
+
+          <form onsubmit="window.handleAdminLoginSubmit(event)" class="space-y-4">
+            <div class="space-y-1">
+              <label class="block text-xs font-bold text-slate-300">Username</label>
+              <input type="text" id="admin-user-input" value="admin" required class="w-full p-3 rounded-xl bg-slate-950 text-white text-xs border border-slate-700 focus:ring-2 focus:ring-emerald-400 outline-none" />
+            </div>
+
+            <div class="space-y-1">
+              <label class="block text-xs font-bold text-slate-300">Access Key / Password</label>
+              <input type="password" id="admin-pass-input" value="anugraha2021" required class="w-full p-3 rounded-xl bg-slate-950 text-white text-xs border border-slate-700 focus:ring-2 focus:ring-emerald-400 outline-none" />
+            </div>
+
+            <div id="admin-login-error" class="hidden p-3 rounded-xl bg-red-950 border border-red-800 text-red-300 text-xs font-bold text-center"></div>
+
+            <button type="submit" class="w-full py-3.5 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs hover:bg-emerald-400 transition-colors shadow-lg">
+              Sign In to CMS Console
+            </button>
+          </form>
+
+          <div class="pt-4 border-t border-slate-800 text-center text-[11px] text-slate-500 font-mono">
+            Default Key: <strong class="text-emerald-400">admin</strong> / <strong class="text-emerald-400">anugraha2021</strong>
+          </div>
+
+        </div>
+      </div>
+    `;
+  }
+
+  // 2. Tab Router
+  function renderAdminTabContent(tabId) {
+    const store = window.appStore;
+
+    if (tabId === 'overview') {
+      const stats = store.getStats();
+      const facilities = store.getFacilities();
+      const empanelments = store.getEmpanelments();
+      const adminTeam = store.data.administration || [];
+
+      return `
+        <div class="space-y-8 font-sans">
+          
+          <div class="p-8 rounded-3xl bg-slate-900 border border-teal-800/80 text-white space-y-3 shadow-xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-xs font-mono">
+              <span>● Operational Mode: Browser-Only LocalStorage</span>
+            </div>
+            <h2 class="text-3xl font-extrabold font-heading text-white">Anugraha Content Management Console</h2>
+            <p class="text-slate-300 text-xs max-w-2xl leading-relaxed">
+              Edit hospital credentials, update doctor bios, manage Vision Center locations, upload images, and export/import configuration backups with zero backend dependencies.
+            </p>
+          </div>
+
+          <!-- Quick Metrics Grid -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
+              <div class="text-[11px] font-bold text-slate-400 uppercase font-mono">Lifetime Surgeries</div>
+              <div class="text-2xl font-extrabold text-emerald-400 font-heading">${stats.lifetimeSurgeries}</div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
+              <div class="text-[11px] font-bold text-slate-400 uppercase font-mono">Vision Centers</div>
+              <div class="text-2xl font-extrabold text-white font-heading">${facilities.length}</div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
+              <div class="text-[11px] font-bold text-slate-400 uppercase font-mono">Admin Staff</div>
+              <div class="text-2xl font-extrabold text-white font-heading">${adminTeam.length}</div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
+              <div class="text-[11px] font-bold text-slate-400 uppercase font-mono">Empanelments</div>
+              <div class="text-2xl font-extrabold text-amber-400 font-heading">${empanelments.length}</div>
+            </div>
+          </div>
+
+          <!-- Shortcuts -->
+          <div class="space-y-4">
+            <h3 class="text-lg font-extrabold text-white font-heading">Quick Actions</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <button onclick="window.switchAdminTab('facilities')" class="p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left space-y-2 transition-all">
+                <span class="text-2xl">👁️</span>
+                <div class="font-extrabold text-white text-sm">Manage Vision Centers</div>
+                <div class="text-xs text-slate-400">Edit 8 regional center details & hours.</div>
+              </button>
+
+              <button onclick="window.switchAdminTab('leadership')" class="p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left space-y-2 transition-all">
+                <span class="text-2xl">👨‍⚕️</span>
+                <div class="font-extrabold text-white text-sm">Doctor Profiles & Photos</div>
+                <div class="text-xs text-slate-400">Update bios & upload photos via FileReader.</div>
+              </button>
+
+              <button onclick="window.switchAdminTab('empanelments')" class="p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left space-y-2 transition-all">
+                <span class="text-2xl">🛡️</span>
+                <div class="font-extrabold text-white text-sm">Insurance & Schemes</div>
+                <div class="text-xs text-slate-400">Add or remove cashless partners.</div>
+              </button>
+
+              <button onclick="window.switchAdminTab('backup')" class="p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left space-y-2 transition-all">
+                <span class="text-2xl">💾</span>
+                <div class="font-extrabold text-white text-sm">JSON Backup & Restore</div>
+                <div class="text-xs text-slate-400">Export or import sitewide JSON data.</div>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      `;
+    }
+
+    if (tabId === 'brand') {
+      const brand = store.getBrand();
+      return `
+        <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-6 font-sans">
+          <div class="border-b border-slate-800 pb-4">
+            <h2 class="text-xl font-bold text-white font-heading">Hospital Credentials & Telephony</h2>
+            <p class="text-xs text-slate-400 mt-1">Manage sitewide phone numbers, email, tagline, vision, and mission.</p>
+          </div>
+
+          <form onsubmit="window.saveBrandAdmin(event)" class="space-y-4 text-xs">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-bold text-slate-300 mb-1">Primary Helpline Phone</label>
+                <input type="text" id="admin-brand-phone" value="${brand.fallbackPhone}" required class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-300 mb-1">WhatsApp Triage Desk</label>
+                <input type="text" id="admin-brand-whatsapp" value="${brand.whatsappPhone}" required class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-300 mb-1">Official Contact Email</label>
+              <input type="email" id="admin-brand-email" value="${brand.contactEmail}" required class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700" />
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-300 mb-1">Hospital Vision Statement</label>
+              <textarea id="admin-brand-vision" rows="3" class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700">${brand.vision}</textarea>
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-300 mb-1">Hospital Mission Statement</label>
+              <textarea id="admin-brand-mission" rows="3" class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700">${brand.mission}</textarea>
+            </div>
+
+            <button type="submit" class="px-6 py-3 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs hover:bg-emerald-400 shadow-lg">
+              Save Brand & Telephony Settings
+            </button>
+          </form>
+        </div>
+      `;
+    }
+
+    if (tabId === 'stats') {
+      const stats = store.getStats();
+      return `
+        <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-6 font-sans">
+          <div class="border-b border-slate-800 pb-4">
+            <h2 class="text-xl font-bold text-white font-heading">Hospital Lifetime Metrics</h2>
+            <p class="text-xs text-slate-400 mt-1">Update surgical count, outreach camp numbers, and free procedure statistics.</p>
+          </div>
+
+          <form onsubmit="window.saveStatsAdmin(event)" class="space-y-4 text-xs">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-bold text-slate-300 mb-1">Lifetime Surgeries Performed</label>
+                <input type="text" id="admin-stat-surgeries" value="${stats.lifetimeSurgeries}" required class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-300 mb-1">Outreach Camps Conducted</label>
+                <input type="text" id="admin-stat-camps" value="${stats.outreachCamps}" required class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-300 mb-1">Free Cataract Surgeries</label>
+                <input type="text" id="admin-stat-cataracts" value="${stats.freeCataracts}" required class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-300 mb-1">Total People Reached</label>
+                <input type="text" id="admin-stat-reach" value="${stats.totalPeopleReached}" required class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700" />
+              </div>
+            </div>
+
+            <button type="submit" class="px-6 py-3 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs hover:bg-emerald-400 shadow-lg">
+              Save Metrics
+            </button>
+          </form>
+        </div>
+      `;
+    }
+
+    if (tabId === 'leadership') {
+      const leaders = store.data.leadership || [];
+      return `
+        <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-6 font-sans">
+          <div class="border-b border-slate-800 pb-4">
+            <h2 class="text-xl font-bold text-white font-heading">Founders & Medical Leadership</h2>
+            <p class="text-xs text-slate-400 mt-1">Edit doctor names, titles, degrees, bios, and upload photo assets via FileReader API.</p>
+          </div>
+
+          <div class="space-y-8">
+            ${leaders.map(doc => `
+              <div class="p-6 rounded-2xl bg-slate-950 border border-slate-800 space-y-4 text-xs">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h3 class="font-extrabold text-white text-base font-heading">${doc.name}</h3>
+                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-bold">${doc.title}</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block font-bold text-slate-300 mb-1">Full Name</label>
+                    <input type="text" id="admin-doc-name-${doc.id}" value="${doc.name}" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-300 mb-1">Degrees & Qualifications</label>
+                    <input type="text" id="admin-doc-degrees-${doc.id}" value="${doc.degrees}" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block font-bold text-slate-300 mb-1">Biography Narrative</label>
+                  <textarea id="admin-doc-bio-${doc.id}" rows="4" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700">${doc.bio}</textarea>
+                </div>
+
+                <!-- FileReader API Image Upload -->
+                <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between gap-4">
+                  <div>
+                    <label class="block font-bold text-slate-200">Replace Profile Photo (.jpg / .png, Max 5MB)</label>
+                    <div class="text-[11px] text-slate-400">Uses FileReader API for Base64 local storage.</div>
+                  </div>
+                  <label class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs cursor-pointer border border-slate-700">
+                    Choose Photo File
+                    <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminPhotoUpload(event, '${doc.id}')" class="hidden" />
+                  </label>
+                </div>
+
+                <button onclick="window.saveLeadershipAdmin('${doc.id}', event)" class="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400">
+                  Save Changes for ${doc.name.split(' ')[0]}
+                </button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    if (tabId === 'administration') {
+      const adminTeam = store.data.administration || [];
+      return `
+        <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-6 font-sans">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div>
+              <h2 class="text-xl font-bold text-white font-heading">Administration Team (6 Members)</h2>
+              <p class="text-xs text-slate-400 mt-1">Add, edit, reorder, or delete administrative management staff profiles.</p>
+            </div>
+            <button onclick="window.addAdminTeamMember(event)" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs hover:bg-emerald-400">
+              + Add Staff Member
+            </button>
+          </div>
+
+          <div class="space-y-4">
+            ${adminTeam.map((m, idx) => `
+              <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 text-xs">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                  <div class="font-extrabold text-white text-sm font-heading">${m.name}</div>
+                  <div class="flex items-center gap-2">
+                    <button onclick="window.moveAdminTeamMember(${idx}, 'up')" ${idx === 0 ? 'disabled' : ''} class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 disabled:opacity-30 text-white text-xs font-bold">▲ Up</button>
+                    <button onclick="window.moveAdminTeamMember(${idx}, 'down')" ${idx === adminTeam.length - 1 ? 'disabled' : ''} class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 disabled:opacity-30 text-white text-xs font-bold">▼ Down</button>
+                    <button onclick="window.deleteAdminTeamMember(${idx})" class="px-2.5 py-1 rounded bg-red-950 text-red-300 hover:bg-red-900 text-xs font-bold">Delete</button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block font-bold text-slate-300 mb-1">Full Name</label>
+                    <input type="text" id="admin-team-name-${idx}" value="${m.name}" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-300 mb-1">Role / Designation</label>
+                    <input type="text" id="admin-team-role-${idx}" value="${m.role}" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
+                  </div>
+                </div>
+
+                <button onclick="window.saveAdminTeamMember(${idx})" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400">
+                  Save Details
+                </button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    if (tabId === 'facilities') {
+      const facilities = store.getFacilities();
+      return `
+        <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-6 font-sans">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div>
+              <h2 class="text-xl font-bold text-white font-heading">Vision Centers & Base Hospitals Directory</h2>
+              <p class="text-xs text-slate-400 mt-1">Edit or add facilities in the regional directory.</p>
+            </div>
+            <button onclick="window.addAdminFacility(event)" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs hover:bg-emerald-400">
+              + Add Vision Center
+            </button>
+          </div>
+
+          <div class="space-y-4">
+            ${facilities.map((fac, idx) => `
+              <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 text-xs">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                  <span class="font-extrabold text-white text-sm font-heading">${fac.name}</span>
+                  <button onclick="window.deleteAdminFacility(${idx})" class="px-2.5 py-1 rounded bg-red-950 text-red-300 hover:bg-red-900 text-xs font-bold">Delete</button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block font-bold text-slate-300 mb-1">Facility Name</label>
+                    <input type="text" id="admin-fac-name-${idx}" value="${fac.name}" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-300 mb-1">Phone Number</label>
+                    <input type="text" id="admin-fac-phone-${idx}" value="${fac.phone}" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label class="block font-bold text-slate-300 mb-1">Address</label>
+                    <input type="text" id="admin-fac-address-${idx}" value="${fac.address}" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
+                  </div>
+                </div>
+
+                <button onclick="window.saveAdminFacility(${idx})" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400">
+                  Save Changes for ${fac.name}
+                </button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    if (tabId === 'services') {
+      const services = store.getServices();
+      return `
+        <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-6 font-sans">
+          <div class="border-b border-slate-800 pb-4">
+            <h2 class="text-xl font-bold text-white font-heading">Services & Ophthalmic Specialties</h2>
+            <p class="text-xs text-slate-400 mt-1">Edit service descriptions and upload photos via FileReader API.</p>
+          </div>
+
+          <div class="space-y-6">
+            ${services.map((s, idx) => `
+              <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 text-xs">
+                <h3 class="font-extrabold text-white text-sm font-heading">${s.title}</h3>
+                
+                <div class="space-y-2">
+                  <label class="block font-bold text-slate-300">Description</label>
+                  <textarea id="admin-service-desc-${idx}" rows="2" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700">${s.desc}</textarea>
+                </div>
+
+                <!-- FileReader API Service Image Upload -->
+                <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between gap-4">
+                  <div class="flex items-center gap-3">
+                    <img src="${s.imagePlaceholder}" alt="${s.title}" class="w-12 h-12 rounded-lg object-cover border border-slate-700" />
+                    <div>
+                      <div class="font-bold text-white">Service Image Asset</div>
+                      <div class="text-[10px] text-slate-400">Uses FileReader API Base64 encoding.</div>
+                    </div>
+                  </div>
+                  <label class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs cursor-pointer border border-slate-700">
+                    Replace Photo
+                    <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminServiceImageUpload(event, '${s.id}')" class="hidden" />
+                  </label>
+                </div>
+
+                <button onclick="window.saveAdminService(${idx})" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400">
+                  Save Changes
+                </button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    if (tabId === 'empanelments') {
+      const emps = store.getEmpanelments();
+      return `
+        <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-6 font-sans">
+          <div class="border-b border-slate-800 pb-4">
+            <h2 class="text-xl font-bold text-white font-heading">Empanelments & Cashless Insurance</h2>
+            <p class="text-xs text-slate-400 mt-1">Add new partner or remove existing cashless insurance scheme.</p>
+          </div>
+
+          <form onsubmit="window.addAdminEmpanelment(event)" class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 text-xs">
+            <div class="font-extrabold text-white text-xs">Add New Insurance / Scheme Partner</div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <input type="text" id="admin-emp-name" placeholder="Partner Name (e.g. Star Health)" required class="p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
+              <select id="admin-emp-cat" class="p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700">
+                <option value="Insurance Providers">Insurance Providers</option>
+                <option value="Government Schemes">Government Schemes</option>
+                <option value="TPAs & Corporate">TPAs & Corporate</option>
+              </select>
+              <input type="text" id="admin-emp-code" placeholder="Code (e.g. STAR)" required class="p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
+            </div>
+            <button type="submit" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs hover:bg-emerald-400">
+              + Add Partner
+            </button>
+          </form>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            ${emps.map(e => `
+              <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between text-xs">
+                <div>
+                  <div class="font-extrabold text-white">${e.name}</div>
+                  <div class="text-[10px] text-slate-400 font-mono">${e.category}</div>
+                </div>
+                <button onclick="window.removeAdminEmpanelment('${e.code}')" class="px-2.5 py-1 rounded bg-red-950 text-red-300 hover:bg-red-900 text-xs font-bold">Remove</button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    if (tabId === 'backup') {
+      return `
+        <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-8 font-sans">
+          <div class="border-b border-slate-800 pb-4">
+            <h2 class="text-xl font-bold text-white font-heading">Data Backup, Export & Import (JSON)</h2>
+            <p class="text-xs text-slate-400 mt-1">Full configuration persistence engine. Zero backend required.</p>
+          </div>
+
+          <!-- Export Block -->
+          <div class="p-6 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+            <div class="font-extrabold text-white text-sm font-heading">1. Export Sitewide Configuration JSON</div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Downloads a complete JSON backup file containing all current hospital brand settings, stats, doctor bios, vision center directories, and services data.
+            </p>
+            <button onclick="window.exportAdminJSON()" class="px-6 py-3 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs hover:bg-emerald-400 shadow-lg">
+              📥 Export Configuration JSON File
+            </button>
+          </div>
+
+          <!-- Import Block -->
+          <div class="p-6 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+            <div class="font-extrabold text-white text-sm font-heading">2. Import Configuration JSON File (FileReader API)</div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Upload a previously exported JSON backup file to instantly update all hospital credentials and content across the website.
+            </p>
+            <label class="inline-block px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs cursor-pointer border border-slate-700">
+              📤 Choose JSON File to Restore
+              <input type="file" accept=".json" onchange="window.handleAdminImportJSON(event)" class="hidden" />
+            </label>
+          </div>
+
+          <!-- Reset Defaults Block -->
+          <div class="p-6 rounded-2xl bg-red-950/40 border border-red-900/50 space-y-3">
+            <div class="font-extrabold text-red-200 text-sm font-heading">3. Reset to Factory Hospital Defaults</div>
+            <p class="text-xs text-red-300/80 leading-relaxed">
+              Restores original default hospital credentials and clears any custom local overrides.
+            </p>
+            <button onclick="window.resetAdminDefaults()" class="px-6 py-3 rounded-xl bg-red-900 hover:bg-red-800 text-white font-bold text-xs">
+              ⚠️ Reset Store to Defaults
+            </button>
+          </div>
+
+        </div>
+      `;
+    }
+
+    return `<div>Select Module</div>`;
+  }
+
+  // --- ADMIN HANDLERS ---
+
+  window.handleAdminLoginSubmit = function(e) {
+    e.preventDefault();
+    const user = document.getElementById('admin-user-input')?.value;
+    const pass = document.getElementById('admin-pass-input')?.value;
+    const err = document.getElementById('admin-login-error');
+
+    if (user === 'admin' && (pass === 'anugraha2021' || pass === 'admin')) {
+      sessionStorage.setItem('anugraha_admin_auth', 'true');
+      window.showAdminToast("Authenticated successfully. Opening CMS Console...", "success");
+      render();
+    } else {
+      if (err) {
+        err.textContent = "Invalid Key/Password. Use default: admin / anugraha2021";
+        err.classList.remove('hidden');
+      }
+    }
+  };
+
+  window.handleAdminLogout = function() {
+    sessionStorage.removeItem('anugraha_admin_auth');
+    window.showAdminToast("Signed out of CMS Console", "success");
+    render();
+  };
+
+  window.switchAdminTab = function(tabId) {
+    window.activeAdminTab = tabId;
+    render();
+  };
+
+  window.showAdminToast = function(msg, type = 'success') {
+    let container = document.getElementById('admin-toast-box');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'admin-toast-box';
+      container.className = 'fixed top-6 right-6 z-[99999] flex flex-col gap-2 max-w-sm pointer-events-none';
+      document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `p-4 rounded-xl shadow-2xl text-xs font-bold border text-white pointer-events-auto transition-all ${type === 'success' ? 'bg-emerald-950 border-emerald-500' : 'bg-red-950 border-red-500'}`;
+    toast.textContent = msg;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+      toast.remove();
+    }, 3000);
+  };
+
+  window.saveBrandAdmin = function(e) {
+    e.preventDefault();
+    const store = window.appStore;
+    store.updateBrand({
+      fallbackPhone: document.getElementById('admin-brand-phone').value,
+      whatsappPhone: document.getElementById('admin-brand-whatsapp').value,
+      contactEmail: document.getElementById('admin-brand-email').value,
+      vision: document.getElementById('admin-brand-vision').value,
+      mission: document.getElementById('admin-brand-mission').value
+    });
+    window.showAdminToast("Hospital Credentials updated!", "success");
+    render();
+  };
+
+  window.saveStatsAdmin = function(e) {
+    e.preventDefault();
+    const store = window.appStore;
+    store.updateStats({
+      lifetimeSurgeries: document.getElementById('admin-stat-surgeries').value,
+      outreachCamps: document.getElementById('admin-stat-camps').value,
+      freeCataracts: document.getElementById('admin-stat-cataracts').value,
+      totalPeopleReached: document.getElementById('admin-stat-reach').value
+    });
+    window.showAdminToast("Hospital Metrics updated!", "success");
+    render();
+  };
+
+  window.saveLeadershipAdmin = function(id, e) {
+    if (e) e.preventDefault();
+    const store = window.appStore;
+    const leaders = store.data.leadership || [];
+    const doc = leaders.find(l => l.id === id);
+    if (doc) {
+      doc.name = document.getElementById(`admin-doc-name-${id}`).value;
+      doc.degrees = document.getElementById(`admin-doc-degrees-${id}`).value;
+      doc.bio = document.getElementById(`admin-doc-bio-${id}`).value;
+      store.save();
+      window.showAdminToast(`Saved profile for ${doc.name.split(' ')[0]}`, "success");
+      render();
+    }
+  };
+
+  window.handleAdminPhotoUpload = function(event, docId) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      window.showAdminToast("File size exceeds 5MB limit", "error");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const base64 = e.target.result;
+      const store = window.appStore;
+      const leaders = store.data.leadership || [];
+      const doc = leaders.find(l => l.id === docId);
+      if (doc) {
+        doc.photo = base64;
+        store.save();
+        window.showAdminToast(`Photo uploaded for ${doc.name.split(' ')[0]}`, "success");
+        render();
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  window.addAdminTeamMember = function(e) {
+    if (e) e.preventDefault();
+    const name = prompt("Enter Staff Member Name:", "New Staff Member");
+    if (name) {
+      const store = window.appStore;
+      if (!store.data.administration) store.data.administration = [];
+      store.data.administration.push({
+        id: Date.now().toString(),
+        name,
+        role: "Ophthalmic Coordinator",
+        qualifications: "Graduate Degree",
+        tenure: "1 Year",
+        desc: "Administrative coordination."
+      });
+      store.save();
+      window.showAdminToast("Added staff member", "success");
+      render();
+    }
+  };
+
+  window.moveAdminTeamMember = function(index, direction) {
+    const store = window.appStore;
+    const list = store.data.administration;
+    if (!list) return;
+    const targetIdx = direction === 'up' ? index - 1 : index + 1;
+    if (targetIdx < 0 || targetIdx >= list.length) return;
+    const [moved] = list.splice(index, 1);
+    list.splice(targetIdx, 0, moved);
+    store.save();
+    window.showAdminToast("Team reordered", "success");
+    render();
+  };
+
+  window.deleteAdminTeamMember = function(index) {
+    if (!confirm("Delete staff member?")) return;
+    const store = window.appStore;
+    store.data.administration.splice(index, 1);
+    store.save();
+    window.showAdminToast("Staff member deleted", "success");
+    render();
+  };
+
+  window.saveAdminTeamMember = function(index) {
+    const store = window.appStore;
+    const member = store.data.administration[index];
+    if (member) {
+      member.name = document.getElementById(`admin-team-name-${index}`)?.value || member.name;
+      member.role = document.getElementById(`admin-team-role-${index}`)?.value || member.role;
+      store.save();
+      window.showAdminToast(`Saved details for ${member.name}`, "success");
+      render();
+    }
+  };
+
+  window.addAdminFacility = function(e) {
+    if (e) e.preventDefault();
+    const name = prompt("Enter Vision Center Name:", "New Vision Center");
+    if (name) {
+      const store = window.appStore;
+      store.data.facilities.push({
+        id: name.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+        type: 'vision-center',
+        name,
+        town: name,
+        phone: "08352-220646",
+        hours: "9:00 AM – 5:00 PM",
+        address: `${name} Main Road, Vijayapura District`
+      });
+      store.save();
+      window.showAdminToast("Added Vision Center", "success");
+      render();
+    }
+  };
+
+  window.deleteAdminFacility = function(index) {
+    if (!confirm("Delete facility?")) return;
+    const store = window.appStore;
+    store.data.facilities.splice(index, 1);
+    store.save();
+    window.showAdminToast("Facility deleted", "success");
+    render();
+  };
+
+  window.saveAdminFacility = function(index) {
+    const store = window.appStore;
+    const fac = store.data.facilities[index];
+    if (fac) {
+      fac.name = document.getElementById(`admin-fac-name-${index}`)?.value || fac.name;
+      fac.phone = document.getElementById(`admin-fac-phone-${index}`)?.value || fac.phone;
+      fac.address = document.getElementById(`admin-fac-address-${index}`)?.value || fac.address;
+      store.save();
+      window.showAdminToast(`Saved ${fac.name}`, "success");
+      render();
+    }
+  };
+
+  window.saveAdminService = function(index) {
+    const store = window.appStore;
+    const s = store.getServices()[index];
+    if (s) {
+      s.desc = document.getElementById(`admin-service-desc-${index}`)?.value || s.desc;
+      store.save();
+      window.showAdminToast(`Saved ${s.title}`, "success");
+      render();
+    }
+  };
+
+  window.handleAdminServiceImageUpload = function(event, serviceId) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const base64 = e.target.result;
+      const store = window.appStore;
+      store.updateServiceImage(serviceId, base64);
+      window.showAdminToast("Service photo updated", "success");
+      render();
+    };
+    reader.readAsDataURL(file);
+  };
+
+  window.addAdminEmpanelment = function(e) {
+    e.preventDefault();
+    const name = document.getElementById('admin-emp-name').value;
+    const category = document.getElementById('admin-emp-cat').value;
+    const code = document.getElementById('admin-emp-code').value;
+
+    const store = window.appStore;
+    store.addEmpanelment({ name, category, code });
+    window.showAdminToast(`Added ${name}`, "success");
+    render();
+  };
+
+  window.removeAdminEmpanelment = function(code) {
+    const store = window.appStore;
+    store.removeEmpanelment(code);
+    window.showAdminToast(`Removed partner (${code})`, "success");
+    render();
+  };
+
+  window.exportAdminJSON = function() {
+    const store = window.appStore;
+    const jsonStr = store.exportJSON();
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `anugraha_config_${Date.now()}.json`;
+    a.click();
+    window.showAdminToast("Exported configuration JSON file!", "success");
+  };
+
+  window.handleAdminImportJSON = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const jsonStr = e.target.result;
+      const store = window.appStore;
+      const success = store.importJSON(jsonStr);
+      if (success) {
+        window.showAdminToast("Imported configuration JSON successfully!", "success");
+        render();
+      } else {
+        window.showAdminToast("Invalid JSON file format", "error");
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  window.resetAdminDefaults = function() {
+    if (confirm("Reset all store modifications to factory defaults?")) {
+      const store = window.appStore;
+      store.reset();
+      window.showAdminToast("Restored factory defaults", "success");
+      render();
+    }
+  };
+
   // Central Render Loop
   function render() {
     updatePageSEO(currentPath);
+
+    if (currentPath === '/admin' || currentPath.startsWith('/admin/')) {
+      headerContainer.innerHTML = '';
+      appContainer.innerHTML = renderAdminPage();
+      footerContainer.innerHTML = '';
+      return;
+    }
+
     headerContainer.innerHTML = renderHeader();
     appContainer.innerHTML = renderPage();
     footerContainer.innerHTML = renderFooter();
