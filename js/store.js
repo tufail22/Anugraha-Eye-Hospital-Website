@@ -271,7 +271,7 @@ const DEFAULT_DATA = {
       title: "Cataract & Phacoemulsification",
       subtitle: "Micro-incision lens replacement & premium IOL implants",
       desc: "High-volume, micro-incision cataract surgery using advanced phacoemulsification suites with premium intraocular lenses (Monofocal, Multifocal, Toric). Over 50,000 free cataract procedures conducted across North Karnataka.",
-      imagePlaceholder: "assets/placeholders/service-cataract-placeholder.svg",
+      imagePlaceholder: "assets/services/cataract_surgery.jpg",
       imageAlt: "Phacoemulsification Operating Suite",
       configKey: "DEFAULT_DATA.services[0].imagePlaceholder"
     },
@@ -280,7 +280,7 @@ const DEFAULT_DATA = {
       title: "LASIK & Contoura Vision",
       subtitle: "Blade-free laser refractive vision correction",
       desc: "Advanced blade-free laser vision correction eliminating spectacle dependency. Anugraha is a MyAlcon verified provider of Contoura Vision topography-guided laser treatments in the region.",
-      imagePlaceholder: "assets/placeholders/service-lasik-placeholder.svg",
+      imagePlaceholder: "assets/services/lasik_contoura.jpg",
       imageAlt: "Laser Refractive Suite",
       configKey: "DEFAULT_DATA.services[1].imagePlaceholder"
     },
@@ -289,7 +289,7 @@ const DEFAULT_DATA = {
       title: "Glaucoma Diagnostics & Surgery",
       subtitle: "Early IOP detection, visual fields & trabeculectomy",
       desc: "Comprehensive glaucoma screening, non-contact tonometry, computerized visual field analysis, OCT optic nerve imaging, medical therapy, and trabeculectomy surgeries for sight preservation.",
-      imagePlaceholder: "assets/placeholders/service-glaucoma-placeholder.svg",
+      imagePlaceholder: "assets/services/glaucoma_management.jpg",
       imageAlt: "Glaucoma Field Diagnostics",
       configKey: "DEFAULT_DATA.services[2].imagePlaceholder"
     },
@@ -298,7 +298,7 @@ const DEFAULT_DATA = {
       title: "Retina & Vitreoretinal Services",
       subtitle: "Diabetic retinopathy, anti-VEGF & laser therapy",
       desc: "Super-specialty vitreo-retinal clinic offering diabetic retinopathy screening, anti-VEGF intraocular injections, retinal photocoagulation laser treatment, and macular disease management.",
-      imagePlaceholder: "assets/placeholders/service-retina-placeholder.svg",
+      imagePlaceholder: "assets/services/retina_care.jpg",
       imageAlt: "Vitreo-Retinal Laser Clinic",
       configKey: "DEFAULT_DATA.services[3].imagePlaceholder"
     },
@@ -307,7 +307,7 @@ const DEFAULT_DATA = {
       title: "Pediatric Ophthalmology & Strabismus",
       subtitle: "Children's vision screening & squint correction",
       desc: "Specialized pediatric eye clinic for amblyopia (lazy eye) therapy, congenital cataract treatment, surgical squint correction, and district school vision screening programs.",
-      imagePlaceholder: "assets/placeholders/service-pediatric-placeholder.svg",
+      imagePlaceholder: "assets/services/pediatric_ophthalmology.jpg",
       imageAlt: "Pediatric Vision Clinic",
       configKey: "DEFAULT_DATA.services[4].imagePlaceholder"
     },
@@ -316,7 +316,7 @@ const DEFAULT_DATA = {
       title: "Oculoplasty & Facial Aesthetics",
       subtitle: "Eyelid surgery, lacrimal duct & reconstruction",
       desc: "Ophthalmic plastic surgery treating eyelid deformities, ptosis correction, dacryocystorhinostomy (DCR) lacrimal surgery, orbital trauma reconstruction, and prosthetic eye fitting.",
-      imagePlaceholder: "assets/placeholders/service-oculoplasty-placeholder.svg",
+      imagePlaceholder: "assets/services/cornea_oculoplasty.jpg",
       imageAlt: "Oculoplasty Reconstruction",
       configKey: "DEFAULT_DATA.services[5].imagePlaceholder"
     },
@@ -325,7 +325,7 @@ const DEFAULT_DATA = {
       title: "Cornea & External Eye Disease",
       subtitle: "Dry eye clinic, pterygium & corneal cross-linking",
       desc: "Corneal health clinic providing dry eye evaluation, corneal ulcer therapy, pterygium excision with autografting, collagen cross-linking (C3R), and emergency corneal injury care.",
-      imagePlaceholder: "assets/placeholders/service-cornea-placeholder.svg",
+      imagePlaceholder: "assets/services/cornea_oculoplasty.jpg",
       imageAlt: "Corneal Diagnostics",
       configKey: "DEFAULT_DATA.services[6].imagePlaceholder"
     },
@@ -334,7 +334,7 @@ const DEFAULT_DATA = {
       title: "Optometry, Spectacles & Pharmacy",
       subtitle: "Prescription eyewear, contact lenses & medicines",
       desc: "In-house optical dispensing offering computer refraction, high-grade optical frames, specialty contact lenses, low vision aids, and an accredited ophthalmic pharmacy.",
-      imagePlaceholder: "assets/placeholders/service-opticals-placeholder.svg",
+      imagePlaceholder: "assets/services/optical_services.jpg",
       imageAlt: "Optical Dispensing Clinic",
       configKey: "DEFAULT_DATA.services[7].imagePlaceholder"
     }
