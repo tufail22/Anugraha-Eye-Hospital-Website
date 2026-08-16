@@ -1200,15 +1200,91 @@ class Store {
   addGalleryItem(item) {
     if (!this.data.gallery) this.data.gallery = [...DEFAULT_DATA.gallery];
     const newId = Date.now();
-    this.data.gallery.unshift({ id: newId, uploadDate: new Date().toLocaleDateString('en-IN'), ...item });
+    this.data.gallery.unshift({ 
+      id: newId, 
+      uploadDate: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }), 
+      ...item 
+    });
     this.save();
     return newId;
+  }
+
+  updateGalleryItem(id, fields) {
+    if (!this.data.gallery) this.data.gallery = [...DEFAULT_DATA.gallery];
+    const idx = this.data.gallery.findIndex(g => g.id === id);
+    if (idx !== -1) {
+      this.data.gallery[idx] = { ...this.data.gallery[idx], ...fields };
+      this.save();
+    }
   }
 
   removeGalleryItem(id) {
     if (!this.data.gallery) return;
     this.data.gallery = this.data.gallery.filter(g => g.id !== id);
     this.save();
+  }
+
+  // Real Dynamic Image Usage Tracker
+  getImageUsage(src) {
+    if (!src) return [];
+    const usedOn = [];
+    const clean = s => (s || '').trim();
+
+    // Check Brand Logo
+    if (clean(this.data.brand?.logo) === clean(src)) {
+      usedOn.push("Official Website Logo (Header & Footer)");
+    }
+
+    // Check Homepage Hero
+    if (clean(this.data.homepage?.heroImage) === clean(src)) {
+      usedOn.push("Homepage Hero Background Banner");
+    }
+
+    // Check Doctor / Leadership Profiles
+    (this.data.leadership || []).forEach(doc => {
+      if (clean(doc.photo) === clean(src)) {
+        usedOn.push(`${doc.name} (Doctor Profile Photo)`);
+      }
+    });
+
+    // Check Base Hospitals & Vision Centers
+    (this.data.facilities || []).forEach(fac => {
+      if (clean(fac.heroImage) === clean(src) || clean(fac.mainImage) === clean(src) || (fac.galleryImages || []).includes(src)) {
+        usedOn.push(`${fac.name} (${fac.type === 'base' ? 'Hospital' : 'Vision Center'} Page)`);
+      }
+    });
+
+    // Check Services & Specialties
+    (this.data.services || []).forEach(srv => {
+      if (clean(srv.heroImage) === clean(src) || clean(srv.imagePlaceholder) === clean(src)) {
+        usedOn.push(`${srv.title} (Specialty Hero Banner)`);
+      }
+    });
+
+    // Check News Articles
+    (this.data.news || []).forEach(newsItem => {
+      if (clean(newsItem.image) === clean(src)) {
+        usedOn.push(`News: "${newsItem.title.slice(0, 32)}..."`);
+      }
+    });
+
+    // Check Video Thumbnails
+    (this.data.videos || []).forEach(v => {
+      if (clean(v.thumbnail) === clean(src)) {
+        usedOn.push(`Video: "${v.title.slice(0, 32)}..."`);
+      }
+    });
+
+    return usedOn;
+  }
+
+  getAuditInfo() {
+    return {
+      lastModified: localStorage.getItem('anugraha_last_saved_time') || 'Active Session (Synced)',
+      lastModifiedBy: 'web@admin (Super Admin)',
+      createdDate: '15 Aug 2001 (25-Year Foundation)',
+      status: 'Live & Synchronized (Frontend Prototype Store)'
+    };
   }
 
   getDataGaps() {

@@ -1089,12 +1089,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const home = store.getHomepage();
     const brand = store.getBrand();
     const stats = store.getStats();
-    const facilities = store.getFacilities();
-    const services = store.getServices();
-    const leaders = store.getLeadership();
+    const facilities = store.getFacilities().filter(f => f.published !== false);
+    const services = store.getServices().filter(s => s.published !== false);
+    const leaders = store.getLeadership().filter(l => l.published !== false);
     const about = store.getAbout();
-    const faqs = store.getFaqs();
-    const empanelments = store.getEmpanelments();
+    const faqs = store.getFaqs().filter(f => f.published !== false);
+    const empanelments = store.getEmpanelments().filter(e => e.published !== false);
 
     // Trigger hero motion choreography, parallax, magnetic buttons & stat counters
     setTimeout(() => {
@@ -1958,7 +1958,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 3. LEADERSHIP View (Redesigned Bold Editorial Layout inspired by Reference Mockup)
   function renderLeadershipPage() {
-    const leadership = store.getLeadership();
+    const leadership = store.getLeadership().filter(l => l.published !== false);
     const chairman = leadership.find(l => l.id === 'dr-lingadalli') || leadership[0] || {};
     const medicalDirector = leadership.find(l => l.id === 'dr-malini') || leadership[1] || {};
     const brand = store.getBrand();
@@ -2888,7 +2888,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 6. VISION CENTERS View (All 8 centers directory + detail views)
   function renderVisionCentersPage() {
-    const facilities = store.getFacilities().filter(f => f.type === 'vision-center');
+    const facilities = store.getFacilities().filter(f => f.type === 'vision-center' && f.published !== false);
 
     return `
       <div class="max-w-7xl mx-auto px-4 py-10 space-y-12 font-sans">
@@ -3144,7 +3144,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 7. SERVICES View (Clinical Offerings with Dynamic Store Imagery & Content)
   function renderServicesPage() {
     const brand = store.getBrand();
-    const servicesList = store.getServices();
+    const servicesList = store.getServices().filter(s => s.published !== false);
 
     return `
       <div class="max-w-7xl mx-auto px-4 py-10 space-y-12 font-sans">
@@ -3214,7 +3214,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 8. ACADEMICS View (Hub + Detail Pages Engine with RGUHS & NBE Accreditations)
   function renderAcademicsPage() {
-    const academics = store.getAcademics();
+    const academics = store.getAcademics().filter(a => a.published !== false);
     const brand = store.getBrand();
 
     return `
@@ -3549,7 +3549,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 9. EMPANELMENTS & INSURANCE View (Category Grouped Logo Grid)
   function renderEmpanelmentsPage() {
-    const empanelments = store.getEmpanelments();
+    const empanelments = store.getEmpanelments().filter(e => e.published !== false);
     const categories = ["All", "Government Schemes", "Insurance Providers", "TPAs & Corporate"];
     
     const activeCat = window.activeEmpanelmentCategory || "All";
@@ -4452,45 +4452,560 @@ document.addEventListener("DOMContentLoaded", () => {
     render();
   };
 
-  // Dual Image Format Validator: STRICTLY JPG, JPEG, PNG ONLY
-  window.validateAndReadImageFile = function(file, callback) {
+  // =========================================================================
+  // CORE SANITIZATION & SAFE STRING UTILITIES
+  // =========================================================================
+  window.escapeHTML = function(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  };
+
+  // =========================================================================
+  // UNSAVED CHANGES TRACKER (DIRTY STATE & NAVIGATION GUARD)
+  // =========================================================================
+  window.hasUnsavedAdminChanges = false;
+
+  window.markAdminDirty = function() {
+    window.hasUnsavedAdminChanges = true;
+    const badge = document.getElementById('admin-save-status-badge');
+    if (badge) {
+      badge.className = "px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 text-xs font-mono font-bold flex items-center gap-1.5 border border-amber-400/40 animate-pulse";
+      badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-500"></span><span>Unsaved Changes</span>`;
+    }
+  };
+
+  window.clearAdminDirty = function() {
+    window.hasUnsavedAdminChanges = false;
+    const badge = document.getElementById('admin-save-status-badge');
+    if (badge) {
+      badge.className = "px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-mono font-bold flex items-center gap-1.5 border border-emerald-400/40";
+      badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span><span>Saved Successfully</span>`;
+    }
+  };
+
+  window.addEventListener('beforeunload', (e) => {
+    if (window.hasUnsavedAdminChanges) {
+      e.preventDefault();
+      e.returnValue = 'You have unsaved changes. Leave without saving?';
+      return e.returnValue;
+    }
+  });
+
+  // =========================================================================
+  // STRICT IMAGE VALIDATION & DIMENSION ENGINE
+  // =========================================================================
+  // Only JPG, JPEG, and PNG allowed. STRICTLY NO WebP, AVIF, GIF, SVG, BMP, TIFF, PDF.
+  window.validateImageFile = function(file, options, successCallback, errorCallback) {
     if (!file) return;
 
-    const validMimeTypes = ['image/jpeg', 'image/png'];
     const validExtensions = /\.(jpg|jpeg|png)$/i;
+    const validMimeTypes = ['image/jpeg', 'image/png'];
 
-    const isMimeValid = validMimeTypes.includes(file.type);
     const isExtValid = validExtensions.test(file.name);
+    const isMimeValid = validMimeTypes.includes(file.type);
 
-    if (!isMimeValid || !isExtValid) {
-      alert("Only JPG, JPEG and PNG images are allowed.\n\nRejected file: " + file.name + " (" + (file.type || 'Unknown MIME') + ")");
-      window.showAdminToast("Only JPG, JPEG and PNG images are allowed.", "error");
+    // Strict rejection of unauthorized formats
+    if (!isExtValid || !isMimeValid) {
+      const err = "Only JPG, JPEG and PNG images are allowed. (WebP, AVIF, GIF, SVG, BMP, and PDF are not permitted)";
+      window.showAdminToast(err, "error");
+      if (errorCallback) errorCallback(err);
+      else alert(err);
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      window.showAdminToast("Image exceeds 5MB size limit", "error");
+    // Configurable Size Validation: Default 5-10 MB limit
+    const maxMB = options?.maxMB || 10;
+    const maxSizeBytes = maxMB * 1024 * 1024;
+    if (file.size > maxSizeBytes) {
+      const err = `Image exceeds the ${maxMB} MB maximum file size. Please choose a smaller JPG or PNG image.`;
+      window.showAdminToast(err, "error");
+      if (errorCallback) errorCallback(err);
+      else alert(err);
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const base64 = e.target.result;
-      const img = new Image();
-      img.onload = function() {
-        const dimensions = img.width + ' × ' + img.height;
-        const sizeKB = (file.size / 1024).toFixed(1) + ' KB';
-        callback(base64, {
-          filename: file.name,
-          type: file.type,
-          size: sizeKB,
-          dimensions: dimensions,
-          uploadDate: new Date().toLocaleDateString('en-IN')
-        });
+    // Safe object URL preview & Dimension Inspection
+    const objectUrl = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = function() {
+      const width = img.naturalWidth || img.width;
+      const height = img.naturalHeight || img.height;
+      const sizeKB = (file.size / 1024).toFixed(1) + ' KB';
+      const dimensions = `${width} × ${height}`;
+
+      // Dimension health check warnings (non-blocking guidance)
+      let dimensionWarning = null;
+      if (options?.context === 'hero' && width < 1200) {
+        dimensionWarning = `Dimensions (${dimensions}): Recommended minimum is 1200px wide for hero images.`;
+      } else if (options?.context === 'content' && width < 800) {
+        dimensionWarning = `Dimensions (${dimensions}): Recommended minimum is 800px wide for content images.`;
+      } else if (options?.context === 'profile' && width < 400) {
+        dimensionWarning = `Dimensions (${dimensions}): Recommended minimum is 400px wide for doctor portraits.`;
+      }
+
+      const meta = {
+        filename: window.escapeHTML(file.name.replace(/[^a-zA-Z0-9._-]/g, '_')),
+        type: file.type === 'image/png' ? 'image/png' : 'image/jpeg',
+        size: sizeKB,
+        sizeBytes: file.size,
+        dimensions: dimensions,
+        width: width,
+        height: height,
+        dimensionWarning: dimensionWarning,
+        uploadDate: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
+        objectUrl: objectUrl
       };
-      img.src = base64;
+
+      if (successCallback) {
+        successCallback(img, meta, objectUrl);
+      }
     };
-    reader.readAsDataURL(file);
+
+    img.onerror = function() {
+      URL.revokeObjectURL(objectUrl);
+      const err = "Unable to decode image file. Please ensure it is a non-corrupted JPG or PNG.";
+      window.showAdminToast(err, "error");
+      if (errorCallback) errorCallback(err);
+    };
+
+    img.src = objectUrl;
+  };
+
+  // Backward compatibility wrapper for older direct upload triggers
+  window.validateAndReadImageFile = function(file, callback, options = {}) {
+    window.validateImageFile(file, options, (img, meta, objectUrl) => {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        URL.revokeObjectURL(objectUrl);
+        callback(e.target.result, meta);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  // =========================================================================
+  // INTERACTIVE PREVIEW & OPTIONAL CROP MODAL (Canvas-Based, 1:1, 4:3, 16:9)
+  // =========================================================================
+  window.activeCropModalData = null;
+
+  window.openImageCropModal = function(file, options = {}, onSaveCallback) {
+    window.validateImageFile(file, options, (img, meta, objectUrl) => {
+      window.activeCropModalData = {
+        file,
+        img,
+        meta,
+        objectUrl,
+        selectedRatio: options.defaultRatio || 'original',
+        context: options.context || 'general',
+        onSaveCallback
+      };
+      window.renderCropModal();
+    });
+  };
+
+  window.closeImageCropModal = function() {
+    if (window.activeCropModalData?.objectUrl) {
+      URL.revokeObjectURL(window.activeCropModalData.objectUrl);
+    }
+    window.activeCropModalData = null;
+    const modal = document.getElementById('image-crop-modal-root');
+    if (modal) modal.remove();
+  };
+
+  window.setCropRatio = function(ratio) {
+    if (!window.activeCropModalData) return;
+    window.activeCropModalData.selectedRatio = ratio;
+    window.renderCropModal();
+  };
+
+  window.renderCropModal = function() {
+    if (!window.activeCropModalData) return;
+    const { img, meta, selectedRatio, context } = window.activeCropModalData;
+
+    let modal = document.getElementById('image-crop-modal-root');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'image-crop-modal-root';
+      document.body.appendChild(modal);
+    }
+
+    const ratios = [
+      { id: 'original', label: 'Original (No Crop)', icon: '🖼️' },
+      { id: '1:1', label: '1:1 Square (Profiles)', icon: '👤' },
+      { id: '4:3', label: '4:3 Standard (Specialties)', icon: '🩺' },
+      { id: '16:9', label: '16:9 Widescreen (Hero)', icon: '🖥️' }
+    ];
+
+    modal.innerHTML = `
+      <div class="fixed inset-0 z-[99999] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto font-sans">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-teal-900/60 rounded-3xl max-w-2xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+          
+          <!-- Modal Header -->
+          <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-sm">📸</span>
+              <div>
+                <h3 class="text-base font-extrabold text-slate-900 dark:text-white font-heading">Image Inspection & Optional Cropping</h3>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400">Review dimensions and optionally choose an aspect ratio before saving.</p>
+              </div>
+            </div>
+            <button onclick="window.closeImageCropModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300 flex items-center justify-center font-bold text-xs">✕</button>
+          </div>
+
+          <!-- Preview & Canvas Workspace -->
+          <div class="p-6 space-y-5 overflow-y-auto flex-1">
+            
+            <!-- Dimension Advisory Warning (if unusually small for context) -->
+            ${meta.dimensionWarning ? `
+              <div class="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300 text-xs flex items-center gap-2">
+                <span>⚠️</span>
+                <span>${meta.dimensionWarning}</span>
+              </div>
+            ` : ''}
+
+            <!-- Image Preview Box -->
+            <div class="w-full h-64 sm:h-72 rounded-2xl bg-slate-950/90 border border-slate-200 dark:border-slate-800 overflow-hidden flex items-center justify-center relative p-2 shadow-inner">
+              <img 
+                src="${meta.objectUrl}" 
+                alt="Upload Preview" 
+                class="max-w-full max-h-full object-contain rounded-xl ${
+                  selectedRatio === '1:1' ? 'aspect-square object-cover' :
+                  selectedRatio === '4:3' ? 'aspect-[4/3] object-cover' :
+                  selectedRatio === '16:9' ? 'aspect-video object-cover' : ''
+                }" 
+              />
+              <span class="absolute bottom-3 right-3 px-2.5 py-1 rounded-full bg-black/80 text-white font-mono text-[10px] backdrop-blur-sm border border-white/10">
+                ${selectedRatio.toUpperCase()} PREVIEW
+              </span>
+            </div>
+
+            <!-- Aspect Ratio Selector Presets -->
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300">Choose Aspect Ratio Preset:</label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                ${ratios.map(r => `
+                  <button 
+                    type="button" 
+                    onclick="window.setCropRatio('${r.id}')" 
+                    class="p-2.5 rounded-xl border text-xs font-bold text-left transition-all flex flex-col justify-between ${
+                      selectedRatio === r.id 
+                        ? 'bg-emerald-500/10 border-emerald-500 text-emerald-700 dark:text-emerald-300 shadow-sm' 
+                        : 'bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100'
+                    }"
+                  >
+                    <span class="text-sm mb-1">${r.icon}</span>
+                    <span class="text-[11px] leading-tight">${r.label}</span>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- Image Metadata Attributes Strip -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[11px] font-mono">
+              <div>
+                <span class="text-slate-400 block text-[9px] uppercase font-bold">Filename</span>
+                <span class="font-bold text-slate-800 dark:text-slate-200 truncate block" title="${meta.filename}">${meta.filename}</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block text-[9px] uppercase font-bold">Format / MIME</span>
+                <span class="font-bold text-emerald-700 dark:text-emerald-400">${meta.type}</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block text-[9px] uppercase font-bold">File Size</span>
+                <span class="font-bold text-slate-800 dark:text-slate-200">${meta.size}</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block text-[9px] uppercase font-bold">Dimensions</span>
+                <span class="font-bold text-teal-700 dark:text-teal-300">${meta.dimensions}</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Modal Action Buttons -->
+          <div class="p-5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 flex flex-wrap items-center justify-between gap-3">
+            <button 
+              type="button" 
+              onclick="window.closeImageCropModal()" 
+              class="px-5 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs hover:bg-slate-300 transition-colors"
+            >
+              Cancel
+            </button>
+
+            <div class="flex items-center gap-2">
+              <label class="px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs cursor-pointer hover:bg-slate-300 transition-colors">
+                Replace File
+                <input type="file" accept="image/jpeg, image/png" onchange="window.handleReplaceFileInModal(event)" class="hidden" />
+              </label>
+              <button 
+                type="button" 
+                onclick="window.applyCropAndSave()" 
+                class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg transition-all"
+              >
+                Save & Apply Image &rarr;
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    `;
+  };
+
+  window.handleReplaceFileInModal = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const context = window.activeCropModalData?.context || 'general';
+    const callback = window.activeCropModalData?.onSaveCallback;
+    window.closeImageCropModal();
+    window.openImageCropModal(file, { context }, callback);
+  };
+
+  // Canvas-based aspect-ratio cropping engine
+  window.applyCropAndSave = function() {
+    if (!window.activeCropModalData) return;
+    const { img, meta, selectedRatio, onSaveCallback } = window.activeCropModalData;
+
+    const naturalWidth = img.naturalWidth || img.width;
+    const naturalHeight = img.naturalHeight || img.height;
+
+    let outDataUrl;
+    if (selectedRatio === 'original') {
+      const canvas = document.createElement('canvas');
+      canvas.width = naturalWidth;
+      canvas.height = naturalHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      outDataUrl = canvas.toDataURL(meta.type, 0.92);
+    } else {
+      let targetRatio = 1;
+      if (selectedRatio === '1:1') targetRatio = 1;
+      else if (selectedRatio === '4:3') targetRatio = 4 / 3;
+      else if (selectedRatio === '16:9') targetRatio = 16 / 9;
+
+      const currentRatio = naturalWidth / naturalHeight;
+      let cropWidth = naturalWidth;
+      let cropHeight = naturalHeight;
+      let offsetX = 0;
+      let offsetY = 0;
+
+      if (currentRatio > targetRatio) {
+        cropWidth = naturalHeight * targetRatio;
+        offsetX = (naturalWidth - cropWidth) / 2;
+      } else {
+        cropHeight = naturalWidth / targetRatio;
+        offsetY = (naturalHeight - cropHeight) / 2;
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(cropWidth);
+      canvas.height = Math.round(cropHeight);
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, offsetX, offsetY, cropWidth, cropHeight, 0, 0, canvas.width, canvas.height);
+      outDataUrl = canvas.toDataURL(meta.type, 0.92);
+      meta.dimensions = `${canvas.width} × ${canvas.height}`;
+    }
+
+    window.closeImageCropModal();
+    if (onSaveCallback) {
+      onSaveCallback(outDataUrl, meta);
+    }
+  };
+
+  // =========================================================================
+  // DRAG & DROP UPLOADER COMPONENT (ASCII Spec Matched)
+  // =========================================================================
+  window.renderDragAndDropUploader = function(inputId, callbackName, options = {}) {
+    const maxMB = options.maxMB || 10;
+    const context = options.context || 'general';
+
+    return `
+      <div 
+        id="drop-zone-${inputId}" 
+        class="drag-drop-zone border-2 border-dashed border-teal-300 dark:border-teal-800 hover:border-emerald-500 dark:hover:border-emerald-400 rounded-3xl p-8 sm:p-10 text-center transition-all bg-teal-50/50 dark:bg-slate-900/60 cursor-pointer group focus-within:ring-2 focus-within:ring-emerald-500"
+        ondragover="event.preventDefault(); this.classList.add('border-emerald-500', 'bg-emerald-50/80', 'dark:bg-emerald-950/40');"
+        ondragleave="event.preventDefault(); this.classList.remove('border-emerald-500', 'bg-emerald-50/80', 'dark:bg-emerald-950/40');"
+        ondrop="event.preventDefault(); this.classList.remove('border-emerald-500', 'bg-emerald-50/80', 'dark:bg-emerald-950/40'); window.handleDroppedImageFile(event, '${inputId}', '${context}', ${callbackName});"
+        onclick="document.getElementById('${inputId}').click()"
+        role="region"
+        aria-label="Image drag and drop zone"
+        tabindex="0"
+        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); document.getElementById('${inputId}').click();}"
+      >
+        <div class="space-y-3 pointer-events-none">
+          <div class="w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 flex items-center justify-center mx-auto text-2xl shadow-inner border border-emerald-300/40 group-hover:scale-110 transition-transform">
+            📁
+          </div>
+          <div class="text-base font-extrabold text-slate-900 dark:text-white font-heading">
+            Drag image here
+          </div>
+          <div class="text-xs font-semibold text-slate-400 uppercase tracking-widest">or</div>
+          <div>
+            <span class="inline-block px-5 py-2.5 rounded-xl bg-emerald-600 group-hover:bg-emerald-500 text-white font-extrabold text-xs shadow-md transition-all">
+              Browse Files
+            </span>
+          </div>
+          <div class="pt-2 text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+            <span class="text-emerald-700 dark:text-emerald-400 font-bold">JPG / JPEG / PNG only</span> &bull; Maximum ${maxMB} MB
+          </div>
+        </div>
+        <input 
+          type="file" 
+          id="${inputId}" 
+          accept="image/jpeg, image/png" 
+          class="hidden" 
+          onchange="window.handleImageInputChange(event, '${context}', ${callbackName})" 
+          aria-label="Upload JPG or PNG image"
+        />
+      </div>
+    `;
+  };
+
+  window.handleDroppedImageFile = function(e, inputId, context, callbackFn) {
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+    window.openImageCropModal(file, { context }, (base64, meta) => {
+      callbackFn(base64, meta);
+    });
+  };
+
+  window.handleImageInputChange = function(e, context, callbackFn) {
+    const file = e.target.files[0];
+    if (!file) return;
+    window.openImageCropModal(file, { context }, (base64, meta) => {
+      callbackFn(base64, meta);
+    });
+  };
+
+  // =========================================================================
+  // STANDARDIZED REUSABLE FORM FIELD GENERATORS
+  // =========================================================================
+  window.renderTextInput = function(id, label, value, options = {}) {
+    return `
+      <div class="space-y-1.5 font-sans">
+        <label for="${id}" class="block text-xs font-bold text-slate-700 dark:text-slate-300">
+          ${label} ${options.required ? '<span class="text-red-500">*</span>' : ''}
+        </label>
+        <input 
+          type="text" 
+          id="${id}" 
+          value="${window.escapeHTML(value || '')}" 
+          placeholder="${options.placeholder || ''}" 
+          ${options.required ? 'required' : ''} 
+          oninput="window.markAdminDirty()" 
+          class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-xs transition-all"
+        />
+        ${options.helpText ? `<p class="text-[11px] text-slate-400">${options.helpText}</p>` : ''}
+      </div>
+    `;
+  };
+
+  window.renderTextarea = function(id, label, value, options = {}) {
+    return `
+      <div class="space-y-1.5 font-sans">
+        <label for="${id}" class="block text-xs font-bold text-slate-700 dark:text-slate-300">
+          ${label} ${options.required ? '<span class="text-red-500">*</span>' : ''}
+        </label>
+        <textarea 
+          id="${id}" 
+          rows="${options.rows || 3}" 
+          placeholder="${options.placeholder || ''}" 
+          ${options.required ? 'required' : ''} 
+          oninput="window.markAdminDirty()" 
+          class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-xs transition-all"
+        >${window.escapeHTML(value || '')}</textarea>
+        ${options.helpText ? `<p class="text-[11px] text-slate-400">${options.helpText}</p>` : ''}
+      </div>
+    `;
+  };
+
+  window.renderRichTextField = function(id, label, value, options = {}) {
+    return `
+      <div class="space-y-1.5 font-sans">
+        <label for="${id}" class="block text-xs font-bold text-slate-700 dark:text-slate-300">${label}</label>
+        <div class="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden bg-slate-50 dark:bg-slate-950 focus-within:ring-2 focus-within:ring-emerald-500">
+          <div class="flex items-center gap-1 p-2 bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300">
+            <button type="button" onclick="window.applyRichFormat('${id}', 'bold')" class="px-2.5 py-1 rounded bg-white dark:bg-slate-800 font-bold hover:bg-slate-200 dark:hover:bg-slate-700" title="Bold">B</button>
+            <button type="button" onclick="window.applyRichFormat('${id}', 'italic')" class="px-2.5 py-1 rounded bg-white dark:bg-slate-800 italic hover:bg-slate-200 dark:hover:bg-slate-700" title="Italic">I</button>
+            <button type="button" onclick="window.applyRichFormat('${id}', 'list')" class="px-2.5 py-1 rounded bg-white dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700" title="Bullet List">• List</button>
+            <button type="button" onclick="window.applyRichFormat('${id}', 'link')" class="px-2.5 py-1 rounded bg-white dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700" title="Link">🔗 Link</button>
+            <span class="text-[10px] text-slate-400 ml-auto font-mono">Safe Controlled Editor</span>
+          </div>
+          <textarea 
+            id="${id}" 
+            rows="${options.rows || 4}" 
+            oninput="window.markAdminDirty()" 
+            class="w-full p-3 bg-transparent text-slate-900 dark:text-white border-0 outline-none text-xs leading-relaxed"
+          >${window.escapeHTML(value || '')}</textarea>
+        </div>
+        ${options.helpText ? `<p class="text-[11px] text-slate-400">${options.helpText}</p>` : ''}
+      </div>
+    `;
+  };
+
+  window.applyRichFormat = function(textareaId, formatType) {
+    const el = document.getElementById(textareaId);
+    if (!el) return;
+
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    const selected = el.value.substring(start, end);
+    let replacement = selected;
+
+    if (formatType === 'bold') {
+      replacement = `**${selected || 'bold text'}**`;
+    } else if (formatType === 'italic') {
+      replacement = `*${selected || 'italic text'}*`;
+    } else if (formatType === 'list') {
+      replacement = `\n• ${selected || 'List item'}`;
+    } else if (formatType === 'link') {
+      const url = prompt("Enter Link URL (e.g. #/contact or https://...):", "#/services");
+      if (url) replacement = `[${selected || 'link text'}](${url})`;
+    }
+
+    el.value = el.value.substring(0, start) + replacement + el.value.substring(end);
+    window.markAdminDirty();
+    el.focus();
+  };
+
+  window.renderToggle = function(id, label, isChecked, options = {}) {
+    return `
+      <label class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 cursor-pointer select-none">
+        <div>
+          <div class="font-bold text-slate-900 dark:text-white text-xs">${label}</div>
+          ${options.subLabel ? `<div class="text-[10px] text-slate-400">${options.subLabel}</div>` : ''}
+        </div>
+        <input 
+          type="checkbox" 
+          id="${id}" 
+          ${isChecked ? 'checked' : ''} 
+          onchange="window.markAdminDirty()" 
+          class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900"
+        />
+      </label>
+    `;
+  };
+
+  window.renderSelect = function(id, label, selectedValue, optionsList = []) {
+    return `
+      <div class="space-y-1.5 font-sans">
+        <label for="${id}" class="block text-xs font-bold text-slate-700 dark:text-slate-300">${label}</label>
+        <select 
+          id="${id}" 
+          onchange="window.markAdminDirty()" 
+          class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none text-xs"
+        >
+          ${optionsList.map(opt => `
+            <option value="${opt.value}" ${opt.value === selectedValue ? 'selected' : ''}>${opt.label}</option>
+          `).join('')}
+        </select>
+      </div>
+    `;
   };
 
   function renderAdminPage() {
@@ -4799,9 +5314,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     <span class="text-xs text-slate-600 dark:text-slate-400 font-medium">Remember username</span>
                   </label>
 
-                  <span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
+                  <span class="text-[11px] text-amber-600 dark:text-amber-400 font-bold flex items-center gap-1">
                     <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></path></svg>
-                    Client-Side Protected
+                    Prototype Mode
                   </span>
                 </div>
 
@@ -4826,9 +5341,12 @@ document.addEventListener("DOMContentLoaded", () => {
               </form>
             </div>
 
-            <!-- Footer Note -->
-            <div class="text-center text-[11px] text-slate-400 border-t border-slate-100 dark:border-slate-800/80 pt-4">
-              &copy; Anugraha Eye Hospital — Content Management Console
+            <!-- Footer Security Boundary Note -->
+            <div class="text-center text-[11px] text-slate-400 border-t border-slate-100 dark:border-slate-800/80 pt-4 space-y-1">
+              <div class="font-bold">&copy; Anugraha Eye Hospital — Content Management Console</div>
+              <div class="text-[10px] text-slate-500 leading-tight">
+                Client-Side Prototype Authentication: Frontend demonstration storage. Production deployment requires server-side authentication, RBAC, and secure backend API.
+              </div>
             </div>
 
           </div>
@@ -5959,53 +6477,211 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     }
 
-    // MODULE 15: MEDIA LIBRARY (With strict JPG/PNG dual validation)
+    // MODULE 15: MEDIA LIBRARY (With strict JPG/PNG dual validation & Safe Reference Checks)
     if (tabId === 'media') {
       const gallery = store.getGallery() || [];
+      const searchQuery = (window.adminMediaSearchQuery || '').toLowerCase().trim();
+      const filterMode = window.adminMediaFilterMode || 'all'; // 'all', 'used', 'unused'
+
+      // Calculate total storage footprint and live usage stats
+      let totalUsageCount = 0;
+      const galleryWithUsage = gallery.map(item => {
+        const usage = store.getImageUsage(item.src);
+        if (usage.length > 0) totalUsageCount++;
+        return { ...item, usage };
+      });
+
+      // Filter gallery
+      const filteredGallery = galleryWithUsage.filter(item => {
+        const matchesSearch = !searchQuery || 
+          (item.title && item.title.toLowerCase().includes(searchQuery)) ||
+          (item.filename && item.filename.toLowerCase().includes(searchQuery)) ||
+          (item.category && item.category.toLowerCase().includes(searchQuery)) ||
+          (item.usage && item.usage.some(u => u.toLowerCase().includes(searchQuery)));
+        
+        if (!matchesSearch) return false;
+        if (filterMode === 'used') return item.usage.length > 0;
+        if (filterMode === 'unused') return item.usage.length === 0;
+        return true;
+      });
 
       return `
-        <div class="space-y-6 text-xs font-sans">
+        <div class="space-y-8 text-xs font-sans">
           
-          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
-              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Interactive Media Library (${gallery.length} Assets)</h2>
-              <p class="text-slate-500">Strictly allowed formats: <strong>.jpg, .jpeg, .png</strong> only (Dual MIME & Extension validated).</p>
+          <!-- Library Header & Stats Cards -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-4">
+              <div>
+                <h2 class="text-xl font-extrabold text-slate-900 dark:text-white font-heading">
+                  Interactive Media Library (${gallery.length} Assets)
+                </h2>
+                <p class="text-slate-500 mt-0.5">
+                  Centralized Ophthalmic Asset Manager. Strictly allowed formats: <strong>.jpg, .jpeg, .png</strong> only (5–10 MB Max).
+                </p>
+              </div>
+
+              <!-- Quick Upload Trigger Button -->
+              <label class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs cursor-pointer shadow-lg inline-flex items-center gap-2 shrink-0 transition-transform active:scale-95">
+                <span>+ Upload Image</span>
+                <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminMediaFileInput(event)" class="hidden" />
+              </label>
             </div>
-            
-            <label class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs cursor-pointer shadow-lg">
-              + Upload New Image
-              <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminMediaUpload(event)" class="hidden" />
-            </label>
+
+            <!-- 4 Quick Stats Badges -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Total Media Assets</span>
+                <span class="text-xl font-extrabold text-slate-900 dark:text-white font-mono mt-0.5 block">${gallery.length}</span>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Active Page Usages</span>
+                <span class="text-xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono mt-0.5 block">${totalUsageCount} in use</span>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Unreferenced Assets</span>
+                <span class="text-xl font-extrabold text-teal-600 dark:text-teal-400 font-mono mt-0.5 block">${gallery.length - totalUsageCount} available</span>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Format Security</span>
+                <span class="text-xl font-extrabold text-slate-800 dark:text-slate-200 font-mono mt-0.5 block">JPG/PNG Only</span>
+              </div>
+            </div>
           </div>
 
-          <!-- Media Assets Cards -->
+          <!-- Polished Drag-and-Drop Upload Zone -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm space-y-3">
+            <h3 class="text-sm font-extrabold text-slate-900 dark:text-white font-heading">Upload New Image to Media Library</h3>
+            ${window.renderDragAndDropUploader('media-library-file-input', 'window.handleMediaLibraryUpload', { maxMB: 10, context: 'media-library' })}
+          </div>
+
+          <!-- Search & Filter Controls -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-4 sm:p-6 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+            <!-- Search Bar -->
+            <div class="relative w-full sm:w-80">
+              <input 
+                type="text" 
+                placeholder="Search by filename, title, or used page..." 
+                value="${window.escapeHTML(window.adminMediaSearchQuery || '')}" 
+                oninput="window.adminMediaSearchQuery = this.value; render();" 
+                class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none"
+              />
+              <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+
+            <!-- Filter Pills -->
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <button 
+                onclick="window.adminMediaFilterMode = 'all'; render();" 
+                class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${filterMode === 'all' ? 'bg-emerald-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'}"
+              >
+                All (${gallery.length})
+              </button>
+              <button 
+                onclick="window.adminMediaFilterMode = 'used'; render();" 
+                class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${filterMode === 'used' ? 'bg-emerald-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'}"
+              >
+                In Use (${totalUsageCount})
+              </button>
+              <button 
+                onclick="window.adminMediaFilterMode = 'unused'; render();" 
+                class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${filterMode === 'unused' ? 'bg-emerald-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'}"
+              >
+                Available (${gallery.length - totalUsageCount})
+              </button>
+            </div>
+          </div>
+
+          <!-- Media Assets Cards Grid -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            ${gallery.map(item => `
-              <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 space-y-3 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            ${filteredGallery.length === 0 ? `
+              <div class="col-span-full py-16 text-center text-slate-400 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-2">
+                <div class="text-3xl">🔍</div>
+                <div class="font-bold text-slate-700 dark:text-slate-300">No media assets match your search.</div>
+                <button onclick="window.adminMediaSearchQuery = ''; window.adminMediaFilterMode = 'all'; render();" class="text-xs text-emerald-600 dark:text-emerald-400 underline font-bold">Clear Filters</button>
+              </div>
+            ` : filteredGallery.map(item => `
+              <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 space-y-4 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
                 
                 <div class="space-y-3">
-                  <div class="w-full h-40 rounded-2xl bg-slate-100 dark:bg-slate-950 overflow-hidden border border-slate-200 dark:border-slate-800 flex items-center justify-center">
-                    <img src="${item.src}" alt="${item.title}" class="w-full h-full object-cover" />
+                  <!-- Image Thumbnail Container with aspect preservation -->
+                  <div class="w-full h-44 rounded-2xl bg-slate-950 overflow-hidden border border-slate-200 dark:border-slate-800 flex items-center justify-center relative group-hover:border-emerald-500/50 transition-colors">
+                    <img 
+                      src="${item.src}" 
+                      alt="${window.escapeHTML(item.title || item.filename)}" 
+                      loading="lazy" 
+                      class="w-full h-full object-cover" 
+                    />
+                    <div class="absolute top-2 right-2 px-2.5 py-1 rounded-full bg-black/80 text-white font-mono text-[10px] backdrop-blur-sm border border-white/10">
+                      ${item.type === 'image/png' ? 'PNG' : 'JPG'}
+                    </div>
                   </div>
 
+                  <!-- Filename & Title -->
                   <div>
-                    <div class="font-extrabold text-slate-900 dark:text-white text-sm font-heading truncate">${item.title}</div>
-                    <div class="text-[10px] text-slate-400 font-mono mt-0.5">${item.filename || 'image.jpg'} &bull; ${item.type || 'image/jpeg'}</div>
+                    <div class="font-extrabold text-slate-900 dark:text-white text-sm font-heading truncate" title="${window.escapeHTML(item.title || item.filename)}">
+                      ${window.escapeHTML(item.title || item.filename || 'Untitled Image')}
+                    </div>
+                    <div class="text-[11px] text-slate-400 font-mono mt-0.5 truncate" title="${window.escapeHTML(item.filename)}">
+                      📄 ${window.escapeHTML(item.filename || 'image.jpg')}
+                    </div>
                   </div>
 
-                  <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-[11px] font-mono text-slate-600 dark:text-slate-400 space-y-1">
-                    <div><strong>Size:</strong> ${item.size || '320 KB'}</div>
-                    <div><strong>Dimensions:</strong> ${item.dimensions || '1200 × 800'}</div>
-                    <div><strong>Used On:</strong> ${item.usedOn || item.category || 'General Site'}</div>
-                    <div><strong>Upload Date:</strong> ${item.uploadDate || '15 Aug 2026'}</div>
+                  <!-- Metadata Attributes Strip -->
+                  <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 text-[11px] font-mono text-slate-600 dark:text-slate-400 space-y-1.5 border border-slate-200/60 dark:border-slate-800/60">
+                    <div class="flex items-center justify-between">
+                      <span class="text-slate-400">File Size:</span>
+                      <span class="font-bold text-slate-800 dark:text-slate-200">${item.size || '320 KB'}</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-slate-400">Dimensions:</span>
+                      <span class="font-bold text-teal-700 dark:text-teal-300">${item.dimensions || '1200 × 800'}</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-slate-400">Upload Date:</span>
+                      <span class="font-bold text-slate-800 dark:text-slate-200">${item.uploadDate || '15 Aug 2026'}</span>
+                    </div>
+                  </div>
+
+                  <!-- "Used On" Live References Badge -->
+                  <div class="space-y-1 pt-1">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Live Page References:</span>
+                    ${item.usage && item.usage.length > 0 ? `
+                      <div class="flex flex-wrap gap-1">
+                        ${item.usage.map(u => `
+                          <span class="px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-[10px] font-bold border border-emerald-300/40">
+                            ✓ ${window.escapeHTML(u)}
+                          </span>
+                        `).join('')}
+                      </div>
+                    ` : `
+                      <span class="inline-block px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-500 text-[10px] font-medium">
+                        Unreferenced / Available for use
+                      </span>
+                    `}
                   </div>
                 </div>
 
-                <div class="flex items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
-                  <button onclick="window.copyMediaPath('${item.src}')" class="flex-1 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 font-bold text-xs text-slate-800 dark:text-slate-200 text-center">
-                    Copy Path
+                <!-- Media Action Buttons -->
+                <div class="flex flex-wrap items-center gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+                  <button 
+                    type="button" 
+                    onclick="window.openUseImagePicker('${item.src}')" 
+                    class="flex-1 py-2 px-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs text-center shadow transition-all"
+                  >
+                    Use Image
                   </button>
-                  <button onclick="window.deleteGalleryItemConfirm(${item.id})" class="px-3 py-2 rounded-xl bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 font-bold text-xs">
+
+                  <label class="py-2 px-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs cursor-pointer text-center">
+                    Replace
+                    <input type="file" accept="image/jpeg, image/png" onchange="window.handleReplaceMediaItem(${item.id}, event)" class="hidden" />
+                  </label>
+
+                  <button 
+                    type="button" 
+                    onclick="window.deleteGalleryItemChecked(${item.id})" 
+                    class="py-2 px-3 rounded-xl bg-red-100 dark:bg-red-950/80 hover:bg-red-200 text-red-700 dark:text-red-300 font-bold text-xs transition-colors" 
+                    title="Delete Image"
+                  >
                     Delete
                   </button>
                 </div>
@@ -6169,11 +6845,195 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   window.switchAdminTab = function(tabId) {
+    if (window.hasUnsavedAdminChanges) {
+      if (!confirm("You have unsaved changes. Leave without saving?")) {
+        return;
+      }
+      window.clearAdminDirty();
+    }
     if (tabId === 'logout') {
       window.handleAdminLogout();
       return;
     }
     window.activeAdminTab = tabId;
+    render();
+  };
+
+  // --- MEDIA LIBRARY INTERACTIVE HANDLERS ---
+  window.handleAdminMediaFileInput = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    window.openImageCropModal(file, { context: 'media-library' }, (base64, meta) => {
+      window.handleMediaLibraryUpload(base64, meta);
+    });
+  };
+
+  window.handleMediaLibraryUpload = function(base64, meta) {
+    const store = window.appStore;
+    store.addGalleryItem({
+      src: base64,
+      title: meta.filename,
+      filename: meta.filename,
+      type: meta.type,
+      size: meta.size,
+      dimensions: meta.dimensions,
+      uploadDate: meta.uploadDate,
+      category: "General Asset",
+      usedOn: "Media Library"
+    });
+    window.showAdminToast(`Uploaded ${meta.filename} to Media Library`, "success");
+    render();
+  };
+
+  window.handleReplaceMediaItem = function(id, event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    window.openImageCropModal(file, { context: 'media-replace' }, (base64, meta) => {
+      const store = window.appStore;
+      store.updateGalleryItem(id, {
+        src: base64,
+        filename: meta.filename,
+        type: meta.type,
+        size: meta.size,
+        dimensions: meta.dimensions,
+        uploadDate: meta.uploadDate
+      });
+      window.showAdminToast(`Replaced image in Media Library with ${meta.filename}`, "success");
+      render();
+    });
+  };
+
+  window.deleteGalleryItemChecked = function(id) {
+    const store = window.appStore;
+    const item = (store.getGallery() || []).find(g => g.id === id);
+    if (!item) return;
+
+    const usage = store.getImageUsage(item.src);
+    if (usage.length > 0) {
+      const list = usage.map(u => `• ${u}`).join('\n');
+      const msg = `⚠️ Warning: This image is currently used by:\n\n${list}\n\nDeleting this image will remove it from these live pages. Delete anyway?`;
+      if (!confirm(msg)) {
+        return;
+      }
+    } else {
+      if (!confirm(`Are you sure you want to delete "${item.filename || item.title}" from the Media Library?`)) {
+        return;
+      }
+    }
+
+    store.removeGalleryItem(id);
+    window.showAdminToast(`Deleted ${item.filename || 'image'} from library`, "success");
+    render();
+  };
+
+  // "Use Image" Target Assignment Picker
+  window.openUseImagePicker = function(imageSrc) {
+    let modal = document.getElementById('use-image-picker-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'use-image-picker-modal';
+      document.body.appendChild(modal);
+    }
+
+    const store = window.appStore;
+    const facilities = store.getFacilities();
+    const leadership = store.getLeadership();
+    const services = store.getServices();
+
+    modal.innerHTML = `
+      <div class="fixed inset-0 z-[99999] bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto font-sans">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-teal-900/60 rounded-3xl max-w-lg w-full shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+          
+          <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-sm">🎯</span>
+              <div>
+                <h3 class="text-base font-extrabold text-slate-900 dark:text-white font-heading">Assign Image to Page / Entity</h3>
+                <p class="text-[11px] text-slate-500">Select where you want to use this image across the hospital website.</p>
+              </div>
+            </div>
+            <button onclick="window.closeUseImagePicker()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300 flex items-center justify-center font-bold text-xs">✕</button>
+          </div>
+
+          <div class="p-6 space-y-4 overflow-y-auto flex-1 text-xs">
+            
+            <div class="w-full h-32 rounded-2xl bg-slate-950 overflow-hidden flex items-center justify-center border border-slate-200 dark:border-slate-800 mb-4">
+              <img src="${imageSrc}" alt="Target Preview" class="max-h-full max-w-full object-contain" />
+            </div>
+
+            <!-- Target Selection Options -->
+            <div class="space-y-2">
+              <span class="font-bold text-slate-700 dark:text-slate-300 block text-[11px] uppercase tracking-wider">Common Placements:</span>
+              
+              <button onclick="window.applyImageToTarget('${imageSrc}', 'homepage-hero')" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-slate-200 dark:border-slate-800 text-left font-bold text-slate-800 dark:text-slate-200 flex items-center justify-between">
+                <span>🖥️ Set as Homepage Hero Banner</span>
+                <span class="text-emerald-600 text-xs">&rarr;</span>
+              </button>
+
+              <button onclick="window.applyImageToTarget('${imageSrc}', 'brand-logo')" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-slate-200 dark:border-slate-800 text-left font-bold text-slate-800 dark:text-slate-200 flex items-center justify-between">
+                <span>🏥 Set as Official Website Logo</span>
+                <span class="text-emerald-600 text-xs">&rarr;</span>
+              </button>
+            </div>
+
+            <div class="space-y-2 pt-2">
+              <span class="font-bold text-slate-700 dark:text-slate-300 block text-[11px] uppercase tracking-wider">Doctor Profile Portraits:</span>
+              ${leadership.map(doc => `
+                <button onclick="window.applyImageToTarget('${imageSrc}', 'doctor', '${doc.id}')" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-slate-200 dark:border-slate-800 text-left text-xs font-semibold text-slate-800 dark:text-slate-200 flex items-center justify-between">
+                  <span>👨‍⚕️ ${doc.name}</span>
+                  <span class="text-slate-400 text-[10px]">Assign Portrait</span>
+                </button>
+              `).join('')}
+            </div>
+
+            <div class="space-y-2 pt-2">
+              <span class="font-bold text-slate-700 dark:text-slate-300 block text-[11px] uppercase tracking-wider">Hospital Campuses:</span>
+              ${facilities.filter(f => f.type === 'base').map(fac => `
+                <button onclick="window.applyImageToTarget('${imageSrc}', 'facility', '${fac.id}')" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-slate-200 dark:border-slate-800 text-left text-xs font-semibold text-slate-800 dark:text-slate-200 flex items-center justify-between">
+                  <span>🏥 ${fac.name}</span>
+                  <span class="text-slate-400 text-[10px]">Assign Hero</span>
+                </button>
+              `).join('')}
+            </div>
+
+            <div class="pt-2">
+              <button onclick="navigator.clipboard.writeText('${imageSrc}'); window.showAdminToast('Copied Image URL to clipboard!', 'success'); window.closeUseImagePicker();" class="w-full py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 font-bold text-slate-700 dark:text-slate-300 text-center">
+                📋 Copy Image Data Path
+              </button>
+            </div>
+
+          </div>
+
+          <div class="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 text-right">
+            <button onclick="window.closeUseImagePicker()" class="px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs">Close</button>
+          </div>
+
+        </div>
+      </div>
+    `;
+  };
+
+  window.closeUseImagePicker = function() {
+    const modal = document.getElementById('use-image-picker-modal');
+    if (modal) modal.remove();
+  };
+
+  window.applyImageToTarget = function(imageSrc, targetType, targetId) {
+    const store = window.appStore;
+    if (targetType === 'homepage-hero') {
+      store.updateHomepage({ heroImage: imageSrc });
+      window.showAdminToast("Applied image to Homepage Hero Banner!", "success");
+    } else if (targetType === 'brand-logo') {
+      store.updateBrand({ logo: imageSrc });
+      window.showAdminToast("Applied image as Official Website Logo!", "success");
+    } else if (targetType === 'doctor') {
+      store.updateLeadership(targetId, { photo: imageSrc });
+      window.showAdminToast("Updated doctor portrait photo!", "success");
+    } else if (targetType === 'facility') {
+      store.updateFacility(targetId, { heroImage: imageSrc });
+      window.showAdminToast("Updated hospital facility hero photo!", "success");
+    }
+    window.closeUseImagePicker();
     render();
   };
 
