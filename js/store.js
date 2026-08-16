@@ -1247,6 +1247,13 @@ class Store {
       }
     });
 
+    // Check Administration Team Member Profiles
+    (this.data.administration || []).forEach(member => {
+      if (clean(member.photo) === clean(src)) {
+        usedOn.push(`${member.name} (Admin Team Portrait)`);
+      }
+    });
+
     // Check Base Hospitals & Vision Centers
     (this.data.facilities || []).forEach(fac => {
       if (clean(fac.heroImage) === clean(src) || clean(fac.mainImage) === clean(src) || (fac.galleryImages || []).includes(src)) {

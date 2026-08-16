@@ -2440,7 +2440,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 4. ADMINISTRATION View (Consolidated 6 Bios ON ONE PAGE with Left-Hand Sticky Anchor Jump Menu)
   function renderAdministrationPage() {
-    const adminTeam = store.getAdministration() || [];
+    const adminTeam = (store.getAdministration() || []).filter(m => m.published !== false);
     const brand = store.getBrand();
 
     // Array of soft pastel backdrop variants
@@ -5858,66 +5858,194 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     }
 
-    // MODULE 5: ADMINISTRATION TEAM
+    // MODULE 5: ADMINISTRATION TEAM (With Full Profile Photo Upload & Management)
     if (tabId === 'administration') {
       const adminTeam = store.getAdministration() || [];
 
       return `
         <div class="space-y-6 text-xs font-sans">
           
-          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex items-center justify-between">
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Administration Team Profiles (6 Members)</h2>
-              <p class="text-slate-500">Manage verified administrative leaders and department coordinators.</p>
+              <h2 class="text-xl font-extrabold text-slate-900 dark:text-white font-heading">
+                Administration Team Profiles (${adminTeam.length} Members)
+              </h2>
+              <p class="text-slate-500 mt-0.5">
+                Manage executive leadership profiles, qualifications, and 1:1 portrait photos for the public administration page.
+              </p>
             </div>
-            <button onclick="window.addAdminTeamMember(event)" class="px-4 py-2.5 rounded-xl bg-emerald-600 text-white font-extrabold text-xs shadow">
-              + Add Staff Member
+            <button onclick="window.addAdminTeamMember(event)" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg inline-flex items-center gap-1.5 shrink-0">
+              <span>+ Add Staff Member</span>
             </button>
           </div>
 
-          <div class="space-y-4">
-            ${adminTeam.map((m, idx) => `
-              <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-3 shadow-sm">
-                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
-                  <div class="flex items-center gap-2">
-                    <span class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">${m.name}</span>
-                    <span class="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[10px]">${m.department || m.role}</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <button onclick="window.deleteAdminTeamMember(${idx})" class="px-2.5 py-1 rounded bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 font-bold text-xs">Delete</button>
-                  </div>
-                </div>
+          <div class="space-y-6">
+            ${adminTeam.map((m, idx) => {
+              const initials = m.name.split(' ').map(n => n[0]).slice(0, 2).join('');
+              return `
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-5 shadow-sm hover:shadow-md transition-all">
+                  
+                  <!-- Member Card Header -->
+                  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 gap-3">
+                    <div class="flex items-center gap-2.5">
+                      <span class="font-extrabold text-slate-900 dark:text-white text-base font-heading">${m.name}</span>
+                      <span class="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono text-[10px] font-bold">
+                        ${m.department || m.role}
+                      </span>
+                      <span class="px-2.5 py-0.5 rounded-full ${m.published !== false ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300' : 'bg-slate-200 dark:bg-slate-800 text-slate-600'} font-mono text-[10px] font-bold">
+                        ${m.published !== false ? '● Published' : '○ Draft'}
+                      </span>
+                    </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="flex items-center gap-2">
+                      <button 
+                        type="button" 
+                        onclick="window.toggleAdminMemberPublish('${m.id}')" 
+                        class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 font-bold text-xs"
+                      >
+                        ${m.published !== false ? 'Unpublish' : 'Publish'}
+                      </button>
+                      <button 
+                        type="button" 
+                        onclick="window.deleteAdminTeamMember(${idx})" 
+                        class="px-3 py-1.5 rounded-xl bg-red-100 dark:bg-red-950/80 hover:bg-red-200 text-red-700 dark:text-red-300 font-bold text-xs"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Profile Image Upload Box -->
+                  <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                      <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-emerald-400 shadow-md bg-teal-950 flex items-center justify-center shrink-0">
+                        ${m.photo ? `
+                          <img id="admin-team-img-preview-${m.id}" src="${m.photo}" alt="${m.name}" class="w-full h-full object-cover" />
+                        ` : `
+                          <div class="text-white font-extrabold text-lg font-heading">${initials}</div>
+                        `}
+                      </div>
+                      <div>
+                        <div class="font-extrabold text-slate-900 dark:text-white text-xs font-heading">
+                          Profile Portrait Image
+                        </div>
+                        <div class="text-[11px] text-slate-400 font-mono mt-0.5">
+                          ${m.photo ? '✓ Custom Portrait Uploaded' : 'No photo uploaded (Displays initials avatar)'}
+                        </div>
+                        <div class="text-[10px] text-emerald-700 dark:text-emerald-400 font-mono">
+                          JPG / JPEG / PNG &bull; Recommended 1:1 Square (≥400px)
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2">
+                      <label class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs cursor-pointer shadow transition-all">
+                        ${m.photo ? 'Replace Portrait' : '+ Upload Portrait'}
+                        <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminTeamPhotoFile(event, '${m.id}')" class="hidden" />
+                      </label>
+
+                      ${m.photo ? `
+                        <button 
+                          type="button" 
+                          onclick="window.removeAdminTeamPhoto('${m.id}')" 
+                          class="px-3 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-red-100 hover:text-red-700 text-slate-700 dark:text-slate-300 font-bold text-xs transition-colors"
+                        >
+                          Remove
+                        </button>
+                      ` : ''}
+                    </div>
+                  </div>
+
+                  <!-- Form Fields Grid -->
+                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                    <div>
+                      <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Full Name</label>
+                      <input 
+                        type="text" 
+                        id="admin-team-name-${idx}" 
+                        value="${window.escapeHTML(m.name)}" 
+                        oninput="window.markAdminDirty()" 
+                        class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" 
+                      />
+                    </div>
+
+                    <div>
+                      <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Position / Role</label>
+                      <input 
+                        type="text" 
+                        id="admin-team-role-${idx}" 
+                        value="${window.escapeHTML(m.position || m.role)}" 
+                        oninput="window.markAdminDirty()" 
+                        class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" 
+                      />
+                    </div>
+
+                    <div>
+                      <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Department</label>
+                      <input 
+                        type="text" 
+                        id="admin-team-dept-${idx}" 
+                        value="${window.escapeHTML(m.department || '')}" 
+                        oninput="window.markAdminDirty()" 
+                        class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" 
+                      />
+                    </div>
+
+                    <div>
+                      <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Tenure / Experience</label>
+                      <input 
+                        type="text" 
+                        id="admin-team-tenure-${idx}" 
+                        value="${window.escapeHTML(m.tenure || '10 Years')}" 
+                        oninput="window.markAdminDirty()" 
+                        class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" 
+                      />
+                    </div>
+                  </div>
+
                   <div>
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Full Name</label>
-                    <input type="text" id="admin-team-name-${idx}" value="${m.name}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Qualifications & Certifications</label>
+                    <input 
+                      type="text" 
+                      id="admin-team-qual-${idx}" 
+                      value="${window.escapeHTML(m.qualifications)}" 
+                      oninput="window.markAdminDirty()" 
+                      class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" 
+                    />
                   </div>
+
                   <div>
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Position / Role</label>
-                    <input type="text" id="admin-team-role-${idx}" value="${m.position || m.role}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Biography / Responsibilities Narrative</label>
+                    <textarea 
+                      id="admin-team-desc-${idx}" 
+                      rows="3" 
+                      oninput="window.markAdminDirty()" 
+                      class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none leading-relaxed"
+                    >${window.escapeHTML(m.desc)}</textarea>
                   </div>
-                  <div>
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Department</label>
-                    <input type="text" id="admin-team-dept-${idx}" value="${m.department || ''}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+
+                  <!-- Save & Preview Footer -->
+                  <div class="flex items-center gap-3 pt-2">
+                    <button 
+                      type="button" 
+                      onclick="window.saveAdminTeamMember(${idx})" 
+                      class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg transition-all"
+                    >
+                      Save Member Details
+                    </button>
+
+                    <a 
+                      href="#/about-us/administration#${m.id}" 
+                      target="_blank" 
+                      class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 font-bold text-xs"
+                    >
+                      Preview Profile &nearr;
+                    </a>
                   </div>
-                </div>
 
-                <div>
-                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Qualifications</label>
-                  <input type="text" id="admin-team-qual-${idx}" value="${m.qualifications}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
                 </div>
-
-                <div>
-                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Biography / Responsibilities</label>
-                  <textarea id="admin-team-desc-${idx}" rows="2" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${m.desc}</textarea>
-                </div>
-
-                <button onclick="window.saveAdminTeamMember(${idx})" class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow">
-                  Save Details
-                </button>
-              </div>
-            `).join('')}
+              `;
+            }).join('')}
           </div>
 
         </div>
@@ -6987,6 +7115,16 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
 
             <div class="space-y-2 pt-2">
+              <span class="font-bold text-slate-700 dark:text-slate-300 block text-[11px] uppercase tracking-wider">Administration Team Portraits:</span>
+              ${(store.getAdministration() || []).map(member => `
+                <button onclick="window.applyImageToTarget('${imageSrc}', 'admin-team', '${member.id}')" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-slate-200 dark:border-slate-800 text-left text-xs font-semibold text-slate-800 dark:text-slate-200 flex items-center justify-between">
+                  <span>👥 ${member.name} (${member.role})</span>
+                  <span class="text-slate-400 text-[10px]">Assign Admin Portrait</span>
+                </button>
+              `).join('')}
+            </div>
+
+            <div class="space-y-2 pt-2">
               <span class="font-bold text-slate-700 dark:text-slate-300 block text-[11px] uppercase tracking-wider">Hospital Campuses:</span>
               ${facilities.filter(f => f.type === 'base').map(fac => `
                 <button onclick="window.applyImageToTarget('${imageSrc}', 'facility', '${fac.id}')" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-slate-200 dark:border-slate-800 text-left text-xs font-semibold text-slate-800 dark:text-slate-200 flex items-center justify-between">
@@ -7029,6 +7167,9 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (targetType === 'doctor') {
       store.updateLeadership(targetId, { photo: imageSrc });
       window.showAdminToast("Updated doctor portrait photo!", "success");
+    } else if (targetType === 'admin-team') {
+      store.updateAdminMember(targetId, { photo: imageSrc });
+      window.showAdminToast("Updated administration team portrait photo!", "success");
     } else if (targetType === 'facility') {
       store.updateFacility(targetId, { heroImage: imageSrc });
       window.showAdminToast("Updated hospital facility hero photo!", "success");
@@ -7230,6 +7371,50 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // ADMINISTRATION HANDLERS
+  window.handleAdminTeamPhotoFile = function(event, memberId) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    window.openImageCropModal(file, { context: 'profile', defaultRatio: '1:1' }, (base64, meta) => {
+      const store = window.appStore;
+      store.updateAdminMember(memberId, { photo: base64 });
+      store.addGalleryItem({
+        title: `Administration Portrait - ${memberId}`,
+        category: "Staff Profiles",
+        src: base64,
+        filename: meta.filename,
+        type: meta.type,
+        size: meta.size,
+        dimensions: meta.dimensions,
+        uploadDate: meta.uploadDate,
+        usedOn: "Administration Team Page"
+      });
+      window.showAdminToast("Administration profile photo updated successfully!", "success");
+      render();
+    });
+  };
+
+  window.removeAdminTeamPhoto = function(memberId) {
+    if (confirm("Remove profile photo for this team member?")) {
+      const store = window.appStore;
+      store.updateAdminMember(memberId, { photo: "" });
+      window.showAdminToast("Profile photo removed", "success");
+      render();
+    }
+  };
+
+  window.toggleAdminMemberPublish = function(id) {
+    const store = window.appStore;
+    const list = store.getAdministration();
+    const member = list.find(m => m.id === id);
+    if (member) {
+      const newStatus = member.published === false ? true : false;
+      store.updateAdminMember(id, { published: newStatus });
+      window.showAdminToast(`Staff profile ${newStatus ? 'Published' : 'Unpublished'}`, "success");
+      render();
+    }
+  };
+
   window.addAdminTeamMember = function(e) {
     if (e) e.preventDefault();
     const name = prompt("Enter Administrative Staff Member Name:", "New Staff Member");
@@ -7240,6 +7425,7 @@ document.addEventListener("DOMContentLoaded", () => {
         role: "Ophthalmic Administrator",
         position: "Ophthalmic Administrator",
         department: "Operations",
+        tenure: "5+ Years",
         qualifications: "Graduate Degree",
         desc: "Administrative coordination and quality healthcare management."
       });
@@ -7266,10 +7452,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const name = document.getElementById(`admin-team-name-${index}`)?.value || member.name;
       const role = document.getElementById(`admin-team-role-${index}`)?.value || member.role;
       const dept = document.getElementById(`admin-team-dept-${index}`)?.value || member.department;
+      const tenure = document.getElementById(`admin-team-tenure-${index}`)?.value || member.tenure || '10 Years';
       const qual = document.getElementById(`admin-team-qual-${index}`)?.value || member.qualifications;
       const desc = document.getElementById(`admin-team-desc-${index}`)?.value || member.desc;
 
-      store.updateAdminMember(member.id, { name, role, position: role, department: dept, qualifications: qual, desc });
+      store.updateAdminMember(member.id, { 
+        name, 
+        role, 
+        position: role, 
+        department: dept, 
+        tenure, 
+        qualifications: qual, 
+        desc 
+      });
+      window.clearAdminDirty();
       window.showAdminToast(`Saved details for ${name}`, "success");
       render();
     }
