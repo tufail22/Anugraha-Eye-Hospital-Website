@@ -1046,11 +1046,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 1. HOME PAGE View (Exact 9 Sections in Order)
+  // 1. HOME PAGE View (Exact 9 Sections in Order - 100% Dynamic & Connected to Admin Store)
   function renderHomePage() {
+    const home = store.getHomepage();
     const brand = store.getBrand();
     const stats = store.getStats();
     const facilities = store.getFacilities();
+    const services = store.getServices();
+    const leaders = store.getLeadership();
+    const about = store.getAbout();
+    const faqs = store.getFaqs();
+    const empanelments = store.getEmpanelments();
 
     // Trigger hero motion choreography, parallax, magnetic buttons & stat counters
     setTimeout(() => {
@@ -1060,54 +1066,60 @@ document.addEventListener("DOMContentLoaded", () => {
       initStatCounters();
     }, 60);
 
+    const baseHospitals = facilities.filter(f => f.type === 'base');
+    const visionCenters = facilities.filter(f => f.type === 'vision-center');
+    const sections = home.sections || {};
+
     return `
       <div class="space-y-20 pt-4">
         
         <!-- 1. HERO SECTION -->
         <section class="relative max-w-7xl mx-auto px-4 hero-section-root">
-          <div class="relative rounded-3xl overflow-hidden min-h-[500px] flex items-center p-8 sm:p-12 md:p-16 bg-cover bg-right border border-teal-900/30 shadow-2xl hero-parallax-bg" style="background-image: url('assets/hero-bg.png');">
+          <div class="relative rounded-3xl overflow-hidden min-h-[500px] flex items-center p-8 sm:p-12 md:p-16 bg-cover bg-center border border-teal-900/30 shadow-2xl hero-parallax-bg" style="background-image: url('${home.heroImage || 'assets/hero-bg.png'}');">
             
             <!-- Dark Vision Blue Gradient Overlay with Aperture Mask Reveal -->
             <div class="absolute inset-0 bg-gradient-to-r from-[#062c26] via-[#062c26]/95 to-transparent opacity-0 transition-opacity duration-700 ease-out hero-aperture-mask"></div>
 
             <div class="relative z-10 max-w-2xl space-y-6 text-white">
               
-              <!-- Eyebrow Badge (Step 2) -->
+              <!-- Eyebrow Badge -->
               <div class="hero-eyebrow inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold text-xs tracking-wide border border-emerald-500/30 opacity-0 transform translate-y-4 transition-all duration-300">
                 <div class="w-5 h-5 rounded-full bg-white flex items-center justify-center p-0.5 shadow-sm overflow-hidden shrink-0">
-                  <img src="assets/official_logo.jpg" alt="Anugraha Official Logo" class="w-full h-full object-contain" />
+                  <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
                 </div>
-                <span>Super-Specialty Eye Network &bull; Est. 2001 Vijayapura</span>
+                <span>${home.heroEyebrow || (brand.tagline + ' • Est. 2001 Vijayapura')}</span>
               </div>
 
-              <!-- Word-by-Word Stagger H1 Headline (Step 3) -->
+              <!-- Word-by-Word Stagger H1 Headline -->
               <h1 class="hero-h1 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] font-heading text-white">
-                <span class="hero-word-span">Authentic.</span> 
-                <span class="hero-word-span">Affectionate.</span><br/>
-                <span class="hero-word-span text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-amber-300 to-emerald-200">Affordable.</span> 
-                <span class="hero-word-span">Eye</span> 
-                <span class="hero-word-span">Care</span> 
-                <span class="hero-word-span">for</span> 
-                <span class="hero-word-span">All.</span>
+                ${home.heroHeading ? `<span>${home.heroHeading}</span>` : `
+                  <span class="hero-word-span">Authentic.</span> 
+                  <span class="hero-word-span">Affectionate.</span><br/>
+                  <span class="hero-word-span text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-amber-300 to-emerald-200">Affordable.</span> 
+                  <span class="hero-word-span">Eye</span> 
+                  <span class="hero-word-span">Care</span> 
+                  <span class="hero-word-span">for</span> 
+                  <span class="hero-word-span">All.</span>
+                `}
               </h1>
 
-              <!-- Subheadline (Step 4) -->
+              <!-- Subheadline -->
               <p class="hero-subheadline text-base sm:text-lg text-slate-200 leading-relaxed font-normal opacity-0 transform translate-y-4 transition-all duration-300">
-                Founded by <strong>Dr. Prabhugouda B. Lingadalli</strong>, Anugraha Eye Hospital is North Karnataka's premier tertiary eye care destination, operating 2 base hospitals and 7 rural Vision Centers.
+                ${home.heroDescription || `Founded by <strong>${brand.founder}</strong>, ${brand.name} is North Karnataka's premier tertiary eye care destination, operating 2 base hospitals and ${visionCenters.length} rural Vision Centers.`}
               </p>
 
-              <!-- Hero Direct Contact CTAs with Magnetic Effect and easeSpring Settle (Step 5) -->
+              <!-- Hero Direct Contact CTAs with Magnetic Effect and easeSpring Settle -->
               <div class="hero-ctas flex flex-wrap items-center gap-4 pt-2 opacity-0 transform translate-y-6 transition-all duration-500">
-                <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="btn-call-now btn-shine-glow magnetic-btn px-6 py-4 rounded-2xl font-bold text-sm shadow-xl flex items-center gap-3 group">
+                <a href="${home.primaryCta?.link || `tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}`}" class="btn-call-now btn-shine-glow magnetic-btn px-6 py-4 rounded-2xl font-bold text-sm shadow-xl flex items-center gap-3 group">
                   <div class="w-8 h-8 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                   </div>
-                  <span>Call Hospital: ${brand.fallbackPhone}</span>
+                  <span>${home.primaryCta?.text || `Call Hospital: ${brand.fallbackPhone}`}</span>
                 </a>
 
-                <a href="#/vision-centers" class="btn-shine-glow magnetic-btn px-6 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm shadow-md transition-all flex items-center gap-2 border border-white/20 backdrop-blur-md group">
+                <a href="${home.secondaryCta?.link || '#/vision-centers'}" class="btn-shine-glow magnetic-btn px-6 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm shadow-md transition-all flex items-center gap-2 border border-white/20 backdrop-blur-md group">
                   <svg class="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                  <span>Explore 8 Vision Centers</span>
+                  <span>${home.secondaryCta?.text || `Explore ${visionCenters.length} Vision Centers`}</span>
                   <span class="icon-shift-right">&rarr;</span>
                 </a>
               </div>
@@ -1142,56 +1154,56 @@ document.addEventListener("DOMContentLoaded", () => {
 
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               
-              <!-- Stat 1: Total Surgeries (2,28,951) -->
+              <!-- Stat 1: Total Surgeries -->
               <div class="spotlight-card p-4 rounded-2xl bg-white/70 border border-teal-100 text-center">
                 <div class="text-[11px] font-bold text-teal-800 uppercase tracking-wider">Total Surgeries</div>
-                <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="228951" data-prefix="" data-suffix="">
-                  0
+                <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="${stats.lifetimeSurgeries.replace(/[^0-9]/g, '') || 228951}" data-prefix="" data-suffix="${stats.lifetimeSurgeries.includes('+') ? '+' : ''}">
+                  ${stats.lifetimeSurgeries}
                 </div>
                 <p class="text-[10px] text-slate-500 mt-1">Lifetime operations</p>
               </div>
 
-              <!-- Stat 2: Outreach Camps (2,715) -->
+              <!-- Stat 2: Outreach Camps -->
               <div class="spotlight-card p-4 rounded-2xl bg-white/70 border border-teal-100 text-center">
                 <div class="text-[11px] font-bold text-teal-800 uppercase tracking-wider">Outreach Camps</div>
-                <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="2715" data-prefix="" data-suffix="">
-                  0
+                <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="${stats.outreachCamps.replace(/[^0-9]/g, '') || 2715}" data-prefix="" data-suffix="${stats.outreachCamps.includes('+') ? '+' : ''}">
+                  ${stats.outreachCamps}
                 </div>
                 <p class="text-[10px] text-slate-500 mt-1">Mobile eye camps</p>
               </div>
 
-              <!-- Stat 3: Free Cataracts (50,000+) -->
+              <!-- Stat 3: Free Cataracts -->
               <div class="spotlight-card p-4 rounded-2xl bg-white/70 border border-teal-100 text-center">
                 <div class="text-[11px] font-bold text-teal-800 uppercase tracking-wider">Free Cataracts</div>
-                <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="50000" data-prefix="" data-suffix="+">
-                  0
+                <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="${stats.freeCataracts.replace(/[^0-9]/g, '') || 50000}" data-prefix="" data-suffix="+">
+                  ${stats.freeCataracts}
                 </div>
                 <p class="text-[10px] text-slate-500 mt-1">Free surgeries</p>
               </div>
 
-              <!-- Stat 4: Students Screened (10,000+) -->
+              <!-- Stat 4: Students Screened -->
               <div class="spotlight-card p-4 rounded-2xl bg-white/70 border border-teal-100 text-center">
                 <div class="text-[11px] font-bold text-teal-800 uppercase tracking-wider">Students Screened</div>
-                <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="10000" data-prefix="" data-suffix="+">
-                  0
+                <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="${stats.studentsScreened?.replace(/[^0-9]/g, '') || 10000}" data-prefix="" data-suffix="+">
+                  ${stats.studentsScreened || '10,000+'}
                 </div>
                 <p class="text-[10px] text-slate-500 mt-1">District school vision</p>
               </div>
 
-              <!-- Stat 5: Free Patients/Yr (~10,000) -->
+              <!-- Stat 5: Free Patients/Yr -->
               <div class="spotlight-card p-4 rounded-2xl bg-white/70 border border-teal-100 text-center">
                 <div class="text-[11px] font-bold text-teal-800 uppercase tracking-wider">Free Patients/Yr</div>
-                <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="10000" data-prefix="~" data-suffix="">
-                  0
+                <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="${stats.annualFreePatients?.replace(/[^0-9]/g, '') || 10000}" data-prefix="~" data-suffix="">
+                  ${stats.annualFreePatients || '~10,000'}
                 </div>
                 <p class="text-[10px] text-slate-500 mt-1">Treated free yearly</p>
               </div>
 
-              <!-- Stat 6: Total Reach (~10 Lakh) -->
+              <!-- Stat 6: Total Reach -->
               <div class="spotlight-card p-4 rounded-2xl bg-white/70 border border-teal-100 text-center">
                 <div class="text-[11px] font-bold text-teal-800 uppercase tracking-wider">Total Reach</div>
-                <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="10" data-prefix="~" data-suffix=" Lakh">
-                  0
+                <div class="text-2xl sm:text-3xl font-extrabold text-teal-950 mt-1.5 font-mono stat-counter" data-target="${stats.totalPeopleReached?.replace(/[^0-9]/g, '') || 10}" data-prefix="~" data-suffix=" Lakh">
+                  ${stats.totalPeopleReached || '~10 Lakh'}
                 </div>
                 <p class="text-[10px] text-slate-500 mt-1">25-Yr footprint</p>
               </div>
@@ -1201,50 +1213,52 @@ document.addEventListener("DOMContentLoaded", () => {
         </section>
 
         <!-- 3. VALUE PILLARS (3-Card Layout for Authentic / Affectionate / Affordable) -->
-        <section class="max-w-7xl mx-auto px-4">
-          <div class="text-center space-y-3 mb-10">
-            <span class="px-3 py-1 rounded-full badge-coral font-semibold text-xs uppercase tracking-wider">Core Brand Pillars</span>
-            <h2 class="text-3xl font-extrabold text-teal-950 font-heading">Our Three Foundational Values</h2>
-            <p class="text-slate-600 text-sm max-w-xl mx-auto">Grounded directly in our institutional mission statement and operational history.</p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
-            <!-- Pillar 1: Authentic -->
-            <div class="spotlight-card p-8 rounded-3xl border border-teal-100 space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-teal-900 text-emerald-400 flex items-center justify-center font-bold text-xl shadow-lg">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-              </div>
-              <h3 class="text-2xl font-bold text-teal-950 font-heading">Authentic</h3>
-              <p class="text-slate-600 text-sm leading-relaxed">
-                State-of-the-art super-specialty diagnostics, ethical ophthalmic care, and academic credibility backed by RGUHS university affiliations and National Board DNB accreditation.
-              </p>
+        ${sections.whyAnugraha !== false ? `
+          <section class="max-w-7xl mx-auto px-4">
+            <div class="text-center space-y-3 mb-10">
+              <span class="px-3 py-1 rounded-full badge-coral font-semibold text-xs uppercase tracking-wider">Core Brand Pillars</span>
+              <h2 class="text-3xl font-extrabold text-teal-950 font-heading">Our Three Foundational Values</h2>
+              <p class="text-slate-600 text-sm max-w-xl mx-auto">Grounded directly in our institutional mission statement and operational history.</p>
             </div>
 
-            <!-- Pillar 2: Affectionate -->
-            <div class="spotlight-card p-8 rounded-3xl border border-teal-100 space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-emerald-800 text-emerald-300 flex items-center justify-center font-bold text-xl shadow-lg">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              
+              <!-- Pillar 1: Authentic -->
+              <div class="spotlight-card p-8 rounded-3xl border border-teal-100 space-y-4">
+                <div class="w-12 h-12 rounded-2xl bg-teal-900 text-emerald-400 flex items-center justify-center font-bold text-xl shadow-lg">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                </div>
+                <h3 class="text-2xl font-bold text-teal-950 font-heading">Authentic</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                  State-of-the-art super-specialty diagnostics, ethical ophthalmic care, and academic credibility backed by RGUHS university affiliations and National Board DNB accreditation.
+                </p>
               </div>
-              <h3 class="text-2xl font-bold text-teal-950 font-heading">Affectionate</h3>
-              <p class="text-slate-600 text-sm leading-relaxed">
-                Compassionate community-rooted service, 2,715 mobile eye camps, and school screening programs reaching over 10,000 students in active partnership with local ASHA & Anganwadi workers.
-              </p>
-            </div>
 
-            <!-- Pillar 3: Affordable -->
-            <div class="spotlight-card p-8 rounded-3xl border border-teal-100 space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-amber-700 text-amber-200 flex items-center justify-center font-bold text-xl shadow-lg">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <!-- Pillar 2: Affectionate -->
+              <div class="spotlight-card p-8 rounded-3xl border border-teal-100 space-y-4">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-800 text-emerald-300 flex items-center justify-center font-bold text-xl shadow-lg">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                </div>
+                <h3 class="text-2xl font-bold text-teal-950 font-heading">Affectionate</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                  Compassionate community-rooted service, ${stats.outreachCamps} mobile eye camps, and school screening programs reaching over ${stats.studentsScreened || '10,000+'} students.
+                </p>
               </div>
-              <h3 class="text-2xl font-bold text-teal-950 font-heading">Affordable</h3>
-              <p class="text-slate-600 text-sm leading-relaxed">
-                Over 50,000 free cataract operations for impoverished demographics, low-cost rural Vision Centers, and complete empanelment with Ayushman Bharat & Arogya Bhagya health schemes.
-              </p>
-            </div>
 
-          </div>
-        </section>
+              <!-- Pillar 3: Affordable -->
+              <div class="spotlight-card p-8 rounded-3xl border border-teal-100 space-y-4">
+                <div class="w-12 h-12 rounded-2xl bg-amber-700 text-amber-200 flex items-center justify-center font-bold text-xl shadow-lg">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h3 class="text-2xl font-bold text-teal-950 font-heading">Affordable</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                  Over ${stats.freeCataracts} free cataract operations for impoverished demographics, low-cost rural Vision Centers, and cashless health scheme coverage.
+                </p>
+              </div>
+
+            </div>
+          </section>
+        ` : ''}
 
         <!-- 4. OUR LEGACY TEASER -->
         <section class="max-w-7xl mx-auto px-4">
@@ -1253,7 +1267,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-xs uppercase tracking-wider">Our Institutional Legacy</span>
               <h2 class="text-3xl font-extrabold text-white font-heading">Founded in 2001, Vijayapura</h2>
               <p class="text-slate-300 text-sm leading-relaxed">
-                Established by <strong>Dr. Prabhugouda B. Lingadalli</strong>, Anugraha Eye Hospital pioneered a high-volume, high-quality, low-cost ophthalmic delivery model. Over nearly a quarter century, it has grown into a premier referral hub operating base hospitals in Vijayapura and Kalaburagi along with 7 rural Vision Centers across Karnataka and Maharashtra.
+                ${about.story || `Established by <strong>${brand.founder}</strong>, ${brand.name} pioneered a high-volume, high-quality, low-cost ophthalmic delivery model. Over nearly a quarter century, it has grown into a premier referral hub operating base hospitals in Vijayapura and Kalaburagi along with ${visionCenters.length} rural Vision Centers.`}
               </p>
             </div>
 
@@ -1265,304 +1279,308 @@ document.addEventListener("DOMContentLoaded", () => {
         </section>
 
         <!-- 5. CARE NETWORK MAP / PREVIEW -->
-        <section class="max-w-7xl mx-auto px-4 space-y-6">
-          <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div>
-              <span class="px-3 py-1 rounded-full badge-teal font-semibold text-xs uppercase tracking-wider">Regional Coverage</span>
-              <h2 class="text-3xl font-extrabold text-teal-950 font-heading mt-1">2 Base Hospitals & 7 Vision Centers</h2>
-              <p class="text-slate-600 text-sm">Providing specialized eye care across Karnataka and Maharashtra districts.</p>
-            </div>
-            <a href="#/vision-centers" class="text-xs font-bold text-teal-900 hover:underline">Explore Full Directory &rarr;</a>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-3">
-              <div class="text-xs font-bold text-teal-900 uppercase tracking-wider">Vijayapura Base Hospital</div>
-              <div class="text-xs text-slate-500">Navabhag Main Road, Behind Central Bus Stand</div>
-              <div class="text-xs font-semibold text-emerald-700">Hours: 8:00 AM – 9:00 PM daily</div>
-              <a href="#/hospitals/vijayapura" class="inline-block text-xs font-bold text-teal-900 hover:underline pt-2 underline-animated">View Campus Details &rarr;</a>
+        ${(sections.hospitals !== false || sections.visionCenters !== false) ? `
+          <section class="max-w-7xl mx-auto px-4 space-y-6">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div>
+                <span class="px-3 py-1 rounded-full badge-teal font-semibold text-xs uppercase tracking-wider">Regional Coverage</span>
+                <h2 class="text-3xl font-extrabold text-teal-950 font-heading mt-1">${baseHospitals.length} Base Hospitals & ${visionCenters.length} Vision Centers</h2>
+                <p class="text-slate-600 text-sm">Providing specialized eye care across Karnataka and Maharashtra districts.</p>
+              </div>
+              <a href="#/vision-centers" class="text-xs font-bold text-teal-900 hover:underline">Explore Full Directory &rarr;</a>
             </div>
 
-            <div class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-3">
-              <div class="text-xs font-bold text-teal-900 uppercase tracking-wider">Kalaburagi Base Hospital</div>
-              <div class="text-xs text-slate-500">Tertiary Base Center & Optometry Institute</div>
-              <div class="text-xs font-semibold text-emerald-700">Hours: 8:00 AM – 8:00 PM daily</div>
-              <a href="#/hospitals/kalaburagi" class="inline-block text-xs font-bold text-teal-900 hover:underline pt-2 underline-animated">View Campus Details &rarr;</a>
-            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              ${baseHospitals.map(fac => `
+                <div class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-3">
+                  <div class="text-xs font-bold text-teal-900 uppercase tracking-wider">${fac.name}</div>
+                  <div class="text-xs text-slate-500">${fac.address}</div>
+                  <div class="text-xs font-semibold text-emerald-700">Hours: ${fac.hours}</div>
+                  <a href="#/hospitals/${fac.id}" class="inline-block text-xs font-bold text-teal-900 hover:underline pt-2 underline-animated">View Campus Details &rarr;</a>
+                </div>
+              `).join('')}
 
-            <div class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-3 bg-teal-50/50">
-              <div class="text-xs font-bold text-amber-900 uppercase tracking-wider">8 Rural Vision Centers</div>
-              <div class="text-xs text-slate-600">Talikoti, Muddebihal, Sindagi, Indi, B.Bagewadi, Chadachan, Nalatwad, Tikota</div>
-              <div class="text-xs font-semibold text-emerald-800">Primary Care, Spectacles, 24x7 Emergency</div>
-              <a href="#/vision-centers" class="inline-block text-xs font-bold text-teal-900 hover:underline pt-2 underline-animated">View All 8 Centers &rarr;</a>
+              <div class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-3 bg-teal-50/50">
+                <div class="text-xs font-bold text-amber-900 uppercase tracking-wider">${visionCenters.length} Rural Vision Centers</div>
+                <div class="text-xs text-slate-600">${visionCenters.map(v => v.town || v.name.replace(' Vision Center', '')).join(', ')}</div>
+                <div class="text-xs font-semibold text-emerald-800">Primary Care, Spectacles, 24x7 Emergency</div>
+                <a href="#/vision-centers" class="inline-block text-xs font-bold text-teal-900 hover:underline pt-2 underline-animated">View All ${visionCenters.length} Centers &rarr;</a>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        ` : ''}
 
         <!-- 6. SERVICES PREVIEW GRID -->
-        <section class="max-w-7xl mx-auto px-4 space-y-6">
-          <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div>
-              <span class="px-3 py-1 rounded-full badge-amber font-semibold text-xs uppercase tracking-wider">Ophthalmic Specialties</span>
-              <h2 class="text-3xl font-extrabold text-teal-950 font-heading mt-1">Super-Specialty Ophthalmic Services</h2>
-              <p class="text-slate-600 text-sm">Advanced surgical and diagnostic eye care.</p>
-            </div>
-            <a href="#/services" class="text-xs font-bold text-teal-900 hover:underline underline-animated">View All Services &rarr;</a>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            ${[
-              { title: "Cataract & Phacoemulsification", badge: "High-Volume Phaco", desc: "Micro-incision cataract procedures with premium intraocular lenses." },
-              { title: "LASIK & Contoura Vision", badge: "MyAlcon Verified", desc: "MyAlcon verified blade-free laser vision correction." },
-              { title: "Retina & Vitreoretinal Care", badge: "Anti-VEGF & Lasers", desc: "Diabetic retinopathy screening, anti-VEGF, and retinal detachment lasers." },
-              { title: "Glaucoma Diagnostics", badge: "OCT & Tonometry", desc: "IOP monitoring, visual fields, OCT, and surgical trabeculectomy." },
-              { title: "Pediatric Ophthalmology", badge: "Squint & Amblyopia", desc: "Squint correction, amblyopia management, and district school screenings." },
-              { title: "Oculoplasty & Aesthetics", badge: "Orbital Trauma", desc: "Eyelid surgery, lacrimal duct disorders, and trauma reconstruction." },
-              { title: "Cornea & External Disease", badge: "Dry Eye & C3R", desc: "Dry eye clinic, pterygium autograft, and corneal ulcer management." }
-            ].map(s => `
-              <div class="spotlight-card p-6 rounded-3xl border border-teal-100 space-y-3 flex flex-col justify-between group">
-                <div>
-                  <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-900 dark:text-emerald-300 border border-emerald-300/40 font-mono">${s.badge}</span>
-                  <h3 class="text-base font-extrabold text-teal-950 font-heading mt-2 group-hover:text-emerald-700 transition-colors">${s.title}</h3>
-                  <p class="text-xs text-slate-600 mt-1 leading-relaxed">${s.desc}</p>
-                </div>
-                <a href="#/services" class="text-xs font-bold text-teal-900 hover:underline pt-2 border-t border-teal-100 flex items-center justify-between">
-                  <span>Learn More</span>
-                  <span class="icon-shift-right">&rarr;</span>
-                </a>
-              </div>
-            `).join('')}
-          </div>
-        <!-- 6. VERIFIED CLINICAL FEEDBACK & PATIENT TESTIMONIALS -->
-        <section class="max-w-7xl mx-auto px-4 space-y-8 py-6">
-          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-teal-100 dark:border-teal-900 pb-4">
-            <div>
-              <span class="px-3 py-1 rounded-full badge-emerald font-bold text-xs uppercase tracking-wider">Patient Trust & Testimonials</span>
-              <h2 class="text-3xl font-extrabold text-teal-950 dark:text-white font-heading mt-1">Verified Patient Feedback & Clinical Reviews</h2>
-              <p class="text-slate-600 dark:text-slate-400 text-xs mt-0.5">Over 2,28,951+ sight restoration procedures delivered across North Karnataka.</p>
-            </div>
-            
-            <!-- Google Reviews Widget Link -->
-            <a href="https://maps.google.com/?q=Anugraha+Eye+Hospital+Vijayapura" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-teal-200 dark:border-teal-800 shadow-md flex items-center gap-3 hover:scale-105 transition-transform shrink-0">
-              <div class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold text-lg text-emerald-600 font-mono">
-                G
-              </div>
+        ${sections.services !== false ? `
+          <section class="max-w-7xl mx-auto px-4 space-y-6">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div>
-                <div class="flex items-center gap-1 text-amber-400 text-xs font-bold">
-                  <span>★★★★★</span>
-                  <span class="text-teal-950 dark:text-white font-extrabold ml-1">4.8 / 5.0</span>
-                </div>
-                <div class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">1,200+ Google Business Reviews</div>
+                <span class="px-3 py-1 rounded-full badge-amber font-semibold text-xs uppercase tracking-wider">Ophthalmic Specialties</span>
+                <h2 class="text-3xl font-extrabold text-teal-950 font-heading mt-1">Super-Specialty Ophthalmic Services</h2>
+                <p class="text-slate-600 text-sm">Advanced surgical and diagnostic eye care.</p>
               </div>
-            </a>
-          </div>
+              <a href="#/services" class="text-xs font-bold text-teal-900 hover:underline underline-animated">View All Services &rarr;</a>
+            </div>
 
-          <!-- 8 Patient Testimonials Card Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            ${[
-              {
-                name: "Mr. Ramesh K.",
-                location: "Vijayapura",
-                treatment: "Phaco Cataract Surgery",
-                rating: "★★★★★",
-                review: "Restored crystal clear 20/20 vision after 3 years of blurry sight. Dr. Lingadalli's micro-incision procedure was completely painless with zero hospital stay!"
-              },
-              {
-                name: "Mrs. Savitri Patil",
-                location: "Kalaburagi",
-                treatment: "Retinal Laser Therapy",
-                rating: "★★★★★",
-                review: "Dr. Lingadalli's expert laser intervention saved my vision from severe diabetic retinal damage. Highly compassionate doctors and attentive nursing staff."
-              },
-              {
-                name: "Dr. Amit S.",
-                location: "Hubballi",
-                treatment: "Contoura Vision LASIK",
-                rating: "★★★★★",
-                review: "Specs-free after 12 years of heavy glasses! The Contoura Vision laser was painless, took barely 10 minutes, and my HD vision was sharp the next morning."
-              },
-              {
-                name: "Mr. Basavaraj M.",
-                location: "Bagalkot",
-                treatment: "Free Cataract Surgery",
-                rating: "★★★★★",
-                review: "Screened at a free rural camp and operated at Vijayapura base hospital completely free of cost. Forever grateful to Anugraha's compassionate mission."
-              },
-              {
-                name: "Mrs. Sunita Deshmukh",
-                location: "Solapur",
-                treatment: "Pediatric Squint Surgery",
-                rating: "★★★★★",
-                review: "My 7-year-old daughter's squint was corrected perfectly by the pediatric ophthalmology team. Extremely gentle with children and highly professional."
-              },
-              {
-                name: "Mr. Gururaj Kulkarni",
-                location: "Vijayapura",
-                treatment: "Glaucoma Diagnostics",
-                rating: "★★★★★",
-                review: "Early IOP detection and OCT optic nerve tracking stopped glaucoma progression. Undoubted best eye hospital in North Karnataka region."
-              },
-              {
-                name: "Mr. Mallappa Biradar",
-                location: "Indi Taluka",
-                treatment: "Vision Center Primary Care",
-                rating: "★★★★★",
-                review: "Checked my eyes at Indi Vision Center and received custom prescription glasses locally. Saved me a long travel trip to Vijayapura."
-              },
-              {
-                name: "Mrs. Rajeshwari N.",
-                location: "Kalaburagi",
-                treatment: "Cashless Ayushman Surgery",
-                rating: "★★★★★",
-                review: "100% cashless procedure under Ayushman Bharat scheme. The insurance TPA desk handled all paperwork smoothly within 20 minutes."
-              }
-            ].map(t => `
-              <div class="spotlight-card p-6 rounded-3xl border border-teal-100 dark:border-teal-900/60 space-y-3 flex flex-col justify-between hover-lift">
-                <div class="space-y-2">
-                  <div class="flex items-center justify-between">
-                    <span class="text-amber-400 font-bold text-xs">${t.rating}</span>
-                    <span class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold">Verified Patient</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              ${services.slice(0, 8).map(s => `
+                <div class="spotlight-card rounded-3xl border border-teal-100 overflow-hidden flex flex-col justify-between group">
+                  <div class="h-36 overflow-hidden bg-slate-900 relative">
+                    <img src="${s.heroImage || s.imagePlaceholder || 'assets/services/cataract_surgery.jpg'}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <span class="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-400/40 font-mono">${s.category || 'Specialty'}</span>
                   </div>
-                  <div class="text-xs font-bold text-emerald-700 dark:text-emerald-400 font-mono">${t.treatment}</div>
-                  <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed italic">"${t.review}"</p>
-                </div>
-
-                <div class="pt-3 border-t border-teal-100 dark:border-teal-900/40 flex items-center justify-between text-xs">
-                  <span class="font-extrabold text-teal-950 dark:text-white font-heading">${t.name}</span>
-                  <span class="text-slate-400 text-[11px]">${t.location}</span>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        </section>
-
-        <!-- 7. LEADERSHIP TEASER (ACCURATE ASYMMETRIC CUTOUT CARDS MATCHING REFERENCE DESIGN) -->
-        <section class="max-w-7xl mx-auto px-4 space-y-12 py-6">
-          <div class="text-center space-y-3">
-            <span class="px-3 py-1 rounded-full badge-coral font-semibold text-xs uppercase tracking-wider">Medical Leadership</span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-teal-950 dark:text-white font-heading">Hospital Founders & Medical Directors</h2>
-            <p class="text-slate-600 dark:text-slate-300 text-sm max-w-xl mx-auto">Pioneering compassionate, high-volume ophthalmic care since 2001.</p>
-          </div>
-
-          <div class="space-y-16 lg:space-y-24">
-            
-            <!-- Chairman Card (Asymmetric Top-Left Curve, Doctor Portrait on Right Side) -->
-            <div class="relative max-w-6xl mx-auto">
-              <div class="bg-[#093327] text-white p-8 sm:p-12 lg:py-14 lg:pl-14 lg:pr-[360px] rounded-tl-[70px] sm:rounded-tl-[110px] rounded-tr-[28px] rounded-bl-[28px] rounded-br-[28px] shadow-2xl space-y-5 border border-emerald-800/40 relative z-0 overflow-visible">
-                <div>
-                  <h3 class="text-2xl sm:text-4xl font-extrabold text-white font-heading tracking-tight">Dr. Prabhugouda B. Lingadalli</h3>
-                  <div class="text-xs sm:text-sm font-bold text-[#2dd4bf] mt-1.5 font-sans">Chairman & Founder &bull; MBBS, MS, DNB, FAEH, MCHS</div>
-                </div>
-
-                <p class="text-xs sm:text-base text-slate-100/90 leading-relaxed font-normal max-w-2xl">
-                  Pioneered mobile eye camps treating ~10,000 patients annually free of cost, reaching nearly 10 lakh individuals over 25 years. Recipient of 12 prestigious awards including the Government of Karnataka's Rajyostava Award (2021).
-                </p>
-
-                <div class="pt-2">
-                  <a href="#/about-us/leadership" class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white hover:text-[#2dd4bf] transition-colors group font-mono tracking-wide">
-                    <span>View Full Bio --&gt;</span>
-                  </a>
-                </div>
-
-                <!-- Right Side Breakout Doctor Portrait -->
-                <div class="lg:absolute lg:right-6 lg:-bottom-6 lg:-top-16 lg:w-[340px] flex justify-center mt-6 lg:mt-0 pointer-events-none z-10">
-                  <img src="assets/dr_lingadalli.jpg" alt="Dr. Prabhugouda B. Lingadalli" class="h-80 sm:h-[400px] lg:h-[430px] w-auto object-cover object-top drop-shadow-2xl rounded-2xl lg:rounded-b-none" />
-                </div>
-              </div>
-            </div>
-
-            <!-- Medical Director Card (Asymmetric Top-Right Curve, Doctor Portrait on Left Side) -->
-            <div class="relative max-w-6xl mx-auto">
-              <div class="bg-[#093327] text-white p-8 sm:p-12 lg:py-14 lg:pr-14 lg:pl-[360px] rounded-tr-[70px] sm:rounded-tr-[110px] rounded-tl-[28px] rounded-bl-[28px] rounded-br-[28px] shadow-2xl space-y-5 border border-emerald-800/40 relative z-0 overflow-visible">
-                
-                <!-- Left Side Breakout Doctor Portrait -->
-                <div class="lg:absolute lg:left-6 lg:-bottom-6 lg:-top-16 lg:w-[340px] flex justify-center mb-6 lg:mb-0 pointer-events-none z-10">
-                  <img src="assets/dr_malini.jpg" alt="Dr. Malini P L" class="h-80 sm:h-[400px] lg:h-[430px] w-auto object-cover object-top drop-shadow-2xl rounded-2xl lg:rounded-b-none" />
-                </div>
-
-                <div>
-                  <h3 class="text-2xl sm:text-4xl font-extrabold text-white font-heading tracking-tight">Dr. Malini P L</h3>
-                  <div class="text-xs sm:text-sm font-bold text-[#2dd4bf] mt-1.5 font-sans">Medical Director &bull; MBBS, DO, FGO</div>
-                </div>
-
-                <p class="text-xs sm:text-base text-slate-100/90 leading-relaxed font-normal max-w-2xl">
-                  Committed, compassionate leader with nearly two decades driving organizational development and super-specialty upgrades. Guiding clinical quality and patient-first care across Vijayapura and Kalaburagi campuses.
-                </p>
-
-                <div class="pt-2 text-left lg:text-right">
-                  <a href="#/about-us/leadership" class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white hover:text-[#2dd4bf] transition-colors group font-mono tracking-wide">
-                    <span>View Full Bio --&gt;</span>
-                  </a>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-        <!-- 8. RECOGNITION STRIP (Quiet Trust Badges) -->
-        <section class="max-w-7xl mx-auto px-4">
-          <div class="bg-teal-950/90 text-slate-300 rounded-3xl p-6 border border-teal-800/60 shadow-lg">
-            <div class="text-center text-xs font-bold uppercase tracking-wider text-emerald-400 mb-4">Academic Credentials & Institutional Recognitions</div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-              <div class="p-3 rounded-2xl bg-teal-900/50 border border-teal-800/40">
-                <div class="font-bold text-white text-xs">RGUHS Affiliated</div>
-                <div class="text-[11px] text-slate-400 mt-0.5">Optometry Institute Kalaburagi</div>
-              </div>
-              <div class="p-3 rounded-2xl bg-teal-900/50 border border-teal-800/40">
-                <div class="font-bold text-white text-xs">NBEMS DNB Recognized</div>
-                <div class="text-[11px] text-slate-400 mt-0.5">Diploma in Ophthalmology PG Seats</div>
-              </div>
-              <div class="p-3 rounded-2xl bg-teal-900/50 border border-teal-800/40">
-                <div class="font-bold text-white text-xs">MyAlcon Verified</div>
-                <div class="text-[11px] text-slate-400 mt-0.5">LASIK & Contoura Provider</div>
-              </div>
-              <div class="p-3 rounded-2xl bg-teal-900/50 border border-teal-800/40">
-                <div class="font-bold text-white text-xs">NABH Quality Standards</div>
-                <div class="text-[11px] text-slate-400 mt-0.5">Accredited Clinical Protocols</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 9. COMMUNITY OUTREACH PANEL (Partner Names/Logos Reinforcing "Affectionate" Pillar) -->
-        <section class="max-w-7xl mx-auto px-4">
-          <div class="glass-card rounded-3xl p-8 border border-teal-100 space-y-6">
-            <div class="space-y-2">
-              <span class="px-3 py-1 rounded-full badge-teal font-semibold text-xs uppercase tracking-wider">Reinforcing The "Affectionate" Pillar</span>
-              <h2 class="text-2xl font-extrabold text-teal-950 font-heading">Community & Ecosystem Partners</h2>
-              <p class="text-slate-600 text-sm">Collaborating with civic and public health partners irrespective of caste, creed, race, or religion.</p>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-              ${[
-                "Primary Health Centres", "Gram Panchayats", "Lions Club", "Red Cross Society",
-                "Rotary Club", "Self-Help Groups", "Educational Trusts", "ASHA Workers",
-                "Anganwadi Workers", "Local Leaders", "NGO Partners", "Health Departments"
-              ].map(partner => `
-                <div class="p-3 rounded-xl bg-teal-50/70 border border-teal-100 text-center font-bold text-xs text-teal-950 hover:bg-teal-100 transition-colors">
-                  ${partner}
+                  <div class="p-5 space-y-2 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 class="text-base font-extrabold text-teal-950 font-heading group-hover:text-emerald-700 transition-colors">${s.title}</h3>
+                      <p class="text-xs text-slate-600 mt-1 leading-relaxed line-clamp-2">${s.shortDesc || s.desc}</p>
+                    </div>
+                    <a href="#/services/${s.id}" class="text-xs font-bold text-teal-900 hover:underline pt-2 border-t border-teal-100 flex items-center justify-between">
+                      <span>Learn More</span>
+                      <span class="icon-shift-right">&rarr;</span>
+                    </a>
+                  </div>
                 </div>
               `).join('')}
             </div>
-          </div>
-        </section>
+          </section>
+        ` : ''}
+
+        <!-- 6. VERIFIED CLINICAL FEEDBACK & PATIENT TESTIMONIALS -->
+        ${sections.communityImpact !== false ? `
+          <section class="max-w-7xl mx-auto px-4 space-y-8 py-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-teal-100 dark:border-teal-900 pb-4">
+              <div>
+                <span class="px-3 py-1 rounded-full badge-emerald font-bold text-xs uppercase tracking-wider">Patient Trust & Testimonials</span>
+                <h2 class="text-3xl font-extrabold text-teal-950 dark:text-white font-heading mt-1">Verified Patient Feedback & Clinical Reviews</h2>
+                <p class="text-slate-600 dark:text-slate-400 text-xs mt-0.5">Over ${stats.lifetimeSurgeries} sight restoration procedures delivered across North Karnataka.</p>
+              </div>
+              
+              <!-- Google Reviews Widget Link -->
+              <a href="https://maps.google.com/?q=Anugraha+Eye+Hospital+Vijayapura" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-teal-200 dark:border-teal-800 shadow-md flex items-center gap-3 hover:scale-105 transition-transform shrink-0">
+                <div class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold text-lg text-emerald-600 font-mono">
+                  G
+                </div>
+                <div>
+                  <div class="flex items-center gap-1 text-amber-400 text-xs font-bold">
+                    <span>★★★★★</span>
+                    <span class="text-teal-950 dark:text-white font-extrabold ml-1">4.8 / 5.0</span>
+                  </div>
+                  <div class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">1,200+ Google Business Reviews</div>
+                </div>
+              </a>
+            </div>
+
+            <!-- 4 Patient Testimonials Card Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              ${[
+                {
+                  name: "Mr. Ramesh K.",
+                  location: "Vijayapura",
+                  treatment: "Phaco Cataract Surgery",
+                  rating: "★★★★★",
+                  review: "Restored crystal clear 20/20 vision after 3 years of blurry sight. Dr. Lingadalli's micro-incision procedure was completely painless with zero hospital stay!"
+                },
+                {
+                  name: "Mrs. Savitri Patil",
+                  location: "Kalaburagi",
+                  treatment: "Retinal Laser Therapy",
+                  rating: "★★★★★",
+                  review: "Dr. Lingadalli's expert laser intervention saved my vision from severe diabetic retinal damage. Highly compassionate doctors and attentive nursing staff."
+                },
+                {
+                  name: "Dr. Amit S.",
+                  location: "Hubballi",
+                  treatment: "Contoura Vision LASIK",
+                  rating: "★★★★★",
+                  review: "Specs-free after 12 years of heavy glasses! The Contoura Vision laser was painless, took barely 10 minutes, and my HD vision was sharp the next morning."
+                },
+                {
+                  name: "Mr. Basavaraj M.",
+                  location: "Bagalkot",
+                  treatment: "Free Cataract Surgery",
+                  rating: "★★★★★",
+                  review: `Screened at a free rural camp and operated at Vijayapura base hospital completely free of cost. Forever grateful to Anugraha's compassionate mission.`
+                }
+              ].map(t => `
+                <div class="spotlight-card p-6 rounded-3xl border border-teal-100 dark:border-teal-900/60 space-y-3 flex flex-col justify-between hover-lift">
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                      <span class="text-amber-400 font-bold text-xs">${t.rating}</span>
+                      <span class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold">Verified Patient</span>
+                    </div>
+                    <div class="text-xs font-bold text-emerald-700 dark:text-emerald-400 font-mono">${t.treatment}</div>
+                    <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed italic">"${t.review}"</p>
+                  </div>
+
+                  <div class="pt-3 border-t border-teal-100 dark:border-teal-900/40 flex items-center justify-between text-xs">
+                    <span class="font-extrabold text-teal-950 dark:text-white font-heading">${t.name}</span>
+                    <span class="text-slate-400 text-[11px]">${t.location}</span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+
+        <!-- 7. LEADERSHIP TEASER (DYNAMICALLY READS LEADERS FROM STORE) -->
+        ${sections.featuredDoctors !== false ? `
+          <section class="max-w-7xl mx-auto px-4 space-y-12 py-6">
+            <div class="text-center space-y-3">
+              <span class="px-3 py-1 rounded-full badge-coral font-semibold text-xs uppercase tracking-wider">Medical Leadership</span>
+              <h2 class="text-3xl sm:text-4xl font-extrabold text-teal-950 dark:text-white font-heading">Hospital Founders & Medical Leadership</h2>
+              <p class="text-slate-600 dark:text-slate-300 text-sm max-w-xl mx-auto">Pioneering compassionate, high-volume ophthalmic care since 2001.</p>
+            </div>
+
+            <div class="space-y-16 lg:space-y-20">
+              ${leaders.filter(l => l.published !== false).map((doc, idx) => `
+                <div class="relative max-w-6xl mx-auto">
+                  <div class="bg-[#093327] text-white p-8 sm:p-12 lg:py-14 ${idx % 2 === 0 ? 'lg:pl-14 lg:pr-[360px] rounded-tl-[70px] sm:rounded-tl-[110px]' : 'lg:pr-14 lg:pl-[360px] rounded-tr-[70px] sm:rounded-tr-[110px]'} rounded-2xl shadow-2xl space-y-5 border border-emerald-800/40 relative z-0 overflow-visible">
+                    
+                    <div>
+                      <h3 class="text-2xl sm:text-4xl font-extrabold text-white font-heading tracking-tight">${doc.name}</h3>
+                      <div class="text-xs sm:text-sm font-bold text-[#2dd4bf] mt-1.5 font-sans">${doc.title || doc.designation} &bull; ${doc.degrees}</div>
+                    </div>
+
+                    <p class="text-xs sm:text-base text-slate-100/90 leading-relaxed font-normal max-w-2xl">
+                      ${doc.bio}
+                    </p>
+
+                    <div class="pt-2">
+                      <a href="#/about-us/leadership" class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white hover:text-[#2dd4bf] transition-colors group font-mono tracking-wide">
+                        <span>View Full Profile &rarr;</span>
+                      </a>
+                    </div>
+
+                    <!-- Breakout Doctor Portrait -->
+                    <div class="lg:absolute ${idx % 2 === 0 ? 'lg:right-6' : 'lg:left-6'} lg:-bottom-6 lg:-top-16 lg:w-[340px] flex justify-center mt-6 lg:mt-0 pointer-events-none z-10">
+                      <img src="${doc.photo || (idx === 0 ? 'assets/dr_lingadalli.jpg' : 'assets/dr_malini.jpg')}" alt="${doc.name}" class="h-80 sm:h-[400px] lg:h-[430px] w-auto object-cover object-top drop-shadow-2xl rounded-2xl lg:rounded-b-none" />
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+
+        <!-- 8. RECOGNITION STRIP (Quiet Trust Badges) -->
+        ${sections.technology !== false ? `
+          <section class="max-w-7xl mx-auto px-4">
+            <div class="bg-teal-950/90 text-slate-300 rounded-3xl p-6 border border-teal-800/60 shadow-lg">
+              <div class="text-center text-xs font-bold uppercase tracking-wider text-emerald-400 mb-4">Academic Credentials & Institutional Recognitions</div>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="p-3 rounded-2xl bg-teal-900/50 border border-teal-800/40">
+                  <div class="font-bold text-white text-xs">RGUHS Affiliated</div>
+                  <div class="text-[11px] text-slate-400 mt-0.5">Optometry Institute Kalaburagi</div>
+                </div>
+                <div class="p-3 rounded-2xl bg-teal-900/50 border border-teal-800/40">
+                  <div class="font-bold text-white text-xs">NBEMS DNB Recognized</div>
+                  <div class="text-[11px] text-slate-400 mt-0.5">Diploma in Ophthalmology PG Seats</div>
+                </div>
+                <div class="p-3 rounded-2xl bg-teal-900/50 border border-teal-800/40">
+                  <div class="font-bold text-white text-xs">MyAlcon Verified</div>
+                  <div class="text-[11px] text-slate-400 mt-0.5">LASIK & Contoura Provider</div>
+                </div>
+                <div class="p-3 rounded-2xl bg-teal-900/50 border border-teal-800/40">
+                  <div class="font-bold text-white text-xs">NABH Quality Standards</div>
+                  <div class="text-[11px] text-slate-400 mt-0.5">Accredited Clinical Protocols</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        ` : ''}
+
+        <!-- 9. COMMUNITY OUTREACH PANEL -->
+        ${sections.communityImpact !== false ? `
+          <section class="max-w-7xl mx-auto px-4">
+            <div class="glass-card rounded-3xl p-8 border border-teal-100 space-y-6">
+              <div class="space-y-2">
+                <span class="px-3 py-1 rounded-full badge-teal font-semibold text-xs uppercase tracking-wider">Reinforcing The "Affectionate" Pillar</span>
+                <h2 class="text-2xl font-extrabold text-teal-950 font-heading">Community & Ecosystem Partners</h2>
+                <p class="text-slate-600 text-sm">${about.communityImpact || 'Collaborating with civic and public health partners irrespective of caste, creed, race, or religion.'}</p>
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                ${[
+                  "Primary Health Centres", "Gram Panchayats", "Lions Club", "Red Cross Society",
+                  "Rotary Club", "Self-Help Groups", "Educational Trusts", "ASHA Workers",
+                  "Anganwadi Workers", "Local Leaders", "NGO Partners", "Health Departments"
+                ].map(partner => `
+                  <div class="p-3 rounded-xl bg-teal-50/70 border border-teal-100 text-center font-bold text-xs text-teal-950 hover:bg-teal-100 transition-colors">
+                    ${partner}
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </section>
+        ` : ''}
+
+        <!-- 10. PATIENT FAQS ACCORDION -->
+        ${sections.faqs !== false ? `
+          <section class="max-w-4xl mx-auto px-4 space-y-6 py-6">
+            <div class="text-center space-y-2">
+              <span class="px-3 py-1 rounded-full badge-teal font-semibold text-xs uppercase tracking-wider">Patient Guidance</span>
+              <h2 class="text-3xl font-extrabold text-teal-950 font-heading">Frequently Asked Questions</h2>
+              <p class="text-slate-600 text-xs">Authentic clinical answers to common patient questions.</p>
+            </div>
+
+            <div class="space-y-3">
+              ${faqs.slice(0, 6).map(f => `
+                <details class="p-5 rounded-2xl bg-white border border-teal-100 shadow-sm space-y-2 cursor-pointer group">
+                  <summary class="font-bold text-teal-950 text-sm font-heading flex items-center justify-between outline-none">
+                    <span>${f.question}</span>
+                    <span class="w-6 h-6 rounded-full bg-teal-50 text-teal-800 flex items-center justify-center text-xs font-bold shrink-0 transition-transform group-open:rotate-180">+</span>
+                  </summary>
+                  <p class="text-xs text-slate-600 leading-relaxed pt-2 border-t border-slate-100">${f.answer}</p>
+                </details>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+
+        <!-- 11. FINAL CALL TO ACTION BANNER -->
+        ${sections.finalCta !== false ? `
+          <section class="max-w-7xl mx-auto px-4">
+            <div class="bento-card-luxury rounded-3xl p-8 sm:p-12 text-center space-y-6 border border-teal-200 shadow-2xl relative overflow-hidden">
+              <div class="max-w-2xl mx-auto space-y-3">
+                <span class="px-3 py-1 rounded-full badge-emerald font-bold text-xs uppercase tracking-wider">Book Your Consultation Today</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-teal-950 font-heading">Ready to Restore Your Vision?</h2>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                  Walk in to our Vijayapura Main Campus, Kalaburagi Base Hospital, or visit your nearest rural Vision Center.
+                </p>
+              </div>
+
+              <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+                <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="px-8 py-4 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-sm shadow-xl flex items-center gap-2">
+                  <svg class="w-5 h-5 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                  <span>Call Hospital: ${brand.fallbackPhone}</span>
+                </a>
+                <a href="#/contact" class="px-8 py-4 rounded-2xl bg-teal-900 hover:bg-teal-800 text-white font-extrabold text-sm shadow-xl">
+                  Book Online Appointment &rarr;
+                </a>
+              </div>
+            </div>
+          </section>
+        ` : ''}
 
       </div>
     `;
   }
 
-  // 2. ABOUT US View (Central Narrative Hub)
+  // 2. ABOUT US View (Central Narrative Hub - Dynamic Store Connected)
   function renderAboutUsPage() {
     const brand = store.getBrand();
-    const objectives = store.data.coreObjectives;
+    const about = store.getAbout();
+    const stats = store.getStats();
+    const objectives = store.data.coreObjectives || [];
     const facilities = store.getFacilities();
+    const baseHospitals = facilities.filter(f => f.type === 'base');
+    const visionCenters = facilities.filter(f => f.type === 'vision-center');
 
     return `
       <div class="max-w-7xl mx-auto px-4 py-10 space-y-20">
         
-        <!-- SECTION 1: H1 + FOUNDING NARRATIVE (2001, Vijayapura, Underserved North Karnataka Focus) -->
+        <!-- SECTION 1: H1 + FOUNDING NARRATIVE -->
         <section class="space-y-8">
           <div class="text-center space-y-4 max-w-4xl mx-auto">
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full badge-teal font-semibold text-xs uppercase tracking-wider">
@@ -1579,15 +1597,19 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="glass-card rounded-3xl p-8 sm:p-12 border border-teal-100/80 shadow-xl space-y-6">
             <h2 class="text-2xl sm:text-3xl font-extrabold text-teal-950 font-heading">Founding Story & Rural Mission</h2>
             <div class="prose prose-teal max-w-none text-slate-700 space-y-4 leading-relaxed text-base">
-              <p>
-                Founded in <strong>2001</strong> in Vijayapura by renowned ophthalmic surgeon <strong>Dr. Prabhugouda B. Lingadalli</strong> (former professor at B M Patil Medical College and alumnus of Aravind Eye Hospital, Madurai), Anugraha Eye Hospital was established to address an acute structural shortage of specialized eye care services across North Karnataka.
-              </p>
-              <p>
-                Prior to 2001, thousands of rural patients suffering from treatable cataracts, glaucoma, and ocular trauma across Vijayapura, Bagalkot, Kalaburagi, and adjacent Solapur/Sangli districts of Maharashtra had limited access to advanced micro-surgical technology. Dr. Lingadalli pioneered a sustainable delivery model prioritizing high clinical quality, high patient volume, and low operational costs.
-              </p>
-              <p>
-                Over the past 25 years, Anugraha Eye Hospital has evolved from a single clinic into a comprehensive healthcare network operating <strong>2 super-specialty base hospitals</strong> and <strong>7 rural Vision Centers</strong>, restoring vision for over 2,28,951 patients and performing over 50,000 surgeries entirely free of cost.
-              </p>
+              ${about.story ? `<p>${about.story.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br/>')}</p>` : `
+                <p>
+                  Founded in <strong>2001</strong> in Vijayapura by renowned ophthalmic surgeon <strong>Dr. Prabhugouda B. Lingadalli</strong> (former professor at B M Patil Medical College and alumnus of Aravind Eye Hospital, Madurai), Anugraha Eye Hospital was established to address an acute structural shortage of specialized eye care services across North Karnataka.
+                </p>
+                <p>
+                  Prior to 2001, thousands of rural patients suffering from treatable cataracts, glaucoma, and ocular trauma across Vijayapura, Bagalkot, Kalaburagi, and adjacent Solapur/Sangli districts of Maharashtra had limited access to advanced micro-surgical technology. Dr. Lingadalli pioneered a sustainable delivery model prioritizing high clinical quality, high patient volume, and low operational costs.
+                </p>
+              `}
+              ${about.history ? `<div class="pt-4 border-t border-teal-100"><h3 class="text-xl font-bold text-teal-950 font-heading mb-2">Our History</h3><p>${about.history.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br/>')}</p></div>` : `
+                <p>
+                  Over the past 25 years, Anugraha Eye Hospital has evolved from a single clinic into a comprehensive healthcare network operating <strong>${baseHospitals.length} super-specialty base hospitals</strong> and <strong>${visionCenters.length} rural Vision Centers</strong>, restoring vision for over ${stats.lifetimeSurgeries} patients and performing over ${stats.freeCataracts} surgeries entirely free of cost.
+                </p>
+              `}
             </div>
 
             <div class="pt-6 border-t border-teal-100 grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -1596,18 +1618,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="text-xs font-semibold text-teal-800 uppercase mt-0.5">Founded in Vijayapura</div>
               </div>
               <div class="p-4 rounded-2xl bg-teal-50/70 border border-teal-100 text-center">
-                <div class="text-2xl font-extrabold text-teal-950 font-mono">2 Base + 7 VC</div>
+                <div class="text-2xl font-extrabold text-teal-950 font-mono">${baseHospitals.length} Base + ${visionCenters.length} VC</div>
                 <div class="text-xs font-semibold text-teal-800 uppercase mt-0.5">Regional Care Network</div>
               </div>
               <div class="p-4 rounded-2xl bg-teal-50/70 border border-teal-100 text-center">
-                <div class="text-2xl font-extrabold text-teal-950 font-mono">50,000+</div>
+                <div class="text-2xl font-extrabold text-teal-950 font-mono">${stats.freeCataracts}</div>
                 <div class="text-xs font-semibold text-teal-800 uppercase mt-0.5">Free Cataract Operations</div>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- SECTION 2: FOUNDING-TO-TODAY TIMELINE COMPONENT (Genuine Dated Sequence) -->
+        <!-- SECTION 2: FOUNDING-TO-TODAY TIMELINE COMPONENT -->
         <section class="space-y-10 text-center">
           <div class="space-y-2">
             <span class="px-3 py-1 rounded-full badge-teal font-semibold text-xs uppercase tracking-wider">Institutional Growth Timeline</span>
@@ -1646,9 +1668,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 <div class="w-full sm:w-1/2 text-left space-y-2">
                   <span class="inline-block px-3 py-1 rounded-full bg-emerald-800 text-emerald-200 font-mono font-bold text-xs">Milestone 1</span>
-                  <h3 class="text-xl font-bold text-teal-950 font-heading">50,000+ Free Cataract Surgeries</h3>
+                  <h3 class="text-xl font-bold text-teal-950 font-heading">${stats.freeCataracts} Free Cataract Surgeries</h3>
                   <p class="text-xs text-slate-600 leading-relaxed">
-                    Crossed 50,000 free micro-incision cataract procedures performed for impoverished patients across 2,715 outreach screening camps.
+                    Crossed ${stats.freeCataracts} free micro-incision cataract procedures performed for impoverished patients across ${stats.outreachCamps} outreach screening camps.
                   </p>
                 </div>
               </div>
@@ -1659,7 +1681,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <span class="inline-block px-3 py-1 rounded-full bg-amber-800 text-amber-200 font-mono font-bold text-xs">Milestone 2</span>
                   <h3 class="text-xl font-bold text-teal-950 font-heading">District-Wide School Screenings</h3>
                   <p class="text-xs text-slate-600 leading-relaxed">
-                    Scaled mobile school eye screening program examining over 10,000 students across government and private schools, distributing free corrective spectacles.
+                    Scaled mobile school eye screening program examining over ${stats.studentsScreened || '10,000+'} students across government and private schools, distributing free corrective spectacles.
                   </p>
                 </div>
                 <div class="timeline-milestone-dot w-10 h-10 rounded-full bg-amber-700 border-4 border-white text-amber-100 font-extrabold text-sm flex items-center justify-center shadow-lg shrink-0">
@@ -1678,7 +1700,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <span class="inline-block px-3 py-1 rounded-full bg-teal-950 text-amber-400 font-mono font-bold text-xs">Present Day</span>
                   <h3 class="text-xl font-bold text-teal-950 font-heading">Super-Specialty Network Status</h3>
                   <p class="text-xs text-slate-600 leading-relaxed">
-                    Operating 2 tertiary base hospitals (Vijayapura & Kalaburagi) and 7 rural Vision Centers with RGUHS optometry affiliation and NBEMS DNB accreditation.
+                    Operating ${baseHospitals.length} tertiary base hospitals (Vijayapura & Kalaburagi) and ${visionCenters.length} rural Vision Centers with RGUHS optometry affiliation and NBEMS DNB accreditation.
                   </p>
                 </div>
               </div>
@@ -1889,7 +1911,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <!-- Breakout Cutout Portrait Image -->
               <div class="relative z-10 my-6 flex justify-center">
                 <div class="w-56 h-72 sm:w-64 sm:h-80 rounded-2xl p-2 bg-gradient-to-t from-[#2dd4bf]/40 via-transparent to-transparent shadow-2xl overflow-hidden group">
-                  <img src="assets/dr_lingadalli.jpg" alt="${chairman.name}" class="w-full h-full object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500" />
+                  <img src="${chairman.photo || 'assets/dr_lingadalli.jpg'}" alt="${chairman.name}" class="w-full h-full object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500" />
                 </div>
               </div>
 
@@ -1960,11 +1982,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                     <div class="flex items-center justify-between border-t border-teal-200/50 pt-2">
                       <span class="text-slate-500">Lifetime Surgeries:</span>
-                      <span class="font-bold text-teal-900 dark:text-teal-300 font-mono">2,28,951+</span>
+                      <span class="font-bold text-teal-900 dark:text-teal-300 font-mono">${stats.lifetimeSurgeries}</span>
                     </div>
                     <div class="flex items-center justify-between border-t border-teal-200/50 pt-2">
                       <span class="text-slate-500">Free Cataracts:</span>
-                      <span class="font-bold text-emerald-700 dark:text-emerald-400 font-mono">50,000+</span>
+                      <span class="font-bold text-emerald-700 dark:text-emerald-400 font-mono">${stats.freeCataracts}</span>
                     </div>
                     <div class="flex items-center justify-between border-t border-teal-200/50 pt-2">
                       <span class="text-slate-500">Academic Tenure:</span>
@@ -2011,11 +2033,11 @@ document.addEventListener("DOMContentLoaded", () => {
                       <div class="text-[11px] text-slate-500 dark:text-slate-400">Micro-incision cataract surgery</div>
                     </div>
                     <div class="border-b border-teal-200/50 pb-1.5">
-                      <div class="font-bold text-amber-800 dark:text-amber-300">12 Conferred Awards</div>
+                      <div class="font-bold text-amber-800 dark:text-amber-300">${chairman.awards ? chairman.awards.length : 12} Conferred Awards</div>
                       <div class="text-[11px] text-slate-500 dark:text-slate-400">Govt of Karnataka Rajyostava Award (2021)</div>
                     </div>
                     <div>
-                      <div class="font-bold text-teal-950 dark:text-teal-200">2,715 Outreach Camps</div>
+                      <div class="font-bold text-teal-950 dark:text-teal-200">${stats.outreachCamps} Outreach Camps</div>
                       <div class="text-[11px] text-slate-500 dark:text-slate-400">Reaching ~10 Lakh regional patients</div>
                     </div>
                   </div>
@@ -2024,23 +2046,25 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
 
               <!-- 12 CONFERRED AWARDS ACCORDION / TOGGLE -->
-              <details class="p-5 rounded-2xl bg-teal-900/10 border border-teal-200 dark:border-teal-800 space-y-3 cursor-pointer group">
-                <summary class="font-extrabold text-teal-950 dark:text-white text-sm font-heading flex items-center justify-between outline-none">
-                  <span>View All 12 Conferred State & National Awards</span>
-                  <span class="w-6 h-6 rounded-full bg-teal-800 text-white flex items-center justify-center text-xs font-bold shrink-0 transition-transform group-open:rotate-180">+</span>
-                </summary>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-3 border-t border-teal-200 dark:border-teal-800 text-xs">
-                  ${chairman.awards.map((award, aIdx) => `
-                    <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-teal-100 dark:border-teal-900 flex items-start gap-2.5">
-                      <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300 font-mono font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">${aIdx + 1}</span>
-                      <div>
-                        <div class="font-bold text-teal-950 dark:text-white text-[11px]">${award.title}</div>
-                        <div class="text-[10px] text-slate-500 dark:text-slate-400">${award.organization} ${award.year !== '-' ? `(${award.year})` : ''}</div>
+              ${chairman.awards && chairman.awards.length > 0 ? `
+                <details class="p-5 rounded-2xl bg-teal-900/10 border border-teal-200 dark:border-teal-800 space-y-3 cursor-pointer group">
+                  <summary class="font-extrabold text-teal-950 dark:text-white text-sm font-heading flex items-center justify-between outline-none">
+                    <span>View All ${chairman.awards.length} Conferred State & National Awards</span>
+                    <span class="w-6 h-6 rounded-full bg-teal-800 text-white flex items-center justify-center text-xs font-bold shrink-0 transition-transform group-open:rotate-180">+</span>
+                  </summary>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-3 border-t border-teal-200 dark:border-teal-800 text-xs">
+                    ${chairman.awards.map((award, aIdx) => `
+                      <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-teal-100 dark:border-teal-900 flex items-start gap-2.5">
+                        <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300 font-mono font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">${aIdx + 1}</span>
+                        <div>
+                          <div class="font-bold text-teal-950 dark:text-white text-[11px]">${award.title}</div>
+                          <div class="text-[10px] text-slate-500 dark:text-slate-400">${award.organization} ${award.year !== '-' ? `(${award.year})` : ''}</div>
+                        </div>
                       </div>
-                    </div>
-                  `).join('')}
-                </div>
-              </details>
+                    `).join('')}
+                  </div>
+                </details>
+              ` : ''}
 
             </div>
 
@@ -2074,7 +2098,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <!-- Breakout Cutout Portrait Image -->
               <div class="relative z-10 my-6 flex justify-center">
                 <div class="w-56 h-72 sm:w-64 sm:h-80 rounded-2xl p-2 bg-gradient-to-t from-[#2dd4bf]/40 via-transparent to-transparent shadow-2xl overflow-hidden group">
-                  <img src="assets/dr_malini.jpg" alt="${medicalDirector.name}" class="w-full h-full object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500" />
+                  <img src="${medicalDirector.photo || 'assets/dr_malini.jpg'}" alt="${medicalDirector.name}" class="w-full h-full object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500" />
                 </div>
               </div>
 
@@ -2205,6 +2229,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
           </div>
         </section>
+
+        <!-- OTHER DOCTORS & SPECIALISTS GRID (Dynamically Rendered from Admin Store) -->
+        ${(() => {
+          const otherDoctors = leadership.filter(l => l.id !== 'dr-lingadalli' && l.id !== 'dr-malini' && l.published !== false);
+          if (otherDoctors.length === 0) return '';
+          return `
+            <section class="space-y-8 pt-8 border-t border-teal-100 dark:border-teal-900">
+              <div class="text-center space-y-2">
+                <span class="px-3 py-1 rounded-full badge-emerald font-bold text-xs uppercase tracking-wider">Clinical Faculty & Consultants</span>
+                <h2 class="text-3xl font-extrabold text-teal-950 dark:text-white font-heading">Specialist Ophthalmic Surgeons</h2>
+                <p class="text-slate-600 dark:text-slate-400 text-sm">Consultants and ophthalmic specialists delivering super-specialty care.</p>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                ${otherDoctors.map(doc => `
+                  <div class="glass-card rounded-3xl border border-teal-100 dark:border-teal-900/60 overflow-hidden flex flex-col justify-between hover-lift">
+                    <div class="h-48 overflow-hidden bg-[#093327] relative flex items-center justify-center">
+                      ${doc.photo ? `
+                        <img src="${doc.photo}" alt="${doc.name}" class="w-full h-full object-cover object-top" />
+                      ` : `
+                        <div class="w-20 h-20 rounded-full bg-emerald-500/20 border-2 border-emerald-400 text-emerald-300 flex items-center justify-center font-bold text-2xl font-heading">
+                          ${doc.name.split(' ').map(n => n[0]).slice(0, 2).join('')}
+                        </div>
+                      `}
+                      <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-emerald-950/90 text-emerald-300 font-mono text-[10px] font-bold border border-emerald-400/30">${doc.specialization || 'Ophthalmology'}</span>
+                    </div>
+
+                    <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
+                      <div class="space-y-1.5">
+                        <h3 class="text-xl font-bold text-teal-950 dark:text-white font-heading">${doc.name}</h3>
+                        <div class="text-xs font-semibold text-emerald-700 dark:text-emerald-400">${doc.degrees || ''}</div>
+                        <div class="text-xs text-slate-500 font-medium">${doc.designation || doc.title || ''} &bull; ${doc.hospital || 'Vijayapura / Kalaburagi'}</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed pt-2">${doc.bio || ''}</p>
+                      </div>
+
+                      <div class="pt-4 border-t border-teal-100 dark:border-teal-900 flex items-center justify-between text-xs">
+                        <span class="text-slate-500 font-mono">${doc.experience || 'Experienced'}</span>
+                        <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="text-emerald-700 dark:text-emerald-400 font-bold hover:underline">Book OPD &rarr;</a>
+                      </div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </section>
+          `;
+        })()}
 
       </div>
     `;
@@ -2913,7 +2983,7 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // 7. SERVICES View (Clinical Offerings with Swappable Neutral Placeholder Imagery)
+  // 7. SERVICES View (Clinical Offerings with Dynamic Store Imagery & Content)
   function renderServicesPage() {
     const brand = store.getBrand();
     const servicesList = store.getServices();
@@ -2932,47 +3002,46 @@ document.addEventListener("DOMContentLoaded", () => {
           </p>
         </div>
 
-        <!-- 8 Ophthalmic Specialties Grid with License-Safe Swappable Imagery -->
+        <!-- Ophthalmic Specialties Grid with Dynamic Store Imagery -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           ${servicesList.map(s => `
-            <div class="spotlight-card rounded-3xl border border-teal-100/90 overflow-hidden flex flex-col justify-between hover-lift transition-all">
+            <div class="spotlight-card rounded-3xl border border-teal-100/90 overflow-hidden flex flex-col justify-between hover-lift transition-all group">
               
-              <!-- License-Safe Swappable Placeholder Image Box -->
-              <div class="relative w-full h-44 bg-gradient-to-br from-[#062c26] via-[#0d4b43] to-[#041a17] p-4 flex flex-col justify-between text-white overflow-hidden border-b border-teal-800/60">
-                <!-- Optical Iris Motif Backdrop -->
-                <div class="absolute -right-6 -bottom-6 w-32 h-32 rounded-full border-2 border-emerald-400/20 flex items-center justify-center pointer-events-none">
-                  <div class="w-20 h-20 rounded-full border border-teal-300/20"></div>
-                </div>
+              <!-- Service Image Box -->
+              <div class="relative w-full h-48 bg-slate-900 overflow-hidden border-b border-teal-800/40">
+                <img src="${s.heroImage || s.imagePlaceholder || 'assets/services/cataract_surgery.jpg'}" alt="${s.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#062c26] via-[#062c26]/40 to-transparent"></div>
 
-                <div class="flex items-center justify-between relative z-10">
-                  <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-[10px] uppercase tracking-wider border border-emerald-500/30">
-                    Verified Specialty
+                <div class="absolute top-3 left-3 right-3 flex items-center justify-between z-10">
+                  <span class="px-2.5 py-1 rounded-full bg-emerald-950/80 text-emerald-300 font-bold text-[10px] uppercase tracking-wider border border-emerald-500/40 backdrop-blur-sm">
+                    ${s.category || 'Super-Specialty'}
                   </span>
-                  <div class="w-8 h-8 rounded-xl bg-teal-900/90 text-emerald-400 flex items-center justify-center font-bold border border-teal-700/60">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                  <div class="w-7 h-7 rounded-lg bg-teal-900/90 text-emerald-300 flex items-center justify-center font-bold border border-teal-700/60 shadow">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                   </div>
                 </div>
 
-                <div class="relative z-10 space-y-1">
-                  <div class="text-xs font-bold text-white font-heading">${s.title}</div>
-                  <div class="text-[10px] text-emerald-300 font-mono bg-slate-950/60 backdrop-blur-sm p-1.5 rounded-lg border border-teal-700/60 truncate" title="Swappable field in js/store.js">
-                    📷 Image Swappable in Admin CMS
-                  </div>
+                <div class="absolute bottom-3 left-3 right-3 z-10">
+                  <div class="text-xs font-bold text-white font-heading truncate drop-shadow">${s.subtitle || s.title}</div>
                 </div>
               </div>
 
               <!-- Content Body -->
               <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
                 <div class="space-y-2">
-                  <h3 class="text-lg font-extrabold text-teal-950 font-heading leading-tight">${s.title}</h3>
-                  <p class="text-xs font-semibold text-emerald-800">${s.subtitle || ''}</p>
-                  <p class="text-xs text-slate-600 leading-relaxed">${s.desc}</p>
+                  <h3 class="text-lg font-extrabold text-teal-950 font-heading leading-tight group-hover:text-emerald-700 transition-colors">${s.title}</h3>
+                  <p class="text-xs text-slate-600 leading-relaxed line-clamp-3">${s.shortDesc || s.desc}</p>
                 </div>
 
-                <div class="pt-4 border-t border-teal-100">
-                  <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="inline-flex items-center gap-1.5 text-xs font-bold text-teal-950 hover:text-emerald-700 transition-colors">
-                    <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                    <span>Enquire: ${brand.fallbackPhone}</span>
+                <div class="pt-4 border-t border-teal-100 flex items-center justify-between gap-2">
+                  <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="inline-flex items-center gap-1 text-[11px] font-bold text-slate-600 hover:text-emerald-700 transition-colors">
+                    <svg class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                    <span>Enquire</span>
+                  </a>
+
+                  <a href="#/services/${s.id}" class="text-xs font-bold text-teal-900 hover:text-emerald-700 flex items-center gap-1 font-mono">
+                    <span>Clinical Details</span>
+                    <span class="icon-shift-right">&rarr;</span>
                   </a>
                 </div>
               </div>
@@ -3293,7 +3362,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </a>
         </div>
 
-        <!-- FREQUENTLY ASKED QUESTIONS (FAQ ACCORDION - SECTION 14) -->
+        <!-- FREQUENTLY ASKED QUESTIONS (FAQ ACCORDION - DYNAMICALLY STORE CONNECTED) -->
         <section class="space-y-6 pt-6">
           <div class="text-center space-y-2 max-w-xl mx-auto">
             <span class="px-3 py-1 rounded-full badge-emerald font-bold text-xs uppercase tracking-wider">Patient Care Guidance</span>
@@ -3302,55 +3371,14 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
           <div class="max-w-4xl mx-auto space-y-4">
-            ${[
-              {
-                q: "1. How do I book a consultation or appointment at Anugraha Eye Hospital?",
-                a: "You can book an appointment by calling our Vijayapura helpline directly at 08352-220646, messaging our WhatsApp desk (+91 74839 00963), or using our persistent online appointment portal link. Walk-in OPD consultations are also available daily from 8:00 AM to 9:00 PM."
-              },
-              {
-                q: "2. Where are your main base hospitals and Vision Centers located?",
-                a: "Our primary super-specialty base hospital is located on Navabhag Main Road (Behind Central Bus Stand), Vijayapura. Our tertiary campus is in Kalaburagi. We also operate 8 rural Vision Centers in Talikoti, Muddebihal, Sindagi, Indi, B.Bagewadi, Chadachan, Nalatwad, and Tikota."
-              },
-              {
-                q: "3. What government health schemes and insurance policies are accepted for cashless treatment?",
-                a: "Anugraha Eye Hospital is empaneled with major government health schemes including Ayushman Bharat Arogya Karnataka (AB-ARK), Arogya Bhagya Yojane (ABY), Jyoti Sanjiveeni Scheme (JSS), Yeshasvini, RBSK, and SKDRDP. We also accept leading private insurance policies and TPAs (Star Health, ICICI Lombard, Niva Bupa, Bajaj Allianz, Vidal, Paramount, FHPL, etc.)."
-              },
-              {
-                q: "4. Is cataract surgery painful, how long does phacoemulsification take, and what is the recovery period?",
-                a: "Phacoemulsification is a completely painless 10-minute micro-incision procedure performed under topical anesthetic eye drops without injections or stitches. Most patients resume normal light routine activities within 24 to 48 hours."
-              },
-              {
-                q: "5. What is the difference between standard Monofocal IOL and premium Multifocal / Toric IOL implants?",
-                a: "Monofocal IOLs provide sharp distance vision but require reading glasses for close work. Multifocal and Trifocal IOLs provide clear vision across distance, intermediate (computer screen), and near (reading) without glasses. Toric IOLs correct pre-existing astigmatism."
-              },
-              {
-                q: "6. Am I eligible for Contoura Vision LASIK laser eye surgery to remove my glasses?",
-                a: "Candidates aged 18 to 40 with stable spectacle refraction for 1 year and healthy corneal thickness are eligible. Our MyAlcon verified laser suite performs computerized corneal topography mapping before confirming eligibility."
-              },
-              {
-                q: "7. How frequently should diabetic patients undergo retinal eye screening?",
-                a: "Diabetic patients should undergo dilated retinal examination at least once every 6 to 12 months. Early detection of diabetic retinopathy prevents irreversible vision loss."
-              },
-              {
-                q: "8. What services and doctor visit schedules are available at rural Vision Centers?",
-                a: "Our rural Vision Centers provide primary vision examination, computerized refraction, prescription glasses, contact lens fitting, essential eye drops, and 24x7 emergency triage. Specialist doctors conduct dedicated OPD visits (e.g. Free Sunday Specialist OPD at Talikoti & Nalatwad, Saturdays at Muddebihal, Tuesdays at Indi)."
-              },
-              {
-                q: "9. Are free cataract surgeries provided at Anugraha Eye Hospital for underprivileged patients?",
-                a: "Yes! Over 50,000 free cataract procedures have been performed under our flagship mobile outreach camp initiative and government health scheme partnerships across North Karnataka and Maharashtra border districts."
-              },
-              {
-                q: "10. How can students apply for academic programs, RGUHS B.Sc Optometry, and DNB residency?",
-                a: "Students can apply for RGUHS-affiliated B.Sc Optometry at our Kalaburagi Optometry Institute, NBEMS DNB Post-Graduate Residency at Vijayapura, or Paramedical Board DOT Diplomas by contacting our Academic Cell directly at 08352-220646 or emailing contactus@anugrahaeyehospital.com."
-              }
-            ].map((faq, idx) => `
+            ${store.getFaqs().map((faq, idx) => `
               <details class="glass-card rounded-2xl border border-teal-100 p-5 space-y-3 group cursor-pointer">
                 <summary class="font-extrabold text-teal-950 text-base font-heading flex items-center justify-between outline-none">
-                  <span>${faq.q}</span>
+                  <span>${idx + 1}. ${faq.question || faq.q}</span>
                   <span class="w-6 h-6 rounded-full bg-teal-100 text-teal-900 flex items-center justify-center text-xs font-bold shrink-0 transition-transform group-open:rotate-180">+</span>
                 </summary>
                 <p class="text-xs text-slate-600 leading-relaxed pt-2 border-t border-teal-100/60">
-                  ${faq.a}
+                  ${faq.answer || faq.a}
                 </p>
               </details>
             `).join('')}
@@ -3509,12 +3537,16 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   window.openLightbox = function(index) {
+    const gallery = store.getGallery();
     window.currentLightboxIndex = index;
-    const item = GALLERY_IMAGES[index];
+    const item = typeof index === 'number' && index < gallery.length ? gallery[index] : gallery.find(g => g.id === index) || gallery[0];
     if (!item) return;
 
+    const actualIdx = gallery.findIndex(g => g.id === item.id);
+    window.currentLightboxIndex = actualIdx !== -1 ? actualIdx : 0;
+
     // Find clicked thumbnail element to calculate shared-element origin rect
-    const thumb = document.querySelector(`[data-thumb-index="${index}"]`);
+    const thumb = document.querySelector(`[data-thumb-index="${item.id}"]`);
     let initialStyle = 'top: 50%; left: 50%; width: 90%; max-width: 900px; transform: translate(-50%, -50%) scale(0.9); opacity: 0;';
 
     if (thumb) {
@@ -3547,7 +3579,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="p-6 bg-slate-900/90 text-white space-y-1 border-t border-slate-800">
             <div class="flex items-center justify-between">
               <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-xs uppercase tracking-wider">${item.category}</span>
-              <span class="text-xs font-mono text-slate-400">${index + 1} / ${GALLERY_IMAGES.length}</span>
+              <span class="text-xs font-mono text-slate-400">${window.currentLightboxIndex + 1} / ${gallery.length}</span>
             </div>
             <h3 class="text-lg font-bold font-heading text-white">${item.title}</h3>
             <p class="text-xs text-slate-300">${item.caption}</p>
@@ -3562,10 +3594,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.insertAdjacentHTML('beforeend', modalHtml);
 
     // Preload next and previous images to eliminate white empty state flash
-    const nextIdx = (index + 1) % GALLERY_IMAGES.length;
-    const prevIdx = (index - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
-    const imgNext = new Image(); imgNext.src = GALLERY_IMAGES[nextIdx].src;
-    const imgPrev = new Image(); imgPrev.src = GALLERY_IMAGES[prevIdx].src;
+    const nextIdx = (window.currentLightboxIndex + 1) % gallery.length;
+    const prevIdx = (window.currentLightboxIndex - 1 + gallery.length) % gallery.length;
+    const imgNext = new Image(); if (gallery[nextIdx]) imgNext.src = gallery[nextIdx].src;
+    const imgPrev = new Image(); if (gallery[prevIdx]) imgPrev.src = gallery[prevIdx].src;
 
     // Trigger Shared-Element Expansion Animation from thumbnail bounds to center screen
     requestAnimationFrame(() => {
@@ -3597,7 +3629,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!modal) return;
 
     if (window.currentLightboxIndex !== null) {
-      const thumb = document.querySelector(`[data-thumb-index="${window.currentLightboxIndex}"]`);
+      const gallery = store.getGallery();
+      const currentItem = gallery[window.currentLightboxIndex];
+      const thumb = currentItem ? document.querySelector(`[data-thumb-index="${currentItem.id}"]`) : null;
       if (thumb && wrapper) {
         const rect = thumb.getBoundingClientRect();
         wrapper.style.top = `${rect.top}px`;
@@ -3620,20 +3654,24 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   window.nextLightbox = function() {
-    if (window.currentLightboxIndex === null) return;
-    const nextIdx = (window.currentLightboxIndex + 1) % GALLERY_IMAGES.length;
+    const gallery = store.getGallery();
+    if (window.currentLightboxIndex === null || gallery.length === 0) return;
+    const nextIdx = (window.currentLightboxIndex + 1) % gallery.length;
     window.updateLightboxSlide(nextIdx, 'next');
   };
 
   window.prevLightbox = function() {
-    if (window.currentLightboxIndex === null) return;
-    const prevIdx = (window.currentLightboxIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
+    const gallery = store.getGallery();
+    if (window.currentLightboxIndex === null || gallery.length === 0) return;
+    const prevIdx = (window.currentLightboxIndex - 1 + gallery.length) % gallery.length;
     window.updateLightboxSlide(prevIdx, 'prev');
   };
 
   window.updateLightboxSlide = function(newIdx, direction) {
+    const gallery = store.getGallery();
+    if (!gallery[newIdx]) return;
     window.currentLightboxIndex = newIdx;
-    const item = GALLERY_IMAGES[newIdx];
+    const item = gallery[newIdx];
     const imgEl = document.getElementById('lightbox-img');
     const wrapper = document.getElementById('lightbox-img-wrapper');
     if (!imgEl || !wrapper) return;
@@ -3653,17 +3691,18 @@ document.addEventListener("DOMContentLoaded", () => {
     if (titleEl) titleEl.textContent = item.title;
     if (captionEl) captionEl.textContent = item.caption;
     if (catEl) catEl.textContent = item.category;
-    if (countEl) countEl.textContent = `${newIdx + 1} / ${GALLERY_IMAGES.length}`;
+    if (countEl) countEl.textContent = `${newIdx + 1} / ${gallery.length}`;
 
     // Preload next image
-    const preloadIdx = (newIdx + 1) % GALLERY_IMAGES.length;
-    const imgPre = new Image(); imgPre.src = GALLERY_IMAGES[preloadIdx].src;
+    const preloadIdx = (newIdx + 1) % gallery.length;
+    const imgPre = new Image(); if (gallery[preloadIdx]) imgPre.src = gallery[preloadIdx].src;
   };
 
   function renderGalleryPage() {
+    const galleryList = store.getGallery();
     const activeCat = window.activeGalleryCategory || 'All';
     const categories = ['All', 'Base Hospital', 'Operations', 'Outreach Camps', 'Infrastructure'];
-    const filteredImages = activeCat === 'All' ? GALLERY_IMAGES : GALLERY_IMAGES.filter(g => g.category === activeCat);
+    const filteredImages = activeCat === 'All' ? galleryList : galleryList.filter(g => g.category === activeCat);
 
     return `
       <div class="max-w-7xl mx-auto px-4 py-10 space-y-10 font-sans">
