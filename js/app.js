@@ -1423,42 +1423,102 @@ document.addEventListener("DOMContentLoaded", () => {
           </section>
         ` : ''}
 
-        <!-- 7. LEADERSHIP TEASER (DYNAMICALLY READS LEADERS FROM STORE) -->
+        <!-- 7. LEADERSHIP TEASER (DYNAMICALLY READS LEADERS FROM STORE - FIXED PREMIUM LAYOUT) -->
         ${sections.featuredDoctors !== false ? `
-          <section class="max-w-7xl mx-auto px-4 space-y-12 py-6">
-            <div class="text-center space-y-3">
-              <span class="px-3 py-1 rounded-full badge-coral font-semibold text-xs uppercase tracking-wider">Medical Leadership</span>
-              <h2 class="text-3xl sm:text-4xl font-extrabold text-teal-950 dark:text-white font-heading">Hospital Founders & Medical Leadership</h2>
-              <p class="text-slate-600 dark:text-slate-300 text-sm max-w-xl mx-auto">Pioneering compassionate, high-volume ophthalmic care since 2001.</p>
+          <section class="max-w-7xl mx-auto px-4 space-y-10 py-8 font-sans">
+            <div class="text-center space-y-3 max-w-2xl mx-auto">
+              <span class="px-3.5 py-1 rounded-full badge-emerald font-bold text-xs uppercase tracking-wider">
+                Institutional Leadership
+              </span>
+              <h2 class="text-3xl sm:text-4xl font-extrabold text-teal-950 dark:text-white font-heading">
+                Hospital Founders & Medical Leadership
+              </h2>
+              <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                Pioneering compassionate, super-specialty ophthalmic care, high-volume phaco surgery, and NABH-accredited governance across North Karnataka since 2001.
+              </p>
             </div>
 
-            <div class="space-y-16 lg:space-y-20">
+            <!-- Side-by-Side Dual Leadership Cards Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
               ${leaders.filter(l => l.published !== false).map((doc, idx) => `
-                <div class="relative max-w-6xl mx-auto">
-                  <div class="bg-[#093327] text-white p-8 sm:p-12 lg:py-14 ${idx % 2 === 0 ? 'lg:pl-14 lg:pr-[360px] rounded-tl-[70px] sm:rounded-tl-[110px]' : 'lg:pr-14 lg:pl-[360px] rounded-tr-[70px] sm:rounded-tr-[110px]'} rounded-2xl shadow-2xl space-y-5 border border-emerald-800/40 relative z-0 overflow-visible">
+                <div class="glass-card-dark rounded-3xl p-6 sm:p-8 text-white border border-emerald-800/40 shadow-2xl flex flex-col justify-between hover-lift transition-all relative overflow-hidden group">
+                  
+                  <!-- Subtle Background Gradient Glow -->
+                  <div class="absolute -right-20 -top-20 w-60 h-60 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none"></div>
+
+                  <div class="space-y-6 relative z-10">
                     
-                    <div>
-                      <h3 class="text-2xl sm:text-4xl font-extrabold text-white font-heading tracking-tight">${doc.name}</h3>
-                      <div class="text-xs sm:text-sm font-bold text-[#2dd4bf] mt-1.5 font-sans">${doc.title || doc.designation} &bull; ${doc.degrees}</div>
+                    <!-- Top Doctor Info Banner: Portrait + Details Side-by-Side -->
+                    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                      
+                      <!-- Framed Doctor Portrait -->
+                      <div class="relative shrink-0">
+                        <div class="w-36 h-44 sm:w-40 sm:h-52 rounded-2xl overflow-hidden bg-slate-900 border-2 border-[#2dd4bf]/40 shadow-xl group-hover:border-[#2dd4bf] transition-colors">
+                          <img src="${doc.photo || (idx === 0 ? 'assets/dr_lingadalli.jpg' : 'assets/dr_malini.jpg')}" alt="${doc.name}" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <span class="absolute -bottom-2.5 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-emerald-950 text-[#2dd4bf] font-mono font-bold text-[10px] uppercase tracking-wider border border-[#2dd4bf]/40 whitespace-nowrap shadow-md">
+                          ${doc.title || (idx === 0 ? 'Founder & Chairman' : 'Medical Director')}
+                        </span>
+                      </div>
+
+                      <!-- Name, Degrees & Key Badges -->
+                      <div class="space-y-2.5 text-center sm:text-left flex-1">
+                        <div class="inline-block px-2.5 py-1 rounded-lg bg-emerald-500/20 text-[#2dd4bf] font-mono font-bold text-[11px] uppercase tracking-wider border border-emerald-500/30">
+                          ${idx === 0 ? 'Founder & Chairman' : 'Medical Director'}
+                        </div>
+
+                        <h3 class="text-2xl sm:text-3xl font-extrabold text-white font-heading tracking-tight leading-tight">
+                          ${doc.name}
+                        </h3>
+
+                        <div class="text-xs sm:text-sm font-semibold text-[#2dd4bf] font-sans">
+                          ${doc.degrees}
+                        </div>
+
+                        <!-- Highlights Micro-Badges -->
+                        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1">
+                          ${idx === 0 ? `
+                            <span class="px-2 py-0.5 rounded-md bg-amber-400/20 text-amber-300 text-[10px] font-bold border border-amber-400/30">Rajyotsava Awardee</span>
+                            <span class="px-2 py-0.5 rounded-md bg-teal-500/20 text-teal-200 text-[10px] font-bold border border-teal-500/30">25+ Yrs Legacy</span>
+                          ` : `
+                            <span class="px-2 py-0.5 rounded-md bg-teal-500/20 text-teal-200 text-[10px] font-bold border border-teal-500/30">20+ Yrs Governance</span>
+                            <span class="px-2 py-0.5 rounded-md bg-emerald-400/20 text-emerald-300 text-[10px] font-bold border border-emerald-400/30">NABH Quality Lead</span>
+                          `}
+                        </div>
+                      </div>
+
                     </div>
 
-                    <p class="text-xs sm:text-base text-slate-100/90 leading-relaxed font-normal max-w-2xl">
+                    <!-- Clinical Narrative / Bio -->
+                    <p class="text-xs sm:text-sm text-slate-200 leading-relaxed pt-2 border-t border-emerald-800/60 line-clamp-4">
                       ${doc.bio}
                     </p>
 
-                    <div class="pt-2">
-                      <a href="#/about-us/leadership" class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white hover:text-[#2dd4bf] transition-colors group font-mono tracking-wide">
-                        <span>View Full Profile &rarr;</span>
-                      </a>
-                    </div>
-
-                    <!-- Breakout Doctor Portrait -->
-                    <div class="lg:absolute ${idx % 2 === 0 ? 'lg:right-6' : 'lg:left-6'} lg:-bottom-6 lg:-top-16 lg:w-[340px] flex justify-center mt-6 lg:mt-0 pointer-events-none z-10">
-                      <img src="${doc.photo || (idx === 0 ? 'assets/dr_lingadalli.jpg' : 'assets/dr_malini.jpg')}" alt="${doc.name}" class="h-80 sm:h-[400px] lg:h-[430px] w-auto object-cover object-top drop-shadow-2xl rounded-2xl lg:rounded-b-none" />
-                    </div>
                   </div>
+
+                  <!-- Card Footer Actions -->
+                  <div class="pt-6 mt-6 border-t border-emerald-800/60 flex items-center justify-between gap-3 relative z-10">
+                    <a href="#/about-us/leadership#${doc.id}" class="inline-flex items-center gap-1.5 text-xs font-bold text-white hover:text-[#2dd4bf] transition-colors font-mono group/link">
+                      <span>View Biography & Credentials</span>
+                      <span class="icon-shift-right">&rarr;</span>
+                    </a>
+
+                    <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="px-3.5 py-1.5 rounded-xl bg-[#2dd4bf] hover:bg-teal-300 text-slate-950 font-extrabold text-xs transition-colors flex items-center gap-1 shadow-md">
+                      <span>Consult</span>
+                      <span>&rarr;</span>
+                    </a>
+                  </div>
+
                 </div>
               `).join('')}
+            </div>
+
+            <!-- Direct Link to Leadership Directory -->
+            <div class="text-center pt-2">
+              <a href="#/about-us/leadership" class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-teal-900 dark:bg-teal-800 hover:bg-teal-950 text-white font-bold text-xs transition-all shadow-lg hover:scale-105">
+                <span>View Complete Leadership & Conferred Awards Directory</span>
+                <span>&rarr;</span>
+              </a>
             </div>
           </section>
         ` : ''}
@@ -1867,10 +1927,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const stats = store.getStats();
 
     return `
-      <div class="max-w-7xl mx-auto px-4 py-10 space-y-20 font-sans">
+      <div class="max-w-7xl mx-auto px-4 py-10 space-y-16 font-sans">
         
         <!-- Header Banner -->
-        <div class="glass-card-dark rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden shadow-2xl">
+        <div class="glass-card-dark rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden shadow-2xl space-y-6">
           <div class="relative z-10 max-w-3xl space-y-4">
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-xs uppercase tracking-wider border border-emerald-500/30">
               <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
@@ -1880,28 +1940,44 @@ document.addEventListener("DOMContentLoaded", () => {
               Hospital Founders & Medical Leadership
             </h1>
             <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
-              Pioneering compassionate, high-volume ophthalmic care, academic credentials, and 25-year philanthropic footprint across Karnataka and Maharashtra.
+              Pioneering compassionate, high-volume ophthalmic surgery, academic credentials, and 25-year philanthropic footprint across Karnataka and Maharashtra.
             </p>
+          </div>
+
+          <!-- Quick Jump Navigation Chips -->
+          <div class="relative z-10 flex flex-wrap items-center gap-3 pt-2">
+            <a href="#about-us/leadership#dr-lingadalli" onclick="document.getElementById('dr-lingadalli')?.scrollIntoView({behavior:'smooth'})" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 transition-all flex items-center gap-2">
+              <span>👨‍⚕️ ${chairman.name} (Founder & Chairman)</span>
+              <span>&darr;</span>
+            </a>
+            <a href="#about-us/leadership#dr-malini" onclick="document.getElementById('dr-malini')?.scrollIntoView({behavior:'smooth'})" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 transition-all flex items-center gap-2">
+              <span>👩‍⚕️ ${medicalDirector.name} (Medical Director)</span>
+              <span>&darr;</span>
+            </a>
+            <a href="#about-us/leadership#consultants" onclick="document.getElementById('consultants')?.scrollIntoView({behavior:'smooth'})" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 transition-all flex items-center gap-2">
+              <span>🩺 Specialist Consultants</span>
+              <span>&darr;</span>
+            </a>
           </div>
         </div>
 
         <!-- ========================================== -->
         <!-- PROFILE 1: CHAIRMAN & FOUNDER DR. LINGADALLI -->
         <!-- ========================================== -->
-        <section id="dr-lingadalli" class="space-y-8">
+        <section id="dr-lingadalli" class="space-y-8 scroll-mt-28">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch bg-white dark:bg-[#06241f] rounded-3xl overflow-hidden border border-teal-100 dark:border-teal-900/40 shadow-2xl">
             
-            <!-- LEFT BANNER: Dark Green Background Panel with Cutout Portrait (Matching Reference Slide) -->
-            <div class="lg:col-span-5 bg-[#093327] text-white p-8 sm:p-10 flex flex-col justify-between relative overflow-visible min-h-[480px]">
+            <!-- LEFT BANNER: Dark Green Background Panel with Cutout Portrait -->
+            <div class="lg:col-span-5 bg-[#093327] text-white p-8 sm:p-10 flex flex-col justify-between relative overflow-visible min-h-[500px]">
               
               <!-- Subtle Background Graphics -->
               <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-black/40 pointer-events-none"></div>
 
               <div class="relative z-10 space-y-3">
                 <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-[#2dd4bf] font-mono font-bold text-xs uppercase tracking-wider border border-emerald-500/30">
-                  ${chairman.title}
+                  ${chairman.title || 'Founder & Chairman'}
                 </span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-heading tracking-tight">
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-heading tracking-tight leading-tight">
                   ${chairman.name}
                 </h2>
                 <div class="text-xs sm:text-sm font-bold text-[#2dd4bf] font-sans">
@@ -1909,9 +1985,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
               </div>
 
-              <!-- Breakout Cutout Portrait Image -->
+              <!-- Breakout Cutout Portrait Image Frame -->
               <div class="relative z-10 my-6 flex justify-center">
-                <div class="w-56 h-72 sm:w-64 sm:h-80 rounded-2xl p-2 bg-gradient-to-t from-[#2dd4bf]/40 via-transparent to-transparent shadow-2xl overflow-hidden group">
+                <div class="w-60 h-72 sm:w-64 sm:h-80 rounded-2xl p-2 bg-gradient-to-t from-[#2dd4bf]/40 via-transparent to-transparent shadow-2xl overflow-hidden group border border-[#2dd4bf]/30">
                   <img src="${chairman.photo || 'assets/dr_lingadalli.jpg'}" alt="${chairman.name}" class="w-full h-full object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500" />
                 </div>
               </div>
@@ -1922,8 +1998,12 @@ document.addEventListener("DOMContentLoaded", () => {
                   <span class="font-bold text-white">Founder & Chairman</span>
                 </div>
                 <div class="flex items-center justify-between">
-                  <span class="text-slate-400">Surgical Tenure:</span>
-                  <span class="font-bold text-[#2dd4bf]">25+ Years Legacy</span>
+                  <span class="text-slate-400">Surgical Legacy:</span>
+                  <span class="font-bold text-[#2dd4bf]">25+ Years Experience</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Lifetime Surgeries:</span>
+                  <span class="font-bold text-amber-300 font-mono">${stats.lifetimeSurgeries}</span>
                 </div>
               </div>
 
@@ -1932,16 +2012,19 @@ document.addEventListener("DOMContentLoaded", () => {
             <!-- RIGHT PANEL: 4-Card Structured Grid (Matching Reference Slide) -->
             <div class="lg:col-span-7 p-6 sm:p-10 space-y-8 flex flex-col justify-between">
               
-              <div>
+              <div class="space-y-2">
+                <div class="inline-block px-3 py-1 rounded-full bg-teal-100 dark:bg-teal-900/40 text-teal-900 dark:text-teal-200 font-mono font-bold text-xs uppercase tracking-wider">
+                  Clinical Profile & Leadership
+                </div>
                 <h3 class="text-3xl font-extrabold text-teal-950 dark:text-white font-heading tracking-tight">
-                  Biography & Clinical Profile
+                  Biography & Surgical Milestones
                 </h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                  Comprehensive credentials, academic milestones, and community outreach leadership.
+                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  ${chairman.bio}
                 </p>
               </div>
 
-              <!-- 4 ROUNDED PILL HEADER CARDS GRID (Reference Slide Layout) -->
+              <!-- 4 ROUNDED PILL HEADER CARDS GRID -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 
                 <!-- CARD 1: CONTACT & COORDINATES -->
@@ -2050,12 +2133,15 @@ document.addEventListener("DOMContentLoaded", () => {
               ${chairman.awards && chairman.awards.length > 0 ? `
                 <details class="p-5 rounded-2xl bg-teal-900/10 border border-teal-200 dark:border-teal-800 space-y-3 cursor-pointer group">
                   <summary class="font-extrabold text-teal-950 dark:text-white text-sm font-heading flex items-center justify-between outline-none">
-                    <span>View All ${chairman.awards.length} Conferred State & National Awards</span>
+                    <span class="flex items-center gap-2">
+                      <span class="text-amber-500">🏆</span>
+                      <span>View All ${chairman.awards.length} Conferred State & National Awards</span>
+                    </span>
                     <span class="w-6 h-6 rounded-full bg-teal-800 text-white flex items-center justify-center text-xs font-bold shrink-0 transition-transform group-open:rotate-180">+</span>
                   </summary>
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-3 border-t border-teal-200 dark:border-teal-800 text-xs">
                     ${chairman.awards.map((award, aIdx) => `
-                      <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-teal-100 dark:border-teal-900 flex items-start gap-2.5">
+                      <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-teal-100 dark:border-teal-900 flex items-start gap-2.5 shadow-sm">
                         <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300 font-mono font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">${aIdx + 1}</span>
                         <div>
                           <div class="font-bold text-teal-950 dark:text-white text-[11px]">${award.title}</div>
@@ -2067,6 +2153,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 </details>
               ` : ''}
 
+              <!-- Bottom CTA Action Bar -->
+              <div class="pt-4 border-t border-teal-100 dark:border-teal-900/50 flex flex-wrap items-center justify-between gap-3">
+                <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="px-5 py-2.5 rounded-xl bg-teal-900 text-white font-bold text-xs hover:bg-teal-950 transition-colors flex items-center gap-2 shadow-md">
+                  <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                  <span>Book OPD Consultation: ${brand.fallbackPhone}</span>
+                </a>
+
+                <a href="https://wa.me/${(brand.whatsappPhone || '').replace(/[^0-9]/g, '')}?text=Enquiry%20for%20Dr.%20Lingadalli" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition-colors flex items-center gap-2 shadow-md">
+                  <span>WhatsApp Secretary</span>
+                  <span>&rarr;</span>
+                </a>
+              </div>
+
             </div>
 
           </div>
@@ -2075,20 +2174,20 @@ document.addEventListener("DOMContentLoaded", () => {
         <!-- ========================================== -->
         <!-- PROFILE 2: MEDICAL DIRECTOR DR. MALINI P L -->
         <!-- ========================================== -->
-        <section id="dr-malini" class="space-y-8">
+        <section id="dr-malini" class="space-y-8 scroll-mt-28">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch bg-white dark:bg-[#06241f] rounded-3xl overflow-hidden border border-teal-100 dark:border-teal-900/40 shadow-2xl">
             
-            <!-- LEFT BANNER: Dark Green Background Panel with Cutout Portrait (Matching Reference Slide) -->
-            <div class="lg:col-span-5 bg-[#093327] text-white p-8 sm:p-10 flex flex-col justify-between relative overflow-visible min-h-[480px]">
+            <!-- LEFT BANNER: Dark Green Background Panel with Cutout Portrait -->
+            <div class="lg:col-span-5 bg-[#093327] text-white p-8 sm:p-10 flex flex-col justify-between relative overflow-visible min-h-[500px]">
               
               <!-- Subtle Background Graphics -->
               <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-black/40 pointer-events-none"></div>
 
               <div class="relative z-10 space-y-3">
                 <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-[#2dd4bf] font-mono font-bold text-xs uppercase tracking-wider border border-emerald-500/30">
-                  ${medicalDirector.title}
+                  ${medicalDirector.title || 'Medical Director'}
                 </span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-heading tracking-tight">
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-heading tracking-tight leading-tight">
                   ${medicalDirector.name}
                 </h2>
                 <div class="text-xs sm:text-sm font-bold text-[#2dd4bf] font-sans">
@@ -2096,9 +2195,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
               </div>
 
-              <!-- Breakout Cutout Portrait Image -->
+              <!-- Breakout Cutout Portrait Image Frame -->
               <div class="relative z-10 my-6 flex justify-center">
-                <div class="w-56 h-72 sm:w-64 sm:h-80 rounded-2xl p-2 bg-gradient-to-t from-[#2dd4bf]/40 via-transparent to-transparent shadow-2xl overflow-hidden group">
+                <div class="w-60 h-72 sm:w-64 sm:h-80 rounded-2xl p-2 bg-gradient-to-t from-[#2dd4bf]/40 via-transparent to-transparent shadow-2xl overflow-hidden group border border-[#2dd4bf]/30">
                   <img src="${medicalDirector.photo || 'assets/dr_malini.jpg'}" alt="${medicalDirector.name}" class="w-full h-full object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500" />
                 </div>
               </div>
@@ -2109,26 +2208,33 @@ document.addEventListener("DOMContentLoaded", () => {
                   <span class="font-bold text-white">Medical Director</span>
                 </div>
                 <div class="flex items-center justify-between">
-                  <span class="text-slate-400">Clinical Leadership:</span>
+                  <span class="text-slate-400">Clinical Governance:</span>
                   <span class="font-bold text-[#2dd4bf]">20+ Years Governance</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400">Accreditation Oversight:</span>
+                  <span class="font-bold text-emerald-300">NABH Alignment</span>
                 </div>
               </div>
 
             </div>
 
-            <!-- RIGHT PANEL: 4-Card Structured Grid (Matching Reference Slide) -->
+            <!-- RIGHT PANEL: 4-Card Structured Grid -->
             <div class="lg:col-span-7 p-6 sm:p-10 space-y-8 flex flex-col justify-between">
               
-              <div>
+              <div class="space-y-2">
+                <div class="inline-block px-3 py-1 rounded-full bg-teal-100 dark:bg-teal-900/40 text-teal-900 dark:text-teal-200 font-mono font-bold text-xs uppercase tracking-wider">
+                  Clinical Governance & Quality
+                </div>
                 <h3 class="text-3xl font-extrabold text-teal-950 dark:text-white font-heading tracking-tight">
-                  Biography & Medical Governance
+                  Biography & Medical Leadership
                 </h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                  Clinical quality oversight, NABH accreditation leadership, and consultant management.
+                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  ${medicalDirector.bio}
                 </p>
               </div>
 
-              <!-- 4 ROUNDED PILL HEADER CARDS GRID (Reference Slide Layout) -->
+              <!-- 4 ROUNDED PILL HEADER CARDS GRID -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 
                 <!-- CARD 1: CONTACT & COORDINATES -->
@@ -2222,9 +2328,22 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
 
               <!-- Quote Block -->
-              <blockquote class="text-slate-700 dark:text-slate-300 text-sm italic leading-relaxed bg-[#edf5f3] dark:bg-teal-950/40 p-5 rounded-2xl border-l-4 border-emerald-600">
+              <blockquote class="text-slate-700 dark:text-slate-300 text-xs sm:text-sm italic leading-relaxed bg-[#edf5f3] dark:bg-teal-950/40 p-5 rounded-2xl border-l-4 border-emerald-600">
                 "Clinical governance, cutting-edge surgical technology, and compassionate care define our two-decade operational promise to North Karnataka."
               </blockquote>
+
+              <!-- Bottom CTA Action Bar -->
+              <div class="pt-4 border-t border-teal-100 dark:border-teal-900/50 flex flex-wrap items-center justify-between gap-3">
+                <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="px-5 py-2.5 rounded-xl bg-teal-900 text-white font-bold text-xs hover:bg-teal-950 transition-colors flex items-center gap-2 shadow-md">
+                  <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                  <span>Book Consultation: ${brand.fallbackPhone}</span>
+                </a>
+
+                <a href="https://wa.me/${(brand.whatsappPhone || '').replace(/[^0-9]/g, '')}?text=Enquiry%20for%20Dr.%20Malini%20PL" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition-colors flex items-center gap-2 shadow-md">
+                  <span>WhatsApp Desk</span>
+                  <span>&rarr;</span>
+                </a>
+              </div>
 
             </div>
 
@@ -2236,7 +2355,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const otherDoctors = leadership.filter(l => l.id !== 'dr-lingadalli' && l.id !== 'dr-malini' && l.published !== false);
           if (otherDoctors.length === 0) return '';
           return `
-            <section class="space-y-8 pt-8 border-t border-teal-100 dark:border-teal-900">
+            <section id="consultants" class="space-y-8 pt-8 border-t border-teal-100 dark:border-teal-900 scroll-mt-28">
               <div class="text-center space-y-2">
                 <span class="px-3 py-1 rounded-full badge-emerald font-bold text-xs uppercase tracking-wider">Clinical Faculty & Consultants</span>
                 <h2 class="text-3xl font-extrabold text-teal-950 dark:text-white font-heading">Specialist Ophthalmic Surgeons</h2>
@@ -2245,8 +2364,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 ${otherDoctors.map(doc => `
-                  <div class="glass-card rounded-3xl border border-teal-100 dark:border-teal-900/60 overflow-hidden flex flex-col justify-between hover-lift">
-                    <div class="h-48 overflow-hidden bg-[#093327] relative flex items-center justify-center">
+                  <div class="glass-card rounded-3xl border border-teal-100 dark:border-teal-900/60 overflow-hidden flex flex-col justify-between hover-lift shadow-lg">
+                    <div class="h-52 overflow-hidden bg-[#093327] relative flex items-center justify-center">
                       ${doc.photo ? `
                         <img src="${doc.photo}" alt="${doc.name}" class="w-full h-full object-cover object-top" />
                       ` : `
