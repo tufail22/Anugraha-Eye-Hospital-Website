@@ -1130,16 +1130,23 @@ textarea:focus-visible,
 
 /* Mobile Interface UX Hardening (320px, 375px, 390px, 414px, 768px Viewports) */
 @media (max-width: 768px) {
-  /* Minimum 44px Touch Target Size Enforcement */
+  /* Minimum 48px Touch Target Size Enforcement */
   button, 
   a, 
   input[type="button"], 
   input[type="submit"], 
   .nav-text-link,
   .btn-shine-glow {
-    min-height: 44px;
+    min-height: 48px;
     display: inline-flex;
     align-items: center;
+  }
+
+  /* 16px Input Font Size Rule to Prevent iOS Auto-Zoom */
+  input, 
+  select, 
+  textarea {
+    font-size: 16px !important;
   }
 
   /* Prevent text clipping and horizontal scrolling */
@@ -1158,12 +1165,28 @@ textarea:focus-visible,
 
   /* Mobile Bottom Bar Elevation & Padding Offset */
   body {
-    padding-bottom: 72px;
+    padding-bottom: 76px;
   }
 
-  /* Mobile Drawer Z-Index Overlay Safeguard */
-  .fixed.inset-0.z-50 {
+  /* Mobile Drawer Z-Index Overlay & Slide-In Animation */
+  .mobile-drawer-overlay {
+    position: fixed;
+    inset: 0;
     z-index: 9999 !important;
+    background-color: rgba(6, 44, 38, 0.95);
+    backdrop-filter: blur(16px);
+    animation: drawerSlideIn 300ms cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+
+  @keyframes drawerSlideIn {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 }
 

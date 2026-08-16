@@ -614,73 +614,94 @@ document.addEventListener("DOMContentLoaded", () => {
             <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
           </a>
         </div>
-      </div>
-
-      <!-- Mobile Full-Height Accordion Drawer -->
+           <!-- Mobile Full-Height Accordion Drawer (300ms Ease Slide-In) -->
       ${window.isMobileDrawerOpen ? `
-        <div class="fixed inset-0 z-50 bg-[#062c26]/98 backdrop-blur-2xl text-white p-6 overflow-y-auto lg:hidden flex flex-col justify-between">
+        <div class="mobile-drawer-overlay p-6 overflow-y-auto lg:hidden flex flex-col justify-between">
           <div class="space-y-6">
             
             <!-- Drawer Header -->
             <div class="flex items-center justify-between border-b border-teal-800/80 pb-4">
               <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center p-0.5 shadow-md overflow-hidden shrink-0">
+                <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center p-0.5 shadow-md overflow-hidden shrink-0">
                   <img src="assets/official_logo.jpg" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
                 </div>
                 <span class="font-extrabold text-lg font-heading text-white">${brand.name}</span>
               </div>
-              <button onclick="window.toggleMobileDrawer()" class="p-2 rounded-xl bg-teal-900 text-white">
+              <button onclick="window.toggleMobileDrawer()" aria-label="Close Menu" class="w-12 h-12 rounded-xl bg-teal-900/90 text-white flex items-center justify-center min-h-[48px]">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
               </button>
             </div>
 
-            <!-- Drawer Accordion Navigation -->
-            <div class="space-y-3 font-heading font-semibold text-sm">
-              <a href="#/" onclick="window.toggleMobileDrawer()" class="block py-2 text-emerald-300">Home</a>
+            <!-- Drawer Accordion Navigation (Min 48px Tap Height, 16px Font) -->
+            <div class="space-y-3 font-heading font-semibold text-base">
+              <a href="#/" onclick="window.toggleMobileDrawer()" class="flex items-center px-4 py-3.5 rounded-xl bg-teal-900/40 text-emerald-300 min-h-[48px]">
+                <span>Home</span>
+              </a>
               
-              <div class="space-y-2 border-t border-teal-900 pt-3">
-                <div class="text-xs uppercase tracking-wider text-teal-400 font-bold">About Us</div>
-                <a href="#/about-us" onclick="window.toggleMobileDrawer()" class="block pl-3 py-1.5 text-slate-200">Our Story & Overview</a>
-                <a href="#/about-us/leadership" onclick="window.toggleMobileDrawer()" class="block pl-3 py-1.5 text-slate-200">Leadership & Awards</a>
-                <a href="#/about-us/administration" onclick="window.toggleMobileDrawer()" class="block pl-3 py-1.5 text-slate-200">Administration Team</a>
-              </div>
+              <!-- About Us Accordion -->
+              <details class="group rounded-xl bg-teal-950/40 border border-teal-900/50">
+                <summary class="flex items-center justify-between px-4 py-3.5 text-white cursor-pointer min-h-[48px] outline-none">
+                  <span>About Us</span>
+                  <svg class="w-4 h-4 text-emerald-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-4 pb-3 space-y-1 text-sm border-t border-teal-900/40 pt-2">
+                  <a href="#/about-us" onclick="window.toggleMobileDrawer()" class="flex items-center py-2.5 px-3 rounded-lg text-slate-200 hover:text-white hover:bg-teal-900/50 min-h-[44px]">Our Story & Overview</a>
+                  <a href="#/about-us/leadership" onclick="window.toggleMobileDrawer()" class="flex items-center py-2.5 px-3 rounded-lg text-slate-200 hover:text-white hover:bg-teal-900/50 min-h-[44px]">Leadership & Awards</a>
+                  <a href="#/about-us/administration" onclick="window.toggleMobileDrawer()" class="flex items-center py-2.5 px-3 rounded-lg text-slate-200 hover:text-white hover:bg-teal-900/50 min-h-[44px]">Administration Team (6)</a>
+                </div>
+              </details>
 
-              <div class="space-y-2 border-t border-teal-900 pt-3">
-                <div class="text-xs uppercase tracking-wider text-teal-400 font-bold">Hospitals & Vision Centers</div>
-                <a href="#/hospitals/vijayapura" onclick="window.toggleMobileDrawer()" class="block pl-3 py-1.5 text-slate-200">Vijayapura Base Hospital</a>
-                <a href="#/hospitals/kalaburagi" onclick="window.toggleMobileDrawer()" class="block pl-3 py-1.5 text-slate-200">Kalaburagi Base Hospital</a>
-                <a href="#/vision-centers" onclick="window.toggleMobileDrawer()" class="block pl-3 py-1.5 text-amber-300">All 8 Vision Centers Directory</a>
-              </div>
+              <!-- Hospitals & Vision Centers Accordion -->
+              <details class="group rounded-xl bg-teal-950/40 border border-teal-900/50">
+                <summary class="flex items-center justify-between px-4 py-3.5 text-white cursor-pointer min-h-[48px] outline-none">
+                  <span>Hospitals & Vision Centers</span>
+                  <svg class="w-4 h-4 text-emerald-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-4 pb-3 space-y-1 text-sm border-t border-teal-900/40 pt-2">
+                  <a href="#/hospitals/vijayapura" onclick="window.toggleMobileDrawer()" class="flex items-center py-2.5 px-3 rounded-lg text-slate-200 hover:text-white min-h-[44px]">Vijayapura Base Hospital</a>
+                  <a href="#/hospitals/kalaburagi" onclick="window.toggleMobileDrawer()" class="flex items-center py-2.5 px-3 rounded-lg text-slate-200 hover:text-white min-h-[44px]">Kalaburagi Base Hospital</a>
+                  <a href="#/vision-centers" onclick="window.toggleMobileDrawer()" class="flex items-center py-2.5 px-3 rounded-lg text-amber-300 hover:text-amber-200 font-bold min-h-[44px]">All 8 Vision Centers Directory</a>
+                </div>
+              </details>
 
-              <div class="space-y-2 border-t border-teal-900 pt-3">
-                <a href="#/services" onclick="window.toggleMobileDrawer()" class="block text-white">Services</a>
-                <a href="#/academics" onclick="window.toggleMobileDrawer()" class="block text-white">Academics</a>
-                <a href="#/patient-resources/empanelments-and-insurance" onclick="window.toggleMobileDrawer()" class="block text-white">Empanelments & Insurance</a>
-                <a href="#/contact" onclick="window.toggleMobileDrawer()" class="block text-white">Contact Us</a>
-              </div>
+              <a href="#/services" onclick="window.toggleMobileDrawer()" class="flex items-center px-4 py-3.5 rounded-xl bg-teal-950/40 text-white min-h-[48px]">
+                <span>Services & Specialties</span>
+              </a>
+
+              <a href="#/academics" onclick="window.toggleMobileDrawer()" class="flex items-center px-4 py-3.5 rounded-xl bg-teal-950/40 text-white min-h-[48px]">
+                <span>Academics & Training</span>
+              </a>
+
+              <a href="#/patient-resources/empanelments-and-insurance" onclick="window.toggleMobileDrawer()" class="flex items-center px-4 py-3.5 rounded-xl bg-teal-950/40 text-white min-h-[48px]">
+                <span>Empanelments & Insurance</span>
+              </a>
+
+              <a href="#/contact" onclick="window.toggleMobileDrawer()" class="flex items-center px-4 py-3.5 rounded-xl bg-teal-950/40 text-white min-h-[48px]">
+                <span>Contact Us</span>
+              </a>
             </div>
 
           </div>
 
-          <!-- Drawer Bottom Phone CTA -->
-          <div class="pt-6 border-t border-teal-900 space-y-3">
-            <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="block w-full py-3 text-center rounded-xl bg-amber-500 text-slate-950 font-extrabold text-xs">
-              Call Now: ${brand.fallbackPhone}
+          <!-- Drawer Bottom Call & Appointment Action Panel -->
+          <div class="pt-6 border-t border-teal-900/80 space-y-3">
+            <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-amber-500 text-slate-950 font-extrabold text-base min-h-[48px] shadow-lg">
+              <svg class="w-5 h-5 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+              <span>Call Helpline: ${brand.fallbackPhone}</span>
             </a>
           </div>
         </div>
       ` : ''}
 
-      <!-- Sticky Mobile Call/WhatsApp Bar (Pinned to Bottom of Viewport on Mobile) -->
-      <div class="fixed bottom-0 left-0 right-0 z-50 lg:hidden p-3 bg-[#062c26]/95 backdrop-blur-md border-t border-teal-800/60 flex items-center justify-between gap-2 shadow-2xl">
-        <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="flex-1 py-2.5 px-3 rounded-xl bg-amber-500 text-slate-950 font-extrabold text-xs text-center flex items-center justify-center gap-1.5 shadow-lg">
+      <!-- Sticky Mobile Bottom Bar (Call Now & Book Appointment - Pinned to Bottom) -->
+      <div class="fixed bottom-0 left-0 right-0 z-50 lg:hidden p-3 bg-[#062c26]/95 backdrop-blur-md border-t border-teal-800/60 flex items-center justify-between gap-3 shadow-2xl">
+        <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="flex-1 min-h-[48px] py-3 px-4 rounded-xl bg-amber-500 text-slate-950 font-extrabold text-sm text-center flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all">
           <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
           <span>Call Now</span>
         </a>
-        <a href="https://wa.me/${brand.whatsappPhone.replace(/[^0-9]/g, '')}" target="_blank" class="py-2.5 px-4 rounded-xl bg-emerald-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg">
-          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-          <span>WhatsApp</span>
-        </a>
+
+        <a href="#/contact" class="flex-1 min-h-[48px] py-3 px-4 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-sm text-center flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all">
+          <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
       </div>
     `;
   }
