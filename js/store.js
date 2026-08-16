@@ -1181,6 +1181,10 @@ class Store {
     this.save();
   }
 
+  getDataGaps() {
+    return this.data.dataGaps || DEFAULT_DATA.dataGaps || {};
+  }
+
   getVideos() {
     return this.data.videos || DEFAULT_DATA.videos;
   }
