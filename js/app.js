@@ -379,13 +379,51 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 180);
   }
 
+  // Dynamic Route Dispatcher & Hash Change Synchronizer
+  function handleHashRoute() {
+    const rawHash = window.location.hash || '#/';
+    // Extract path without anchor or query params
+    const cleanPath = rawHash.replace(/^#\/?/, '').split('#')[0].split('?')[0];
+    currentPath = cleanPath ? '/' + cleanPath : '/';
+
+    // Always re-sync store from localStorage on navigation to guarantee latest edits are visible
+    store.sync();
+
+    // Close any open navigation drawers
+    window.isMobileDrawerOpen = false;
+    window.isAdminMobileDrawerOpen = false;
+    document.body.style.overflow = '';
+
+    // Re-render view with fresh data
+    render();
+
+    // Handle smooth anchor scroll or top scroll
+    const anchorMatch = rawHash.match(/#([a-zA-Z0-9_-]+)$/);
+    if (anchorMatch && anchorMatch[1]) {
+      setTimeout(() => {
+        const el = document.getElementById(anchorMatch[1]);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 80);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }
+
   // Handle hash changes in URL bar directly
-  window.addEventListener('hashchange', () => {
-    const newPath = window.location.hash.replace('#', '') || '/';
-    if (newPath !== currentPath) {
-      currentPath = newPath;
-      window.isMobileDrawerOpen = false;
-      document.body.style.overflow = '';
+  window.addEventListener('hashchange', handleHashRoute);
+
+  // Cross-Tab Real-time Synchronizer (When user edits in Admin tab, public tabs update instantly)
+  window.addEventListener('storage', (e) => {
+    if (!e.key || e.key === store.key || e.key === 'anugraha_hospital_store_v1') {
+      store.sync();
+      render();
+    }
+  });
+
+  // Intra-page Store Update Synchronizer
+  window.addEventListener('anugraha-store-updated', () => {
+    store.sync();
+    if (!currentPath.startsWith('/admin')) {
       render();
     }
   });
@@ -499,7 +537,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <!-- Logo & Brand Name (Admin Editable) -->
           <a href="#/" class="flex items-center gap-3 group shrink-0">
             <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center p-0.5 shadow-md group-hover:scale-105 transition-transform border border-teal-900/20 overflow-hidden shrink-0">
-              <img src="assets/official_logo.jpg" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
+              <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
             </div>
             <div>
               <div class="brand-title font-extrabold text-base sm:text-lg text-teal-950 tracking-tight leading-none font-heading transition-colors">${brand.name}</div>
@@ -623,7 +661,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="flex items-center justify-between border-b border-teal-800/80 pb-4">
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center p-0.5 shadow-md overflow-hidden shrink-0">
-                  <img src="assets/official_logo.jpg" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
+                  <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
                 </div>
                 <span class="font-extrabold text-lg font-heading text-white">${brand.name}</span>
               </div>
@@ -721,7 +759,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="space-y-4">
               <div class="flex items-center gap-3">
                 <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center p-0.5 shadow-xl border-2 border-emerald-400/40 overflow-hidden shrink-0">
-                  <img src="assets/official_logo.jpg" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
+                  <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
                 </div>
                 <div>
                   <h3 class="font-bold text-lg text-white font-heading">${brand.name}</h3>
@@ -3956,7 +3994,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="text-center space-y-4 max-w-3xl mx-auto">
           <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full badge-teal font-semibold text-xs uppercase tracking-wider">
             <div class="w-4 h-4 rounded-full bg-white flex items-center justify-center p-0.5 overflow-hidden shrink-0">
-              <img src="assets/official_logo.jpg" alt="Official Logo" class="w-full h-full object-contain" />
+              <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="Official Logo" class="w-full h-full object-contain" />
             </div>
             <span>Hospital Communications Portal</span>
           </div>
@@ -6660,6 +6698,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Central Render Loop
   function render() {
+    // Keep in-memory store 100% in sync with latest localStorage modifications
+    store.sync();
     updatePageSEO(currentPath);
 
     if (currentPath === '/admin' || currentPath.startsWith('/admin/')) {

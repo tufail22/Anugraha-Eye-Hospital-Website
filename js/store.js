@@ -861,15 +861,36 @@ class Store {
       const saved = localStorage.getItem(this.key);
       if (saved) {
         const parsed = JSON.parse(saved);
-        // Merge with defaults to ensure all new keys exist safely
+        // Deep merge with defaults to ensure all fields exist safely and modifications are retained
         return {
           ...DEFAULT_DATA,
           ...parsed,
           brand: { ...DEFAULT_DATA.brand, ...(parsed.brand || {}) },
-          homepage: { ...DEFAULT_DATA.homepage, ...(parsed.homepage || {}) },
-          about: { ...DEFAULT_DATA.about, ...(parsed.about || {}) },
+          homepage: { 
+            ...DEFAULT_DATA.homepage, 
+            ...(parsed.homepage || {}),
+            primaryCta: { ...DEFAULT_DATA.homepage.primaryCta, ...(parsed.homepage?.primaryCta || {}) },
+            secondaryCta: { ...DEFAULT_DATA.homepage.secondaryCta, ...(parsed.homepage?.secondaryCta || {}) },
+            trustStats: { ...DEFAULT_DATA.homepage.trustStats, ...(parsed.homepage?.trustStats || {}) },
+            sections: { ...DEFAULT_DATA.homepage.sections, ...(parsed.homepage?.sections || {}) }
+          },
+          about: { 
+            ...DEFAULT_DATA.about, 
+            ...(parsed.about || {}),
+            coreValues: parsed.about?.coreValues || DEFAULT_DATA.about.coreValues,
+            milestones: parsed.about?.milestones || DEFAULT_DATA.about.milestones
+          },
           stats: { ...DEFAULT_DATA.stats, ...(parsed.stats || {}) },
-          patientResources: { ...DEFAULT_DATA.patientResources, ...(parsed.patientResources || {}) }
+          patientResources: { ...DEFAULT_DATA.patientResources, ...(parsed.patientResources || {}) },
+          facilities: parsed.facilities || DEFAULT_DATA.facilities,
+          services: parsed.services || DEFAULT_DATA.services,
+          leadership: parsed.leadership || DEFAULT_DATA.leadership,
+          administration: parsed.administration || DEFAULT_DATA.administration,
+          academics: parsed.academics || DEFAULT_DATA.academics,
+          faqs: parsed.faqs || DEFAULT_DATA.faqs,
+          empanelments: parsed.empanelments || DEFAULT_DATA.empanelments,
+          news: parsed.news || DEFAULT_DATA.news,
+          gallery: parsed.gallery || DEFAULT_DATA.gallery
         };
       }
     } catch (e) {
@@ -878,10 +899,19 @@ class Store {
     return JSON.parse(JSON.stringify(DEFAULT_DATA));
   }
 
+  sync() {
+    this.data = this.load();
+    return this.data;
+  }
+
   save() {
     try {
       localStorage.setItem(this.key, JSON.stringify(this.data));
-      localStorage.setItem('anugraha_last_saved_time', new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+      const timestamp = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      localStorage.setItem('anugraha_last_saved_time', timestamp);
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('anugraha-store-updated', { detail: this.data }));
+      }
     } catch (e) {
       console.error("Failed to save store to localStorage", e);
     }
