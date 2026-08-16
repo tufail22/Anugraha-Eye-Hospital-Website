@@ -3769,90 +3769,6 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
 
       </div>
-    `;
-              </div>
-
-              <!-- Forgot Password Inline Notice -->
-              <div id="forgot-password-notice" class="hidden p-3 rounded-xl bg-teal-900/80 border border-teal-700 text-xs text-amber-300 text-center font-bold">
-                Contact your website administrator
-              </div>
-
-              <!-- Submit Button -->
-              <button type="submit" id="admin-login-submit" class="w-full py-3.5 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-sm hover:bg-emerald-400 transition-all shadow-lg flex items-center justify-center gap-2">
-                <span id="admin-login-btn-text">Sign In</span>
-              </button>
-            </form>
-
-            <!-- Prototype Notice Footer -->
-            <div class="pt-4 border-t border-slate-800/80 text-center">
-              <p class="text-[10px] text-slate-400 leading-relaxed font-mono">
-                /* Frontend Prototype Notice: Local session persistence enabled. Credentials: web@admin / Admin@2001 */
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-    `;
-                </div>
-                <div>
-                  <div class="text-xs font-extrabold text-white font-mono">${session ? session.username : 'web@admin'}</div>
-                  <div class="text-[10px] text-slate-400 font-mono">Authenticated Admin</div>
-                </div>
-              </div>
-              <button onclick="window.handleAdminLogout()" class="p-2 rounded-xl bg-slate-800 hover:bg-red-500/20 hover:text-red-400 text-slate-300 transition-colors" title="Sign Out">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-              </button>
-            </div>
-
-            <button onclick="window.handleAdminLogout()" class="w-full py-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 font-bold text-xs hover:bg-red-500/20 transition-colors flex items-center justify-center gap-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-              <span>Sign Out of CMS</span>
-            </button>
-          </div>
-
-        </aside>
-
-        <!-- MAIN DASHBOARD CONTENT WORKSPACE -->
-        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
-          
-          <!-- Top Header Bar -->
-          <header class="p-6 bg-slate-900/60 border-b border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <div class="flex items-center gap-2 text-xs text-slate-400 font-mono">
-                <span>Admin CMS</span>
-                <span>/</span>
-                <span class="text-emerald-400 font-bold">${currentMod.label}</span>
-              </div>
-              <h1 class="text-2xl font-extrabold text-white font-heading mt-1">${currentMod.label} CMS Manager</h1>
-            </div>
-
-            <div class="flex items-center gap-3">
-              ${currentMod.publicRoute ? `
-                <a href="${currentMod.publicRoute}" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition-colors flex items-center gap-1.5 border border-slate-700">
-                  <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                  <span>Preview on Site</span>
-                </a>
-              ` : ''}
-              
-              <button onclick="window.resetAdminStore()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold transition-colors">
-                Reset Store
-              </button>
-            </div>
-          </header>
-
-          <!-- Dynamic Workspace Content View -->
-          <div class="p-6 md:p-8 space-y-8 flex-1">
-            ${renderAdminSectionContent(activeSection, currentMod)}
-          </div>
-
-        </main>
-
-      </div>
-    `;
-  }
-
   // Lenis Inertia Smooth Scroll Engine with prefers-reduced-motion Safeguard
   function initLenisSmoothScroll() {
     const motionSafe = window.useMotionSafe ? window.useMotionSafe() : { isMotionSafe: true };
@@ -4322,7 +4238,6 @@ document.addEventListener("DOMContentLoaded", () => {
     initMobileBottomBar();
     initFormValidationShake();
     initPhysicsDragCarousel();
-    initAdminListDragAndDrop();
     initSpotlightHoverTracker();
   }
 
