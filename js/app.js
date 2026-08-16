@@ -889,7 +889,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return renderVisionCenterDetailPage(centerId);
     }
     
-    // Page: Services Hub & Clinical Details
+    // Page: Services (Directory & Clinical Detail Views)
     if (path === '/services') return renderServicesPage();
     if (path.startsWith('/services/')) {
       const serviceId = path.replace('/services/', '');
@@ -3145,37 +3145,26 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // Helper to resolve doctors assigned to a service
-  function getDoctorsForService(service) {
-    const allDoctors = store.getLeadership().filter(d => d.published !== false);
-    if (!service) return [];
-
-    let matched = [];
-    if (service.relatedDoctorIds && service.relatedDoctorIds.length > 0) {
-      matched = allDoctors.filter(d => service.relatedDoctorIds.includes(d.id));
+  // Helper function to resolve doctors for a service
+  function getServiceDoctorObjects(service) {
+    const leadership = store.getLeadership() || [];
+    let doctors = [];
+    if (service.doctorIds && Array.isArray(service.doctorIds)) {
+      doctors = service.doctorIds.map(id => leadership.find(d => d.id === id)).filter(Boolean);
     }
-    if (matched.length === 0 && service.relatedDoctors && service.relatedDoctors.length > 0) {
-      matched = allDoctors.filter(d => service.relatedDoctors.some(name => d.name.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(d.name.toLowerCase())));
+    if (doctors.length === 0 && service.relatedDoctors && Array.isArray(service.relatedDoctors)) {
+      doctors = service.relatedDoctors.map(nameStr => {
+        const cleanName = nameStr.toLowerCase().replace('dr.', '').trim();
+        return leadership.find(d => d.name.toLowerCase().includes(cleanName));
+      }).filter(Boolean);
     }
-    if (matched.length === 0) {
-      // Smart specialty fallback matching
-      const term = (service.title + ' ' + (service.category || '')).toLowerCase();
-      if (term.includes('retina') || term.includes('vitreo')) {
-        matched = allDoctors.filter(d => d.id === 'dr-anand-baligar');
-      } else if (term.includes('glaucoma')) {
-        matched = allDoctors.filter(d => d.id === 'dr-malini');
-      } else if (term.includes('pediatric') || term.includes('paediatric') || term.includes('squint') || term.includes('trauma')) {
-        matched = allDoctors.filter(d => d.id === 'dr-soundarya-patil' || d.id === 'dr-lingadalli');
-      } else if (term.includes('cornea') || term.includes('lasik')) {
-        matched = allDoctors.filter(d => d.id === 'dr-ravikumar-goud' || d.id === 'dr-rashmi-biradar');
-      } else {
-        matched = allDoctors.filter(d => d.id === 'dr-lingadalli' || d.id === 'dr-rashmi-biradar');
-      }
+    if (doctors.length === 0 && leadership.length > 0) {
+      doctors = [leadership[0]];
     }
-    return matched.length > 0 ? matched : [allDoctors[0]];
+    return doctors;
   }
 
-  // 7. SERVICES View (Clinical Offerings with Dedicated Doctor Profile Boxes)
+  // 7. SERVICES View (Comprehensive Box-in-Box Sections with Embedded Doctor Profiles)
   function renderServicesPage() {
     const brand = store.getBrand();
     const servicesList = store.getServices().filter(s => s.published !== false);
@@ -3183,126 +3172,121 @@ document.addEventListener("DOMContentLoaded", () => {
     return `
       <div class="max-w-7xl mx-auto px-4 py-10 space-y-12 font-sans">
         
-        <!-- Header Banner with Official Logo -->
+        <!-- Header -->
         <div class="text-center space-y-4 max-w-4xl mx-auto">
           <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full badge-teal font-semibold text-xs uppercase tracking-wider">
-            <div class="w-4 h-4 rounded-full bg-white flex items-center justify-center p-0.5 overflow-hidden shrink-0">
-              <img src="assets/official_logo.jpg" alt="Official Logo" class="w-full h-full object-contain" />
-            </div>
-            <span>Super-Specialty Clinical Ophthalmic Services</span>
+            <span>Super-Specialty Ophthalmic Care</span>
           </div>
-          <h1 class="text-4xl sm:text-5xl font-extrabold text-teal-950 dark:text-white font-heading leading-tight">
-            Clinical Services & Specialty Departments
+          <h1 class="text-4xl sm:text-5xl font-extrabold text-teal-950 font-heading leading-tight">
+            Super-Specialty Ophthalmic Services
           </h1>
-          <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-base sm:text-lg">
-            World-class diagnostic, medical, and micro-surgical ophthalmic care delivered by experienced super-specialist consultants across Vijayapura, Kalaburagi, and our 8 rural vision centers.
+          <p class="text-slate-600 leading-relaxed text-base sm:text-lg">
+            State-of-the-art diagnostic, laser, and surgical eye care provided by experienced consultants and sub-specialists across Vijayapura and Kalaburagi campuses.
           </p>
-
-          <!-- Quick Jump Navigation Pills -->
-          <div class="pt-2 flex flex-wrap items-center justify-center gap-2">
-            ${servicesList.map(s => `
-              <a href="#/services#${s.id}" onclick="document.getElementById('${s.id}')?.scrollIntoView({behavior:'smooth'})" class="px-3.5 py-2 rounded-xl text-xs font-bold text-teal-950 dark:text-teal-200 bg-white/80 dark:bg-slate-900 border border-teal-100 dark:border-teal-900/60 hover:bg-teal-900 hover:text-white transition-all shadow-sm">
-                ${s.title.split('&')[0].trim()}
-              </a>
-            `).join('')}
-          </div>
         </div>
 
-        <!-- STACKED CLINICAL SERVICES BOXES (With Assigned Doctor Profile Boxes) -->
+        <!-- Quick Anchor Jump Chips Menu -->
+        <div class="glass-card rounded-2xl p-4 border border-teal-100/80 shadow-sm flex items-center gap-2 overflow-x-auto scrollbar-none">
+          <span class="text-xs font-extrabold text-teal-900 uppercase tracking-wider shrink-0 mr-2 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg>
+            Jump to Service:
+          </span>
+          ${servicesList.map(s => `
+            <a href="#/services#${s.id}" onclick="document.getElementById('${s.id}')?.scrollIntoView({behavior:'smooth'})" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-teal-900 hover:text-white text-teal-950 font-bold text-xs transition-all whitespace-nowrap border border-slate-200/60">
+              ${s.title}
+            </a>
+          `).join('')}
+        </div>
+
+        <!-- MAIN SERVICES SECTIONS: Framed Box-in-Box Cards Layout -->
         <div class="space-y-10">
           ${servicesList.map(s => {
-            const doctors = getDoctorsForService(s);
+            const doctors = getServiceDoctorObjects(s);
 
             return `
-              <section id="${s.id}" class="glass-card rounded-3xl p-6 sm:p-8 border border-teal-100/90 dark:border-teal-900/60 shadow-lg space-y-6 scroll-mt-28 hover:shadow-xl transition-all">
+              <section id="${s.id}" class="glass-card rounded-3xl p-6 sm:p-8 border border-teal-100/90 space-y-6 shadow-md hover-lift transition-all scroll-mt-28 relative overflow-hidden">
                 
-                <!-- Box Header: Title, Category Pill & Protocol Link -->
-                <div class="border-b border-teal-100/80 dark:border-teal-900/60 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <!-- Service Title & Header Bar -->
+                <div class="border-b border-teal-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div class="space-y-1">
-                    <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-extrabold uppercase tracking-wider">
-                      ${s.category || 'Specialty'}
+                    <span class="px-3 py-1 rounded-full bg-teal-50 text-teal-900 font-extrabold text-[10px] uppercase tracking-wider border border-teal-200">
+                      ${s.category || 'Super-Specialty'}
                     </span>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-teal-950 dark:text-white font-heading uppercase tracking-wide">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-teal-950 font-heading uppercase tracking-wide">
                       ${s.title}
                     </h2>
                   </div>
-                  
-                  <a href="#/services/${s.id}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-teal-50 dark:bg-teal-950 text-teal-900 dark:text-teal-200 font-extrabold text-xs border border-teal-200 dark:border-teal-800 hover:bg-teal-900 hover:text-white transition-all shrink-0 shadow-sm">
+
+                  <a href="#/services/${s.id}" class="px-4 py-2 rounded-xl bg-teal-950 hover:bg-teal-800 text-white font-bold text-xs shrink-0 self-start sm:self-auto shadow transition-all flex items-center gap-1.5 font-mono">
                     <span>Clinical Details</span>
-                    <span>&rarr;</span>
+                    <span class="icon-shift-right">&rarr;</span>
                   </a>
                 </div>
 
-                <!-- Main Content: Two Columns (Left: Clinical Info & Bullets, Right: Doctors Boxes) -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                  
-                  <!-- LEFT COLUMN: Detailed Clinical Text & Procedures -->
-                  <div class="lg:col-span-7 space-y-4">
-                    <p class="text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
-                      ${s.fullDesc || s.desc}
-                    </p>
+                <!-- Service Narrative & Bullets -->
+                <div class="space-y-4 text-slate-700 text-sm sm:text-base leading-relaxed">
+                  <p class="font-medium">${s.desc || s.fullDesc}</p>
 
-                    <!-- Key Procedures & Treatment Bullet Points -->
-                    ${s.bulletPoints && s.bulletPoints.length > 0 ? `
-                      <div class="p-4 sm:p-5 rounded-2xl bg-teal-50/60 dark:bg-teal-950/40 border border-teal-100 dark:border-teal-900/50 space-y-2.5">
-                        <div class="text-[11px] font-extrabold text-teal-900 dark:text-emerald-300 uppercase tracking-wider flex items-center gap-1.5">
-                          <svg class="w-3.5 h-3.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                          <span>Key Clinical Procedures & Focus:</span>
-                        </div>
-                        <ul class="grid grid-cols-1 gap-1.5 text-xs text-slate-700 dark:text-slate-300">
-                          ${s.bulletPoints.map(bp => `
-                            <li class="flex items-start gap-2">
-                              <span class="text-emerald-600 dark:text-emerald-400 font-bold shrink-0 mt-0.5">&bull;</span>
-                              <span>${bp}</span>
-                            </li>
-                          `).join('')}
-                        </ul>
+                  ${s.bullets && s.bullets.length > 0 ? `
+                    <div class="p-4 sm:p-5 rounded-2xl bg-teal-50/70 border border-teal-100 space-y-2">
+                      <div class="text-xs font-extrabold text-teal-950 uppercase tracking-wider flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Clinical Procedures & Conditions Treated:
                       </div>
-                    ` : ''}
-
-                    <!-- Action Buttons -->
-                    <div class="pt-2 flex flex-wrap items-center gap-3">
-                      <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="btn-call-now px-5 py-2.5 rounded-xl font-bold text-xs shadow-md inline-flex items-center gap-2">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                        <span>Book OPD: ${brand.fallbackPhone}</span>
-                      </a>
-
-                      <a href="#/services/${s.id}" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 font-bold text-xs transition-colors">
-                        Diagnostic & Technology Details &rarr;
-                      </a>
+                      <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs font-semibold text-slate-700">
+                        ${s.bullets.map(b => `
+                          <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                            <span>${b}</span>
+                          </li>
+                        `).join('')}
+                      </ul>
                     </div>
+                  ` : ''}
+                </div>
+
+                <!-- EMBEDDED DOCTOR BOXES (Boxes inside the Service Box) -->
+                <div class="pt-4 border-t border-teal-100 space-y-3">
+                  <div class="text-xs font-extrabold text-teal-900 uppercase tracking-wider flex items-center gap-2">
+                    <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    <span>Consulting Specialists & Surgeons:</span>
                   </div>
 
-                  <!-- RIGHT COLUMN: Assigned Doctors Specialist Boxes -->
-                  <div class="lg:col-span-5 space-y-3">
-                    <div class="text-xs font-extrabold text-teal-900 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5 pb-1">
-                      <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                      <span>Consultant Specialists & Surgeons</span>
-                    </div>
+                  <!-- Doctor Cards Box Grid -->
+                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    ${doctors.map(doc => `
+                      <div class="p-4 rounded-2xl bg-white border border-teal-100/90 flex items-start gap-4 shadow-sm hover:shadow-md hover:border-emerald-400 transition-all group">
+                        
+                        <!-- Doctor Photo Frame -->
+                        <div class="w-20 h-24 rounded-xl overflow-hidden bg-teal-950 shrink-0 border border-slate-200 shadow relative">
+                          ${doc.photo ? `
+                            <img src="${doc.photo}" alt="${doc.name}" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300" />
+                          ` : `
+                            <div class="w-full h-full text-emerald-300 font-extrabold text-base flex items-center justify-center font-heading">
+                              ${doc.name.split(' ').map(n=>n[0]).slice(0,2).join('')}
+                            </div>
+                          `}
+                        </div>
 
-                    <div class="grid grid-cols-1 ${doctors.length > 1 ? 'sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2' : ''} gap-3">
-                      ${doctors.map(doc => `
-                        <div class="glass-card rounded-2xl p-4 border border-teal-100 dark:border-teal-900/60 hover-lift flex flex-col justify-between space-y-3 shadow-sm bg-white/80 dark:bg-slate-900/80">
-                          <div class="flex items-start gap-3">
-                            <div class="w-16 h-20 sm:w-20 sm:h-24 rounded-xl overflow-hidden bg-slate-900 shrink-0 border border-teal-200 dark:border-teal-800 shadow">
-                              <img src="${doc.photo || 'assets/doctors/dr_lingadalli.jpg'}" alt="${doc.name}" class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300" />
-                            </div>
-                            <div class="space-y-1 flex-1 min-w-0">
-                              <h4 class="text-sm font-bold text-teal-950 dark:text-white font-heading leading-tight">${doc.name}</h4>
-                              <div class="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 font-mono">${doc.degrees || ''}</div>
-                              <div class="text-[11px] text-slate-600 dark:text-slate-300 leading-tight">${doc.designation || doc.title || ''}</div>
-                              <div class="text-[10px] text-slate-400 font-mono">${doc.location || doc.hospital || 'Vijayapura Campus'}</div>
-                            </div>
+                        <!-- Doctor Details -->
+                        <div class="space-y-1 flex-1 min-w-0">
+                          <h4 class="text-sm font-extrabold text-teal-950 font-heading leading-snug group-hover:text-emerald-700 transition-colors">
+                            ${doc.name}
+                          </h4>
+                          <div class="text-[11px] font-bold text-emerald-700">
+                            ${doc.degrees || ''}
                           </div>
-                          <div class="pt-2 border-t border-teal-100 dark:border-teal-900 flex items-center justify-between text-[11px]">
-                            <span class="text-slate-500">${doc.experience || 'Senior Consultant'}</span>
-                            <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="font-bold text-emerald-700 dark:text-emerald-400 hover:underline">Consult Doctor &rarr;</a>
+                          <div class="text-[11px] text-slate-600 font-medium leading-tight">
+                            ${doc.specialization || doc.designation || doc.title || ''}
+                          </div>
+                          <div class="text-[10px] text-slate-400 font-mono pt-1">
+                            📍 ${doc.location || doc.hospital || 'Vijayapura / Kalaburagi'}
                           </div>
                         </div>
-                      `).join('')}
-                    </div>
-                  </div>
 
+                      </div>
+                    `).join('')}
+                  </div>
                 </div>
 
               </section>
@@ -3314,187 +3298,137 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // 7b. DEDICATED SERVICE DETAIL VIEW (/services/:id)
+  // 7b. SINGLE SERVICE CLINICAL DETAIL VIEW (When clicking Clinical Details ->)
   function renderServiceDetailPage(serviceId) {
     const brand = store.getBrand();
-    const service = store.getServiceById(serviceId);
+    const servicesList = store.getServices().filter(s => s.published !== false);
+    const service = servicesList.find(s => s.id === serviceId) || servicesList[0];
 
-    if (!service) {
-      return `
-        <div class="max-w-4xl mx-auto px-4 py-16 text-center space-y-4">
-          <h1 class="text-3xl font-extrabold text-teal-950 font-heading">Specialty Service Not Found</h1>
-          <p class="text-slate-600">The clinical service details you are looking for may have been updated or moved.</p>
-          <a href="#/services" class="px-6 py-3 rounded-xl bg-teal-900 text-white font-bold text-xs inline-block">&larr; Return to All Services</a>
-        </div>
-      `;
-    }
+    if (!service) return render404Page();
 
-    const doctors = getDoctorsForService(service);
+    const doctors = getServiceDoctorObjects(service);
 
     return `
-      <div class="max-w-7xl mx-auto px-4 py-10 space-y-12 font-sans">
+      <div class="max-w-7xl mx-auto px-4 py-10 space-y-10 font-sans">
         
         <!-- Breadcrumb Navigation -->
-        <nav class="flex items-center gap-2 text-xs font-semibold text-slate-500">
+        <nav class="flex items-center gap-2 text-xs text-slate-500 font-medium">
           <a href="#/" class="hover:text-teal-900">Home</a>
           <span>&rsaquo;</span>
           <a href="#/services" class="hover:text-teal-900">Services</a>
           <span>&rsaquo;</span>
-          <span class="text-teal-900 dark:text-emerald-400 font-bold">${service.title}</span>
+          <span class="text-teal-950 font-bold">${service.title}</span>
         </nav>
 
-        <!-- Hero Card Header Banner -->
-        <div class="relative rounded-3xl overflow-hidden bg-slate-900 text-white border border-teal-800 shadow-2xl p-8 sm:p-12 space-y-6">
-          <div class="absolute inset-0 bg-gradient-to-r from-[#062c26] via-[#062c26]/90 to-transparent z-10"></div>
-          <img src="${service.heroImage || service.imagePlaceholder || 'assets/services/cataract_surgery.jpg'}" alt="${service.title}" class="absolute inset-0 w-full h-full object-cover opacity-40" />
+        <!-- Service Detail Header Banner -->
+        <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#062c26] via-[#0b4239] to-[#041a17] text-white p-8 sm:p-12 shadow-xl space-y-6">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <span class="px-3.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-xs uppercase tracking-wider border border-emerald-500/30">
+              ${service.category || 'Super-Specialty Clinical Service'}
+            </span>
+            <span class="text-xs font-mono text-emerald-400 font-bold">
+              Available at: ${(service.availableHospitals || ["Vijayapura Main Campus", "Kalaburagi Base Campus"]).join(' &bull; ')}
+            </span>
+          </div>
 
-          <div class="relative z-20 max-w-2xl space-y-4">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/40 uppercase tracking-wider backdrop-blur-sm">
-              ${service.category || 'Super-Specialty Care'}
-            </div>
+          <div class="space-y-3 max-w-4xl">
             <h1 class="text-3xl sm:text-5xl font-extrabold font-heading text-white leading-tight">
               ${service.title}
             </h1>
-            <p class="text-slate-200 text-sm sm:text-base leading-relaxed">
-              ${service.shortDesc || service.desc}
+            <p class="text-slate-200 text-base sm:text-lg leading-relaxed">
+              ${service.fullDesc || service.desc}
             </p>
+          </div>
 
-            <div class="pt-2 flex flex-wrap items-center gap-4">
-              <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="btn-call-now px-6 py-3 rounded-xl font-bold text-xs shadow-lg inline-flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                <span>Book Appointment: ${brand.fallbackPhone}</span>
-              </a>
-              <a href="#/services" class="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 backdrop-blur-sm">
-                &larr; View All Services
-              </a>
-            </div>
+          <div class="pt-4 flex flex-wrap items-center gap-4 border-t border-teal-800/80">
+            <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-teal-950 font-extrabold text-xs shadow-lg transition-all flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+              <span>Call Helpline: ${brand.fallbackPhone}</span>
+            </a>
+
+            <a href="#/services" class="px-6 py-3 rounded-xl bg-teal-900/80 hover:bg-teal-800 text-white font-bold text-xs border border-teal-700 transition-all">
+              &larr; Back to All Services
+            </a>
           </div>
         </div>
 
-        <!-- Main Content Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Clinical Detail Grid: Symptoms, Diagnosis, Treatments, Tech -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           
-          <!-- LEFT CONTENT COLUMN: Clinical Overview, Symptoms, Diagnosis, Treatment, Tech -->
-          <div class="lg:col-span-8 space-y-8">
-            
-            <!-- Clinical Overview Box -->
-            <section class="glass-card rounded-3xl p-6 sm:p-8 border border-teal-100 dark:border-teal-900/60 shadow-lg space-y-4">
-              <h2 class="text-xl sm:text-2xl font-extrabold text-teal-950 dark:text-white font-heading">
-                Clinical Overview & Condition Details
-              </h2>
-              <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
-                ${service.fullDesc || service.desc}
-              </p>
-
-              ${service.bulletPoints && service.bulletPoints.length > 0 ? `
-                <div class="p-4 rounded-2xl bg-teal-50/60 dark:bg-teal-950/40 border border-teal-100 dark:border-teal-900/50 space-y-2 mt-4">
-                  <div class="text-xs font-bold text-teal-900 dark:text-emerald-300 uppercase tracking-wider">Key Clinical Procedures:</div>
-                  <ul class="space-y-1.5 text-xs text-slate-700 dark:text-slate-300">
-                    ${service.bulletPoints.map(bp => `
-                      <li class="flex items-start gap-2">
-                        <span class="text-emerald-600 font-bold shrink-0 mt-0.5">&bull;</span>
-                        <span>${bp}</span>
-                      </li>
-                    `).join('')}
-                  </ul>
-                </div>
-              ` : ''}
-            </section>
-
-            <!-- Symptoms & Diagnostic Protocols Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              
-              <!-- Symptoms Box -->
-              <section class="glass-card rounded-3xl p-6 border border-teal-100 dark:border-teal-900/60 shadow-sm space-y-3">
-                <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-base">
-                  ⚠️
-                </div>
-                <h3 class="text-base font-extrabold text-teal-950 dark:text-white font-heading">Common Symptoms</h3>
-                <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">
-                  ${service.symptoms || 'Gradual blurriness, light glare, reduced night vision, or foreign body sensations.'}
-                </p>
-              </section>
-
-              <!-- Diagnosis Box -->
-              <section class="glass-card rounded-3xl p-6 border border-teal-100 dark:border-teal-900/60 shadow-sm space-y-3">
-                <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-base">
-                  🔬
-                </div>
-                <h3 class="text-base font-extrabold text-teal-950 dark:text-white font-heading">Diagnostic Investigations</h3>
-                <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">
-                  ${service.diagnosis || 'High-definition slit-lamp biomicroscopy, optical coherence tomography (OCT), and corneal topography.'}
-                </p>
-              </section>
-
+          <div class="glass-card rounded-3xl p-6 border border-teal-100 space-y-3">
+            <div class="flex items-center gap-2 text-teal-950 font-extrabold text-sm font-heading">
+              <div class="w-7 h-7 rounded-lg bg-teal-100 text-teal-900 flex items-center justify-center text-xs">👁️</div>
+              <span>Symptoms & Indications</span>
             </div>
-
-            <!-- Treatment & Advanced Technology Strip -->
-            <section class="glass-card rounded-3xl p-6 sm:p-8 border border-teal-100 dark:border-teal-900/60 shadow-lg space-y-4">
-              <h3 class="text-lg font-extrabold text-teal-950 dark:text-white font-heading">
-                Advanced Treatment Protocols & Infrastructure
-              </h3>
-              <div class="p-4 rounded-2xl bg-teal-950 text-white space-y-2 border border-teal-800 shadow">
-                <div class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Surgical / Medical Treatment:</div>
-                <p class="text-xs text-slate-200 leading-relaxed">${service.treatment || 'Customized microsurgical procedure with precision foldable implants and same-day recovery.'}</p>
-              </div>
-
-              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1">
-                <div class="text-xs font-bold text-slate-700 dark:text-slate-300">Installed Diagnostic & Surgical Technology:</div>
-                <p class="text-xs text-slate-600 dark:text-slate-400 font-mono">${service.technology || 'Alcon Centurion, Zeiss Lumera 700, IOLMaster 700, Pentacam HR.'}</p>
-              </div>
-            </section>
-
+            <p class="text-slate-600 text-xs leading-relaxed">
+              ${service.symptoms || 'Common clinical symptoms requiring ophthalmic consultation.'}
+            </p>
           </div>
 
-          <!-- RIGHT SIDEBAR: Assigned Doctor Profiles & OPD Enquiry Box -->
-          <div class="lg:col-span-4 space-y-6 lg:sticky lg:top-28">
-            
-            <!-- Assigned Doctors Box -->
-            <div class="glass-card rounded-3xl p-6 border border-teal-100 dark:border-teal-900/60 shadow-lg space-y-4">
-              <h3 class="text-sm font-extrabold text-teal-900 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-2">
-                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                <span>Department Specialists</span>
-              </h3>
+          <div class="glass-card rounded-3xl p-6 border border-teal-100 space-y-3">
+            <div class="flex items-center gap-2 text-teal-950 font-extrabold text-sm font-heading">
+              <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-900 flex items-center justify-center text-xs">🔬</div>
+              <span>Diagnostic Protocols</span>
+            </div>
+            <p class="text-slate-600 text-xs leading-relaxed">
+              ${service.diagnosis || 'State-of-the-art diagnostic screening and evaluation protocols.'}
+            </p>
+          </div>
 
-              <div class="space-y-4">
-                ${doctors.map(doc => `
-                  <div class="p-4 rounded-2xl bg-white/90 dark:bg-slate-900 border border-teal-100 dark:border-teal-900/60 space-y-3 shadow-sm">
-                    <div class="flex items-center gap-3">
-                      <div class="w-16 h-20 rounded-xl overflow-hidden bg-slate-900 shrink-0 border border-teal-200 dark:border-teal-800 shadow">
-                        <img src="${doc.photo || 'assets/doctors/dr_lingadalli.jpg'}" alt="${doc.name}" class="w-full h-full object-cover object-top" />
-                      </div>
-                      <div class="space-y-0.5 flex-1 min-w-0">
-                        <div class="text-sm font-bold text-teal-950 dark:text-white font-heading">${doc.name}</div>
-                        <div class="text-[11px] font-bold text-emerald-700 dark:text-emerald-400">${doc.degrees || ''}</div>
-                        <div class="text-[10px] text-slate-500">${doc.designation || doc.title || ''}</div>
-                      </div>
+          <div class="glass-card rounded-3xl p-6 border border-teal-100 space-y-3">
+            <div class="flex items-center gap-2 text-teal-950 font-extrabold text-sm font-heading">
+              <div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-900 flex items-center justify-center text-xs">🏥</div>
+              <span>Treatment Options</span>
+            </div>
+            <p class="text-slate-600 text-xs leading-relaxed">
+              ${service.treatment || 'Evidence-based medical, laser, and micro-surgical treatment regimens.'}
+            </p>
+          </div>
+
+          <div class="glass-card rounded-3xl p-6 border border-teal-100 space-y-3">
+            <div class="flex items-center gap-2 text-teal-950 font-extrabold text-sm font-heading">
+              <div class="w-7 h-7 rounded-lg bg-sky-100 text-sky-900 flex items-center justify-center text-xs">⚡</div>
+              <span>Technology & Surgical Suite</span>
+            </div>
+            <p class="text-slate-600 text-xs leading-relaxed">
+              ${service.technology || 'Advanced equipment including Zeiss OPMI microscopes, Alcon Centurion Phaco, and Cirrus OCT.'}
+            </p>
+          </div>
+
+        </div>
+
+        <!-- EMBEDDED DOCTOR BOXES (Consulting Specialists for this Service) -->
+        <div class="glass-card rounded-3xl p-6 sm:p-8 border border-teal-100 space-y-6">
+          <div class="border-b border-teal-100 pb-3 flex items-center justify-between">
+            <div>
+              <div class="text-xs font-extrabold text-emerald-700 uppercase tracking-wider">Super-Specialty Medical Team</div>
+              <h3 class="text-2xl font-extrabold text-teal-950 font-heading">Consulting Doctors & Surgeons</h3>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            ${doctors.map(doc => `
+              <div class="p-5 rounded-2xl bg-white border border-teal-100 flex items-start gap-4 shadow-sm hover:shadow-md hover:border-emerald-400 transition-all group">
+                <div class="w-20 h-24 rounded-xl overflow-hidden bg-teal-950 shrink-0 border border-slate-200 shadow">
+                  ${doc.photo ? `
+                    <img src="${doc.photo}" alt="${doc.name}" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300" />
+                  ` : `
+                    <div class="w-full h-full text-emerald-300 font-extrabold text-base flex items-center justify-center font-heading">
+                      ${doc.name.split(' ').map(n=>n[0]).slice(0,2).join('')}
                     </div>
-
-                    <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="block w-full py-2 text-center rounded-xl bg-teal-900 hover:bg-emerald-700 text-white font-bold text-xs transition-colors">
-                      Book OPD with ${doc.name.split(' ')[1] || doc.name.split(' ')[0]} &rarr;
-                    </a>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-
-            <!-- Hospital Locations Availability Box -->
-            <div class="glass-card rounded-3xl p-6 border border-teal-100 dark:border-teal-900/60 shadow-sm space-y-3 text-xs">
-              <div class="font-extrabold text-teal-950 dark:text-white uppercase tracking-wider">Available Hospital Campuses</div>
-              <div class="space-y-2">
-                <div class="p-2.5 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-slate-700 dark:text-slate-300 font-medium flex items-center justify-between">
-                  <span>🏥 Vijayapura Main Base Hospital</span>
-                  <span class="text-emerald-600 font-bold">Daily OPD</span>
+                  `}
                 </div>
-                <div class="p-2.5 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-slate-700 dark:text-slate-300 font-medium flex items-center justify-between">
-                  <span>🏥 Kalaburagi Tertiary Hospital</span>
-                  <span class="text-emerald-600 font-bold">Consultation</span>
+                <div class="space-y-1 flex-1 min-w-0">
+                  <h4 class="text-sm font-extrabold text-teal-950 font-heading leading-snug group-hover:text-emerald-700 transition-colors">
+                    ${doc.name}
+                  </h4>
+                  <div class="text-xs font-bold text-emerald-700">${doc.degrees || ''}</div>
+                  <div class="text-xs text-slate-600 font-medium leading-tight">${doc.specialization || doc.designation || ''}</div>
+                  <div class="text-[11px] text-slate-400 font-mono pt-1">📍 ${doc.location || 'Vijayapura / Kalaburagi'}</div>
                 </div>
               </div>
-            </div>
-
+            `).join('')}
           </div>
-
         </div>
 
       </div>
@@ -6492,174 +6426,86 @@ document.addEventListener("DOMContentLoaded", () => {
     // MODULE 8: SERVICES & SPECIALTIES
     if (tabId === 'services') {
       const services = store.getServices() || [];
-      const allDoctors = store.getLeadership() || [];
 
       return `
         <div class="space-y-6 text-xs font-sans">
           
-          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex items-center justify-between">
             <div>
-              <h2 class="text-xl font-extrabold text-slate-900 dark:text-white font-heading">
-                Super-Specialty Clinical Services (${services.length} Specialties)
-              </h2>
-              <p class="text-slate-500 mt-1">
-                Edit clinical copy, bullet points, assigned consultant doctors, diagnostic modalities, and service hero images.
-              </p>
+              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Super-Specialty Services (8 Specialties)</h2>
+              <p class="text-slate-500">Edit clinical copy, symptoms, diagnosis, technology, and service image assets.</p>
             </div>
-            <a href="#/services" target="_blank" class="px-5 py-2.5 rounded-xl bg-teal-900 hover:bg-emerald-700 text-white font-bold text-xs inline-flex items-center gap-1.5 shrink-0 shadow">
-              <span>Preview Services Page</span>
-              <span>&nearr;</span>
-            </a>
+            <a href="#/services" target="_blank" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-800 dark:text-slate-200">Preview Services &nearr;</a>
           </div>
 
           <div class="space-y-6">
-            ${services.map(s => {
-              const currentDocIds = s.relatedDoctorIds || (s.relatedDoctors ? allDoctors.filter(d => s.relatedDoctors.some(n => d.name.toLowerCase().includes(n.toLowerCase()))).map(d => d.id) : []);
-
-              return `
-                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-5 shadow-sm hover:shadow-md transition-all">
-                  
-                  <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 gap-3">
-                    <div class="flex items-center gap-2.5">
-                      <span class="font-extrabold text-slate-900 dark:text-white text-base font-heading">${s.title}</span>
-                      <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold">
-                        ${s.category || 'Ophthalmic Specialty'}
-                      </span>
-                      <span class="px-2.5 py-0.5 rounded-full ${s.published !== false ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300' : 'bg-slate-200 dark:bg-slate-800 text-slate-600'} font-mono text-[10px] font-bold">
-                        ${s.published !== false ? '● Published' : '○ Draft'}
-                      </span>
-                    </div>
-
-                    <div class="flex items-center gap-2">
-                      <button 
-                        type="button" 
-                        onclick="window.toggleServicePublish('${s.id}')" 
-                        class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 font-bold text-xs"
-                      >
-                        ${s.published !== false ? 'Unpublish' : 'Publish'}
-                      </button>
-                      <a href="#/services/${s.id}" target="_blank" class="px-3 py-1.5 rounded-xl bg-teal-50 dark:bg-teal-950 text-teal-900 dark:text-teal-300 font-bold text-xs">
-                        Preview &nearr;
-                      </a>
-                    </div>
-                  </div>
-
-                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Service Name / Title</label>
-                      <input type="text" id="admin-srv-title-${s.id}" value="${window.escapeHTML(s.title)}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" />
-                    </div>
-                    <div>
-                      <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Clinical Category Badge</label>
-                      <input type="text" id="admin-srv-cat-${s.id}" value="${window.escapeHTML(s.category || 'Surgical Ophthalmology')}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Short Summary (Homepage & Cards)</label>
-                    <input type="text" id="admin-srv-short-${s.id}" value="${window.escapeHTML(s.shortDesc || s.desc)}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" />
-                  </div>
-
-                  <div>
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Full Clinical Description</label>
-                    <textarea id="admin-srv-full-${s.id}" rows="3" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none leading-relaxed">${window.escapeHTML(s.fullDesc || s.desc)}</textarea>
-                  </div>
-
-                  <!-- Key Clinical Bullet Points (One per line) -->
-                  <div>
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Key Clinical Procedures & Bullet Points (One per line)</label>
-                    <textarea id="admin-srv-bullets-${s.id}" rows="3" placeholder="Enter key procedure bullet points (one per line)..." class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none font-mono">${(s.bulletPoints || []).join('\n')}</textarea>
-                  </div>
-
-                  <!-- ASSIGNED CONSULTANT DOCTORS SELECTION -->
-                  <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
-                    <div class="font-extrabold text-slate-900 dark:text-white flex items-center justify-between">
-                      <span class="flex items-center gap-1.5">
-                        <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                        <span>Assigned Consultant Specialists & Surgeons for this Service:</span>
-                      </span>
-                      <span class="text-[10px] text-slate-400">Select all specialists who treat this condition</span>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 pt-1">
-                      ${allDoctors.map(doc => {
-                        const isAssigned = currentDocIds.includes(doc.id);
-                        return `
-                          <label class="flex items-center gap-2.5 p-2.5 rounded-xl bg-white dark:bg-slate-900 border ${isAssigned ? 'border-emerald-500 bg-emerald-50/20 dark:bg-emerald-950/30' : 'border-slate-200 dark:border-slate-800'} cursor-pointer hover:border-emerald-400 transition-colors">
-                            <input 
-                              type="checkbox" 
-                              name="admin-srv-doc-${s.id}" 
-                              value="${doc.id}" 
-                              ${isAssigned ? 'checked' : ''} 
-                              class="rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4 shrink-0" 
-                            />
-                            <div class="w-8 h-8 rounded-lg overflow-hidden bg-slate-900 shrink-0 border border-slate-200 dark:border-slate-800">
-                              <img src="${doc.photo || 'assets/doctors/dr_lingadalli.jpg'}" alt="${doc.name}" class="w-full h-full object-cover object-top" />
-                            </div>
-                            <div class="min-w-0 flex-1">
-                              <div class="font-bold text-slate-900 dark:text-white truncate text-xs">${doc.name}</div>
-                              <div class="text-[10px] text-slate-500 truncate">${doc.degrees || ''}</div>
-                            </div>
-                          </label>
-                        `;
-                      }).join('')}
-                    </div>
-                  </div>
-
-                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Symptoms / Indications</label>
-                      <textarea id="admin-srv-symp-${s.id}" rows="2" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs">${window.escapeHTML(s.symptoms || '')}</textarea>
-                    </div>
-                    <div>
-                      <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Diagnostic Modalities</label>
-                      <textarea id="admin-srv-diag-${s.id}" rows="2" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs">${window.escapeHTML(s.diagnosis || '')}</textarea>
-                    </div>
-                  </div>
-
-                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Treatment Protocols</label>
-                      <input type="text" id="admin-srv-treat-${s.id}" value="${window.escapeHTML(s.treatment || '')}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs" />
-                    </div>
-                    <div>
-                      <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Installed Technology / Equipment</label>
-                      <input type="text" id="admin-srv-tech-${s.id}" value="${window.escapeHTML(s.technology || '')}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs font-mono" />
-                    </div>
-                  </div>
-
-                  <!-- Dual Format Validated Image Upload -->
-                  <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                      <img id="admin-srv-img-preview-${s.id}" src="${s.heroImage || s.imagePlaceholder}" alt="${s.title}" class="w-14 h-14 rounded-2xl object-cover border border-slate-200 dark:border-slate-800 shadow" />
-                      <div>
-                        <div class="font-bold text-slate-900 dark:text-white">Service Image Asset</div>
-                        <div class="text-[10px] text-slate-400">Strictly .jpg, .jpeg, .png only</div>
-                      </div>
-                    </div>
-                    <label class="px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold text-xs cursor-pointer">
-                      Replace Photo
-                      <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminServiceImageUpload(event, '${s.id}')" class="hidden" />
-                    </label>
-                  </div>
-
-                  <div class="flex items-center gap-3 pt-2">
-                    <button onclick="window.saveServiceSpecialty('${s.id}')" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg">
-                      Save Service Details
-                    </button>
-                    <a href="#/services/${s.id}" target="_blank" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs">
-                      Preview Service &rarr;
-                    </a>
-                  </div>
-
+            ${services.map(s => `
+              <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4 shadow-sm">
+                
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                  <span class="font-extrabold text-slate-900 dark:text-white text-base font-heading">${s.title}</span>
+                  <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold">${s.category || 'Ophthalmic Specialty'}</span>
                 </div>
-              `;
-            }).join('')}
-          </div>
 
-        </div>
-      `;
-    }
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Service Name</label>
+                    <input type="text" id="admin-srv-title-${s.id}" value="${s.title}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Category</label>
+                    <input type="text" id="admin-srv-cat-${s.id}" value="${s.category || 'Surgical Ophthalmology'}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Short Description</label>
+                  <input type="text" id="admin-srv-short-${s.id}" value="${s.shortDesc || s.desc}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                </div>
+
+                <div>
+                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Full Clinical Description</label>
+                  <textarea id="admin-srv-full-${s.id}" rows="3" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${s.fullDesc || s.desc}</textarea>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Symptoms / Indications</label>
+                    <textarea id="admin-srv-symp-${s.id}" rows="2" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${s.symptoms || ''}</textarea>
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Diagnostic Modalities</label>
+                    <textarea id="admin-srv-diag-${s.id}" rows="2" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${s.diagnosis || ''}</textarea>
+                  </div>
+                </div>
+
+                <!-- Dual Format Validated Image Upload -->
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div class="flex items-center gap-3">
+                    <img id="admin-srv-img-preview-${s.id}" src="${s.heroImage || s.imagePlaceholder}" alt="${s.title}" class="w-14 h-14 rounded-2xl object-cover border border-slate-200 dark:border-slate-800" />
+                    <div>
+                      <div class="font-bold text-slate-900 dark:text-white">Service Image Asset</div>
+                      <div class="text-[10px] text-slate-400">Strictly .jpg, .jpeg, .png only</div>
+                    </div>
+                  </div>
+                  <label class="px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold text-xs cursor-pointer">
+                    Replace Photo
+                    <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminServiceImageUpload(event, '${s.id}')" class="hidden" />
+                  </label>
+                </div>
+
+                <div class="flex items-center gap-3 pt-1">
+                  <button onclick="window.saveServiceSpecialty('${s.id}')" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow">
+                    Save Changes
+                  </button>
+                  <a href="#/services/${s.id}" target="_blank" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs">
+                    Preview Service &rarr;
+                  </a>
+                </div>
+
+              </div>
+            `).join('')}
+          </div>
 
         </div>
       `;
@@ -7907,47 +7753,17 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // SERVICES HANDLERS
-  window.toggleServicePublish = function(id) {
-    const store = window.appStore;
-    const service = store.getServiceById(id);
-    if (service) {
-      const newStatus = service.published === false ? true : false;
-      store.updateService(id, { published: newStatus });
-      window.showAdminToast(`Service ${newStatus ? 'Published' : 'Unpublished'}`, "success");
-      render();
-    }
-  };
-
   window.saveServiceSpecialty = function(id) {
     const store = window.appStore;
     const title = document.getElementById(`admin-srv-title-${id}`)?.value;
     const category = document.getElementById(`admin-srv-cat-${id}`)?.value;
     const shortDesc = document.getElementById(`admin-srv-short-${id}`)?.value;
     const fullDesc = document.getElementById(`admin-srv-full-${id}`)?.value;
-    const bulletsRaw = document.getElementById(`admin-srv-bullets-${id}`)?.value || '';
-    const bulletPoints = bulletsRaw.split('\n').map(b => b.trim()).filter(Boolean);
     const symptoms = document.getElementById(`admin-srv-symp-${id}`)?.value;
     const diagnosis = document.getElementById(`admin-srv-diag-${id}`)?.value;
-    const treatment = document.getElementById(`admin-srv-treat-${id}`)?.value;
-    const technology = document.getElementById(`admin-srv-tech-${id}`)?.value;
 
-    const checkedDocCheckboxes = Array.from(document.querySelectorAll(`input[name="admin-srv-doc-${id}"]:checked`));
-    const relatedDoctorIds = checkedDocCheckboxes.map(cb => cb.value);
-
-    store.updateService(id, { 
-      title, 
-      category, 
-      shortDesc, 
-      fullDesc, 
-      desc: fullDesc, 
-      bulletPoints,
-      relatedDoctorIds,
-      symptoms, 
-      diagnosis,
-      treatment,
-      technology 
-    });
-    window.showAdminToast(`Saved changes for ${title}!`, "success");
+    store.updateService(id, { title, category, shortDesc, fullDesc, desc: fullDesc, symptoms, diagnosis });
+    window.showAdminToast(`Saved ${title}`, "success");
     render();
   };
 
