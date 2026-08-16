@@ -2068,9 +2068,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span class="px-3 py-1 rounded-full bg-teal-50 text-teal-900 font-extrabold text-xs border border-teal-200">
                           Tenure: ${member.tenure}
                         </span>
-                        <a href="#/admin" class="text-[11px] font-semibold text-slate-400 hover:text-slate-600 underline">
-                          Admin Edit Photo &rarr;
-                        </a>
                       </div>
 
                       <h3 class="text-2xl sm:text-3xl font-extrabold text-teal-950 font-heading leading-tight group-hover:text-emerald-700 transition-colors">
