@@ -4248,10 +4248,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.activeAdminTab = 'dashboard';
   window.isAdminMobileDrawerOpen = false;
+  window.adminDoctorSearchQuery = '';
 
   window.toggleAdminMobileDrawer = function() {
     window.isAdminMobileDrawerOpen = !window.isAdminMobileDrawerOpen;
     render();
+  };
+
+  // Dual Image Format Validator: STRICTLY JPG, JPEG, PNG ONLY
+  window.validateAndReadImageFile = function(file, callback) {
+    if (!file) return;
+
+    const validMimeTypes = ['image/jpeg', 'image/png'];
+    const validExtensions = /\.(jpg|jpeg|png)$/i;
+
+    const isMimeValid = validMimeTypes.includes(file.type);
+    const isExtValid = validExtensions.test(file.name);
+
+    if (!isMimeValid || !isExtValid) {
+      alert("Only JPG, JPEG and PNG images are allowed.\n\nRejected file: " + file.name + " (" + (file.type || 'Unknown MIME') + ")");
+      window.showAdminToast("Only JPG, JPEG and PNG images are allowed.", "error");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      window.showAdminToast("Image exceeds 5MB size limit", "error");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const base64 = e.target.result;
+      const img = new Image();
+      img.onload = function() {
+        const dimensions = img.width + ' × ' + img.height;
+        const sizeKB = (file.size / 1024).toFixed(1) + ' KB';
+        callback(base64, {
+          filename: file.name,
+          type: file.type,
+          size: sizeKB,
+          dimensions: dimensions,
+          uploadDate: new Date().toLocaleDateString('en-IN')
+        });
+      };
+      img.src = base64;
+    };
+    reader.readAsDataURL(file);
   };
 
   function renderAdminPage() {
@@ -4263,6 +4305,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const activeTab = window.activeAdminTab || 'dashboard';
 
+    const navItems = [
+      { id: 'dashboard', label: '🏠 Dashboard' },
+      { id: 'homepage', label: '🖥️ Homepage' },
+      { id: 'about', label: 'ℹ️ About Us' },
+      { id: 'leadership', label: '👨‍⚕️ Leadership' },
+      { id: 'administration', label: '👥 Administration' },
+      { id: 'hospitals', label: '🏥 Hospitals' },
+      { id: 'vision-centers', label: '👁️ Vision Centers' },
+      { id: 'services', label: '🩺 Services' },
+      { id: 'doctors', label: '🧑‍⚕️ Doctors' },
+      { id: 'academics', label: '🎓 Academics' },
+      { id: 'patient-resources', label: '📋 Patient Resources' },
+      { id: 'faqs', label: '❓ FAQs' },
+      { id: 'insurance', label: '🛡️ Insurance & Schemes' },
+      { id: 'news', label: '📰 News & Press' },
+      { id: 'media', label: '🖼️ Media Library' },
+      { id: 'settings', label: '⚙️ Settings & Backup' },
+      { id: 'logout', label: '🚪 Logout' }
+    ];
+
     return `
       <div class="min-h-screen bg-[#f4f8f8] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans flex flex-col md:flex-row">
         
@@ -4273,7 +4335,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <!-- Logo Branding Header (Jobie Style) -->
             <div class="flex items-center gap-3 border-b border-teal-800/60 pb-4">
               <div class="w-10 h-10 rounded-full bg-white p-0.5 shadow-lg overflow-hidden shrink-0">
-                <img src="assets/official_logo.jpg" alt="Logo" class="w-full h-full object-contain" />
+                <img src="${window.appStore.getBrand().logo || 'assets/official_logo.jpg'}" alt="Logo" class="w-full h-full object-contain" />
               </div>
               <div>
                 <div class="font-extrabold text-base text-white font-heading tracking-tight">Anugraha CMS</div>
@@ -4281,33 +4343,19 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
             </div>
 
-            <!-- Navigation Links List matching exact user requested order -->
-            <nav class="space-y-1.5 text-xs font-bold font-heading">
-              ${[
-                { id: 'dashboard', label: '🏠 Dashboard' },
-                { id: 'homepage', label: '🖥️ Homepage' },
-                { id: 'about', label: 'ℹ️ About Us' },
-                { id: 'hospitals', label: '🏥 Base Hospitals' },
-                { id: 'vision-centers', label: '👁️ Vision Centers' },
-                { id: 'services', label: '🩺 Services' },
-                { id: 'doctors', label: '👨‍⚕️ Doctors & Leadership' },
-                { id: 'academics', label: '🎓 Academics' },
-                { id: 'patient-resources', label: '📋 Patient Resources' },
-                { id: 'faqs', label: '❓ FAQs' },
-                { id: 'media', label: '🖼️ Media & Gallery' },
-                { id: 'settings', label: '⚙️ Settings & Backup' },
-                { id: 'logout', label: '🚪 Logout' }
-              ].map(tab => `
+            <!-- Navigation Links List matching exact requested order -->
+            <nav class="space-y-1 text-xs font-bold font-heading overflow-y-auto max-h-[calc(100vh-220px)] pr-1">
+              ${navItems.map(tab => `
                 <button 
                   onclick="window.switchAdminTab('${tab.id}')" 
-                  class="w-full text-left px-4 py-3 rounded-2xl transition-all flex items-center justify-between ${
+                  class="w-full text-left px-3.5 py-2.5 rounded-2xl transition-all flex items-center justify-between ${
                     activeTab === tab.id 
                       ? 'bg-white text-[#093327] dark:bg-emerald-500 dark:text-slate-950 font-extrabold shadow-xl scale-[1.02]' 
                       : 'text-slate-300 hover:text-white hover:bg-teal-900/60 dark:hover:bg-slate-800/80'
                   }"
                 >
-                  <span>${tab.label}</span>
-                  ${activeTab === tab.id ? '<span class="w-2 h-2 rounded-full bg-emerald-600 dark:bg-slate-950"></span>' : ''}
+                  <span class="truncate">${tab.label}</span>
+                  ${activeTab === tab.id ? '<span class="w-2 h-2 rounded-full bg-emerald-600 dark:bg-slate-950 shrink-0"></span>' : ''}
                 </button>
               `).join('')}
             </nav>
@@ -4315,7 +4363,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
           <!-- Live Site Link & Sign Out Button -->
-          <div class="pt-6 border-t border-teal-800/60 space-y-2">
+          <div class="pt-4 border-t border-teal-800/60 space-y-2">
             <a href="#/" target="_blank" rel="noopener" class="block w-full text-center py-2.5 rounded-xl bg-teal-900/60 hover:bg-teal-900 text-emerald-300 font-bold text-xs border border-teal-700/50 transition-colors">
               Preview Live Website &rarr;
             </a>
@@ -4329,13 +4377,13 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="w-full md:hidden bg-[#093327] text-white p-4 sticky top-0 z-50 flex items-center justify-between shadow-lg border-b border-teal-800/60">
           <div class="flex items-center gap-3">
             <div class="w-8 h-8 rounded-full bg-white p-0.5 overflow-hidden shrink-0 shadow">
-              <img src="assets/official_logo.jpg" alt="Logo" class="w-full h-full object-contain" />
+              <img src="${window.appStore.getBrand().logo || 'assets/official_logo.jpg'}" alt="Logo" class="w-full h-full object-contain" />
             </div>
             <div class="font-extrabold text-sm text-white font-heading">Anugraha CMS</div>
           </div>
 
           <div class="flex items-center gap-2">
-            <a href="#/" target="_blank" class="px-3 py-1.5 rounded-xl bg-teal-900 text-emerald-300 text-xs font-bold">Live Site</a>
+            <a href="#/" target="_blank" class="px-3 py-1.5 rounded-xl bg-teal-900 text-emerald-300 text-xs font-bold">Live</a>
             <button onclick="window.toggleAdminMobileDrawer()" class="p-2 rounded-xl bg-teal-900 text-white min-h-[44px] flex items-center justify-center">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
@@ -4349,7 +4397,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="flex items-center justify-between border-b border-teal-800 pb-4">
                 <div class="flex items-center gap-3">
                   <div class="w-9 h-9 rounded-full bg-white p-0.5 shadow overflow-hidden shrink-0">
-                    <img src="assets/official_logo.jpg" alt="Logo" class="w-full h-full object-contain" />
+                    <img src="${window.appStore.getBrand().logo || 'assets/official_logo.jpg'}" alt="Logo" class="w-full h-full object-contain" />
                   </div>
                   <span class="font-extrabold text-base text-white font-heading">CMS Navigation</span>
                 </div>
@@ -4359,20 +4407,7 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
 
               <nav class="grid grid-cols-2 gap-2 text-xs font-bold font-heading">
-                ${[
-                  { id: 'dashboard', label: '🏠 Dashboard' },
-                  { id: 'homepage', label: '🖥️ Homepage' },
-                  { id: 'about', label: 'ℹ️ About Us' },
-                  { id: 'hospitals', label: '🏥 Base Hospitals' },
-                  { id: 'vision-centers', label: '👁️ Vision Centers' },
-                  { id: 'services', label: '🩺 Services' },
-                  { id: 'doctors', label: '👨‍⚕️ Doctors' },
-                  { id: 'academics', label: '🎓 Academics' },
-                  { id: 'patient-resources', label: '📋 Resources' },
-                  { id: 'faqs', label: '❓ FAQs' },
-                  { id: 'media', label: '🖼️ Media' },
-                  { id: 'settings', label: '⚙️ Settings' }
-                ].map(tab => `
+                ${navItems.filter(t => t.id !== 'logout').map(tab => `
                   <button onclick="window.switchAdminTab('${tab.id}'); window.toggleAdminMobileDrawer()" class="p-3 rounded-xl text-left ${activeTab === tab.id ? 'bg-emerald-500 text-slate-950 font-extrabold' : 'bg-teal-950/60 text-slate-200'}">
                     ${tab.label}
                   </button>
@@ -4388,7 +4423,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         ` : ''}
 
-        <!-- MAIN DASHBOARD CONTENT PANEL (Matching Jobie UI Header & Cards) -->
+        <!-- MAIN DASHBOARD CONTENT PANEL -->
         <main class="flex-1 p-4 sm:p-8 overflow-y-auto space-y-6 min-w-0">
           
           <!-- Top Jobie-Inspired Admin Header Bar -->
@@ -4398,22 +4433,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 ${activeTab.replace('-', ' ')}
               </h1>
               <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-mono font-bold">
-                Active Module
+                Editor Mode
               </span>
             </div>
 
-            <!-- Header Search & Profile Badges (Jobie Style) -->
+            <!-- Header Profile Badges -->
             <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
-              <div class="relative flex-1 sm:w-64">
-                <input type="text" placeholder="Search site content..." class="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-950 text-xs text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 outline-none" />
-                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-              </div>
-
               <div class="flex items-center gap-2">
                 <div class="w-9 h-9 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-extrabold text-xs flex items-center justify-center border border-emerald-400/40">
                   WA
                 </div>
-                <div class="hidden sm:block text-left text-xs">
+                <div class="text-left text-xs">
                   <div class="font-extrabold text-slate-900 dark:text-white">web@admin</div>
                   <div class="text-[10px] text-slate-400 font-mono">Super Admin</div>
                 </div>
@@ -4430,7 +4460,7 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // 1. Premium Split-Panel Password Gate View (Matching Reference Image Layout)
+  // 1. Premium Split-Panel Password Gate View
   function renderAdminLoginGate() {
     const savedUser = localStorage.getItem('anugraha_remembered_user') || 'web@admin';
 
@@ -4439,64 +4469,58 @@ document.addEventListener("DOMContentLoaded", () => {
         <!-- Main Card Split Container matching reference design -->
         <div class="w-full max-w-4xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-teal-900/40 rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row relative">
           
-          <!-- LEFT PANEL (Desktop): Hospital Branding & Visual Curves inspired by reference image -->
-          <div class="w-full md:w-5/12 bg-gradient-to-br from-[#062c26] via-[#094037] to-[#041d19] text-white p-8 lg:p-10 flex flex-col justify-between relative overflow-hidden hidden md:flex shrink-0">
+          <!-- LEFT PANEL: Hospital Branding Visual Banner (40% desktop) -->
+          <div class="w-full md:w-5/12 bg-gradient-to-br from-[#062c26] via-[#093327] to-[#041d19] p-8 sm:p-10 flex flex-col justify-between relative overflow-hidden text-white border-b md:border-b-0 md:border-r border-teal-800/40">
             
-            <!-- Ambient Curved Overlay Accents -->
-            <div class="absolute -top-16 -left-16 w-48 h-48 rounded-full bg-emerald-500/10 blur-2xl pointer-events-none"></div>
-            <div class="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-teal-400/10 blur-3xl pointer-events-none"></div>
+            <!-- Subtle Eye-Care Visual Background Shapes -->
+            <div class="absolute -right-16 -top-16 w-48 h-48 rounded-full bg-emerald-500/10 blur-2xl pointer-events-none"></div>
+            <div class="absolute -left-16 -bottom-16 w-56 h-56 rounded-full bg-teal-400/10 blur-3xl pointer-events-none"></div>
             
-            <!-- Layered Notch Badge matching reference design curve -->
-            <div class="absolute right-0 top-1/2 -translate-y-1/2 hidden lg:flex items-center">
-              <div class="bg-white dark:bg-slate-900 text-teal-950 dark:text-emerald-400 px-4 py-2 rounded-l-full font-extrabold text-xs font-mono uppercase tracking-widest shadow-xl flex items-center gap-1.5 border-l border-y border-teal-800/40">
-                <span>LOGIN</span>
+            <!-- Brand Identity Header -->
+            <div class="space-y-4 relative z-10">
+              <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md p-2.5 border border-white/20 shadow-xl flex items-center justify-center">
+                <img src="${window.appStore.getBrand().logo || 'assets/official_logo.jpg'}" alt="Logo" class="w-full h-full object-contain" />
               </div>
-            </div>
 
-            <!-- Top Header Branding -->
-            <div class="space-y-6 relative z-10">
-              <a href="#/" class="inline-flex items-center gap-3 group">
-                <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center p-0.5 shadow-xl group-hover:scale-105 transition-transform overflow-hidden border border-emerald-400/40 shrink-0">
-                  <img src="assets/official_logo.jpg" alt="Logo" class="w-full h-full object-contain" />
-                </div>
-                <div>
-                  <div class="font-extrabold text-lg text-white font-heading tracking-tight leading-tight">Anugraha Eye Hospital</div>
-                  <div class="text-[10px] font-semibold text-emerald-300 tracking-wider uppercase">Established 2001</div>
-                </div>
-              </a>
-
-              <div class="space-y-3 pt-4">
-                <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-extrabold text-[10px] uppercase tracking-wider font-mono">
-                  Core Positioning
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-mono font-bold uppercase tracking-wider mb-1">
+                  Est. 2001 &bull; 25 Years
                 </span>
-                <h2 class="text-2xl font-extrabold text-white font-heading leading-snug">
-                  Authentic. Affectionate. Affordable.
+                <h2 class="text-2xl font-extrabold font-heading text-white tracking-tight leading-snug">
+                  Anugraha Eye Hospital
                 </h2>
-                <p class="text-slate-300 text-xs leading-relaxed">
-                  North Karnataka's premier super-specialty ophthalmic network. Secure administration gateway for content management.
+                <p class="text-xs text-teal-200/80 mt-1 font-medium">
+                  Authentic. Affectionate. Affordable.
                 </p>
               </div>
             </div>
 
-            <!-- Bottom Security & Campus Trust Footer -->
-            <div class="pt-8 border-t border-teal-800/60 space-y-2 relative z-10 text-[11px] text-teal-200/80">
-              <div class="flex items-center gap-2 font-mono font-semibold">
-                <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                <span>256-Bit Encrypted Client Gate</span>
+            <!-- Curved Slide Notch / LOGIN Accent Badge -->
+            <div class="my-8 relative z-10">
+              <div class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-white font-extrabold text-xs tracking-widest uppercase shadow-inner">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>SECURE CMS ACCESS</span>
               </div>
-              <div class="text-[10px] text-slate-400">Vijayapura & Kalaburagi Campuses</div>
+              <p class="text-[11px] text-teal-200/70 mt-2 leading-relaxed">
+                Frontend-only content administration console for Vijayapura & Kalaburagi campuses.
+              </p>
+            </div>
+
+            <!-- Footer Badge -->
+            <div class="relative z-10 text-[10px] text-teal-300/60 font-mono flex items-center gap-1.5">
+              <span>● Protected System &bull; Static Storage</span>
             </div>
 
           </div>
 
-          <!-- RIGHT PANEL: Login Form (Full width on mobile, 60% on desktop) -->
-          <div class="w-full md:w-7/12 p-8 sm:p-12 flex flex-col justify-between space-y-8 bg-white dark:bg-slate-900">
+          <!-- RIGHT PANEL: Login Form -->
+          <div class="w-full md:w-7/12 p-8 sm:p-12 flex flex-col justify-between bg-white dark:bg-slate-900">
             
-            <!-- Top Navigation & Return Link -->
-            <div class="flex items-center justify-between">
-              <a href="#/" class="inline-flex items-center gap-2 text-xs font-extrabold text-teal-700 dark:text-emerald-400 hover:text-teal-900 dark:hover:text-emerald-300 transition-colors">
+            <!-- Top Back to Website Action -->
+            <div class="flex items-center justify-between pb-6">
+              <a href="#/" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-                <span>Back to Website</span>
+                <span>&larr; Back to Website</span>
               </a>
 
               <span class="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest">Admin Portal</span>
@@ -4505,7 +4529,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <!-- Main Login Content -->
             <div class="space-y-6 max-w-sm mx-auto w-full">
               
-              <!-- User Avatar Circle matching reference image -->
+              <!-- User Avatar Circle -->
               <div class="text-center space-y-2">
                 <div class="w-16 h-16 rounded-full bg-teal-900/10 dark:bg-emerald-950/60 border border-teal-800/30 text-teal-800 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-md">
                   <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
@@ -4529,7 +4553,7 @@ document.addEventListener("DOMContentLoaded", () => {
                       id="admin-user-input" 
                       name="username"
                       value="${savedUser}" 
-                      placeholder="web@admin"
+                      placeholder="web@admin" 
                       required 
                       oninput="window.validateAdminLoginForm()"
                       class="w-full pl-10 pr-4 py-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white text-base sm:text-sm border border-slate-200 dark:border-slate-800 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
@@ -4537,7 +4561,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   </div>
                 </div>
 
-                <!-- Password Field with Show/Hide Eye Toggle -->
+                <!-- Password Field -->
                 <div class="space-y-1">
                   <label for="admin-pass-input" class="block text-xs font-bold text-slate-700 dark:text-slate-300">Password / Access Key</label>
                   <div class="relative">
@@ -4549,44 +4573,47 @@ document.addEventListener("DOMContentLoaded", () => {
                       type="password" 
                       id="admin-pass-input" 
                       name="password"
-                      value="Admin@2001" 
-                      placeholder="••••••••"
+                      placeholder="••••••••" 
                       required 
                       oninput="window.validateAdminLoginForm()"
                       class="w-full pl-10 pr-12 py-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white text-base sm:text-sm border border-slate-200 dark:border-slate-800 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
                     />
 
+                    <!-- Show/Hide Password Eye Button -->
                     <button 
                       type="button" 
-                      onclick="window.toggleAdminPasswordVisibility()" 
+                      onclick="window.toggleAdminPasswordVisibility()"
+                      class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
                       title="Toggle Password Visibility"
                       aria-label="Toggle Password Visibility"
-                      class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
                     >
-                      <svg id="admin-pass-eye-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                      <svg id="admin-pass-eye-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                      </svg>
                     </button>
                   </div>
                 </div>
 
-                <!-- Remember Me Checkbox -->
+                <!-- Remember Me & Security Status -->
                 <div class="flex items-center justify-between pt-1">
-                  <label class="flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-slate-400 cursor-pointer select-none">
-                    <input 
-                      type="checkbox" 
-                      id="admin-remember-me" 
-                      ${localStorage.getItem('anugraha_remembered_user') ? 'checked' : ''}
-                      class="w-4 h-4 rounded border-slate-300 dark:border-slate-700 text-emerald-600 focus:ring-emerald-500"
-                    />
-                    <span>Remember Me</span>
+                  <label class="flex items-center gap-2 cursor-pointer select-none">
+                    <input type="checkbox" id="admin-remember-me" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950" />
+                    <span class="text-xs text-slate-600 dark:text-slate-400 font-medium">Remember username</span>
                   </label>
 
-                  <span class="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">Encrypted Gate</span>
+                  <span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></path></svg>
+                    Client-Side Protected
+                  </span>
                 </div>
 
-                <!-- Error Alert State -->
-                <div id="admin-login-error" class="hidden p-3.5 rounded-xl bg-red-50 dark:bg-red-950/80 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-300 text-xs font-bold text-center animate-shake"></div>
+                <!-- Error Notice Container -->
+                <div id="admin-login-error" class="hidden p-3 rounded-xl bg-red-50 dark:bg-red-950/80 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-300 text-xs font-bold text-center">
+                  Incorrect username or password. Please try again.
+                </div>
 
-                <!-- Sign In Submit Button (With Loading & Disabled States) -->
+                <!-- State-Aware Submit Button -->
                 <button 
                   type="submit" 
                   id="admin-submit-btn"
@@ -4600,12 +4627,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 </button>
 
               </form>
-
-              <!-- Credentials Helper Note -->
-              <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-center text-[11px] text-slate-500 dark:text-slate-400 font-mono">
-                Accepted Credentials: <strong class="text-emerald-700 dark:text-emerald-400">web@admin</strong> / <strong class="text-emerald-700 dark:text-emerald-400">Admin@2001</strong>
-              </div>
-
             </div>
 
             <!-- Footer Note -->
@@ -4614,24 +4635,24 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
 
           </div>
-
         </div>
       </div>
     `;
   }
 
-  // 2. Jobie-Inspired UI Module Tab Content Router
+  // 2. Comprehensive Module Tab Content Router
   function renderAdminTabContent(tabId) {
     const store = window.appStore;
 
-    // MODULE 1: DASHBOARD / OVERVIEW (Content Dashboard - Simple Overview)
+    // MODULE 1: DASHBOARD / OVERVIEW (Simple Content Overview)
     if (tabId === 'dashboard' || tabId === 'overview') {
       const facilities = store.getFacilities();
-      const doctorsCount = (store.data.leadership || []).length;
+      const doctorsCount = (store.getLeadership() || []).length;
       const servicesCount = (store.getServices() || []).length;
       const baseHospitalsCount = facilities.filter(f => f.type === 'base').length;
       const visionCentersCount = facilities.filter(f => f.type === 'vision-center').length;
-      const imagesCount = servicesCount + doctorsCount;
+      const imagesCount = (store.getGallery() || []).length + servicesCount + doctorsCount;
+      const faqsCount = (store.getFaqs() || []).length;
       const lastSavedTime = localStorage.getItem('anugraha_last_saved_time') || 'Active Session (Synced)';
 
       return `
@@ -4674,7 +4695,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <p class="text-xs text-slate-500">Summary of published site content modules and asset count.</p>
             </div>
             <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono text-xs font-bold">
-              7 Content Modules
+              7 Core Categories
             </span>
           </div>
 
@@ -4781,7 +4802,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-3 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
               <div class="flex items-center justify-between">
                 <span class="w-10 h-10 rounded-2xl bg-rose-100 dark:bg-rose-950 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xl shrink-0">❓</span>
-                <span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[11px] font-mono font-bold">10 FAQs</span>
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[11px] font-mono font-bold">${faqsCount} FAQs</span>
               </div>
               <div>
                 <div class="text-2xl font-extrabold text-slate-900 dark:text-white font-heading">FAQs</div>
@@ -4799,419 +4820,1014 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     }
 
-    // MODULE 2: HOMEPAGE
+    // MODULE 2: HOMEPAGE EDITOR
     if (tabId === 'homepage') {
+      const home = store.getHomepage();
       const brand = store.getBrand();
       const stats = store.getStats();
 
       return `
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
-          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
-            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Homepage Content Editor</h2>
-            <p class="text-slate-500">Edit hero headline, brand tagline, and live stats strip counters.</p>
+        <div class="space-y-6 text-xs">
+          
+          <!-- Header Actions -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex items-center justify-between">
+            <div>
+              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Homepage Complete Editor</h2>
+              <p class="text-slate-500">Edit hero banner, CTA buttons, stats counters, logo, and section visibility.</p>
+            </div>
+            <a href="#/" target="_blank" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+              <span>Preview Live</span>
+              <span>&nearr;</span>
+            </a>
           </div>
 
-          <form onsubmit="window.saveHomepageAdmin(event)" class="space-y-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Hospital Name</label>
-                <input type="text" id="admin-home-name" value="${brand.name}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+          <form onsubmit="window.saveHomepageAdmin(event)" class="space-y-6">
+            
+            <!-- Section 1: Logo & Branding Asset -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-4 shadow-sm">
+              <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                <h3 class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">1. Website Logo</h3>
+                <span class="text-[10px] text-slate-400 font-mono">Only JPG, JPEG, PNG</span>
               </div>
-              <div>
-                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Brand Tagline</label>
-                <input type="text" id="admin-home-tagline" value="${brand.tagline}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+
+              <div class="flex flex-col sm:flex-row items-center gap-6">
+                <div class="w-20 h-20 rounded-2xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-2 flex items-center justify-center shrink-0">
+                  <img id="admin-logo-preview" src="${brand.logo || 'assets/official_logo.jpg'}" alt="Logo Preview" class="w-full h-full object-contain" />
+                </div>
+                <div class="space-y-2 flex-1">
+                  <label class="block font-bold text-slate-700 dark:text-slate-300">Upload New Official Logo</label>
+                  <label class="inline-block px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs cursor-pointer shadow">
+                    Choose Image File (.jpg, .png)
+                    <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminLogoUpload(event)" class="hidden" />
+                  </label>
+                  <div class="text-[11px] text-slate-400">Strictly validates MIME type and .jpg, .jpeg, .png extensions.</div>
+                </div>
               </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Lifetime Surgeries Count</label>
-                <input type="text" id="admin-home-surgeries" value="${stats.lifetimeSurgeries}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+            <!-- Section 2: Hero Content Block -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-4 shadow-sm">
+              <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                <h3 class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">2. Hero Banner Content</h3>
+                <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-[10px] font-bold">Enabled</span>
               </div>
-              <div>
-                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Outreach Camps Count</label>
-                <input type="text" id="admin-home-camps" value="${stats.outreachCamps}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
-              </div>
-              <div>
-                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Free Cataract Count</label>
-                <input type="text" id="admin-home-free" value="${stats.freeCataracts}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+
+              <div class="space-y-4">
+                <div>
+                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Hero Eyebrow Tagline</label>
+                  <input type="text" id="admin-hero-eyebrow" value="${home.heroEyebrow || brand.tagline}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                </div>
+
+                <div>
+                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Hero Main Heading (H1)</label>
+                  <input type="text" id="admin-hero-heading" value="${home.heroHeading || 'Restoring Sight, Enriching Lives Across North Karnataka'}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                </div>
+
+                <div>
+                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Hero Description Paragraph</label>
+                  <textarea id="admin-hero-desc" rows="3" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${home.heroDescription}</textarea>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Primary CTA Button Text</label>
+                    <input type="text" id="admin-hero-cta1-text" value="${home.primaryCta?.text || 'Book an Appointment'}" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Primary CTA Link</label>
+                    <input type="text" id="admin-hero-cta1-link" value="${home.primaryCta?.link || '#/contact'}" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Secondary CTA Button Text</label>
+                    <input type="text" id="admin-hero-cta2-text" value="${home.secondaryCta?.text || 'Explore Specialties'}" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Secondary CTA Link</label>
+                    <input type="text" id="admin-hero-cta2-link" value="${home.secondaryCta?.link || '#/services'}" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                </div>
+
+                <!-- Hero Image Upload -->
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div class="flex items-center gap-3">
+                    <img id="admin-hero-img-preview" src="${home.heroImage || 'assets/services/cataract_surgery.jpg'}" alt="Hero Image" class="w-16 h-12 rounded-lg object-cover" />
+                    <div>
+                      <div class="font-bold text-slate-900 dark:text-white">Hero Background Asset</div>
+                      <div class="text-[10px] text-slate-400">Strictly JPG, JPEG, PNG only</div>
+                    </div>
+                  </div>
+                  <label class="px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold text-xs cursor-pointer">
+                    Replace Hero Image
+                    <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminHeroImageUpload(event)" class="hidden" />
+                  </label>
+                </div>
               </div>
             </div>
 
-            <button type="submit" class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg">
-              Save Homepage Settings
-            </button>
+            <!-- Section 3: Trust Statistics Counters -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-4 shadow-sm">
+              <h3 class="font-extrabold text-slate-900 dark:text-white text-sm font-heading border-b border-slate-100 dark:border-slate-800 pb-3">3. Trust Statistics Counters</h3>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Lifetime Surgeries Count</label>
+                  <input type="text" id="admin-home-surgeries" value="${stats.lifetimeSurgeries}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Outreach Camps Count</label>
+                  <input type="text" id="admin-home-camps" value="${stats.outreachCamps}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Free Cataract Surgeries</label>
+                  <input type="text" id="admin-home-free" value="${stats.freeCataracts}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 4: Homepage Sections Switchboard -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-4 shadow-sm">
+              <h3 class="font-extrabold text-slate-900 dark:text-white text-sm font-heading border-b border-slate-100 dark:border-slate-800 pb-3">4. Section Visibility Switchboard</h3>
+              <p class="text-slate-500 text-xs">Enable or disable specific sections on the public homepage.</p>
+
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                ${[
+                  { key: 'whyAnugraha', label: 'Why Anugraha' },
+                  { key: 'services', label: 'Services Grid' },
+                  { key: 'featuredDoctors', label: 'Featured Doctors' },
+                  { key: 'hospitals', label: 'Base Hospitals' },
+                  { key: 'visionCenters', label: 'Vision Centers' },
+                  { key: 'technology', label: 'Technology Suite' },
+                  { key: 'communityImpact', label: 'Community Impact' },
+                  { key: 'academics', label: 'Academics Silo' },
+                  { key: 'insurance', label: 'Insurance Partners' },
+                  { key: 'faqs', label: 'Patient FAQs' },
+                  { key: 'finalCta', label: 'Final CTA Banner' }
+                ].map(sec => `
+                  <label class="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-center justify-between cursor-pointer">
+                    <span class="font-bold text-slate-800 dark:text-slate-200">${sec.label}</span>
+                    <input type="checkbox" id="admin-sec-${sec.key}" ${home.sections?.[sec.key] !== false ? 'checked' : ''} class="w-4 h-4 text-emerald-600 rounded" />
+                  </label>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- Save & Cancel Form Bar -->
+            <div class="flex items-center gap-3 pt-2">
+              <button type="submit" class="px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg">
+                Save All Homepage Settings
+              </button>
+              <button type="button" onclick="render()" class="px-6 py-3.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs">
+                Cancel
+              </button>
+            </div>
+
           </form>
+
         </div>
       `;
     }
 
-    // MODULE 3: ABOUT US
+    // MODULE 3: ABOUT US EDITOR
     if (tabId === 'about') {
+      const about = store.getAbout();
       const brand = store.getBrand();
 
       return `
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
-          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
-            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">About Us Narrative & History</h2>
-            <p class="text-slate-500">Edit 25-year institutional story, founder vision, and mission.</p>
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs font-sans">
+          <div class="border-b border-slate-100 dark:border-slate-800 pb-3 flex items-center justify-between">
+            <div>
+              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">About Us Narrative & Milestones</h2>
+              <p class="text-slate-500">Edit institutional story, 2001 inception history, vision, mission, and milestones.</p>
+            </div>
+            <a href="#/about" target="_blank" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-800 dark:text-slate-200">Preview &nearr;</a>
           </div>
 
-          <form onsubmit="window.saveAboutAdmin(event)" class="space-y-4">
+          <form onsubmit="window.saveAboutAdmin(event)" class="space-y-6">
+            
             <div>
-              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Founder Name</label>
-              <input type="text" id="admin-about-founder" value="${brand.founder}" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Hospital Story (Intro Narrative)</label>
+              <textarea id="admin-about-story" rows="4" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${about.story}</textarea>
             </div>
 
             <div>
-              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Hospital Vision</label>
-              <textarea id="admin-about-vision" rows="3" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${brand.vision}</textarea>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Founding History (2001 Inception)</label>
+              <textarea id="admin-about-history" rows="4" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${about.history}</textarea>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Vision Statement</label>
+                <textarea id="admin-about-vision" rows="3" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${about.vision || brand.vision}</textarea>
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Mission Statement</label>
+                <textarea id="admin-about-mission" rows="3" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${about.mission || brand.mission}</textarea>
+              </div>
             </div>
 
             <div>
-              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Hospital Mission</label>
-              <textarea id="admin-about-mission" rows="3" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${brand.mission}</textarea>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Community Impact Summary</label>
+              <textarea id="admin-about-impact" rows="3" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${about.communityImpact}</textarea>
             </div>
 
-            <button type="submit" class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg">
-              Save About Us Narrative
-            </button>
+            <div class="flex items-center gap-3 pt-2">
+              <button type="submit" class="px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg">
+                Save About Us Content
+              </button>
+              <button type="button" onclick="render()" class="px-6 py-3.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs">
+                Cancel
+              </button>
+            </div>
+
           </form>
         </div>
       `;
     }
 
-    // MODULE 4: HOSPITALS
-    if (tabId === 'hospitals') {
-      const facilities = store.getFacilities().filter(f => f.type === 'base');
+    // MODULE 4: LEADERSHIP PROFILE MANAGER
+    if (tabId === 'leadership') {
+      const leaders = store.getLeadership() || [];
 
       return `
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
-          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
-            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Base Tertiary Hospitals Manager</h2>
-            <p class="text-slate-500">Manage Vijayapura Main Campus and Kalaburagi Base Hospital details.</p>
-          </div>
-
-          <div class="space-y-6">
-            ${facilities.map((fac, idx) => `
-              <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
-                <div class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">${fac.name}</div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Phone Helpline</label>
-                    <input type="text" id="admin-hosp-phone-${idx}" value="${fac.phone}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
-                  </div>
-                  <div>
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">OPD Operating Hours</label>
-                    <input type="text" id="admin-hosp-hours-${idx}" value="${fac.hours}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
-                  </div>
-                  <div class="sm:col-span-2">
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Address</label>
-                    <input type="text" id="admin-hosp-address-${idx}" value="${fac.address}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
-                  </div>
-                </div>
-                <button onclick="window.saveAdminHospitalFacility('${fac.id}', ${idx})" class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow">
-                  Save ${fac.name} Details
-                </button>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
-    }
-
-    // MODULE 5: VISION CENTERS
-    if (tabId === 'vision-centers') {
-      const facilities = store.getFacilities();
-
-      return `
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
-          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+        <div class="space-y-6 text-xs font-sans">
+          
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex items-center justify-between">
             <div>
-              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Vision Centers Directory (8 Centers)</h2>
-              <p class="text-slate-500">Edit or add facilities in the regional directory.</p>
+              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Founders & Medical Leadership Profiles</h2>
+              <p class="text-slate-500">Manage Dr. Prabhugouda B. Lingadalli, Dr. Malini P L, and clinical leadership records.</p>
             </div>
-            <button onclick="window.addAdminFacility(event)" class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-extrabold text-xs shadow">
-              + Add Vision Center
+            <button onclick="window.addLeadershipProfilePrompt()" class="px-4 py-2.5 rounded-xl bg-emerald-600 text-white font-extrabold text-xs shadow">
+              + Add Doctor Profile
             </button>
           </div>
 
-          <div class="space-y-4">
-            ${facilities.map((fac, idx) => `
-              <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
-                <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
-                  <span class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">${fac.name}</span>
-                  <button onclick="window.deleteAdminFacility(${idx})" class="px-2.5 py-1 rounded bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 font-bold text-xs">Delete</button>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Facility Name</label>
-                    <input type="text" id="admin-fac-name-${idx}" value="${fac.name}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
-                  </div>
-                  <div>
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Phone Number</label>
-                    <input type="text" id="admin-fac-phone-${idx}" value="${fac.phone}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
-                  </div>
-                  <div class="sm:col-span-2">
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Address</label>
-                    <input type="text" id="admin-fac-address-${idx}" value="${fac.address}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
-                  </div>
-                </div>
-
-                <button onclick="window.saveAdminFacility(${idx})" class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow">
-                  Save ${fac.name} Details
-                </button>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
-    }
-
-    // MODULE 6: SERVICES
-    if (tabId === 'services') {
-      const services = store.getServices();
-
-      return `
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
-          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
-            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Services & Ophthalmic Specialties</h2>
-            <p class="text-slate-500">Edit service descriptions and upload photos via FileReader API.</p>
-          </div>
-
           <div class="space-y-6">
-            ${services.map((s, idx) => `
-              <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
-                <h3 class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">${s.title}</h3>
-                
-                <div class="space-y-2">
-                  <label class="block font-bold text-slate-700 dark:text-slate-300">Description</label>
-                  <textarea id="admin-service-desc-${idx}" rows="2" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${s.desc}</textarea>
-                </div>
-
-                <!-- FileReader API Service Image Upload -->
-                <div class="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4">
-                  <div class="flex items-center gap-3">
-                    <img src="${s.imagePlaceholder}" alt="${s.title}" class="w-12 h-12 rounded-lg object-cover border border-slate-200 dark:border-slate-800" />
-                    <div>
-                      <div class="font-bold text-slate-900 dark:text-white">Service Image Asset</div>
-                      <div class="text-[10px] text-slate-400">Uses FileReader API Base64 encoding.</div>
-                    </div>
-                  </div>
-                  <label class="px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-900 dark:text-white font-bold text-xs cursor-pointer border border-slate-300 dark:border-slate-700">
-                    Replace Photo
-                    <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminServiceImageUpload(event, '${s.id}')" class="hidden" />
-                  </label>
-                </div>
-
-                <button onclick="window.saveAdminService(${idx})" class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow">
-                  Save Changes
-                </button>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
-    }
-
-    // MODULE 7: DOCTORS & LEADERSHIP
-    if (tabId === 'doctors' || tabId === 'leadership') {
-      const leaders = store.data.leadership || [];
-
-      return `
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
-          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
-            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Founders & Medical Leadership Profiles</h2>
-            <p class="text-slate-500">Edit doctor names, titles, degrees, bios, and upload photos via FileReader API.</p>
-          </div>
-
-          <div class="space-y-8">
             ${leaders.map(doc => `
-              <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-4">
-                <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-                  <h3 class="font-extrabold text-slate-900 dark:text-white text-base font-heading">${doc.name}</h3>
-                  <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold">${doc.title}</span>
+              <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4 shadow-sm">
+                
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 gap-2">
+                  <div class="flex items-center gap-3">
+                    <span class="font-extrabold text-slate-900 dark:text-white text-base font-heading">${doc.name}</span>
+                    <span class="px-3 py-1 rounded-full ${doc.published !== false ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300' : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400'} text-[10px] font-mono font-bold">
+                      ${doc.published !== false ? '● Published' : '○ Draft'}
+                    </span>
+                  </div>
+
+                  <div class="flex items-center gap-2">
+                    <button onclick="window.toggleLeadershipPublish('${doc.id}')" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 font-bold text-xs">
+                      ${doc.published !== false ? 'Unpublish' : 'Publish'}
+                    </button>
+                    <button onclick="window.deleteLeadershipConfirm('${doc.id}')" class="px-3 py-1.5 rounded-xl bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 font-bold text-xs">
+                      Delete
+                    </button>
+                  </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Full Name</label>
-                    <input type="text" id="admin-doc-name-${doc.id}" value="${doc.name}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                    <input type="text" id="admin-doc-name-${doc.id}" value="${doc.name}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Designation / Title</label>
+                    <input type="text" id="admin-doc-title-${doc.id}" value="${doc.title || doc.designation || ''}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
                   </div>
                   <div>
                     <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Degrees & Qualifications</label>
-                    <input type="text" id="admin-doc-degrees-${doc.id}" value="${doc.degrees}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                    <input type="text" id="admin-doc-degrees-${doc.id}" value="${doc.degrees}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Specialization</label>
+                    <input type="text" id="admin-doc-spec-${doc.id}" value="${doc.specialization || ''}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
                   </div>
                 </div>
 
                 <div>
-                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Biography Narrative</label>
-                  <textarea id="admin-doc-bio-${doc.id}" rows="4" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${doc.bio}</textarea>
+                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Biography</label>
+                  <textarea id="admin-doc-bio-${doc.id}" rows="4" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${doc.bio}</textarea>
                 </div>
 
-                <!-- FileReader API Image Upload -->
-                <div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4">
-                  <div>
-                    <label class="block font-bold text-slate-900 dark:text-white">Replace Profile Photo (.jpg / .png, Max 5MB)</label>
-                    <div class="text-[11px] text-slate-400">Uses FileReader API for Base64 local storage.</div>
+                <!-- Dual Format Validated Image Upload -->
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div class="flex items-center gap-3">
+                    <img id="admin-doc-img-${doc.id}" src="${doc.photo || 'assets/official_logo.jpg'}" alt="${doc.name}" class="w-14 h-14 rounded-2xl object-cover border border-slate-200 dark:border-slate-800" />
+                    <div>
+                      <div class="font-bold text-slate-900 dark:text-white">Profile Photo Asset</div>
+                      <div class="text-[10px] text-slate-400">Strictly .jpg, .jpeg, .png only</div>
+                    </div>
                   </div>
-                  <label class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-900 dark:text-white font-bold text-xs cursor-pointer border border-slate-300 dark:border-slate-700">
-                    Choose Photo File
-                    <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminPhotoUpload(event, '${doc.id}')" class="hidden" />
+                  <label class="px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold text-xs cursor-pointer">
+                    Replace Photo
+                    <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminDoctorPhotoUpload(event, '${doc.id}')" class="hidden" />
                   </label>
                 </div>
 
-                <button onclick="window.saveLeadershipAdmin('${doc.id}', event)" class="px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow">
-                  Save Profile Changes for ${doc.name.split(' ')[0]}
-                </button>
+                <div class="flex items-center gap-3 pt-2">
+                  <button onclick="window.saveLeadershipProfile('${doc.id}')" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow">
+                    Save Changes
+                  </button>
+                  <a href="#/about/leadership" target="_blank" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs">
+                    Preview Profile &rarr;
+                  </a>
+                </div>
+
               </div>
             `).join('')}
           </div>
+
         </div>
       `;
     }
 
-    // MODULE 8: ACADEMICS
-    if (tabId === 'academics') {
-      const academics = store.getAcademics();
+    // MODULE 5: ADMINISTRATION TEAM
+    if (tabId === 'administration') {
+      const adminTeam = store.getAdministration() || [];
 
       return `
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
-          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
-            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Academic & Training Programs Manager</h2>
-            <p class="text-slate-500">Edit RGUHS B.Sc Optometry, NBEMS DNB Post-Graduate Residency, and DOT Diploma programs.</p>
+        <div class="space-y-6 text-xs font-sans">
+          
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex items-center justify-between">
+            <div>
+              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Administration Team Profiles (6 Members)</h2>
+              <p class="text-slate-500">Manage verified administrative leaders and department coordinators.</p>
+            </div>
+            <button onclick="window.addAdminTeamMember(event)" class="px-4 py-2.5 rounded-xl bg-emerald-600 text-white font-extrabold text-xs shadow">
+              + Add Staff Member
+            </button>
+          </div>
+
+          <div class="space-y-4">
+            ${adminTeam.map((m, idx) => `
+              <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-3 shadow-sm">
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">${m.name}</span>
+                    <span class="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[10px]">${m.department || m.role}</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button onclick="window.deleteAdminTeamMember(${idx})" class="px-2.5 py-1 rounded bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 font-bold text-xs">Delete</button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Full Name</label>
+                    <input type="text" id="admin-team-name-${idx}" value="${m.name}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Position / Role</label>
+                    <input type="text" id="admin-team-role-${idx}" value="${m.position || m.role}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Department</label>
+                    <input type="text" id="admin-team-dept-${idx}" value="${m.department || ''}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Qualifications</label>
+                  <input type="text" id="admin-team-qual-${idx}" value="${m.qualifications}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                </div>
+
+                <div>
+                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Biography / Responsibilities</label>
+                  <textarea id="admin-team-desc-${idx}" rows="2" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${m.desc}</textarea>
+                </div>
+
+                <button onclick="window.saveAdminTeamMember(${idx})" class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow">
+                  Save Details
+                </button>
+              </div>
+            `).join('')}
+          </div>
+
+        </div>
+      `;
+    }
+
+    // MODULE 6: HOSPITALS (Base Campuses)
+    if (tabId === 'hospitals') {
+      const facilities = store.getFacilities().filter(f => f.type === 'base');
+
+      return `
+        <div class="space-y-6 text-xs font-sans">
+          
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex items-center justify-between">
+            <div>
+              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Base Tertiary Hospitals (Vijayapura & Kalaburagi)</h2>
+              <p class="text-slate-500">Manage base hospital addresses, phone numbers, hours, emergency contact, and Google Maps embed links.</p>
+            </div>
+            <a href="#/hospitals" target="_blank" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-800 dark:text-slate-200">Preview Base Hospitals &nearr;</a>
           </div>
 
           <div class="space-y-6">
-            ${academics.map((p, idx) => `
-              <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
-                <div class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">${p.title}</div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            ${facilities.map((fac, idx) => `
+              <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4 shadow-sm">
+                
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xl">🏥</span>
+                    <span class="font-extrabold text-slate-900 dark:text-white text-base font-heading">${fac.name}</span>
+                  </div>
+                  <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold">Base Tertiary Hospital</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Affiliation / Body</label>
-                    <input type="text" id="admin-acad-affil-${idx}" value="${p.affiliation}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Campus Name</label>
+                    <input type="text" id="admin-hosp-name-${fac.id}" value="${fac.name}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
                   </div>
                   <div>
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Duration & Intake</label>
-                    <input type="text" id="admin-acad-duration-${idx}" value="${p.duration || ''}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Phone Helpline</label>
+                    <input type="text" id="admin-hosp-phone-${fac.id}" value="${fac.phone}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Contact Email</label>
+                    <input type="email" id="admin-hosp-email-${fac.id}" value="${fac.email || 'contactus@anugrahaeyehospital.com'}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">OPD Operating Hours</label>
+                    <input type="text" id="admin-hosp-hours-${fac.id}" value="${fac.hours}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Physical Address</label>
+                    <input type="text" id="admin-hosp-address-${fac.id}" value="${fac.address}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Google Maps URL</label>
+                    <input type="text" id="admin-hosp-map-${fac.id}" value="${fac.googleMapsUrl || ''}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Emergency Information</label>
+                    <input type="text" id="admin-hosp-emerg-${fac.id}" value="${fac.emergencyInfo || '24x7 Emergency Ophthalmic Desk'}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
                   </div>
                 </div>
-                <button onclick="window.saveAdminAcademicProgram('${p.id}', ${idx})" class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow">
-                  Save ${p.title.split(' ')[0]} Details
+
+                <button onclick="window.saveHospitalCampus('${fac.id}')" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow">
+                  Save ${fac.name}
                 </button>
+
               </div>
             `).join('')}
           </div>
+
         </div>
       `;
     }
 
-    // MODULE 9: PATIENT RESOURCES & EMPANELMENTS
-    if (tabId === 'patient-resources' || tabId === 'empanelments') {
-      const emps = store.getEmpanelments();
+    // MODULE 7: VISION CENTERS
+    if (tabId === 'vision-centers') {
+      const visionCenters = store.getFacilities().filter(f => f.type === 'vision-center');
 
       return `
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
-          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
-            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Empanelments & Cashless Insurance Schemes</h2>
-            <p class="text-slate-500">Add new partner or remove existing cashless insurance scheme.</p>
+        <div class="space-y-6 text-xs font-sans">
+          
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex items-center justify-between">
+            <div>
+              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Vision Centers Editor (8 Regional Centers)</h2>
+              <p class="text-slate-500">Talikoti, Muddebihal, Sindagi, Indi, B.Bagewadi, Chadachan, Nalatwad, Tikota.</p>
+            </div>
+            <button onclick="window.addVisionCenterPrompt()" class="px-4 py-2.5 rounded-xl bg-emerald-600 text-white font-extrabold text-xs shadow">
+              + Add Vision Center
+            </button>
           </div>
 
-          <form onsubmit="window.addAdminEmpanelment(event)" class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
-            <div class="font-extrabold text-slate-900 dark:text-white text-xs">Add New Insurance / Scheme Partner</div>
+          <div class="space-y-6">
+            ${visionCenters.map(vc => `
+              <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4 shadow-sm">
+                
+                <!-- Distinct Location Header Banner -->
+                <div class="p-3.5 rounded-2xl bg-teal-900/10 dark:bg-emerald-950/40 border border-teal-800/30 flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="text-base">📍</span>
+                    <span class="font-extrabold text-teal-900 dark:text-emerald-300 text-sm font-heading tracking-wide uppercase">
+                      LOCATION: ${vc.name.toUpperCase()}
+                    </span>
+                  </div>
+                  <button onclick="window.deleteVisionCenterConfirm('${vc.id}')" class="px-2.5 py-1 rounded bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 font-bold text-xs">
+                    Delete
+                  </button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Center Name</label>
+                    <input type="text" id="admin-vc-name-${vc.id}" value="${vc.name}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Phone Number</label>
+                    <input type="text" id="admin-vc-phone-${vc.id}" value="${vc.phone}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Doctor Visiting Days</label>
+                    <input type="text" id="admin-vc-visits-${vc.id}" value="${vc.doctorVisits || 'Sundays'}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Opening Hours</label>
+                    <input type="text" id="admin-vc-hours-${vc.id}" value="${vc.hours || 'Mon–Sat 9am–5pm'}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Physical Address</label>
+                    <input type="text" id="admin-vc-address-${vc.id}" value="${vc.address}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Google Maps URL</label>
+                    <input type="text" id="admin-vc-map-${vc.id}" value="${vc.googleMapsUrl || ''}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3 pt-1">
+                  <button onclick="window.saveVisionCenter('${vc.id}')" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow">
+                    Save ${vc.name}
+                  </button>
+                  <a href="#/vision-centers/${vc.town?.toLowerCase() || vc.id}" target="_blank" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs">
+                    Preview Page &rarr;
+                  </a>
+                </div>
+
+              </div>
+            `).join('')}
+          </div>
+
+        </div>
+      `;
+    }
+
+    // MODULE 8: SERVICES & SPECIALTIES
+    if (tabId === 'services') {
+      const services = store.getServices() || [];
+
+      return `
+        <div class="space-y-6 text-xs font-sans">
+          
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex items-center justify-between">
+            <div>
+              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Super-Specialty Services (8 Specialties)</h2>
+              <p class="text-slate-500">Edit clinical copy, symptoms, diagnosis, technology, and service image assets.</p>
+            </div>
+            <a href="#/services" target="_blank" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-800 dark:text-slate-200">Preview Services &nearr;</a>
+          </div>
+
+          <div class="space-y-6">
+            ${services.map(s => `
+              <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4 shadow-sm">
+                
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                  <span class="font-extrabold text-slate-900 dark:text-white text-base font-heading">${s.title}</span>
+                  <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold">${s.category || 'Ophthalmic Specialty'}</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Service Name</label>
+                    <input type="text" id="admin-srv-title-${s.id}" value="${s.title}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Category</label>
+                    <input type="text" id="admin-srv-cat-${s.id}" value="${s.category || 'Surgical Ophthalmology'}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Short Description</label>
+                  <input type="text" id="admin-srv-short-${s.id}" value="${s.shortDesc || s.desc}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                </div>
+
+                <div>
+                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Full Clinical Description</label>
+                  <textarea id="admin-srv-full-${s.id}" rows="3" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${s.fullDesc || s.desc}</textarea>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Symptoms / Indications</label>
+                    <textarea id="admin-srv-symp-${s.id}" rows="2" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${s.symptoms || ''}</textarea>
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Diagnostic Modalities</label>
+                    <textarea id="admin-srv-diag-${s.id}" rows="2" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${s.diagnosis || ''}</textarea>
+                  </div>
+                </div>
+
+                <!-- Dual Format Validated Image Upload -->
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div class="flex items-center gap-3">
+                    <img id="admin-srv-img-preview-${s.id}" src="${s.heroImage || s.imagePlaceholder}" alt="${s.title}" class="w-14 h-14 rounded-2xl object-cover border border-slate-200 dark:border-slate-800" />
+                    <div>
+                      <div class="font-bold text-slate-900 dark:text-white">Service Image Asset</div>
+                      <div class="text-[10px] text-slate-400">Strictly .jpg, .jpeg, .png only</div>
+                    </div>
+                  </div>
+                  <label class="px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold text-xs cursor-pointer">
+                    Replace Photo
+                    <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminServiceImageUpload(event, '${s.id}')" class="hidden" />
+                  </label>
+                </div>
+
+                <div class="flex items-center gap-3 pt-1">
+                  <button onclick="window.saveServiceSpecialty('${s.id}')" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow">
+                    Save Changes
+                  </button>
+                  <a href="#/services/${s.id}" target="_blank" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs">
+                    Preview Service &rarr;
+                  </a>
+                </div>
+
+              </div>
+            `).join('')}
+          </div>
+
+        </div>
+      `;
+    }
+
+    // MODULE 9: DOCTORS SEARCHABLE MANAGER
+    if (tabId === 'doctors') {
+      const leaders = store.getLeadership() || [];
+      const query = (window.adminDoctorSearchQuery || '').toLowerCase();
+      const filtered = leaders.filter(d => 
+        d.name.toLowerCase().includes(query) || 
+        (d.specialization || '').toLowerCase().includes(query) ||
+        (d.hospital || '').toLowerCase().includes(query)
+      );
+
+      return `
+        <div class="space-y-6 text-xs font-sans">
+          
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Searchable Doctor Manager</h2>
+              <p class="text-slate-500">Search, edit, and manage verified doctor profiles.</p>
+            </div>
+            
+            <!-- Live Search Bar -->
+            <div class="relative w-full sm:w-72">
+              <input 
+                type="text" 
+                placeholder="Search by name or specialty..." 
+                value="${window.adminDoctorSearchQuery || ''}"
+                oninput="window.handleAdminDoctorSearch(event)"
+                class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 outline-none"
+              />
+              <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            ${filtered.map(doc => `
+              <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-4 shadow-sm">
+                
+                <div class="flex items-center gap-4">
+                  <img src="${doc.photo || 'assets/official_logo.jpg'}" alt="${doc.name}" class="w-16 h-16 rounded-2xl object-cover border border-slate-200 dark:border-slate-800 shrink-0" />
+                  <div>
+                    <div class="font-extrabold text-slate-900 dark:text-white text-base font-heading">${doc.name}</div>
+                    <div class="text-emerald-600 dark:text-emerald-400 font-bold text-xs">${doc.title || doc.designation}</div>
+                    <div class="text-slate-400 text-[11px]">${doc.degrees}</div>
+                  </div>
+                </div>
+
+                <div class="space-y-1 text-slate-600 dark:text-slate-400">
+                  <div><strong>Specialization:</strong> ${doc.specialization || 'Comprehensive Ophthalmology'}</div>
+                  <div><strong>Experience:</strong> ${doc.experience || '20+ Years'}</div>
+                  <div><strong>Hospital:</strong> ${doc.hospital || 'Vijayapura Campus'}</div>
+                  <div><strong>Languages:</strong> ${doc.languages || 'Kannada, English, Hindi'}</div>
+                </div>
+
+                <div class="flex items-center gap-2 pt-2">
+                  <button onclick="window.switchAdminTab('leadership')" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow">
+                    Edit Full Profile
+                  </button>
+                  <a href="#/about/leadership" target="_blank" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs">
+                    Preview &rarr;
+                  </a>
+                </div>
+
+              </div>
+            `).join('')}
+          </div>
+
+        </div>
+      `;
+    }
+
+    // MODULE 10: ACADEMICS
+    if (tabId === 'academics') {
+      const academics = store.getAcademics() || [];
+
+      return `
+        <div class="space-y-6 text-xs font-sans">
+          
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex items-center justify-between">
+            <div>
+              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Academic & Residency Programs (4 Programs)</h2>
+              <p class="text-slate-500">Fellowship Programs, NBEMS DNB, DOT Paramedical Diploma, and RGUHS B.Sc Optometry.</p>
+            </div>
+            <a href="#/academics" target="_blank" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-800 dark:text-slate-200">Preview Academics &nearr;</a>
+          </div>
+
+          <div class="space-y-6">
+            ${academics.map(p => `
+              <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4 shadow-sm">
+                
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                  <span class="font-extrabold text-slate-900 dark:text-white text-base font-heading">${p.title}</span>
+                  <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold">${p.credibilityBadge || 'Recognized'}</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Affiliation / Board</label>
+                    <input type="text" id="admin-acad-affil-${p.id}" value="${p.affiliation || p.recognizedBy}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Duration</label>
+                    <input type="text" id="admin-acad-duration-${p.id}" value="${p.duration || ''}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Eligibility Criteria</label>
+                    <input type="text" id="admin-acad-elig-${p.id}" value="${p.eligibility || ''}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Program Overview Description</label>
+                    <textarea id="admin-acad-desc-${p.id}" rows="3" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${p.desc}</textarea>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3 pt-1">
+                  <button onclick="window.saveAcademicProgram('${p.id}')" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow">
+                    Save Changes
+                  </button>
+                  <a href="#/academics/${p.id}" target="_blank" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs">
+                    Preview Program &rarr;
+                  </a>
+                </div>
+
+              </div>
+            `).join('')}
+          </div>
+
+        </div>
+      `;
+    }
+
+    // MODULE 11: PATIENT RESOURCES
+    if (tabId === 'patient-resources') {
+      const res = store.getPatientResources();
+
+      return `
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs font-sans">
+          
+          <div class="border-b border-slate-100 dark:border-slate-800 pb-3 flex items-center justify-between">
+            <div>
+              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Patient Resources & Education</h2>
+              <p class="text-slate-500">Edit general patient info, eye-care education, appointments, and emergency information.</p>
+            </div>
+            <a href="#/patient-resources" target="_blank" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-slate-800 dark:text-slate-200">Preview &nearr;</a>
+          </div>
+
+          <form onsubmit="window.savePatientResources(event)" class="space-y-6">
+            
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">General Patient Information</label>
+              <textarea id="admin-res-info" rows="3" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${res.patientInfo}</textarea>
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Eye-Care Education & Preventative Guidance</label>
+              <textarea id="admin-res-edu" rows="3" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${res.education}</textarea>
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Appointment & OPD Registration Guidance</label>
+              <textarea id="admin-res-appt" rows="3" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${res.appointmentInfo}</textarea>
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Emergency Ophthalmic Information</label>
+              <textarea id="admin-res-emerg" rows="3" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${res.emergencyInfo}</textarea>
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Cashless Insurance & Scheme Overview</label>
+              <textarea id="admin-res-ins" rows="3" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${res.insuranceInfo}</textarea>
+            </div>
+
+            <div class="flex items-center gap-3 pt-2">
+              <button type="submit" class="px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg">
+                Save Patient Resources
+              </button>
+              <button type="button" onclick="render()" class="px-6 py-3.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs">
+                Cancel
+              </button>
+            </div>
+
+          </form>
+
+        </div>
+      `;
+    }
+
+    // MODULE 12: FAQS
+    if (tabId === 'faqs') {
+      const faqs = store.getFaqs() || [];
+
+      return `
+        <div class="space-y-6 text-xs font-sans">
+          
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex items-center justify-between">
+            <div>
+              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Frequently Asked Questions (${faqs.length} FAQs)</h2>
+              <p class="text-slate-500">Edit, add, or reorder authentic patient guidance questions.</p>
+            </div>
+            <button onclick="window.addFaqPrompt()" class="px-4 py-2.5 rounded-xl bg-emerald-600 text-white font-extrabold text-xs shadow">
+              + Add FAQ
+            </button>
+          </div>
+
+          <div class="space-y-4">
+            ${faqs.map((f, idx) => `
+              <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-3 shadow-sm">
+                
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-extrabold flex items-center justify-center text-xs">${idx + 1}</span>
+                    <span class="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[10px]">${f.category || 'General'}</span>
+                  </div>
+                  <button onclick="window.deleteFaqConfirm('${f.id}')" class="px-2.5 py-1 rounded bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 font-bold text-xs">Delete</button>
+                </div>
+
+                <div>
+                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Question</label>
+                  <input type="text" id="admin-faq-q-${f.id}" value="${f.question}" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                </div>
+
+                <div>
+                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Clinical Answer</label>
+                  <textarea id="admin-faq-a-${f.id}" rows="3" class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${f.answer}</textarea>
+                </div>
+
+                <button onclick="window.saveFaqItem('${f.id}')" class="px-5 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow">
+                  Save FAQ
+                </button>
+
+              </div>
+            `).join('')}
+          </div>
+
+        </div>
+      `;
+    }
+
+    // MODULE 13: INSURANCE & EMPANELMENTS
+    if (tabId === 'insurance' || tabId === 'empanelments') {
+      const emps = store.getEmpanelments() || [];
+
+      return `
+        <div class="space-y-6 text-xs font-sans">
+          
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm">
+            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Empanelments & Cashless Insurance Partners (${emps.length} Partners)</h2>
+            <p class="text-slate-500 mt-1">Manage government schemes, private insurance providers, and TPAs.</p>
+          </div>
+
+          <!-- Add Partner Box -->
+          <form onsubmit="window.addAdminEmpanelment(event)" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-4 shadow-sm">
+            <div class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">Add New Partner</div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <input type="text" id="admin-emp-name" placeholder="Partner Name (e.g. Star Health)" required class="p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
-              <select id="admin-emp-cat" class="p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">
+              <input type="text" id="admin-emp-name" placeholder="Partner Name (e.g. Star Health)" required class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+              <select id="admin-emp-cat" class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">
                 <option value="Insurance Providers">Insurance Providers</option>
                 <option value="Government Schemes">Government Schemes</option>
                 <option value="TPAs & Corporate">TPAs & Corporate</option>
               </select>
-              <input type="text" id="admin-emp-code" placeholder="Code (e.g. STAR)" required class="p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+              <input type="text" id="admin-emp-code" placeholder="Code (e.g. STAR)" required class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
             </div>
-            <button type="submit" class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-extrabold text-xs shadow">
+            <button type="submit" class="px-6 py-2.5 rounded-xl bg-emerald-600 text-white font-extrabold text-xs shadow">
               + Add Partner
             </button>
           </form>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+          <!-- Partners Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             ${emps.map(e => `
-              <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex items-center justify-between shadow-sm">
                 <div>
                   <div class="font-extrabold text-slate-900 dark:text-white">${e.name}</div>
-                  <div class="text-[10px] text-slate-400 font-mono">${e.category}</div>
+                  <div class="text-[10px] text-slate-400 font-mono">${e.category} (${e.code})</div>
                 </div>
                 <button onclick="window.removeAdminEmpanelment('${e.code}')" class="px-2.5 py-1 rounded bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 font-bold text-xs">Remove</button>
               </div>
             `).join('')}
           </div>
+
         </div>
       `;
     }
 
-    // MODULE 10: FAQS
-    if (tabId === 'faqs') {
+    // MODULE 14: NEWS & PRESS
+    if (tabId === 'news') {
+      const news = store.getNews() || [];
+
       return `
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
-          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
-            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Frequently Asked Questions (10 Patient FAQs)</h2>
-            <p class="text-slate-500">Edit patient care guidance, surgery recovery answers, and insurance FAQs.</p>
+        <div class="space-y-6 text-xs font-sans">
+          
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex items-center justify-between">
+            <div>
+              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Hospital News & Press Releases (${news.length} Articles)</h2>
+              <p class="text-slate-500">Manage real institutional honors, academic expansions, and community camp news.</p>
+            </div>
+            <button onclick="window.addNewsPrompt()" class="px-4 py-2.5 rounded-xl bg-emerald-600 text-white font-extrabold text-xs shadow">
+              + Add News Article
+            </button>
           </div>
 
           <div class="space-y-4">
-            ${[
-              "1. How do I book a consultation or appointment at Anugraha Eye Hospital?",
-              "2. Where are your main base hospitals and Vision Centers located?",
-              "3. What government health schemes and insurance policies are accepted for cashless treatment?",
-              "4. Is cataract surgery painful, how long does phacoemulsification take, and what is the recovery period?",
-              "5. What is the difference between standard Monofocal IOL and premium Multifocal / Toric IOL implants?",
-              "6. Am I eligible for Contoura Vision LASIK laser eye surgery to remove my glasses?",
-              "7. How frequently should diabetic patients undergo retinal eye screening?",
-              "8. What services and doctor visit schedules are available at rural Vision Centers?",
-              "9. Are free cataract surgeries provided at Anugraha Eye Hospital for underprivileged patients?",
-              "10. How can students apply for academic programs, RGUHS B.Sc Optometry, and DNB residency?"
-            ].map((q, idx) => `
-              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2">
-                <div class="font-extrabold text-slate-900 dark:text-white text-xs">${q}</div>
-                <textarea rows="2" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">Verified clinical response active.</textarea>
-                <button onclick="window.showAdminToast('FAQ ${idx + 1} updated', 'success')" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-bold text-xs shadow">Save Answer</button>
+            ${news.map(item => `
+              <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-3 shadow-sm">
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+                  <span class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">${item.title}</span>
+                  <button onclick="window.deleteNewsConfirm('${item.id}')" class="px-2.5 py-1 rounded bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 font-bold text-xs">Delete</button>
+                </div>
+                <div class="text-[11px] text-slate-400 font-mono">${item.date} &bull; ${item.category}</div>
+                <p class="text-slate-600 dark:text-slate-300">${item.content || item.shortDesc || item.snippet}</p>
               </div>
             `).join('')}
           </div>
+
         </div>
       `;
     }
 
-    // MODULE 11: MEDIA
+    // MODULE 15: MEDIA LIBRARY (With strict JPG/PNG dual validation)
     if (tabId === 'media') {
-      const gallery = store.getGallery();
+      const gallery = store.getGallery() || [];
 
       return `
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
-          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
-            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Media & Photo Gallery Manager</h2>
-            <p class="text-slate-500">Manage hospital infrastructure photos, news clips, and videos.</p>
+        <div class="space-y-6 text-xs font-sans">
+          
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Interactive Media Library (${gallery.length} Assets)</h2>
+              <p class="text-slate-500">Strictly allowed formats: <strong>.jpg, .jpeg, .png</strong> only (Dual MIME & Extension validated).</p>
+            </div>
+            
+            <label class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs cursor-pointer shadow-lg">
+              + Upload New Image
+              <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminMediaUpload(event)" class="hidden" />
+            </label>
           </div>
 
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <!-- Media Assets Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             ${gallery.map(item => `
-              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2">
-                <img src="${item.url || 'assets/official_logo.jpg'}" alt="${item.title}" class="w-full h-24 rounded-lg object-cover" />
-                <div class="font-extrabold text-slate-900 dark:text-white text-[11px] truncate">${item.title}</div>
-                <button onclick="window.showAdminToast('Media item updated', 'success')" class="w-full py-1 rounded bg-slate-200 dark:bg-slate-800 font-bold text-[10px]">Edit Item</button>
+              <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 space-y-3 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                
+                <div class="space-y-3">
+                  <div class="w-full h-40 rounded-2xl bg-slate-100 dark:bg-slate-950 overflow-hidden border border-slate-200 dark:border-slate-800 flex items-center justify-center">
+                    <img src="${item.src}" alt="${item.title}" class="w-full h-full object-cover" />
+                  </div>
+
+                  <div>
+                    <div class="font-extrabold text-slate-900 dark:text-white text-sm font-heading truncate">${item.title}</div>
+                    <div class="text-[10px] text-slate-400 font-mono mt-0.5">${item.filename || 'image.jpg'} &bull; ${item.type || 'image/jpeg'}</div>
+                  </div>
+
+                  <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-[11px] font-mono text-slate-600 dark:text-slate-400 space-y-1">
+                    <div><strong>Size:</strong> ${item.size || '320 KB'}</div>
+                    <div><strong>Dimensions:</strong> ${item.dimensions || '1200 × 800'}</div>
+                    <div><strong>Used On:</strong> ${item.usedOn || item.category || 'General Site'}</div>
+                    <div><strong>Upload Date:</strong> ${item.uploadDate || '15 Aug 2026'}</div>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                  <button onclick="window.copyMediaPath('${item.src}')" class="flex-1 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 font-bold text-xs text-slate-800 dark:text-slate-200 text-center">
+                    Copy Path
+                  </button>
+                  <button onclick="window.deleteGalleryItemConfirm(${item.id})" class="px-3 py-2 rounded-xl bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 font-bold text-xs">
+                    Delete
+                  </button>
+                </div>
+
               </div>
             `).join('')}
           </div>
+
         </div>
       `;
     }
 
-    // MODULE 12: SETTINGS & BACKUP
+    // MODULE 16: SETTINGS & BACKUP
     if (tabId === 'settings' || tabId === 'backup') {
       const brand = store.getBrand();
 
       return `
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-8 text-xs">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-8 text-xs font-sans">
+          
           <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
             <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Settings & JSON Backup Engine</h2>
             <p class="text-slate-500">Manage telephony credentials, export JSON backup files, or restore sitewide JSON config.</p>
@@ -5229,8 +5845,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">WhatsApp Desk</label>
                 <input type="text" id="admin-brand-whatsapp" value="${brand.whatsappPhone}" required class="w-full p-3 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
               </div>
+              <div>
+                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Official Email</label>
+                <input type="email" id="admin-brand-email" value="${brand.contactEmail}" required class="w-full p-3 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Hospital Founder Name</label>
+                <input type="text" id="admin-brand-founder" value="${brand.founder}" required class="w-full p-3 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+              </div>
             </div>
-            <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-extrabold text-xs shadow">Save Telephony</button>
+            <button type="submit" class="px-6 py-2.5 rounded-xl bg-emerald-600 text-white font-extrabold text-xs shadow">Save Telephony</button>
           </form>
 
           <!-- Export Block -->
@@ -5274,7 +5898,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return `<div>Select Module</div>`;
   }
 
-  // --- ADMIN HANDLERS ---
+  // --- ADMIN INTERACTIVE ACTION HANDLERS ---
 
   window.handleAdminLoginSubmit = function(e) {
     e.preventDefault();
@@ -5288,14 +5912,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!user || !pass) return;
 
-    // Trigger Loading State
     if (btn) btn.disabled = true;
     if (btnText) btnText.textContent = "Authenticating...";
     if (spinner) spinner.classList.remove('hidden');
     if (err) err.classList.add('hidden');
 
     setTimeout(() => {
-      // Validate requested credentials: web@admin / Admin@2001 or fallback admin / anugraha2021
       const isValid = (user === 'web@admin' && pass === 'Admin@2001') ||
                       (user === 'admin' && (pass === 'anugraha2021' || pass === 'admin'));
 
@@ -5358,279 +5980,482 @@ document.addEventListener("DOMContentLoaded", () => {
     render();
   };
 
-  window.saveHomepageAdmin = function(e) {
-    if (e) e.preventDefault();
-    const store = window.appStore;
-    const name = document.getElementById('admin-home-name')?.value;
-    const tagline = document.getElementById('admin-home-tagline')?.value;
-    const surgeries = document.getElementById('admin-home-surgeries')?.value;
-    const camps = document.getElementById('admin-home-camps')?.value;
-    const free = document.getElementById('admin-home-free')?.value;
-
-    if (name && tagline) store.updateBrand({ name, tagline });
-    if (surgeries && camps && free) store.updateStats({ lifetimeSurgeries: surgeries, outreachCamps: camps, freeCataracts: free });
-
-    window.showAdminToast("Homepage settings updated successfully!", "success");
-    render();
-  };
-
-  window.saveAboutAdmin = function(e) {
-    if (e) e.preventDefault();
-    const store = window.appStore;
-    const founder = document.getElementById('admin-about-founder')?.value;
-    const vision = document.getElementById('admin-about-vision')?.value;
-    const mission = document.getElementById('admin-about-mission')?.value;
-
-    store.updateBrand({ founder, vision, mission });
-    window.showAdminToast("About Us narrative updated!", "success");
-    render();
-  };
-
-  window.saveAdminHospitalFacility = function(id, idx) {
-    const store = window.appStore;
-    const phone = document.getElementById(`admin-hosp-phone-${idx}`)?.value;
-    const hours = document.getElementById(`admin-hosp-hours-${idx}`)?.value;
-    const address = document.getElementById(`admin-hosp-address-${idx}`)?.value;
-
-    store.updateFacility(id, { phone, hours, address });
-    window.showAdminToast("Hospital details updated!", "success");
-    render();
-  };
-
-  window.saveAdminAcademicProgram = function(id, idx) {
-    const store = window.appStore;
-    const affiliation = document.getElementById(`admin-acad-affil-${idx}`)?.value;
-    const duration = document.getElementById(`admin-acad-duration-${idx}`)?.value;
-
-    store.updateAcademicProgram(id, { affiliation, duration });
-    window.showAdminToast("Academic program updated!", "success");
-    render();
-  };
-
   window.showAdminToast = function(msg, type = 'success') {
     let container = document.getElementById('admin-toast-box');
     if (!container) {
       container = document.createElement('div');
       container.id = 'admin-toast-box';
-      container.className = 'fixed top-6 right-6 z-[99999] flex flex-col gap-2 max-w-sm pointer-events-none';
+      container.className = 'fixed top-6 right-6 z-[99999] flex flex-col gap-2 max-w-sm pointer-events-none font-sans';
       document.body.appendChild(container);
     }
 
     const toast = document.createElement('div');
-    toast.className = `p-4 rounded-xl shadow-2xl text-xs font-bold border text-white pointer-events-auto transition-all ${type === 'success' ? 'bg-emerald-950 border-emerald-500' : 'bg-red-950 border-red-500'}`;
+    toast.className = `p-4 rounded-2xl shadow-2xl text-xs font-bold border text-white pointer-events-auto transition-all ${type === 'success' ? 'bg-[#062c26] border-emerald-500' : 'bg-red-950 border-red-500'}`;
     toast.textContent = msg;
     container.appendChild(toast);
 
     setTimeout(() => {
       toast.remove();
-    }, 3000);
+    }, 3200);
   };
 
-  window.saveBrandAdmin = function(e) {
-    e.preventDefault();
-    const store = window.appStore;
-    store.updateBrand({
-      fallbackPhone: document.getElementById('admin-brand-phone').value,
-      whatsappPhone: document.getElementById('admin-brand-whatsapp').value,
-      contactEmail: document.getElementById('admin-brand-email').value,
-      vision: document.getElementById('admin-brand-vision').value,
-      mission: document.getElementById('admin-brand-mission').value
-    });
-    window.showAdminToast("Hospital Credentials updated!", "success");
-    render();
-  };
-
-  window.saveStatsAdmin = function(e) {
-    e.preventDefault();
-    const store = window.appStore;
-    store.updateStats({
-      lifetimeSurgeries: document.getElementById('admin-stat-surgeries').value,
-      outreachCamps: document.getElementById('admin-stat-camps').value,
-      freeCataracts: document.getElementById('admin-stat-cataracts').value,
-      totalPeopleReached: document.getElementById('admin-stat-reach').value
-    });
-    window.showAdminToast("Hospital Metrics updated!", "success");
-    render();
-  };
-
-  window.saveLeadershipAdmin = function(id, e) {
+  // HOMEPAGE HANDLERS
+  window.saveHomepageAdmin = function(e) {
     if (e) e.preventDefault();
     const store = window.appStore;
-    const leaders = store.data.leadership || [];
-    const doc = leaders.find(l => l.id === id);
-    if (doc) {
-      doc.name = document.getElementById(`admin-doc-name-${id}`).value;
-      doc.degrees = document.getElementById(`admin-doc-degrees-${id}`).value;
-      doc.bio = document.getElementById(`admin-doc-bio-${id}`).value;
-      store.save();
-      window.showAdminToast(`Saved profile for ${doc.name.split(' ')[0]}`, "success");
+    
+    const heroEyebrow = document.getElementById('admin-hero-eyebrow')?.value;
+    const heroHeading = document.getElementById('admin-hero-heading')?.value;
+    const heroDescription = document.getElementById('admin-hero-desc')?.value;
+    const cta1Text = document.getElementById('admin-hero-cta1-text')?.value;
+    const cta1Link = document.getElementById('admin-hero-cta1-link')?.value;
+    const cta2Text = document.getElementById('admin-hero-cta2-text')?.value;
+    const cta2Link = document.getElementById('admin-hero-cta2-link')?.value;
+    const surgeries = document.getElementById('admin-home-surgeries')?.value;
+    const camps = document.getElementById('admin-home-camps')?.value;
+    const free = document.getElementById('admin-home-free')?.value;
+
+    const sections = {
+      whyAnugraha: document.getElementById('admin-sec-whyAnugraha')?.checked ?? true,
+      services: document.getElementById('admin-sec-services')?.checked ?? true,
+      featuredDoctors: document.getElementById('admin-sec-featuredDoctors')?.checked ?? true,
+      hospitals: document.getElementById('admin-sec-hospitals')?.checked ?? true,
+      visionCenters: document.getElementById('admin-sec-visionCenters')?.checked ?? true,
+      technology: document.getElementById('admin-sec-technology')?.checked ?? true,
+      communityImpact: document.getElementById('admin-sec-communityImpact')?.checked ?? true,
+      academics: document.getElementById('admin-sec-academics')?.checked ?? true,
+      insurance: document.getElementById('admin-sec-insurance')?.checked ?? true,
+      faqs: document.getElementById('admin-sec-faqs')?.checked ?? true,
+      finalCta: document.getElementById('admin-sec-finalCta')?.checked ?? true
+    };
+
+    store.updateHomepage({
+      heroEyebrow,
+      heroHeading,
+      heroDescription,
+      primaryCta: { text: cta1Text, link: cta1Link },
+      secondaryCta: { text: cta2Text, link: cta2Link },
+      sections
+    });
+
+    if (surgeries && camps && free) {
+      store.updateStats({ lifetimeSurgeries: surgeries, outreachCamps: camps, freeCataracts: free });
+    }
+
+    window.showAdminToast("Homepage settings saved successfully!", "success");
+    render();
+  };
+
+  window.handleAdminLogoUpload = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    window.validateAndReadImageFile(file, (base64, meta) => {
+      const store = window.appStore;
+      store.updateBrand({ logo: base64 });
+      store.addGalleryItem({
+        title: "Hospital Official Logo",
+        category: "Branding",
+        src: base64,
+        ...meta
+      });
+      window.showAdminToast("Official logo updated successfully!", "success");
+      render();
+    });
+  };
+
+  window.handleAdminHeroImageUpload = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    window.validateAndReadImageFile(file, (base64, meta) => {
+      const store = window.appStore;
+      store.updateHomepage({ heroImage: base64 });
+      store.addGalleryItem({
+        title: "Homepage Hero Background",
+        category: "Homepage Hero",
+        src: base64,
+        ...meta
+      });
+      window.showAdminToast("Hero background image updated!", "success");
+      render();
+    });
+  };
+
+  // ABOUT US HANDLERS
+  window.saveAboutAdmin = function(e) {
+    if (e) e.preventDefault();
+    const store = window.appStore;
+    const story = document.getElementById('admin-about-story')?.value;
+    const history = document.getElementById('admin-about-history')?.value;
+    const vision = document.getElementById('admin-about-vision')?.value;
+    const mission = document.getElementById('admin-about-mission')?.value;
+    const communityImpact = document.getElementById('admin-about-impact')?.value;
+
+    store.updateAbout({ story, history, vision, mission, communityImpact });
+    store.updateBrand({ vision, mission });
+    window.showAdminToast("About Us narrative updated successfully!", "success");
+    render();
+  };
+
+  // LEADERSHIP & DOCTORS HANDLERS
+  window.saveLeadershipProfile = function(id) {
+    const store = window.appStore;
+    const name = document.getElementById(`admin-doc-name-${id}`)?.value;
+    const title = document.getElementById(`admin-doc-title-${id}`)?.value;
+    const degrees = document.getElementById(`admin-doc-degrees-${id}`)?.value;
+    const specialization = document.getElementById(`admin-doc-spec-${id}`)?.value;
+    const bio = document.getElementById(`admin-doc-bio-${id}`)?.value;
+
+    store.updateLeadership(id, { name, title, designation: title, degrees, specialization, bio });
+    window.showAdminToast(`Saved profile for ${name}`, "success");
+    render();
+  };
+
+  window.toggleLeadershipPublish = function(id) {
+    const store = window.appStore;
+    const leader = store.getLeaderById(id);
+    if (leader) {
+      const newStatus = !leader.published;
+      store.updateLeadership(id, { published: newStatus });
+      window.showAdminToast(`Doctor profile ${newStatus ? 'Published' : 'Unpublished'}`, "success");
       render();
     }
   };
 
-  window.handleAdminPhotoUpload = function(event, docId) {
+  window.deleteLeadershipConfirm = function(id) {
+    const leader = window.appStore.getLeaderById(id);
+    if (!leader) return;
+    if (confirm(`Are you sure you want to delete the profile for "${leader.name}"? This action cannot be undone.`)) {
+      window.appStore.deleteLeadership(id);
+      window.showAdminToast(`Deleted profile for ${leader.name}`, "success");
+      render();
+    }
+  };
+
+  window.addLeadershipProfilePrompt = function() {
+    const name = prompt("Enter Doctor's Full Name:", "Dr. New Consultant");
+    if (name) {
+      const store = window.appStore;
+      store.addLeadership({
+        name,
+        title: "Senior Ophthalmic Consultant",
+        degrees: "MBBS, MS (Ophthalmology)",
+        specialization: "Comprehensive Ophthalmology",
+        bio: "Dedicated ophthalmic consultant delivering clinical excellence at Anugraha Eye Hospital."
+      });
+      window.showAdminToast(`Added doctor profile for ${name}`, "success");
+      render();
+    }
+  };
+
+  window.handleAdminDoctorPhotoUpload = function(event, docId) {
     const file = event.target.files[0];
     if (!file) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      window.showAdminToast("File size exceeds 5MB limit", "error");
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const base64 = e.target.result;
+    window.validateAndReadImageFile(file, (base64, meta) => {
       const store = window.appStore;
-      const leaders = store.data.leadership || [];
-      const doc = leaders.find(l => l.id === docId);
-      if (doc) {
-        doc.photo = base64;
-        store.save();
-        window.showAdminToast(`Photo uploaded for ${doc.name.split(' ')[0]}`, "success");
-        render();
-      }
-    };
-    reader.readAsDataURL(file);
+      store.updateLeadership(docId, { photo: base64 });
+      store.addGalleryItem({
+        title: `Doctor Profile - ${docId}`,
+        category: "Doctor Profiles",
+        src: base64,
+        ...meta
+      });
+      window.showAdminToast("Doctor photo updated!", "success");
+      render();
+    });
   };
 
+  window.handleAdminDoctorSearch = function(e) {
+    window.adminDoctorSearchQuery = e.target.value;
+    render();
+  };
+
+  // ADMINISTRATION HANDLERS
   window.addAdminTeamMember = function(e) {
     if (e) e.preventDefault();
-    const name = prompt("Enter Staff Member Name:", "New Staff Member");
+    const name = prompt("Enter Administrative Staff Member Name:", "New Staff Member");
     if (name) {
       const store = window.appStore;
-      if (!store.data.administration) store.data.administration = [];
-      store.data.administration.push({
-        id: Date.now().toString(),
+      store.addAdminMember({
         name,
-        role: "Ophthalmic Coordinator",
+        role: "Ophthalmic Administrator",
+        position: "Ophthalmic Administrator",
+        department: "Operations",
         qualifications: "Graduate Degree",
-        tenure: "1 Year",
-        desc: "Administrative coordination."
+        desc: "Administrative coordination and quality healthcare management."
       });
-      store.save();
       window.showAdminToast("Added staff member", "success");
       render();
     }
   };
 
-  window.moveAdminTeamMember = function(index, direction) {
-    const store = window.appStore;
-    const list = store.data.administration;
-    if (!list) return;
-    const targetIdx = direction === 'up' ? index - 1 : index + 1;
-    if (targetIdx < 0 || targetIdx >= list.length) return;
-    const [moved] = list.splice(index, 1);
-    list.splice(targetIdx, 0, moved);
-    store.save();
-    window.showAdminToast("Team reordered", "success");
-    render();
-  };
-
   window.deleteAdminTeamMember = function(index) {
-    if (!confirm("Delete staff member?")) return;
-    const store = window.appStore;
-    store.data.administration.splice(index, 1);
-    store.save();
-    window.showAdminToast("Staff member deleted", "success");
-    render();
+    const list = window.appStore.getAdministration();
+    const member = list[index];
+    if (!member) return;
+    if (confirm(`Are you sure you want to delete staff member "${member.name}"?`)) {
+      window.appStore.deleteAdminMember(member.id);
+      window.showAdminToast("Staff member deleted", "success");
+      render();
+    }
   };
 
   window.saveAdminTeamMember = function(index) {
     const store = window.appStore;
-    const member = store.data.administration[index];
+    const member = store.getAdministration()[index];
     if (member) {
-      member.name = document.getElementById(`admin-team-name-${index}`)?.value || member.name;
-      member.role = document.getElementById(`admin-team-role-${index}`)?.value || member.role;
-      store.save();
-      window.showAdminToast(`Saved details for ${member.name}`, "success");
+      const name = document.getElementById(`admin-team-name-${index}`)?.value || member.name;
+      const role = document.getElementById(`admin-team-role-${index}`)?.value || member.role;
+      const dept = document.getElementById(`admin-team-dept-${index}`)?.value || member.department;
+      const qual = document.getElementById(`admin-team-qual-${index}`)?.value || member.qualifications;
+      const desc = document.getElementById(`admin-team-desc-${index}`)?.value || member.desc;
+
+      store.updateAdminMember(member.id, { name, role, position: role, department: dept, qualifications: qual, desc });
+      window.showAdminToast(`Saved details for ${name}`, "success");
       render();
     }
   };
 
-  window.addAdminFacility = function(e) {
-    if (e) e.preventDefault();
-    const name = prompt("Enter Vision Center Name:", "New Vision Center");
-    if (name) {
-      const store = window.appStore;
-      store.data.facilities.push({
-        id: name.toLowerCase().replace(/[^a-z0-9]/g, '-'),
-        type: 'vision-center',
-        name,
-        town: name,
-        phone: "08352-220646",
-        hours: "9:00 AM – 5:00 PM",
-        address: `${name} Main Road, Vijayapura District`
-      });
-      store.save();
-      window.showAdminToast("Added Vision Center", "success");
-      render();
-    }
-  };
-
-  window.deleteAdminFacility = function(index) {
-    if (!confirm("Delete facility?")) return;
+  // HOSPITALS & VISION CENTERS HANDLERS
+  window.saveHospitalCampus = function(id) {
     const store = window.appStore;
-    store.data.facilities.splice(index, 1);
-    store.save();
-    window.showAdminToast("Facility deleted", "success");
+    const name = document.getElementById(`admin-hosp-name-${id}`)?.value;
+    const phone = document.getElementById(`admin-hosp-phone-${id}`)?.value;
+    const email = document.getElementById(`admin-hosp-email-${id}`)?.value;
+    const hours = document.getElementById(`admin-hosp-hours-${id}`)?.value;
+    const address = document.getElementById(`admin-hosp-address-${id}`)?.value;
+    const googleMapsUrl = document.getElementById(`admin-hosp-map-${id}`)?.value;
+    const emergencyInfo = document.getElementById(`admin-hosp-emerg-${id}`)?.value;
+
+    store.updateFacility(id, { name, phone, email, hours, address, googleMapsUrl, emergencyInfo });
+    window.showAdminToast(`Saved ${name} details!`, "success");
     render();
   };
 
-  window.saveAdminFacility = function(index) {
+  window.saveVisionCenter = function(id) {
     const store = window.appStore;
-    const fac = store.data.facilities[index];
-    if (fac) {
-      fac.name = document.getElementById(`admin-fac-name-${index}`)?.value || fac.name;
-      fac.phone = document.getElementById(`admin-fac-phone-${index}`)?.value || fac.phone;
-      fac.address = document.getElementById(`admin-fac-address-${index}`)?.value || fac.address;
-      store.save();
-      window.showAdminToast(`Saved ${fac.name}`, "success");
+    const name = document.getElementById(`admin-vc-name-${id}`)?.value;
+    const phone = document.getElementById(`admin-vc-phone-${id}`)?.value;
+    const doctorVisits = document.getElementById(`admin-vc-visits-${id}`)?.value;
+    const hours = document.getElementById(`admin-vc-hours-${id}`)?.value;
+    const address = document.getElementById(`admin-vc-address-${id}`)?.value;
+    const googleMapsUrl = document.getElementById(`admin-vc-map-${id}`)?.value;
+
+    store.updateFacility(id, { name, phone, doctorVisits, hours, address, googleMapsUrl });
+    window.showAdminToast(`Saved ${name} details!`, "success");
+    render();
+  };
+
+  window.deleteVisionCenterConfirm = function(id) {
+    const fac = window.appStore.getFacilityById(id);
+    if (!fac) return;
+    if (confirm(`Are you sure you want to delete "${fac.name}"?`)) {
+      window.appStore.deleteFacility(id);
+      window.showAdminToast(`Deleted ${fac.name}`, "success");
       render();
     }
   };
 
-  window.saveAdminService = function(index) {
-    const store = window.appStore;
-    const s = store.getServices()[index];
-    if (s) {
-      s.desc = document.getElementById(`admin-service-desc-${index}`)?.value || s.desc;
-      store.save();
-      window.showAdminToast(`Saved ${s.title}`, "success");
+  window.addVisionCenterPrompt = function() {
+    const town = prompt("Enter Vision Center Town / Location:", "New Town");
+    if (town) {
+      const store = window.appStore;
+      store.addFacility({
+        type: 'vision-center',
+        name: `${town} Vision Center`,
+        town: town,
+        phone: "08352-220646",
+        hours: "Mon–Sat 9am–5pm",
+        doctorVisits: "Weekly Schedule",
+        address: `${town} Main Market Road, North Karnataka`
+      });
+      window.showAdminToast(`Added ${town} Vision Center`, "success");
       render();
     }
+  };
+
+  // SERVICES HANDLERS
+  window.saveServiceSpecialty = function(id) {
+    const store = window.appStore;
+    const title = document.getElementById(`admin-srv-title-${id}`)?.value;
+    const category = document.getElementById(`admin-srv-cat-${id}`)?.value;
+    const shortDesc = document.getElementById(`admin-srv-short-${id}`)?.value;
+    const fullDesc = document.getElementById(`admin-srv-full-${id}`)?.value;
+    const symptoms = document.getElementById(`admin-srv-symp-${id}`)?.value;
+    const diagnosis = document.getElementById(`admin-srv-diag-${id}`)?.value;
+
+    store.updateService(id, { title, category, shortDesc, fullDesc, desc: fullDesc, symptoms, diagnosis });
+    window.showAdminToast(`Saved ${title}`, "success");
+    render();
   };
 
   window.handleAdminServiceImageUpload = function(event, serviceId) {
     const file = event.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const base64 = e.target.result;
+    window.validateAndReadImageFile(file, (base64, meta) => {
       const store = window.appStore;
       store.updateServiceImage(serviceId, base64);
-      window.showAdminToast("Service photo updated", "success");
+      store.addGalleryItem({
+        title: `Service Asset - ${serviceId}`,
+        category: "Services",
+        src: base64,
+        ...meta
+      });
+      window.showAdminToast("Service photo updated!", "success");
       render();
-    };
-    reader.readAsDataURL(file);
+    });
   };
 
+  // ACADEMICS HANDLERS
+  window.saveAcademicProgram = function(id) {
+    const store = window.appStore;
+    const affiliation = document.getElementById(`admin-acad-affil-${id}`)?.value;
+    const duration = document.getElementById(`admin-acad-duration-${id}`)?.value;
+    const eligibility = document.getElementById(`admin-acad-elig-${id}`)?.value;
+    const desc = document.getElementById(`admin-acad-desc-${id}`)?.value;
+
+    store.updateAcademicProgram(id, { affiliation, recognizedBy: affiliation, duration, eligibility, desc });
+    window.showAdminToast("Academic program updated!", "success");
+    render();
+  };
+
+  // PATIENT RESOURCES HANDLER
+  window.savePatientResources = function(e) {
+    if (e) e.preventDefault();
+    const store = window.appStore;
+    const patientInfo = document.getElementById('admin-res-info')?.value;
+    const education = document.getElementById('admin-res-edu')?.value;
+    const appointmentInfo = document.getElementById('admin-res-appt')?.value;
+    const emergencyInfo = document.getElementById('admin-res-emerg')?.value;
+    const insuranceInfo = document.getElementById('admin-res-ins')?.value;
+
+    store.updatePatientResources({ patientInfo, education, appointmentInfo, emergencyInfo, insuranceInfo });
+    window.showAdminToast("Patient resources updated successfully!", "success");
+    render();
+  };
+
+  // FAQS HANDLERS
+  window.saveFaqItem = function(id) {
+    const store = window.appStore;
+    const question = document.getElementById(`admin-faq-q-${id}`)?.value;
+    const answer = document.getElementById(`admin-faq-a-${id}`)?.value;
+
+    store.updateFaq(id, { question, answer });
+    window.showAdminToast("FAQ updated!", "success");
+    render();
+  };
+
+  window.deleteFaqConfirm = function(id) {
+    if (confirm("Are you sure you want to delete this FAQ?")) {
+      window.appStore.deleteFaq(id);
+      window.showAdminToast("FAQ deleted", "success");
+      render();
+    }
+  };
+
+  window.addFaqPrompt = function() {
+    const question = prompt("Enter Patient Question:", "How do I consult a specialist?");
+    if (question) {
+      const answer = prompt("Enter Clinical Answer:", "Appointments can be booked online or via phone.");
+      if (answer) {
+        window.appStore.addFaq({ question, answer, category: "General" });
+        window.showAdminToast("Added FAQ item", "success");
+        render();
+      }
+    }
+  };
+
+  // INSURANCE HANDLERS
   window.addAdminEmpanelment = function(e) {
     e.preventDefault();
     const name = document.getElementById('admin-emp-name').value;
     const category = document.getElementById('admin-emp-cat').value;
     const code = document.getElementById('admin-emp-code').value;
 
-    const store = window.appStore;
-    store.addEmpanelment({ name, category, code });
-    window.showAdminToast(`Added ${name}`, "success");
+    window.appStore.addEmpanelment({ name, category, code });
+    window.showAdminToast(`Added partner: ${name}`, "success");
     render();
   };
 
   window.removeAdminEmpanelment = function(code) {
+    if (confirm(`Remove partner (${code})?`)) {
+      window.appStore.removeEmpanelment(code);
+      window.showAdminToast(`Removed partner (${code})`, "success");
+      render();
+    }
+  };
+
+  // NEWS HANDLERS
+  window.addNewsPrompt = function() {
+    const title = prompt("Enter News Headline:", "New Community Camp Launched");
+    if (title) {
+      const content = prompt("Enter News Content:", "Anugraha Eye Hospital conducts regular screening camps across rural districts.");
+      if (content) {
+        window.appStore.addNewsItem({ title, shortDesc: content, content, category: "Clinical Outreach" });
+        window.showAdminToast("Added news article", "success");
+        render();
+      }
+    }
+  };
+
+  window.deleteNewsConfirm = function(id) {
+    if (confirm("Delete this news article?")) {
+      window.appStore.removeNewsItem(id);
+      window.showAdminToast("News article deleted", "success");
+      render();
+    }
+  };
+
+  // MEDIA LIBRARY HANDLERS
+  window.handleAdminMediaUpload = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    window.validateAndReadImageFile(file, (base64, meta) => {
+      const store = window.appStore;
+      store.addGalleryItem({
+        title: file.name.replace(/\.[^/.]+$/, ""),
+        category: "Media Library",
+        src: base64,
+        ...meta
+      });
+      window.showAdminToast("Image uploaded to Media Library!", "success");
+      render();
+    });
+  };
+
+  window.copyMediaPath = function(path) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(path).then(() => {
+        window.showAdminToast("Image path copied to clipboard!", "success");
+      });
+    } else {
+      window.showAdminToast("Image path: " + path, "success");
+    }
+  };
+
+  window.deleteGalleryItemConfirm = function(id) {
+    if (confirm("Delete this image asset from Media Library?")) {
+      window.appStore.removeGalleryItem(id);
+      window.showAdminToast("Image asset deleted", "success");
+      render();
+    }
+  };
+
+  // SETTINGS & BACKUP HANDLERS
+  window.saveBrandAdmin = function(e) {
+    e.preventDefault();
     const store = window.appStore;
-    store.removeEmpanelment(code);
-    window.showAdminToast(`Removed partner (${code})`, "success");
+    store.updateBrand({
+      fallbackPhone: document.getElementById('admin-brand-phone')?.value,
+      whatsappPhone: document.getElementById('admin-brand-whatsapp')?.value,
+      contactEmail: document.getElementById('admin-brand-email')?.value,
+      founder: document.getElementById('admin-brand-founder')?.value
+    });
+    window.showAdminToast("Hospital Credentials updated!", "success");
     render();
   };
 
