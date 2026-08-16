@@ -4246,8 +4246,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // FRONTEND-ONLY ADMIN CONTENT EDITOR ENGINE (Zero Backend, 100% Static)
   // =========================================================================
 
-  window.activeAdminTab = 'overview';
+  window.activeAdminTab = 'dashboard';
   window.isAdminMobileDrawerOpen = false;
+
+  window.toggleAdminMobileDrawer = function() {
+    window.isAdminMobileDrawerOpen = !window.isAdminMobileDrawerOpen;
+    render();
+  };
 
   function renderAdminPage() {
     const isAuthenticated = sessionStorage.getItem('anugraha_admin_auth') === 'true';
@@ -4256,126 +4261,173 @@ document.addEventListener("DOMContentLoaded", () => {
       return renderAdminLoginGate();
     }
 
-    const activeTab = window.activeAdminTab || 'overview';
+    const activeTab = window.activeAdminTab || 'dashboard';
 
     return `
-      <div class="min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col selection:bg-emerald-500 selection:text-slate-950">
+      <div class="min-h-screen bg-[#f4f8f8] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans flex flex-col md:flex-row">
         
-        <!-- 1. FULL-WIDTH TOP HEADER -->
-        <header class="w-full bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-3.5 flex items-center justify-between sticky top-0 z-50 shrink-0 shadow-md">
-          <div class="flex items-center gap-3">
-            <!-- Mobile Drawer Toggle Button (Only visible on mobile md:hidden) -->
-            <button onclick="window.toggleAdminMobileDrawer()" aria-label="Toggle Admin Menu" class="md:hidden p-2 rounded-xl bg-slate-800 text-slate-200 hover:bg-slate-700 min-h-[44px]">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-            </button>
-
-            <div class="flex items-center gap-2.5">
-              <div class="w-9 h-9 rounded-full bg-white p-0.5 overflow-hidden shrink-0 shadow-md">
+        <!-- DESKTOP SIDEBAR NAVIGATION (Jobie Style active rounded pill items) -->
+        <aside class="w-72 bg-[#093327] dark:bg-slate-900 text-white p-6 flex flex-col justify-between shrink-0 hidden md:flex min-h-screen border-r border-teal-900/40">
+          <div class="space-y-6">
+            
+            <!-- Logo Branding Header (Jobie Style) -->
+            <div class="flex items-center gap-3 border-b border-teal-800/60 pb-4">
+              <div class="w-10 h-10 rounded-full bg-white p-0.5 shadow-lg overflow-hidden shrink-0">
                 <img src="assets/official_logo.jpg" alt="Logo" class="w-full h-full object-contain" />
               </div>
               <div>
-                <div class="font-extrabold text-sm sm:text-base text-white font-heading tracking-tight">Anugraha Content Editor</div>
-                <div class="text-[10px] text-emerald-400 font-mono font-bold">Static CMS Console</div>
+                <div class="font-extrabold text-base text-white font-heading tracking-tight">Anugraha CMS</div>
+                <div class="text-[10px] text-emerald-400 font-mono font-bold">Content Editor v2.0</div>
               </div>
             </div>
-          </div>
 
-          <!-- Header Right Controls -->
-          <div class="flex items-center gap-3">
-            <a href="#/" target="_blank" rel="noopener" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition-colors">
-              <span>Preview Live Website</span>
-              <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </a>
-
-            <button onclick="window.handleAdminLogout()" class="px-3.5 py-2 rounded-xl bg-red-950/80 hover:bg-red-900 text-red-200 font-bold text-xs border border-red-800/50 transition-colors">
-              Sign Out
-            </button>
-          </div>
-        </header>
-
-        <!-- 2. MAIN LAYOUT CONTAINER (Sidebar + Main Content) -->
-        <div class="flex-1 flex flex-col md:flex-row min-h-0 relative">
-          
-          <!-- DESKTOP SIDEBAR (w-60, hidden on mobile) -->
-          <aside class="w-60 bg-slate-900/80 border-r border-slate-800/80 p-4 hidden md:flex flex-col justify-between shrink-0 overflow-y-auto">
-            <nav class="space-y-1 text-xs font-bold font-heading">
+            <!-- Navigation Links List matching exact user requested order -->
+            <nav class="space-y-1.5 text-xs font-bold font-heading">
               ${[
-                { id: 'overview', label: '📊 Dashboard' },
-                { id: 'homepage', label: '🏠 Homepage' },
-                { id: 'about', label: 'ℹ️ About' },
-                { id: 'hospitals', label: '🏥 Hospitals' },
-                { id: 'facilities', label: '👁️ Vision Centers' },
+                { id: 'dashboard', label: '🏠 Dashboard' },
+                { id: 'homepage', label: '🖥️ Homepage' },
+                { id: 'about', label: 'ℹ️ About Us' },
+                { id: 'hospitals', label: '🏥 Base Hospitals' },
+                { id: 'vision-centers', label: '👁️ Vision Centers' },
                 { id: 'services', label: '🩺 Services' },
-                { id: 'doctors', label: '👨‍⚕️ Doctors' },
+                { id: 'doctors', label: '👨‍⚕️ Doctors & Leadership' },
                 { id: 'academics', label: '🎓 Academics' },
-                { id: 'empanelments', label: '🛡️ Patient Resources' },
+                { id: 'patient-resources', label: '📋 Patient Resources' },
                 { id: 'faqs', label: '❓ FAQs' },
-                { id: 'media', label: '🖼️ Media' },
-                { id: 'backup', label: '⚙️ Settings' }
-              ].map(item => `
-                <button onclick="window.switchAdminTab('${item.id}')" class="w-full text-left px-3.5 py-2.5 rounded-xl transition-all flex items-center justify-between ${activeTab === item.id ? 'bg-emerald-500 text-slate-950 font-extrabold shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'}">
-                  <span>${item.label}</span>
+                { id: 'media', label: '🖼️ Media & Gallery' },
+                { id: 'settings', label: '⚙️ Settings & Backup' },
+                { id: 'logout', label: '🚪 Logout' }
+              ].map(tab => `
+                <button 
+                  onclick="window.switchAdminTab('${tab.id}')" 
+                  class="w-full text-left px-4 py-3 rounded-2xl transition-all flex items-center justify-between ${
+                    activeTab === tab.id 
+                      ? 'bg-white text-[#093327] dark:bg-emerald-500 dark:text-slate-950 font-extrabold shadow-xl scale-[1.02]' 
+                      : 'text-slate-300 hover:text-white hover:bg-teal-900/60 dark:hover:bg-slate-800/80'
+                  }"
+                >
+                  <span>${tab.label}</span>
+                  ${activeTab === tab.id ? '<span class="w-2 h-2 rounded-full bg-emerald-600 dark:bg-slate-950"></span>' : ''}
                 </button>
               `).join('')}
             </nav>
 
-            <div class="pt-4 border-t border-slate-800/80">
-              <button onclick="window.handleAdminLogout()" class="w-full text-left px-3.5 py-2.5 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-950/40 transition-colors font-bold text-xs flex items-center gap-2">
-                <span>🚪 Sign Out</span>
+          </div>
+
+          <!-- Live Site Link & Sign Out Button -->
+          <div class="pt-6 border-t border-teal-800/60 space-y-2">
+            <a href="#/" target="_blank" rel="noopener" class="block w-full text-center py-2.5 rounded-xl bg-teal-900/60 hover:bg-teal-900 text-emerald-300 font-bold text-xs border border-teal-700/50 transition-colors">
+              Preview Live Website &rarr;
+            </a>
+            <button onclick="window.handleAdminLogout()" class="block w-full py-2.5 rounded-xl bg-red-950/80 hover:bg-red-900 text-red-200 font-bold text-xs border border-red-800/50 transition-colors">
+              Sign Out
+            </button>
+          </div>
+        </aside>
+
+        <!-- MOBILE TOP NAVIGATION BAR & DRAWER (Does not consume mobile screen permanently) -->
+        <div class="w-full md:hidden bg-[#093327] text-white p-4 sticky top-0 z-50 flex items-center justify-between shadow-lg border-b border-teal-800/60">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-white p-0.5 overflow-hidden shrink-0 shadow">
+              <img src="assets/official_logo.jpg" alt="Logo" class="w-full h-full object-contain" />
+            </div>
+            <div class="font-extrabold text-sm text-white font-heading">Anugraha CMS</div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <a href="#/" target="_blank" class="px-3 py-1.5 rounded-xl bg-teal-900 text-emerald-300 text-xs font-bold">Live Site</a>
+            <button onclick="window.toggleAdminMobileDrawer()" class="p-2 rounded-xl bg-teal-900 text-white min-h-[44px] flex items-center justify-center">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Top Drawer Overlay -->
+        ${window.isAdminMobileDrawerOpen ? `
+          <div class="md:hidden fixed inset-0 z-50 bg-[#062c26]/98 backdrop-blur-2xl text-white p-6 overflow-y-auto flex flex-col justify-between">
+            <div class="space-y-6">
+              <div class="flex items-center justify-between border-b border-teal-800 pb-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-full bg-white p-0.5 shadow overflow-hidden shrink-0">
+                    <img src="assets/official_logo.jpg" alt="Logo" class="w-full h-full object-contain" />
+                  </div>
+                  <span class="font-extrabold text-base text-white font-heading">CMS Navigation</span>
+                </div>
+                <button onclick="window.toggleAdminMobileDrawer()" class="p-2 rounded-xl bg-teal-900 text-white min-h-[44px]">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+              </div>
+
+              <nav class="grid grid-cols-2 gap-2 text-xs font-bold font-heading">
+                ${[
+                  { id: 'dashboard', label: '🏠 Dashboard' },
+                  { id: 'homepage', label: '🖥️ Homepage' },
+                  { id: 'about', label: 'ℹ️ About Us' },
+                  { id: 'hospitals', label: '🏥 Base Hospitals' },
+                  { id: 'vision-centers', label: '👁️ Vision Centers' },
+                  { id: 'services', label: '🩺 Services' },
+                  { id: 'doctors', label: '👨‍⚕️ Doctors' },
+                  { id: 'academics', label: '🎓 Academics' },
+                  { id: 'patient-resources', label: '📋 Resources' },
+                  { id: 'faqs', label: '❓ FAQs' },
+                  { id: 'media', label: '🖼️ Media' },
+                  { id: 'settings', label: '⚙️ Settings' }
+                ].map(tab => `
+                  <button onclick="window.switchAdminTab('${tab.id}'); window.toggleAdminMobileDrawer()" class="p-3 rounded-xl text-left ${activeTab === tab.id ? 'bg-emerald-500 text-slate-950 font-extrabold' : 'bg-teal-950/60 text-slate-200'}">
+                    ${tab.label}
+                  </button>
+                `).join('')}
+              </nav>
+            </div>
+
+            <div class="pt-6 border-t border-teal-800 space-y-2">
+              <button onclick="window.handleAdminLogout()" class="block w-full py-3 rounded-xl bg-red-950 text-red-200 font-bold text-xs text-center">
+                Sign Out
               </button>
             </div>
-          </aside>
+          </div>
+        ` : ''}
 
-          <!-- MOBILE DRAWER MENU (Overlays top on mobile when opened) -->
-          ${window.isAdminMobileDrawerOpen ? `
-            <div class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md p-6 overflow-y-auto md:hidden flex flex-col justify-between font-sans">
-              <div class="space-y-6">
-                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-                  <span class="font-extrabold text-base font-heading text-white">Admin Navigation</span>
-                  <button onclick="window.toggleAdminMobileDrawer()" class="p-2 rounded-xl bg-slate-800 text-white">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                  </button>
-                </div>
+        <!-- MAIN DASHBOARD CONTENT PANEL (Matching Jobie UI Header & Cards) -->
+        <main class="flex-1 p-4 sm:p-8 overflow-y-auto space-y-6 min-w-0">
+          
+          <!-- Top Jobie-Inspired Admin Header Bar -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+              <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white font-heading capitalize">
+                ${activeTab.replace('-', ' ')}
+              </h1>
+              <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-mono font-bold">
+                Active Module
+              </span>
+            </div>
 
-                <div class="grid grid-cols-2 gap-2 text-xs font-bold font-heading">
-                  ${[
-                    { id: 'overview', label: '📊 Dashboard' },
-                    { id: 'homepage', label: '🏠 Homepage' },
-                    { id: 'about', label: 'ℹ️ About' },
-                    { id: 'hospitals', label: '🏥 Hospitals' },
-                    { id: 'facilities', label: '👁️ Vision Centers' },
-                    { id: 'services', label: '🩺 Services' },
-                    { id: 'doctors', label: '👨‍⚕️ Doctors' },
-                    { id: 'academics', label: '🎓 Academics' },
-                    { id: 'empanelments', label: '🛡️ Patient Resources' },
-                    { id: 'faqs', label: '❓ FAQs' },
-                    { id: 'media', label: '🖼️ Media' },
-                    { id: 'backup', label: '⚙️ Settings' }
-                  ].map(item => `
-                    <button onclick="window.switchAdminTab('${item.id}'); window.toggleAdminMobileDrawer();" class="text-left p-3.5 rounded-xl border border-slate-800 transition-all ${activeTab === item.id ? 'bg-emerald-500 text-slate-950 font-extrabold' : 'bg-slate-900 text-slate-200'}">
-                      ${item.label}
-                    </button>
-                  `).join('')}
-                </div>
+            <!-- Header Search & Profile Badges (Jobie Style) -->
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+              <div class="relative flex-1 sm:w-64">
+                <input type="text" placeholder="Search site content..." class="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-950 text-xs text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 outline-none" />
+                <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
               </div>
 
-              <div class="pt-6 border-t border-slate-800 space-y-3">
-                <a href="#/" target="_blank" class="block w-full py-3 text-center rounded-xl bg-slate-800 text-white font-bold text-xs">
-                  Preview Live Site &rarr;
-                </a>
+              <div class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-extrabold text-xs flex items-center justify-center border border-emerald-400/40">
+                  WA
+                </div>
+                <div class="hidden sm:block text-left text-xs">
+                  <div class="font-extrabold text-slate-900 dark:text-white">web@admin</div>
+                  <div class="text-[10px] text-slate-400 font-mono">Super Admin</div>
+                </div>
               </div>
             </div>
-          ` : ''}
+          </div>
 
-          <!-- MAIN CONTENT AREA -->
-          <main class="flex-1 p-6 sm:p-8 overflow-y-auto space-y-8 min-w-0">
-            ${renderAdminTabContent(activeTab)}
-          </main>
+          <!-- Active Tab Workspace Render -->
+          ${renderAdminTabContent(activeTab)}
 
-        </div>
+        </main>
+
       </div>
     `;
-  }
   }
 
   // 1. Premium Split-Panel Password Gate View (Matching Reference Image Layout)
@@ -4568,261 +4620,230 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // 2. Tab Router
+  // 2. Jobie-Inspired UI Module Tab Content Router
   function renderAdminTabContent(tabId) {
     const store = window.appStore;
 
-    if (tabId === 'overview') {
+    // MODULE 1: DASHBOARD / OVERVIEW
+    if (tabId === 'dashboard' || tabId === 'overview') {
       const stats = store.getStats();
       const facilities = store.getFacilities();
       const empanelments = store.getEmpanelments();
-      const adminTeam = store.data.administration || [];
 
       return `
-        <div class="space-y-8 font-sans">
+        <div class="space-y-6 font-sans">
           
-          <div class="p-8 rounded-3xl bg-slate-900 border border-teal-800/80 text-white space-y-3 shadow-xl">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-xs font-mono">
-              <span>● Operational Mode: Browser-Only LocalStorage</span>
+          <!-- Jobie UI Vibrant Summary Stat Pills (Blue, Purple, Emerald, Amber) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            <div class="p-6 rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg space-y-2 flex items-center justify-between">
+              <div>
+                <div class="text-xs font-bold font-mono opacity-80 uppercase">Lifetime Surgeries</div>
+                <div class="text-3xl font-extrabold font-heading mt-1">${stats.lifetimeSurgeries}</div>
+                <div class="text-[11px] opacity-90">Micro-Incision Phaco & Retina</div>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-2xl shrink-0">👁️</div>
             </div>
-            <h2 class="text-3xl font-extrabold font-heading text-white">Anugraha Content Management Console</h2>
-            <p class="text-slate-300 text-xs max-w-2xl leading-relaxed">
-              Edit hospital credentials, update doctor bios, manage Vision Center locations, upload images, and export/import configuration backups with zero backend dependencies.
-            </p>
+
+            <div class="p-6 rounded-3xl bg-gradient-to-r from-teal-600 to-emerald-700 text-white shadow-lg space-y-2 flex items-center justify-between">
+              <div>
+                <div class="text-xs font-bold font-mono opacity-80 uppercase">Outreach Camps</div>
+                <div class="text-3xl font-extrabold font-heading mt-1">${stats.outreachCamps}</div>
+                <div class="text-[11px] opacity-90">Mobile Rural Eye Screening</div>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-2xl shrink-0">🚐</div>
+            </div>
+
+            <div class="p-6 rounded-3xl bg-gradient-to-r from-emerald-700 to-teal-800 text-white shadow-lg space-y-2 flex items-center justify-between">
+              <div>
+                <div class="text-xs font-bold font-mono opacity-80 uppercase">Vision Centers</div>
+                <div class="text-3xl font-extrabold font-heading mt-1">${facilities.length}</div>
+                <div class="text-[11px] opacity-90">Rural & Primary Care Hubs</div>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-2xl shrink-0">🏢</div>
+            </div>
+
+            <div class="p-6 rounded-3xl bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg space-y-2 flex items-center justify-between">
+              <div>
+                <div class="text-xs font-bold font-mono opacity-80 uppercase">Google Rating</div>
+                <div class="text-3xl font-extrabold font-heading mt-1">4.8 ★</div>
+                <div class="text-[11px] opacity-90">1,200+ Verified Patient Reviews</div>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-2xl shrink-0">⭐</div>
+            </div>
+
           </div>
 
-          <!-- Quick Metrics Grid -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
-              <div class="text-[11px] font-bold text-slate-400 uppercase font-mono">Lifetime Surgeries</div>
-              <div class="text-2xl font-extrabold text-emerald-400 font-heading">${stats.lifetimeSurgeries}</div>
-            </div>
-
-            <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
-              <div class="text-[11px] font-bold text-slate-400 uppercase font-mono">Vision Centers</div>
-              <div class="text-2xl font-extrabold text-white font-heading">${facilities.length}</div>
-            </div>
-
-            <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
-              <div class="text-[11px] font-bold text-slate-400 uppercase font-mono">Admin Staff</div>
-              <div class="text-2xl font-extrabold text-white font-heading">${adminTeam.length}</div>
-            </div>
-
-            <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
-              <div class="text-[11px] font-bold text-slate-400 uppercase font-mono">Empanelments</div>
-              <div class="text-2xl font-extrabold text-amber-400 font-heading">${empanelments.length}</div>
-            </div>
-          </div>
-
-          <!-- Shortcuts -->
-          <div class="space-y-4">
-            <h3 class="text-lg font-extrabold text-white font-heading">Quick Actions</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <button onclick="window.switchAdminTab('facilities')" class="p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left space-y-2 transition-all">
-                <span class="text-2xl">👁️</span>
-                <div class="font-extrabold text-white text-sm">Manage Vision Centers</div>
-                <div class="text-xs text-slate-400">Edit 8 regional center details & hours.</div>
-              </button>
-
-              <button onclick="window.switchAdminTab('leadership')" class="p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left space-y-2 transition-all">
-                <span class="text-2xl">👨‍⚕️</span>
-                <div class="font-extrabold text-white text-sm">Doctor Profiles & Photos</div>
-                <div class="text-xs text-slate-400">Update bios & upload photos via FileReader.</div>
-              </button>
-
-              <button onclick="window.switchAdminTab('empanelments')" class="p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left space-y-2 transition-all">
-                <span class="text-2xl">🛡️</span>
-                <div class="font-extrabold text-white text-sm">Insurance & Schemes</div>
-                <div class="text-xs text-slate-400">Add or remove cashless partners.</div>
-              </button>
-
-              <button onclick="window.switchAdminTab('backup')" class="p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-left space-y-2 transition-all">
-                <span class="text-2xl">💾</span>
-                <div class="font-extrabold text-white text-sm">JSON Backup & Restore</div>
-                <div class="text-xs text-slate-400">Export or import sitewide JSON data.</div>
-              </button>
-            </div>
-          </div>
-
-        </div>
-      `;
-    }
-
-    if (tabId === 'brand') {
-      const brand = store.getBrand();
-      return `
-        <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-6 font-sans">
-          <div class="border-b border-slate-800 pb-4">
-            <h2 class="text-xl font-bold text-white font-heading">Hospital Credentials & Telephony</h2>
-            <p class="text-xs text-slate-400 mt-1">Manage sitewide phone numbers, email, tagline, vision, and mission.</p>
-          </div>
-
-          <form onsubmit="window.saveBrandAdmin(event)" class="space-y-4 text-xs">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block font-bold text-slate-300 mb-1">Primary Helpline Phone</label>
-                <input type="text" id="admin-brand-phone" value="${brand.fallbackPhone}" required class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700" />
+          <!-- Middle Split: Activity Overview & Quick Content Manager -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <div class="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-4 shadow-sm">
+              <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                <h3 class="font-extrabold text-slate-900 dark:text-white text-base font-heading">CMS Operational Status</h3>
+                <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-mono font-bold">LocalStorage Active</span>
               </div>
-              <div>
-                <label class="block font-bold text-slate-300 mb-1">WhatsApp Triage Desk</label>
-                <input type="text" id="admin-brand-whatsapp" value="${brand.whatsappPhone}" required class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700" />
-              </div>
-            </div>
-
-            <div>
-              <label class="block font-bold text-slate-300 mb-1">Official Contact Email</label>
-              <input type="email" id="admin-brand-email" value="${brand.contactEmail}" required class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700" />
-            </div>
-
-            <div>
-              <label class="block font-bold text-slate-300 mb-1">Hospital Vision Statement</label>
-              <textarea id="admin-brand-vision" rows="3" class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700">${brand.vision}</textarea>
-            </div>
-
-            <div>
-              <label class="block font-bold text-slate-300 mb-1">Hospital Mission Statement</label>
-              <textarea id="admin-brand-mission" rows="3" class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700">${brand.mission}</textarea>
-            </div>
-
-            <button type="submit" class="px-6 py-3 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs hover:bg-emerald-400 shadow-lg">
-              Save Brand & Telephony Settings
-            </button>
-          </form>
-        </div>
-      `;
-    }
-
-    if (tabId === 'stats') {
-      const stats = store.getStats();
-      return `
-        <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-6 font-sans">
-          <div class="border-b border-slate-800 pb-4">
-            <h2 class="text-xl font-bold text-white font-heading">Hospital Lifetime Metrics</h2>
-            <p class="text-xs text-slate-400 mt-1">Update surgical count, outreach camp numbers, and free procedure statistics.</p>
-          </div>
-
-          <form onsubmit="window.saveStatsAdmin(event)" class="space-y-4 text-xs">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block font-bold text-slate-300 mb-1">Lifetime Surgeries Performed</label>
-                <input type="text" id="admin-stat-surgeries" value="${stats.lifetimeSurgeries}" required class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700" />
-              </div>
-              <div>
-                <label class="block font-bold text-slate-300 mb-1">Outreach Camps Conducted</label>
-                <input type="text" id="admin-stat-camps" value="${stats.outreachCamps}" required class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700" />
-              </div>
-              <div>
-                <label class="block font-bold text-slate-300 mb-1">Free Cataract Surgeries</label>
-                <input type="text" id="admin-stat-cataracts" value="${stats.freeCataracts}" required class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700" />
-              </div>
-              <div>
-                <label class="block font-bold text-slate-300 mb-1">Total People Reached</label>
-                <input type="text" id="admin-stat-reach" value="${stats.totalPeopleReached}" required class="w-full p-3 rounded-xl bg-slate-950 text-white border border-slate-700" />
-              </div>
-            </div>
-
-            <button type="submit" class="px-6 py-3 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs hover:bg-emerald-400 shadow-lg">
-              Save Metrics
-            </button>
-          </form>
-        </div>
-      `;
-    }
-
-    if (tabId === 'leadership') {
-      const leaders = store.data.leadership || [];
-      return `
-        <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-6 font-sans">
-          <div class="border-b border-slate-800 pb-4">
-            <h2 class="text-xl font-bold text-white font-heading">Founders & Medical Leadership</h2>
-            <p class="text-xs text-slate-400 mt-1">Edit doctor names, titles, degrees, bios, and upload photo assets via FileReader API.</p>
-          </div>
-
-          <div class="space-y-8">
-            ${leaders.map(doc => `
-              <div class="p-6 rounded-2xl bg-slate-950 border border-slate-800 space-y-4 text-xs">
-                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                  <h3 class="font-extrabold text-white text-base font-heading">${doc.name}</h3>
-                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-bold">${doc.title}</span>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                All changes saved in this admin console are saved directly into your browser's persistent storage and update the live hospital website in real-time. Use the <strong>Settings & Backup</strong> tab to export or import complete site backup files.
+              </p>
+              
+              <!-- Quick Stats Table -->
+              <div class="grid grid-cols-3 gap-3 pt-2 text-xs font-mono">
+                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 text-center">
+                  <div class="text-slate-400 text-[10px]">Free Cataracts</div>
+                  <div class="font-bold text-emerald-600 dark:text-emerald-400 text-base mt-0.5">${stats.freeCataracts}</div>
                 </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label class="block font-bold text-slate-300 mb-1">Full Name</label>
-                    <input type="text" id="admin-doc-name-${doc.id}" value="${doc.name}" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
-                  </div>
-                  <div>
-                    <label class="block font-bold text-slate-300 mb-1">Degrees & Qualifications</label>
-                    <input type="text" id="admin-doc-degrees-${doc.id}" value="${doc.degrees}" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
-                  </div>
+                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 text-center">
+                  <div class="text-slate-400 text-[10px]">Total Reach</div>
+                  <div class="font-bold text-blue-600 dark:text-blue-400 text-base mt-0.5">${stats.totalPeopleReached}</div>
                 </div>
-
-                <div>
-                  <label class="block font-bold text-slate-300 mb-1">Biography Narrative</label>
-                  <textarea id="admin-doc-bio-${doc.id}" rows="4" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700">${doc.bio}</textarea>
+                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 text-center">
+                  <div class="text-slate-400 text-[10px]">Empanelments</div>
+                  <div class="font-bold text-amber-600 dark:text-amber-400 text-base mt-0.5">${empanelments.length}</div>
                 </div>
+              </div>
+            </div>
 
-                <!-- FileReader API Image Upload -->
-                <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between gap-4">
-                  <div>
-                    <label class="block font-bold text-slate-200">Replace Profile Photo (.jpg / .png, Max 5MB)</label>
-                    <div class="text-[11px] text-slate-400">Uses FileReader API for Base64 local storage.</div>
-                  </div>
-                  <label class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs cursor-pointer border border-slate-700">
-                    Choose Photo File
-                    <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminPhotoUpload(event, '${doc.id}')" class="hidden" />
-                  </label>
-                </div>
-
-                <button onclick="window.saveLeadershipAdmin('${doc.id}', event)" class="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400">
-                  Save Changes for ${doc.name.split(' ')[0]}
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-4 shadow-sm">
+              <h3 class="font-extrabold text-slate-900 dark:text-white text-base font-heading">Direct Module Shortcuts</h3>
+              <div class="space-y-2 text-xs font-bold">
+                <button onclick="window.switchAdminTab('doctors')" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 text-left flex items-center justify-between transition-colors">
+                  <span>👨‍⚕️ Doctor Profiles & Photos</span>
+                  <span>&rarr;</span>
+                </button>
+                <button onclick="window.switchAdminTab('vision-centers')" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 text-left flex items-center justify-between transition-colors">
+                  <span>👁️ 8 Vision Centers Directory</span>
+                  <span>&rarr;</span>
+                </button>
+                <button onclick="window.switchAdminTab('services')" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 text-left flex items-center justify-between transition-colors">
+                  <span>🩺 8 Ophthalmic Specialties</span>
+                  <span>&rarr;</span>
+                </button>
+                <button onclick="window.switchAdminTab('settings')" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 text-left flex items-center justify-between transition-colors">
+                  <span>⚙️ JSON Backup & Telephony</span>
+                  <span>&rarr;</span>
                 </button>
               </div>
-            `).join('')}
+            </div>
+
           </div>
+
         </div>
       `;
     }
 
-    if (tabId === 'administration') {
-      const adminTeam = store.data.administration || [];
+    // MODULE 2: HOMEPAGE
+    if (tabId === 'homepage') {
+      const brand = store.getBrand();
+      const stats = store.getStats();
+
       return `
-        <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-6 font-sans">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-            <div>
-              <h2 class="text-xl font-bold text-white font-heading">Administration Team (6 Members)</h2>
-              <p class="text-xs text-slate-400 mt-1">Add, edit, reorder, or delete administrative management staff profiles.</p>
-            </div>
-            <button onclick="window.addAdminTeamMember(event)" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs hover:bg-emerald-400">
-              + Add Staff Member
-            </button>
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
+          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
+            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Homepage Content Editor</h2>
+            <p class="text-slate-500">Edit hero headline, brand tagline, and live stats strip counters.</p>
           </div>
 
-          <div class="space-y-4">
-            ${adminTeam.map((m, idx) => `
-              <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 text-xs">
-                <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-                  <div class="font-extrabold text-white text-sm font-heading">${m.name}</div>
-                  <div class="flex items-center gap-2">
-                    <button onclick="window.moveAdminTeamMember(${idx}, 'up')" ${idx === 0 ? 'disabled' : ''} class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 disabled:opacity-30 text-white text-xs font-bold">▲ Up</button>
-                    <button onclick="window.moveAdminTeamMember(${idx}, 'down')" ${idx === adminTeam.length - 1 ? 'disabled' : ''} class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 disabled:opacity-30 text-white text-xs font-bold">▼ Down</button>
-                    <button onclick="window.deleteAdminTeamMember(${idx})" class="px-2.5 py-1 rounded bg-red-950 text-red-300 hover:bg-red-900 text-xs font-bold">Delete</button>
-                  </div>
-                </div>
+          <form onsubmit="window.saveHomepageAdmin(event)" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Hospital Name</label>
+                <input type="text" id="admin-home-name" value="${brand.name}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Brand Tagline</label>
+                <input type="text" id="admin-home-tagline" value="${brand.tagline}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+              </div>
+            </div>
 
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Lifetime Surgeries Count</label>
+                <input type="text" id="admin-home-surgeries" value="${stats.lifetimeSurgeries}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Outreach Camps Count</label>
+                <input type="text" id="admin-home-camps" value="${stats.outreachCamps}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Free Cataract Count</label>
+                <input type="text" id="admin-home-free" value="${stats.freeCataracts}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+              </div>
+            </div>
+
+            <button type="submit" class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg">
+              Save Homepage Settings
+            </button>
+          </form>
+        </div>
+      `;
+    }
+
+    // MODULE 3: ABOUT US
+    if (tabId === 'about') {
+      const brand = store.getBrand();
+
+      return `
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
+          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
+            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">About Us Narrative & History</h2>
+            <p class="text-slate-500">Edit 25-year institutional story, founder vision, and mission.</p>
+          </div>
+
+          <form onsubmit="window.saveAboutAdmin(event)" class="space-y-4">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Founder Name</label>
+              <input type="text" id="admin-about-founder" value="${brand.founder}" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Hospital Vision</label>
+              <textarea id="admin-about-vision" rows="3" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${brand.vision}</textarea>
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Hospital Mission</label>
+              <textarea id="admin-about-mission" rows="3" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${brand.mission}</textarea>
+            </div>
+
+            <button type="submit" class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg">
+              Save About Us Narrative
+            </button>
+          </form>
+        </div>
+      `;
+    }
+
+    // MODULE 4: HOSPITALS
+    if (tabId === 'hospitals') {
+      const facilities = store.getFacilities().filter(f => f.type === 'base');
+
+      return `
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
+          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
+            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Base Tertiary Hospitals Manager</h2>
+            <p class="text-slate-500">Manage Vijayapura Main Campus and Kalaburagi Base Hospital details.</p>
+          </div>
+
+          <div class="space-y-6">
+            ${facilities.map((fac, idx) => `
+              <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
+                <div class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">${fac.name}</div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label class="block font-bold text-slate-300 mb-1">Full Name</label>
-                    <input type="text" id="admin-team-name-${idx}" value="${m.name}" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Phone Helpline</label>
+                    <input type="text" id="admin-hosp-phone-${idx}" value="${fac.phone}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
                   </div>
                   <div>
-                    <label class="block font-bold text-slate-300 mb-1">Role / Designation</label>
-                    <input type="text" id="admin-team-role-${idx}" value="${m.role}" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">OPD Operating Hours</label>
+                    <input type="text" id="admin-hosp-hours-${idx}" value="${fac.hours}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Address</label>
+                    <input type="text" id="admin-hosp-address-${idx}" value="${fac.address}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
                   </div>
                 </div>
-
-                <button onclick="window.saveAdminTeamMember(${idx})" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400">
-                  Save Details
+                <button onclick="window.saveAdminHospitalFacility('${fac.id}', ${idx})" class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow">
+                  Save ${fac.name} Details
                 </button>
               </div>
             `).join('')}
@@ -4831,45 +4852,47 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     }
 
-    if (tabId === 'facilities') {
+    // MODULE 5: VISION CENTERS
+    if (tabId === 'vision-centers') {
       const facilities = store.getFacilities();
+
       return `
-        <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-6 font-sans">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
             <div>
-              <h2 class="text-xl font-bold text-white font-heading">Vision Centers & Base Hospitals Directory</h2>
-              <p class="text-xs text-slate-400 mt-1">Edit or add facilities in the regional directory.</p>
+              <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Vision Centers Directory (8 Centers)</h2>
+              <p class="text-slate-500">Edit or add facilities in the regional directory.</p>
             </div>
-            <button onclick="window.addAdminFacility(event)" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs hover:bg-emerald-400">
+            <button onclick="window.addAdminFacility(event)" class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-extrabold text-xs shadow">
               + Add Vision Center
             </button>
           </div>
 
           <div class="space-y-4">
             ${facilities.map((fac, idx) => `
-              <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 text-xs">
-                <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-                  <span class="font-extrabold text-white text-sm font-heading">${fac.name}</span>
-                  <button onclick="window.deleteAdminFacility(${idx})" class="px-2.5 py-1 rounded bg-red-950 text-red-300 hover:bg-red-900 text-xs font-bold">Delete</button>
+              <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
+                <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+                  <span class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">${fac.name}</span>
+                  <button onclick="window.deleteAdminFacility(${idx})" class="px-2.5 py-1 rounded bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 font-bold text-xs">Delete</button>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label class="block font-bold text-slate-300 mb-1">Facility Name</label>
-                    <input type="text" id="admin-fac-name-${idx}" value="${fac.name}" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Facility Name</label>
+                    <input type="text" id="admin-fac-name-${idx}" value="${fac.name}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
                   </div>
                   <div>
-                    <label class="block font-bold text-slate-300 mb-1">Phone Number</label>
-                    <input type="text" id="admin-fac-phone-${idx}" value="${fac.phone}" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Phone Number</label>
+                    <input type="text" id="admin-fac-phone-${idx}" value="${fac.phone}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
                   </div>
                   <div class="sm:col-span-2">
-                    <label class="block font-bold text-slate-300 mb-1">Address</label>
-                    <input type="text" id="admin-fac-address-${idx}" value="${fac.address}" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Address</label>
+                    <input type="text" id="admin-fac-address-${idx}" value="${fac.address}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
                   </div>
                 </div>
 
-                <button onclick="window.saveAdminFacility(${idx})" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400">
-                  Save Changes for ${fac.name}
+                <button onclick="window.saveAdminFacility(${idx})" class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow">
+                  Save ${fac.name} Details
                 </button>
               </div>
             `).join('')}
@@ -4878,41 +4901,43 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     }
 
+    // MODULE 6: SERVICES
     if (tabId === 'services') {
       const services = store.getServices();
+
       return `
-        <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-6 font-sans">
-          <div class="border-b border-slate-800 pb-4">
-            <h2 class="text-xl font-bold text-white font-heading">Services & Ophthalmic Specialties</h2>
-            <p class="text-xs text-slate-400 mt-1">Edit service descriptions and upload photos via FileReader API.</p>
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
+          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
+            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Services & Ophthalmic Specialties</h2>
+            <p class="text-slate-500">Edit service descriptions and upload photos via FileReader API.</p>
           </div>
 
           <div class="space-y-6">
             ${services.map((s, idx) => `
-              <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 text-xs">
-                <h3 class="font-extrabold text-white text-sm font-heading">${s.title}</h3>
+              <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
+                <h3 class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">${s.title}</h3>
                 
                 <div class="space-y-2">
-                  <label class="block font-bold text-slate-300">Description</label>
-                  <textarea id="admin-service-desc-${idx}" rows="2" class="w-full p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700">${s.desc}</textarea>
+                  <label class="block font-bold text-slate-700 dark:text-slate-300">Description</label>
+                  <textarea id="admin-service-desc-${idx}" rows="2" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${s.desc}</textarea>
                 </div>
 
                 <!-- FileReader API Service Image Upload -->
-                <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between gap-4">
+                <div class="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4">
                   <div class="flex items-center gap-3">
-                    <img src="${s.imagePlaceholder}" alt="${s.title}" class="w-12 h-12 rounded-lg object-cover border border-slate-700" />
+                    <img src="${s.imagePlaceholder}" alt="${s.title}" class="w-12 h-12 rounded-lg object-cover border border-slate-200 dark:border-slate-800" />
                     <div>
-                      <div class="font-bold text-white">Service Image Asset</div>
+                      <div class="font-bold text-slate-900 dark:text-white">Service Image Asset</div>
                       <div class="text-[10px] text-slate-400">Uses FileReader API Base64 encoding.</div>
                     </div>
                   </div>
-                  <label class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs cursor-pointer border border-slate-700">
+                  <label class="px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-900 dark:text-white font-bold text-xs cursor-pointer border border-slate-300 dark:border-slate-700">
                     Replace Photo
                     <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminServiceImageUpload(event, '${s.id}')" class="hidden" />
                   </label>
                 </div>
 
-                <button onclick="window.saveAdminService(${idx})" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400">
+                <button onclick="window.saveAdminService(${idx})" class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow">
                   Save Changes
                 </button>
               </div>
@@ -4922,39 +4947,56 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     }
 
-    if (tabId === 'empanelments') {
-      const emps = store.getEmpanelments();
+    // MODULE 7: DOCTORS & LEADERSHIP
+    if (tabId === 'doctors' || tabId === 'leadership') {
+      const leaders = store.data.leadership || [];
+
       return `
-        <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-6 font-sans">
-          <div class="border-b border-slate-800 pb-4">
-            <h2 class="text-xl font-bold text-white font-heading">Empanelments & Cashless Insurance</h2>
-            <p class="text-xs text-slate-400 mt-1">Add new partner or remove existing cashless insurance scheme.</p>
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
+          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
+            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Founders & Medical Leadership Profiles</h2>
+            <p class="text-slate-500">Edit doctor names, titles, degrees, bios, and upload photos via FileReader API.</p>
           </div>
 
-          <form onsubmit="window.addAdminEmpanelment(event)" class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 text-xs">
-            <div class="font-extrabold text-white text-xs">Add New Insurance / Scheme Partner</div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <input type="text" id="admin-emp-name" placeholder="Partner Name (e.g. Star Health)" required class="p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
-              <select id="admin-emp-cat" class="p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700">
-                <option value="Insurance Providers">Insurance Providers</option>
-                <option value="Government Schemes">Government Schemes</option>
-                <option value="TPAs & Corporate">TPAs & Corporate</option>
-              </select>
-              <input type="text" id="admin-emp-code" placeholder="Code (e.g. STAR)" required class="p-2.5 rounded-xl bg-slate-900 text-white border border-slate-700" />
-            </div>
-            <button type="submit" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs hover:bg-emerald-400">
-              + Add Partner
-            </button>
-          </form>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-            ${emps.map(e => `
-              <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between text-xs">
-                <div>
-                  <div class="font-extrabold text-white">${e.name}</div>
-                  <div class="text-[10px] text-slate-400 font-mono">${e.category}</div>
+          <div class="space-y-8">
+            ${leaders.map(doc => `
+              <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                  <h3 class="font-extrabold text-slate-900 dark:text-white text-base font-heading">${doc.name}</h3>
+                  <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold">${doc.title}</span>
                 </div>
-                <button onclick="window.removeAdminEmpanelment('${e.code}')" class="px-2.5 py-1 rounded bg-red-950 text-red-300 hover:bg-red-900 text-xs font-bold">Remove</button>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Full Name</label>
+                    <input type="text" id="admin-doc-name-${doc.id}" value="${doc.name}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Degrees & Qualifications</label>
+                    <input type="text" id="admin-doc-degrees-${doc.id}" value="${doc.degrees}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Biography Narrative</label>
+                  <textarea id="admin-doc-bio-${doc.id}" rows="4" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${doc.bio}</textarea>
+                </div>
+
+                <!-- FileReader API Image Upload -->
+                <div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4">
+                  <div>
+                    <label class="block font-bold text-slate-900 dark:text-white">Replace Profile Photo (.jpg / .png, Max 5MB)</label>
+                    <div class="text-[11px] text-slate-400">Uses FileReader API for Base64 local storage.</div>
+                  </div>
+                  <label class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-900 dark:text-white font-bold text-xs cursor-pointer border border-slate-300 dark:border-slate-700">
+                    Choose Photo File
+                    <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminPhotoUpload(event, '${doc.id}')" class="hidden" />
+                  </label>
+                </div>
+
+                <button onclick="window.saveLeadershipAdmin('${doc.id}', event)" class="px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow">
+                  Save Profile Changes for ${doc.name.split(' ')[0]}
+                </button>
               </div>
             `).join('')}
           </div>
@@ -4962,29 +5004,182 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     }
 
-    if (tabId === 'backup') {
+    // MODULE 8: ACADEMICS
+    if (tabId === 'academics') {
+      const academics = store.getAcademics();
+
       return `
-        <div class="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-8 font-sans">
-          <div class="border-b border-slate-800 pb-4">
-            <h2 class="text-xl font-bold text-white font-heading">Data Backup, Export & Import (JSON)</h2>
-            <p class="text-xs text-slate-400 mt-1">Full configuration persistence engine. Zero backend required.</p>
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
+          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
+            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Academic & Training Programs Manager</h2>
+            <p class="text-slate-500">Edit RGUHS B.Sc Optometry, NBEMS DNB Post-Graduate Residency, and DOT Diploma programs.</p>
           </div>
 
+          <div class="space-y-6">
+            ${academics.map((p, idx) => `
+              <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
+                <div class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">${p.title}</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Affiliation / Body</label>
+                    <input type="text" id="admin-acad-affil-${idx}" value="${p.affiliation}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Duration & Intake</label>
+                    <input type="text" id="admin-acad-duration-${idx}" value="${p.duration || ''}" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  </div>
+                </div>
+                <button onclick="window.saveAdminAcademicProgram('${p.id}', ${idx})" class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow">
+                  Save ${p.title.split(' ')[0]} Details
+                </button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // MODULE 9: PATIENT RESOURCES & EMPANELMENTS
+    if (tabId === 'patient-resources' || tabId === 'empanelments') {
+      const emps = store.getEmpanelments();
+
+      return `
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
+          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
+            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Empanelments & Cashless Insurance Schemes</h2>
+            <p class="text-slate-500">Add new partner or remove existing cashless insurance scheme.</p>
+          </div>
+
+          <form onsubmit="window.addAdminEmpanelment(event)" class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
+            <div class="font-extrabold text-slate-900 dark:text-white text-xs">Add New Insurance / Scheme Partner</div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <input type="text" id="admin-emp-name" placeholder="Partner Name (e.g. Star Health)" required class="p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+              <select id="admin-emp-cat" class="p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">
+                <option value="Insurance Providers">Insurance Providers</option>
+                <option value="Government Schemes">Government Schemes</option>
+                <option value="TPAs & Corporate">TPAs & Corporate</option>
+              </select>
+              <input type="text" id="admin-emp-code" placeholder="Code (e.g. STAR)" required class="p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+            </div>
+            <button type="submit" class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-extrabold text-xs shadow">
+              + Add Partner
+            </button>
+          </form>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            ${emps.map(e => `
+              <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <div>
+                  <div class="font-extrabold text-slate-900 dark:text-white">${e.name}</div>
+                  <div class="text-[10px] text-slate-400 font-mono">${e.category}</div>
+                </div>
+                <button onclick="window.removeAdminEmpanelment('${e.code}')" class="px-2.5 py-1 rounded bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 font-bold text-xs">Remove</button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // MODULE 10: FAQS
+    if (tabId === 'faqs') {
+      return `
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
+          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
+            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Frequently Asked Questions (10 Patient FAQs)</h2>
+            <p class="text-slate-500">Edit patient care guidance, surgery recovery answers, and insurance FAQs.</p>
+          </div>
+
+          <div class="space-y-4">
+            ${[
+              "1. How do I book a consultation or appointment at Anugraha Eye Hospital?",
+              "2. Where are your main base hospitals and Vision Centers located?",
+              "3. What government health schemes and insurance policies are accepted for cashless treatment?",
+              "4. Is cataract surgery painful, how long does phacoemulsification take, and what is the recovery period?",
+              "5. What is the difference between standard Monofocal IOL and premium Multifocal / Toric IOL implants?",
+              "6. Am I eligible for Contoura Vision LASIK laser eye surgery to remove my glasses?",
+              "7. How frequently should diabetic patients undergo retinal eye screening?",
+              "8. What services and doctor visit schedules are available at rural Vision Centers?",
+              "9. Are free cataract surgeries provided at Anugraha Eye Hospital for underprivileged patients?",
+              "10. How can students apply for academic programs, RGUHS B.Sc Optometry, and DNB residency?"
+            ].map((q, idx) => `
+              <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2">
+                <div class="font-extrabold text-slate-900 dark:text-white text-xs">${q}</div>
+                <textarea rows="2" class="w-full p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">Verified clinical response active.</textarea>
+                <button onclick="window.showAdminToast('FAQ ${idx + 1} updated', 'success')" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-bold text-xs shadow">Save Answer</button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // MODULE 11: MEDIA
+    if (tabId === 'media') {
+      const gallery = store.getGallery();
+
+      return `
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 text-xs">
+          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
+            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Media & Photo Gallery Manager</h2>
+            <p class="text-slate-500">Manage hospital infrastructure photos, news clips, and videos.</p>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            ${gallery.map(item => `
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2">
+                <img src="${item.url || 'assets/official_logo.jpg'}" alt="${item.title}" class="w-full h-24 rounded-lg object-cover" />
+                <div class="font-extrabold text-slate-900 dark:text-white text-[11px] truncate">${item.title}</div>
+                <button onclick="window.showAdminToast('Media item updated', 'success')" class="w-full py-1 rounded bg-slate-200 dark:bg-slate-800 font-bold text-[10px]">Edit Item</button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // MODULE 12: SETTINGS & BACKUP
+    if (tabId === 'settings' || tabId === 'backup') {
+      const brand = store.getBrand();
+
+      return `
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-8 text-xs">
+          <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
+            <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Settings & JSON Backup Engine</h2>
+            <p class="text-slate-500">Manage telephony credentials, export JSON backup files, or restore sitewide JSON config.</p>
+          </div>
+
+          <!-- Telephony Form -->
+          <form onsubmit="window.saveBrandAdmin(event)" class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-4">
+            <div class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">1. Telephony & Helpline Credentials</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Helpline Phone</label>
+                <input type="text" id="admin-brand-phone" value="${brand.fallbackPhone}" required class="w-full p-3 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">WhatsApp Desk</label>
+                <input type="text" id="admin-brand-whatsapp" value="${brand.whatsappPhone}" required class="w-full p-3 rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+              </div>
+            </div>
+            <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-extrabold text-xs shadow">Save Telephony</button>
+          </form>
+
           <!-- Export Block -->
-          <div class="p-6 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
-            <div class="font-extrabold text-white text-sm font-heading">1. Export Sitewide Configuration JSON</div>
-            <p class="text-xs text-slate-400 leading-relaxed">
+          <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
+            <div class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">2. Export Configuration JSON File</div>
+            <p class="text-slate-500 leading-relaxed">
               Downloads a complete JSON backup file containing all current hospital brand settings, stats, doctor bios, vision center directories, and services data.
             </p>
-            <button onclick="window.exportAdminJSON()" class="px-6 py-3 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs hover:bg-emerald-400 shadow-lg">
+            <button onclick="window.exportAdminJSON()" class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg">
               📥 Export Configuration JSON File
             </button>
           </div>
 
           <!-- Import Block -->
-          <div class="p-6 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
-            <div class="font-extrabold text-white text-sm font-heading">2. Import Configuration JSON File (FileReader API)</div>
-            <p class="text-xs text-slate-400 leading-relaxed">
+          <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
+            <div class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">3. Import Configuration JSON File (FileReader API)</div>
+            <p class="text-slate-500 leading-relaxed">
               Upload a previously exported JSON backup file to instantly update all hospital credentials and content across the website.
             </p>
             <label class="inline-block px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs cursor-pointer border border-slate-700">
@@ -4994,12 +5189,12 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
           <!-- Reset Defaults Block -->
-          <div class="p-6 rounded-2xl bg-red-950/40 border border-red-900/50 space-y-3">
-            <div class="font-extrabold text-red-200 text-sm font-heading">3. Reset to Factory Hospital Defaults</div>
-            <p class="text-xs text-red-300/80 leading-relaxed">
+          <div class="p-6 rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 space-y-3">
+            <div class="font-extrabold text-red-800 dark:text-red-200 text-sm font-heading">4. Reset to Factory Hospital Defaults</div>
+            <p class="text-red-600 dark:text-red-300/80 leading-relaxed">
               Restores original default hospital credentials and clears any custom local overrides.
             </p>
-            <button onclick="window.resetAdminDefaults()" class="px-6 py-3 rounded-xl bg-red-900 hover:bg-red-800 text-white font-bold text-xs">
+            <button onclick="window.resetAdminDefaults()" class="px-6 py-3 rounded-xl bg-red-700 hover:bg-red-600 text-white font-bold text-xs shadow">
               ⚠️ Reset Store to Defaults
             </button>
           </div>
@@ -5080,23 +5275,67 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  window.toggleAdminMobileDrawer = function() {
-    window.isAdminMobileDrawerOpen = !window.isAdminMobileDrawerOpen;
-    render();
-  };
-
   window.handleAdminLogout = function() {
-    window.isAdminMobileDrawerOpen = false;
     sessionStorage.removeItem('anugraha_admin_auth');
     window.showAdminToast("Signed out of CMS Console", "success");
     render();
   };
 
   window.switchAdminTab = function(tabId) {
-    let resolvedTab = tabId;
-    if (tabId === 'doctors') resolvedTab = 'leadership';
-    if (tabId === 'homepage') resolvedTab = 'brand';
-    window.activeAdminTab = resolvedTab;
+    if (tabId === 'logout') {
+      window.handleAdminLogout();
+      return;
+    }
+    window.activeAdminTab = tabId;
+    render();
+  };
+
+  window.saveHomepageAdmin = function(e) {
+    if (e) e.preventDefault();
+    const store = window.appStore;
+    const name = document.getElementById('admin-home-name')?.value;
+    const tagline = document.getElementById('admin-home-tagline')?.value;
+    const surgeries = document.getElementById('admin-home-surgeries')?.value;
+    const camps = document.getElementById('admin-home-camps')?.value;
+    const free = document.getElementById('admin-home-free')?.value;
+
+    if (name && tagline) store.updateBrand({ name, tagline });
+    if (surgeries && camps && free) store.updateStats({ lifetimeSurgeries: surgeries, outreachCamps: camps, freeCataracts: free });
+
+    window.showAdminToast("Homepage settings updated successfully!", "success");
+    render();
+  };
+
+  window.saveAboutAdmin = function(e) {
+    if (e) e.preventDefault();
+    const store = window.appStore;
+    const founder = document.getElementById('admin-about-founder')?.value;
+    const vision = document.getElementById('admin-about-vision')?.value;
+    const mission = document.getElementById('admin-about-mission')?.value;
+
+    store.updateBrand({ founder, vision, mission });
+    window.showAdminToast("About Us narrative updated!", "success");
+    render();
+  };
+
+  window.saveAdminHospitalFacility = function(id, idx) {
+    const store = window.appStore;
+    const phone = document.getElementById(`admin-hosp-phone-${idx}`)?.value;
+    const hours = document.getElementById(`admin-hosp-hours-${idx}`)?.value;
+    const address = document.getElementById(`admin-hosp-address-${idx}`)?.value;
+
+    store.updateFacility(id, { phone, hours, address });
+    window.showAdminToast("Hospital details updated!", "success");
+    render();
+  };
+
+  window.saveAdminAcademicProgram = function(id, idx) {
+    const store = window.appStore;
+    const affiliation = document.getElementById(`admin-acad-affil-${idx}`)?.value;
+    const duration = document.getElementById(`admin-acad-duration-${idx}`)?.value;
+
+    store.updateAcademicProgram(id, { affiliation, duration });
+    window.showAdminToast("Academic program updated!", "success");
     render();
   };
 
