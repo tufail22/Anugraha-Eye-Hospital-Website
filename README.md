@@ -65,22 +65,19 @@ npx serve -p 8080 .
 
 ---
 
-## 🔒 Security & Admin Architecture (Frontend-Only Prototype)
+## 🔒 Security & Supabase Cloud Architecture
 
-- **Frontend-Only Scope**: This application operates purely on the client side using `localStorage` for mock persistence. No live database, backend server, OAuth provider, or real-time submission handling is included.
-- **Admin Credentials (Mock)**:
-  - Username: `web@admin`
-  - Password: `Admin@2001`
-- **File Upload Validation**:
-  - Accepts **ONLY**: `.jpg`, `.jpeg`, `.png` (`image/jpeg`, `image/jpg`, `image/png`).
-  - Explicitly rejects `.webp`, `.svg`, `.gif`, `.pdf`, `.docx`, `.exe`, `.bmp`, `.tiff`.
-  - Enforces **5 MB maximum file size** per image.
-  - Dimension re-validation via `HTMLImageElement.naturalWidth > 0` before saving.
-- **Architectural Integration Placeholders**:
-  - TypeScript interfaces in `/lib/auth-client.ts`, `/lib/cms-client.ts`, and `/lib/admin-types.ts`.
-  - `logAuditEvent(action, resource)` for audit logging service.
-  - `uploadToCloudStorage(file, metadata)` for S3 / Cloud Blob storage.
-  - `window.sanitizeHTML(input)` for stored XSS prevention.
+- **Supabase PostgreSQL Cloud Database**: All website entities (Homepage, Brand, Doctors, Base Hospitals, Vision Centers, Equipment, Services, News, FAQs, Empanelments, Gallery) are persisted in PostgreSQL.
+- **Row-Level Security (RLS)**:
+  - **Public Visitors (Anon)**: Read-only access (`SELECT`) to published hospital content.
+  - **Hospital Administrators (Auth)**: Full write permissions (`INSERT`, `UPDATE`, `DELETE`) protected by Supabase JWT authentication.
+- **Supabase Cloud Storage (`hospital-media`)**:
+  - Image files uploaded via the Admin CMS are stored permanently in the Supabase Cloud Storage bucket (`hospital-media`) and served over high-speed CDN URLs.
+- **Realtime Multi-Device Synchronization**:
+  - Uses Supabase Realtime WebSocket listeners (`postgres_changes`) alongside BroadcastChannel and REST API fallback, ensuring that whenever an administrator publishes changes on one device, all open browsers, mobile phones, and tablets globally receive and render the updates immediately.
+- **Setup & Migration**:
+  - Run [`docs/supabase-schema.sql`](docs/supabase-schema.sql) in the Supabase SQL Editor.
+  - Add your Supabase URL & Anon Key to [`js/config.js`](js/config.js) or Vercel Environment Variables.
 
 ---
 

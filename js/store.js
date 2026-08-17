@@ -1926,10 +1926,17 @@ class Store {
   initRealtimeSync() {
     if (typeof window === 'undefined') return;
 
-    // 1. Initial remote fetch on page load from any device / IP
+    // 1. Initial remote fetch on page load from Supabase Cloud / API
     this.fetchRemoteData();
 
-    // 2. Listen to BroadcastChannel for real-time cross-tab sync
+    // 2. Connect to Supabase Realtime WebSocket for live cross-device sync
+    if (window.cmsClient && typeof window.cmsClient.subscribeToCMSChanges === 'function') {
+      window.cmsClient.subscribeToCMSChanges(() => {
+        this.fetchRemoteData(true);
+      });
+    }
+
+    // 3. Listen to BroadcastChannel for real-time cross-tab sync
     if ('BroadcastChannel' in window) {
       try {
         this.channel = new BroadcastChannel('anugraha_store_channel');
@@ -1944,7 +1951,7 @@ class Store {
       }
     }
 
-    // 3. Listen to window storage events (cross-tab sync fallback)
+    // 4. Listen to window storage events (cross-tab sync fallback)
     window.addEventListener('storage', (e) => {
       if (e.key === this.key && e.newValue) {
         this.data = this.load();
@@ -1952,12 +1959,12 @@ class Store {
       }
     });
 
-    // 4. Background polling sync (every 3.5s) to detect updates made from other devices/IPs
+    // 5. Background polling sync (every 3.5s) to detect updates made from other devices/IPs
     setInterval(() => {
       this.fetchRemoteData(true);
     }, 3500);
 
-    // 5. Re-check on tab focus / visibility change
+    // 6. Re-check on tab focus / visibility change
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') {
         this.fetchRemoteData(true);
@@ -1968,24 +1975,39 @@ class Store {
   async fetchRemoteData(silent = false) {
     if (typeof window === 'undefined') return;
     try {
-      const endpoints = ['/api/store', 'data/store.json'];
       let remoteData = null;
 
-      for (const endpoint of endpoints) {
+      // 1. Try Supabase Cloud PostgreSQL First
+      if (window.cmsClient && typeof window.cmsClient.fetchAllCMSData === 'function') {
         try {
-          const res = await fetch(`${endpoint}?t=${Date.now()}`, {
-            headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' }
-          });
-          if (res.ok) {
-            remoteData = await res.json();
-            if (remoteData && remoteData.brand) break;
+          const supabaseData = await window.cmsClient.fetchAllCMSData();
+          if (supabaseData && (supabaseData.brand || supabaseData.homepage || supabaseData.equipment)) {
+            remoteData = supabaseData;
           }
-        } catch (err) {
-          // try next endpoint
+        } catch (e) {
+          // fallback to rest
         }
       }
 
-      if (remoteData && remoteData.brand) {
+      // 2. Fallback to /api/store or data/store.json if Supabase not configured
+      if (!remoteData) {
+        const endpoints = ['/api/store', 'data/store.json'];
+        for (const endpoint of endpoints) {
+          try {
+            const res = await fetch(`${endpoint}?t=${Date.now()}`, {
+              headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' }
+            });
+            if (res.ok) {
+              remoteData = await res.json();
+              if (remoteData && remoteData.brand) break;
+            }
+          } catch (err) {
+            // try next endpoint
+          }
+        }
+      }
+
+      if (remoteData && (remoteData.brand || remoteData.homepage)) {
         const currentSavedTime = localStorage.getItem('anugraha_last_saved_time_epoch') || '0';
         const remoteTime = remoteData._lastUpdatedEpoch || remoteData.lastUpdatedEpoch || 0;
         
@@ -2043,7 +2065,16 @@ class Store {
           this.channel.postMessage({ type: 'STORE_UPDATED', epoch: nowEpoch });
         }
 
-        // 3. Post to Server API to persist to disk for all devices/IPs
+        // 3. Persist to Supabase Cloud PostgreSQL
+        if (window.cmsClient) {
+          if (this.data.brand) window.cmsClient.saveSetting('brand', this.data.brand);
+          if (this.data.homepage) window.cmsClient.saveSetting('homepage', this.data.homepage);
+          if (this.data.about) window.cmsClient.saveSetting('about', this.data.about);
+          if (this.data.stats) window.cmsClient.saveSetting('stats', this.data.stats);
+          if (this.data.patientResources) window.cmsClient.saveSetting('patientResources', this.data.patientResources);
+        }
+
+        // 4. Post to Server API / disk backup for multi-device sync
         fetch('/api/store', {
           method: 'POST',
           headers: {
@@ -2051,7 +2082,6 @@ class Store {
           },
           body: jsonStr
         }).catch(err => {
-          // If on pure static host, local sync remains active
           console.log("Server API sync:", err.message);
         });
       }

@@ -6099,17 +6099,19 @@ document.addEventListener("DOMContentLoaded", () => {
             <!-- Curved Slide Notch / LOGIN Accent Badge -->
             <div class="my-8 relative z-10">
               <div class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-white font-extrabold text-xs tracking-widest uppercase shadow-inner">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>SECURE CMS ACCESS</span>
+                <span class="w-2 h-2 rounded-full ${window.isSupabaseConfigured && window.isSupabaseConfigured() ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}"></span>
+                <span>${window.isSupabaseConfigured && window.isSupabaseConfigured() ? 'SUPABASE CLOUD CMS' : 'SECURE CMS ACCESS'}</span>
               </div>
               <p class="text-[11px] text-teal-200/70 mt-2 leading-relaxed">
-                Frontend-only content administration console for Vijayapura & Kalaburagi campuses.
+                ${window.isSupabaseConfigured && window.isSupabaseConfigured() 
+                  ? 'Connected to Supabase Cloud PostgreSQL database with Row-Level Security and Realtime sync.' 
+                  : 'Multi-device cloud content administration console for Vijayapura & Kalaburagi campuses.'}
               </p>
             </div>
 
             <!-- Footer Badge -->
             <div class="relative z-10 text-[10px] text-teal-300/60 font-mono flex items-center gap-1.5">
-              <span>● Protected System &bull; Static Storage</span>
+              <span>● ${window.isSupabaseConfigured && window.isSupabaseConfigured() ? 'PostgreSQL Cloud Database &bull; Realtime Enabled' : 'Protected System &bull; Static Storage'}</span>
             </div>
 
           </div>
@@ -6203,9 +6205,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     <span class="text-xs text-slate-600 dark:text-slate-400 font-medium">Remember username</span>
                   </label>
 
-                  <span class="text-[11px] text-amber-600 dark:text-amber-400 font-bold flex items-center gap-1">
+                  <span class="text-[11px] ${window.isSupabaseConfigured && window.isSupabaseConfigured() ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'} font-bold flex items-center gap-1">
                     <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></path></svg>
-                    Prototype Mode
+                    ${window.isSupabaseConfigured && window.isSupabaseConfigured() ? 'Supabase Auth' : 'Local Setup Mode'}
                   </span>
                 </div>
 
@@ -7937,7 +7939,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- ADMIN INTERACTIVE ACTION HANDLERS ---
 
-  window.handleAdminLoginSubmit = function(e) {
+  window.handleAdminLoginSubmit = async function(e) {
     e.preventDefault();
     const user = document.getElementById('admin-user-input')?.value.trim();
     const pass = document.getElementById('admin-pass-input')?.value;
@@ -7954,29 +7956,36 @@ document.addEventListener("DOMContentLoaded", () => {
     if (spinner) spinner.classList.remove('hidden');
     if (err) err.classList.add('hidden');
 
-    setTimeout(() => {
-      const isValid = (user === 'web@admin' && pass === 'Admin@2001') ||
-                      (user === 'admin' && (pass === 'anugraha2021' || pass === 'admin'));
-
-      if (isValid) {
-        if (rememberMe) {
-          localStorage.setItem('anugraha_remembered_user', user);
-        } else {
-          localStorage.removeItem('anugraha_remembered_user');
-        }
-        sessionStorage.setItem('anugraha_admin_auth', 'true');
-        window.showAdminToast("Authenticated successfully. Opening CMS Console...", "success");
-        render();
-      } else {
+    try {
+      const res = await window.authClient.signIn(user, pass);
+      if (res && res.error) {
         if (btn) btn.disabled = false;
         if (btnText) btnText.textContent = "Sign In to Console";
         if (spinner) spinner.classList.add('hidden');
         if (err) {
-          err.textContent = "Incorrect username or password. Please check your credentials.";
+          err.textContent = res.error.message || "Authentication failed. Check your Supabase email/password credentials.";
           err.classList.remove('hidden');
         }
+        return;
       }
-    }, 600);
+
+      if (rememberMe) {
+        localStorage.setItem('anugraha_remembered_user', user);
+      } else {
+        localStorage.removeItem('anugraha_remembered_user');
+      }
+
+      window.showAdminToast("Authenticated successfully. Opening CMS Console...", "success");
+      render();
+    } catch (ex) {
+      if (btn) btn.disabled = false;
+      if (btnText) btnText.textContent = "Sign In to Console";
+      if (spinner) spinner.classList.add('hidden');
+      if (err) {
+        err.textContent = ex.message || "Authentication error occurred.";
+        err.classList.remove('hidden');
+      }
+    }
   };
 
   window.toggleAdminPasswordVisibility = function() {
@@ -8002,8 +8011,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  window.handleAdminLogout = function() {
-    sessionStorage.removeItem('anugraha_admin_auth');
+  window.handleAdminLogout = async function() {
+    if (window.authClient) {
+      await window.authClient.signOut();
+    } else {
+      sessionStorage.removeItem('anugraha_admin_auth');
+    }
     window.showAdminToast("Signed out of CMS Console", "success");
     render();
   };
@@ -8843,7 +8856,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // EQUIPMENT CMS HANDLERS
-  window.handleEquipmentImageUpload = function(event, eqId) {
+  window.handleEquipmentImageUpload = async function(event, eqId) {
     const file = event.target.files[0];
     if (!file) return;
 
@@ -8856,15 +8869,31 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const dataUrl = e.target.result;
+    let finalUrl = null;
+    if (window.uploadToCloudStorage && window.isSupabaseConfigured && window.isSupabaseConfigured()) {
+      try {
+        const res = await window.uploadToCloudStorage(file, 'equipment');
+        if (res && res.url) finalUrl = res.url;
+      } catch (err) {
+        console.warn("[Cloud Storage] Upload failed, falling back to data URL:", err);
+      }
+    }
+
+    if (!finalUrl) {
+      finalUrl = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = () => resolve(null);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    if (finalUrl) {
       const preview = document.getElementById(`admin-eq-img-${eqId}`);
-      if (preview) preview.src = dataUrl;
-      window.appStore.updateEquipment(eqId, { image: dataUrl });
-      window.showAdminToast("Equipment image replaced successfully! (JPG/PNG validated)", "success");
-    };
-    reader.readAsDataURL(file);
+      if (preview) preview.src = finalUrl;
+      window.appStore.updateEquipment(eqId, { image: finalUrl });
+      window.showAdminToast("Equipment image replaced & persisted successfully!", "success");
+    }
   };
 
   window.saveEquipmentAdminItem = function(eqId) {
