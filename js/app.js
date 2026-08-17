@@ -5392,10 +5392,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!file) return;
 
     const validExtensions = /\.(jpg|jpeg|png)$/i;
-    const validMimeTypes = ['image/jpeg', 'image/png'];
+    const validMimeTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/pjpeg', 'image/x-png'];
 
     const isExtValid = validExtensions.test(file.name);
-    const isMimeValid = validMimeTypes.includes(file.type);
+    const isMimeValid = !file.type || validMimeTypes.includes(file.type.toLowerCase());
 
     // Strict rejection of unauthorized formats
     if (!isExtValid || !isMimeValid) {
@@ -6516,16 +6516,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 <!-- Hero Image Upload -->
                 <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div class="flex items-center gap-3">
-                    <img id="admin-hero-img-preview" src="${home.heroImage || 'assets/services/cataract_surgery.jpg'}" alt="Hero Image" class="w-16 h-12 rounded-lg object-cover" />
-                    <div>
-                      <div class="font-bold text-slate-900 dark:text-white">Hero Background Asset</div>
-                      <div class="text-[10px] text-slate-400">Strictly JPG, JPEG, PNG only</div>
+                  <div class="flex items-center gap-3 min-w-0">
+                    <div class="w-20 h-14 rounded-xl bg-slate-900 overflow-hidden flex items-center justify-center border border-slate-200 dark:border-slate-700 shrink-0">
+                      <img id="admin-hero-img-preview" src="${home.heroImage || 'assets/hero-bg.png'}" alt="Hero Background Preview" class="w-full h-full object-cover" />
+                    </div>
+                    <div class="truncate">
+                      <div class="font-bold text-slate-900 dark:text-white text-xs">Hero Background Asset</div>
+                      <div class="text-[10px] text-slate-400">Strictly JPG, JPEG, PNG only (Max 10MB)</div>
                     </div>
                   </div>
-                  <label class="px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold text-xs cursor-pointer">
-                    Replace Hero Image
-                    <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminHeroImageUpload(event)" class="hidden" />
+                  <label class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs cursor-pointer shrink-0 shadow-sm transition-all flex items-center gap-1.5">
+                    <span>📤 Replace Hero Image</span>
+                    <input type="file" id="admin-hero-file-input" accept=".jpg, .jpeg, .png, image/jpeg, image/png, image/jpg" onchange="window.handleAdminHeroImageUpload(event)" class="hidden" />
                   </label>
                 </div>
               </div>
@@ -8261,10 +8263,15 @@ document.addEventListener("DOMContentLoaded", () => {
       finalCta: document.getElementById('admin-sec-finalCta')?.checked ?? true
     };
 
+    const existingHome = store.getHomepage() || {};
+    const heroImagePreview = document.getElementById('admin-hero-img-preview')?.src;
+    const heroImage = heroImagePreview || existingHome.heroImage || 'assets/hero-bg.png';
+
     store.updateHomepage({
       heroEyebrow,
       heroHeading,
       heroDescription,
+      heroImage,
       primaryCta: { text: cta1Text, link: cta1Link },
       secondaryCta: { text: cta2Text, link: cta2Link },
       sections
@@ -8300,18 +8307,40 @@ document.addEventListener("DOMContentLoaded", () => {
     const file = event.target.files[0];
     if (!file) return;
 
-    window.validateAndReadImageFile(file, (base64, meta) => {
+    const validExtensions = /\.(jpg|jpeg|png)$/i;
+    const validMimes = ['image/jpeg', 'image/png', 'image/jpg', 'image/pjpeg', 'image/x-png'];
+
+    if (!validExtensions.test(file.name) || (file.type && !validMimes.includes(file.type.toLowerCase()))) {
+      window.showAdminToast("Invalid format! Only JPG, JPEG, and PNG images are allowed.", "error");
+      event.target.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const base64 = e.target.result;
+      const preview = document.getElementById('admin-hero-img-preview');
+      if (preview) preview.src = base64;
+
       const store = window.appStore;
       store.updateHomepage({ heroImage: base64 });
       store.addGalleryItem({
         title: "Homepage Hero Background",
         category: "Homepage Hero",
         src: base64,
-        ...meta
+        filename: file.name,
+        type: file.type || 'image/jpeg',
+        size: (file.size / 1024).toFixed(1) + ' KB',
+        uploadDate: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
       });
-      window.showAdminToast("Hero background image updated!", "success");
+
+      window.showAdminToast("Hero background asset uploaded & applied!", "success");
       render();
-    });
+    };
+    reader.onerror = function() {
+      window.showAdminToast("Failed to read image file.", "error");
+    };
+    reader.readAsDataURL(file);
   };
 
   // ABOUT US HANDLERS
