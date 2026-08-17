@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 140" width="100%" height="100%">
+  <!-- Split Trapezoid / Diamond Logo Icon -->
+  <g transform="translate(18, 42) scale(0.9)">
+    <polygon points="0,40 18,0 36,0 18,40" fill="#004a80"/>
+    <polygon points="22,40 40,0 58,0 40,40" fill="#2d7cb6"/>
+    <line x1="14" y1="20" x2="44" y2="20" stroke="#ffffff" stroke-width="4"/>
+  </g>
+
+  <!-- Text: APPASAMY ASSOCIATES -->
+  <text x="80" y="65" font-family="'Trebuchet MS', 'Arial', sans-serif" font-size="17" font-weight="900" fill="#003566" letter-spacing="1">APPASAMY</text>
+  <text x="80" y="81" font-family="'Trebuchet MS', 'Arial', sans-serif" font-size="14.5" font-weight="700" fill="#003566" letter-spacing="1">ASSOCIATES</text>
+  
+  <!-- Tagline -->
+  <text x="110" y="96" font-family="'Trebuchet MS', 'Arial', sans-serif" font-size="7.5" font-weight="600" fill="#004a80" letter-spacing="0.5">Empowering Vision*</text>
+</svg>

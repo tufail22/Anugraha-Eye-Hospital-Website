@@ -109,18 +109,32 @@ const DEFAULT_DATA = {
       title: "Chairman & Founder",
       designation: "Chairman & Senior Chief Ophthalmic Surgeon",
       specialization: "Cataract (Phaco), Refractive Surgery (LASIK) & Anterior Segment",
-      degrees: "MBBS, DOMS, FAGE",
+      degrees: "MBBS, MS, DNB, FAEH, MCHS",
       experience: "25+ Years Experience",
       hospital: "Vijayapura & Kalaburagi Campuses",
       location: "Vijayapura / Kalaburagi",
       areasOfExpertise: "Micro-incision Phacoemulsification, Premium IOL Implantation, Contoura Vision LASIK, Community Ophthalmology",
       languages: "Kannada, English, Hindi, Marathi",
-      photo: "assets/doctors/dr_lingadalli.jpg",
+      photo: "dr_lingadalli_portrait_1786794914757.jpg",
       displayOrder: 1,
       published: true,
       seoTitle: "Dr. Prabhugouda B. Lingadalli | Chairman & Founder | Anugraha Eye Hospital",
       seoDesc: "Profile and clinical leadership of Dr. Prabhugouda B. Lingadalli, Chairman & Founder of Anugraha Eye Hospital with 25+ years experience.",
-      bio: "Founder of Anugraha Eye Hospital across both campuses; pioneered a high-quality, high-volume, low-cost service delivery model restoring sight to thousands."
+      bio: "Founder of Anugraha Eye Hospital across both campuses; pioneered a high-quality, high-volume, low-cost service delivery model restoring sight to thousands. MBBS from B M Patil Medical College, Vijayapura; Ophthalmology training at Vijayanagar Institute of Medical and Science, Bellary (1998); cleared DNB exam in 2000. Spent 2 years at Aravind Eye Hospital, Madurai. Progressed from Lecturer to Professor at B M Patil Medical College over a decade. Founded Anugraha in 2001 and pioneered mobile eye camps treating ~10,000 patients annually free of cost, reaching nearly 10 lakh individuals over 25 years.",
+      awards: [
+        { title: "Amrut Mahotsava Rajyostava Award", year: "2021", organization: "Government of Karnataka" },
+        { title: "Kengal Hanumantayya State Award", year: "2020", organization: "Samarth Sahitya and Sanskrit Pratishthan" },
+        { title: "Vaidya Vikrama Award", year: "2019", organization: "Pandit Puttaraj Gavayigala Ganabhana Vijayapur" },
+        { title: "Nayana Bharghava Award", year: "2018", organization: "Muddebihal Press Club" },
+        { title: "Rajat Sadhakaru Award", year: "2017", organization: "Kannad Prabha & Suvarna News" },
+        { title: "Netra Rakshak Award", year: "2016", organization: "Rotary Club" },
+        { title: "Sadbhavana Award", year: "2015", organization: "State Human Rights Welfare Association" },
+        { title: "Kayak Ratna Award", year: "2014", organization: "Shree Shivalingeshwar Viraktmath" },
+        { title: "Shree Siddeshwar Ratna Award", year: "2013", organization: "Shri Siddeshwar Samsthe" },
+        { title: "Achievers of Karnataka Award", year: "2012", organization: "Vijaya Karnataka Press" },
+        { title: "Vishw Mannya Kannadiga Award", year: "2011", organization: "Mysore Organization" },
+        { title: "Basava Vibhushana Award", year: "2010", organization: "Basava Janmabhoomi Pratishtana" }
+      ]
     },
     {
       id: "dr-malini",
@@ -128,86 +142,141 @@ const DEFAULT_DATA = {
       title: "Medical Director",
       designation: "Medical Director & Senior Ophthalmic Consultant",
       specialization: "General Ophthalmology, Glaucoma & Medical Retina",
-      degrees: "MBBS, DOMS, FAGE",
+      degrees: "MBBS, DO, FGO",
       experience: "20+ Years Experience",
       hospital: "Vijayapura Campus",
       location: "Vijayapura",
       areasOfExpertise: "Comprehensive Eye Care, Glaucoma Diagnostics, Medical Retina, Ophthalmic Administration",
       languages: "Kannada, English, Hindi",
-      photo: "assets/doctors/dr_malini.jpg",
+      photo: "dr_malini_portrait_1786794961083.jpg",
       displayOrder: 2,
       published: true,
       seoTitle: "Dr. Malini P L | Medical Director | Anugraha Eye Hospital",
-      seoDesc: "Profile and medical leadership of Dr. Malini P L, Medical Director of Anugraha Eye Hospital.",
-      bio: "Committed, compassionate leader with nearly two decades driving organizational development."
+      seoDesc: "Profile and medical leadership of Dr. Malini P L, Medical Director of Anugraha Eye Hospital with two decades of clinical leadership.",
+      bio: "Committed, compassionate leader with nearly two decades driving organizational development. Reinforces the hospital's 25-year history and its upgrade to super-specialty status meeting national standards. Highlights the hospital's strategic city-center location, renowned consultants, advanced technology, and trained, compassionate staff.",
+      awards: [
+        { title: "Distinguished Medical Service Citation", year: "2019", organization: "Karnataka Ophthalmic Society" },
+        { title: "Exemplary Women Healthcare Leader Award", year: "2017", organization: "District Medical Forum" }
+      ]
     },
     {
-      id: "dr-sunanda",
-      name: "Dr. Sunanda Lingadalli",
-      title: "Senior Ophthalmic Consultant",
-      designation: "Senior Consultant — Phaco, Glaucoma & Medical Retina",
-      specialization: "Phaco, Glaucoma & Medical Retina",
-      degrees: "MBBS, MS, FAGE",
-      experience: "15+ Years Experience",
-      hospital: "Vijayapura Campus",
+      id: "dr-poornima-patil",
+      name: "Dr. Poornima Patil",
+      title: "Comprehensive Ophthalmologist & Phaco Surgeon",
+      designation: "Comprehensive Ophthalmologist & Phaco Surgeon",
+      specialization: "Cataract Services & Comprehensive Ophthalmology",
+      degrees: "M.B.B.S, D.O, FGO",
+      experience: "12+ Years Experience",
+      hospital: "Vijayapura Base Hospital",
       location: "Vijayapura",
-      areasOfExpertise: "Phacoemulsification, Glaucoma Filtering Surgery, Cornea & Refractive Services",
+      areasOfExpertise: "Micro-incision Cataract Surgery, Phacoemulsification, Premium Monofocal/Multifocal IOLs",
       languages: "Kannada, English, Hindi",
-      photo: "assets/doctors/dr_sunanda.jpg",
+      photo: "assets/doctors/dr_rashmi_biradar.jpg",
       displayOrder: 3,
       published: true,
-      bio: "Senior consultant specializing in Phacoemulsification, Glaucoma Management, and Corneal Refractive Care at Vijayapura Campus."
+      bio: "Senior cataract and comprehensive ophthalmologist specializing in sutureless micro-incision phacoemulsification, intraocular lens implantation, and anterior segment diagnostics."
     },
     {
-      id: "dr-prashant",
-      name: "Dr. Prashant B. Patil",
-      title: "Cornea & Refractive Specialist",
-      designation: "Consultant Cornea & Refractive Surgeon",
-      specialization: "Cornea & Refractive Surgery and Phaco",
-      degrees: "MBBS, MS, DNB",
-      experience: "12+ Years Experience",
-      hospital: "Vijayapura Campus",
+      id: "dr-arunkumar-desai",
+      name: "Dr. Arunkumar B. Desai",
+      title: "Comprehensive Ophthalmologist & Phaco Surgeon",
+      designation: "Comprehensive Ophthalmologist & Phaco Surgeon",
+      specialization: "Cataract Services & Anterior Segment Surgery",
+      degrees: "M.B.B.S, M.S, FICO",
+      experience: "14+ Years Experience",
+      hospital: "Vijayapura Base Hospital",
       location: "Vijayapura",
-      areasOfExpertise: "Corneal Transplantation, Contoura LASIK, Micro-incision Phaco",
+      areasOfExpertise: "Advanced Phacoemulsification, Toric & Multifocal IOL Implants, Anterior Segment Trauma",
       languages: "Kannada, English, Hindi",
-      photo: "assets/doctors/dr_prashant.jpg",
+      photo: "assets/doctors/dr_anuj_vora.jpg",
       displayOrder: 4,
       published: true,
-      bio: "Super-specialty consultant delivering advanced corneal treatments and blade-free laser vision correction."
+      bio: "Fellow of the International Council of Ophthalmology (FICO) with deep clinical expertise in complex cataract cases, premium lens power calculations, and anterior segment reconstruction."
     },
     {
-      id: "dr-anuj-vora",
-      name: "Dr. Anuj A. Vora",
-      title: "Vitreo-Retinal Specialist",
-      designation: "Senior Vitreo-Retinal Surgeon",
-      specialization: "Vitreoretinal Specialist",
-      degrees: "MBBS, MS, FMRF, FICO",
-      experience: "14+ Years Experience",
+      id: "dr-santoshgouda-patil",
+      name: "Dr. Santoshgouda. B. Patil",
+      title: "Head of Phacorefractive",
+      designation: "Head of Phacorefractive",
+      specialization: "Phaco and Refractive & Paediatric Squint",
+      degrees: "MBBS, DO, FAEH",
+      experience: "15+ Years Experience",
       hospital: "Vijayapura & Kalaburagi Campuses",
       location: "Vijayapura / Kalaburagi",
-      areasOfExpertise: "25G Vitrectomy, Diabetic Retinopathy, Anti-VEGF Therapy, Retinal Lasers",
-      languages: "English, Hindi, Gujarati",
-      photo: "assets/doctors/dr_anuj_vora.jpg",
+      areasOfExpertise: "Phacorefractive Surgery, Presbyopia Correction, Clear Lens Extraction, Pediatric Strabismus",
+      languages: "Kannada, English, Hindi",
+      photo: "assets/doctors/dr_prashant.jpg",
       displayOrder: 5,
       published: true,
-      bio: "FICO fellow Vitreoretinal surgeon delivering specialized medical and surgical retinal care across base campuses."
+      bio: "Head of Phacorefractive Department with extensive fellowship training from Aravind Eye Hospital (FAEH). Renowned for advanced presbyopia treatments, refractive lens exchange, and pediatric eye alignment."
     },
     {
-      id: "dr-shridevi",
-      name: "Dr. Shridevi Biradar",
-      title: "Pediatric Ophthalmologist",
-      designation: "Consultant Pediatric Ophthalmologist & Strabismus Surgeon",
-      specialization: "Pediatric & Paediatric Refractive Specialist",
-      degrees: "MBBS, MS, FAGE",
-      experience: "10+ Years Experience",
-      hospital: "Vijayapura Campus",
+      id: "dr-anand-gannur",
+      name: "Dr. Anand G. Gannur",
+      title: "Head of Vitreo Retina Department",
+      designation: "Head of Vitreo Retina Department",
+      specialization: "Vitreo Retinal Surgery & Medical Retina",
+      degrees: "MBBS, MS, FIPS, FVRS",
+      experience: "16+ Years Experience",
+      hospital: "Vijayapura Base Hospital",
       location: "Vijayapura",
-      areasOfExpertise: "Squint Surgery, Amblyopia Therapy, Pediatric Refractive Care",
+      areasOfExpertise: "Micro-incision Vitrectomy Surgery (MIVS), Retinal Detachment Repair, Macular Hole Surgery, Diabetic Retinopathy",
       languages: "Kannada, English, Hindi",
-      photo: "assets/doctors/dr_shridevi.jpg",
+      photo: "assets/doctors/dr_anand_baligar.jpg",
       displayOrder: 6,
       published: true,
-      bio: "Pediatric ophthalmology specialist leading children's vision screening and surgical squint correction."
+      bio: "Fellow in Vitreoretinal Surgery (FVRS) leading complex surgical vitrectomies, sutureless membrane peeling, retinal detachment repair, and intraocular anti-VEGF therapy."
+    },
+    {
+      id: "dr-rohini-patil",
+      name: "Dr. Rohini. S. Patil",
+      title: "Oculoplasty, Paediatric & Phaco Surgeon",
+      designation: "Oculoplasty, Paediatric & Phaco Surgeon",
+      specialization: "Oculoplasty Surgery, Paediatric Squint & Ocular Trauma",
+      degrees: "MBBS, DO, FGO",
+      experience: "12+ Years Experience",
+      hospital: "Vijayapura Base Hospital",
+      location: "Vijayapura",
+      areasOfExpertise: "Ptosis Repair, Blepharoplasty, Lacrimal DCR, Pediatric Strabismus, Emergency Ocular Trauma",
+      languages: "Kannada, English, Hindi",
+      photo: "assets/doctors/dr_shridevi.jpg",
+      displayOrder: 7,
+      published: true,
+      bio: "Specialist in ophthalmic plastic surgery, pediatric strabismus realignment, lacrimal drainage DCR, aesthetic blepharoplasty, and 24/7 emergency ocular trauma repair."
+    },
+    {
+      id: "dr-cauvery-shethe",
+      name: "Dr. Cauvery Shethe",
+      title: "Glaucoma Consultant & Phaco Surgeon",
+      designation: "Glaucoma Consultant & Phaco Surgeon",
+      specialization: "Glaucoma Diagnostics & Microsurgery",
+      degrees: "M.B.B.S, D.O, FGO",
+      experience: "10+ Years Experience",
+      hospital: "Vijayapura & Kalaburagi Campuses",
+      location: "Vijayapura / Kalaburagi",
+      areasOfExpertise: "Automated Perimetry, Cirrus OCT RNFL Analysis, Laser SLT, Trabeculectomy Filtration Surgery",
+      languages: "Kannada, English, Hindi",
+      photo: "assets/doctors/dr_soundarya_patil.jpg",
+      displayOrder: 8,
+      published: true,
+      bio: "Glaucoma consultant dedicated to early IOP detection, computerized visual fields, optic nerve OCT imaging, topical therapy optimization, and advanced filtration surgery."
+    },
+    {
+      id: "dr-madhu-gannur",
+      name: "Dr. Madhu A. Gannur",
+      title: "Cornea, Refractive & Phaco Surgeon",
+      designation: "Cornea, Refractive & Phaco Surgeon",
+      specialization: "Cornea, LASIK & Eye Bank",
+      degrees: "MBBS, MS, FGO",
+      experience: "11+ Years Experience",
+      hospital: "Vijayapura Base Hospital",
+      location: "Vijayapura",
+      areasOfExpertise: "Corneal Transplantation, Eye Banking & Tissue Harvesting, C3R Cross-Linking, Blade-Free LASIK",
+      languages: "Kannada, English, Hindi",
+      photo: "assets/doctors/dr_sunanda.jpg",
+      displayOrder: 9,
+      published: true,
+      bio: "Cornea and Refractive specialist overseeing donor cornea harvesting, pterygium autografting, corneal cross-linking (C3R), and Contoura Vision laser refractive treatments."
     }
   ],
 
@@ -467,246 +536,734 @@ const DEFAULT_DATA = {
 
   services: [
     {
-      id: "cataract-phaco",
-      title: "CATARACT SERVICES",
-      shortDesc: "Micro-incision lens replacement & premium IOL implants (Monofocal, Multifocal, Toric)",
-      fullDesc: "Cataract surgery is the removal of the natural lens of the eye that has developed opacification, which is referred to as a cataract, and its replacement with an artificial intraocular lens (IOL). Over 50,000 free cataract procedures conducted across North Karnataka.",
+      id: "cataract",
+      slug: "cataract",
+      title: "Cataract Services",
+      subtitle: "Micro-Incision Phacoemulsification & Premium IOL Implantation",
       category: "Surgical Ophthalmology",
-      desc: "Cataract surgery is the removal of the natural lens of the eye that has developed opacification, which is referred to as a cataract, and its replacement with an artificial intraocular lens (IOL). Over 50,000 free cataract procedures conducted across North Karnataka.",
+      shortDesc: "Cataract surgery is the only way to remove cataracts and restore your eye vision. During cataract surgery an ophthalmologist removes your clouded natural lens and replaces it with an intraocular lens (IOL). An IOL is an artificial lens that permanently stays in your eye.",
+      fullDesc: "Cataract surgery is the only way to remove cataracts and restore your eye vision. During cataract surgery an ophthalmologist removes your clouded natural lens and replaces it with an intraocular lens (IOL). An IOL is an artificial lens that permanently stays in your eye, providing lifelong crisp and natural vision.",
+      desc: "Cataract surgery is the only way to remove cataracts and restore your eye vision. During cataract surgery an ophthalmologist removes your clouded natural lens and replaces it with an intraocular lens (IOL). An IOL is an artificial lens that permanently stays in your eye.",
       imagePlaceholder: "assets/services/cataract_surgery.jpg",
       heroImage: "assets/services/cataract_surgery.jpg",
-      symptoms: "Cloudy or blurry vision, colors appearing faded, glare and halos around lights, difficulty driving at night.",
-      diagnosis: "Dilated Slit-Lamp Biomicroscopy, Optical Biometry (IOL Master), Non-Contact Tonometry, Specular Microscopy.",
-      treatment: "Blade-free micro-incision phacoemulsification, Ultrasonic lens emulsification, Foldable Hydrophobic Monofocal/Multifocal/Toric IOL implantation.",
-      technology: "Alcon Infiniti & Centurion Phacoemulsification Systems, Zeiss OPMI Lumera Surgical Operating Microscopes, IOLMaster 700.",
-      doctorIds: ["dr-sunanda", "dr-prashant"],
-      relatedDoctors: ["Dr. Sunanda Lingadalli", "Dr. Prashant B. Patil"],
+      serviceImage: "assets/services/cataract_surgery.jpg",
+      relatedDoctorIds: ["dr-poornima-patil", "dr-arunkumar-desai", "dr-lingadalli"],
+      relatedDoctors: ["Dr. Poornima Patil", "Dr. Arunkumar B. Desai", "Dr. Prabhugouda B. Lingadalli"],
       availableHospitals: ["Vijayapura Main Campus", "Kalaburagi Base Hospital"],
+      clinicalDetails: {
+        overview: "Cataract surgery is the only definitive clinical method to eliminate lens opacity and restore crisp vision. The clouded natural lens is gently dissolved using advanced ultrasonic micro-vibrations and replaced with a biocompatible foldable intraocular lens (IOL) that remains permanently in place.",
+        conditions: [
+          "Age-related nuclear, cortical, and subcapsular cataracts",
+          "Congenital and pediatric cataracts requiring micro-aspiration",
+          "Traumatic cataracts resulting from blunt or penetrating eye injury",
+          "Secondary cataracts induced by diabetes, uveitis, or long-term steroid therapy"
+        ],
+        symptoms: [
+          "Progressive clouding, blurring, or dimming of vision",
+          "Difficulty driving at night due to severe glare and halos around headlights",
+          "Colors appearing faded, washed out, or yellowish",
+          "Frequent changes in eyeglass or contact lens prescription",
+          "Double vision or ghost images in a single eye"
+        ],
+        diagnosis: [
+          "Dilated Slit-Lamp Biomicroscopy for cataract grading and nuclear density mapping",
+          "High-precision Optical Biometry (IOLMaster 700) for exact IOL power calculation",
+          "Specular Microscopy to evaluate corneal endothelial cell count and health",
+          "Non-Contact Tonometry (NCT) to record baseline intraocular pressure",
+          "High-Resolution Macular OCT to verify retinal health prior to surgery"
+        ],
+        treatment: [
+          "Blade-free micro-incision phacoemulsification (MIPS) through sub-2.2mm ports",
+          "Custom Monofocal, Multifocal, Trifocal, and Toric Intraocular Lens Implantation",
+          "Sutureless, stitchless self-sealing clear corneal architectural incisions"
+        ],
+        procedure: [
+          "1. Topical anesthetic eye drops applied — zero painful needle injections.",
+          "2. Sub-2.2mm micro-incision created at the clear corneal margin.",
+          "3. Ultrasonic micro-probe gently breaks down and aspirates the opacified natural lens.",
+          "4. Foldable custom intraocular lens (IOL) is injected into the natural capsular bag.",
+          "5. Incision self-seals with water-tight closure without requiring stitches."
+        ],
+        benefits: [
+          "Rapid visual recovery with functional clarity within 24 to 48 hours",
+          "Permanent freedom from thick glasses using advanced multifocal/toric IOLs",
+          "Painless day-care procedure taking only 10-15 minutes per eye",
+          "Proven track record of over 50,000 free and subsidized cataract procedures across North Karnataka"
+        ],
+        preparation: [
+          "Pre-operative biometry and customized intraocular lens selection",
+          "Discontinue contact lenses 3 to 5 days prior to biometric mapping",
+          "Instill prescribed prophylactic antibiotic eye drops 1 day prior",
+          "Arrange for an accompanying family member for same-day discharge"
+        ],
+        recovery: [
+          "Same-day discharge with protective eye shield after 1-2 hours of recovery",
+          "Avoid rubbing eyes, swimming, or heavy lifting for 2 weeks",
+          "Instill prescribed anti-inflammatory drops as scheduled",
+          "Routine follow-up clinical reviews scheduled on Day 1, Week 1, and Month 1"
+        ],
+        whenToConsult: [
+          "When cloudy vision begins interfering with reading, driving, or daily work",
+          "When oncoming headlights cause blinding glare during evening driving",
+          "When updating your spectacle prescription no longer improves visual clarity"
+        ]
+      },
+      faqs: [
+        { q: "Is cataract surgery painful?", a: "No. Advanced phacoemulsification uses topical anesthetic eye drops, ensuring a completely painless experience without needle injections." },
+        { q: "How long does an intraocular lens (IOL) last?", a: "The artificial intraocular lens is permanent and biocompatible; it never degrades or requires replacement, lasting a lifetime." },
+        { q: "Can both eyes be operated on the same day?", a: "Typically, surgeries are scheduled a few days to a week apart to allow the first eye to settle comfortably." }
+      ],
       displayOrder: 1,
-      published: true
+      published: true,
+      seoTitle: "Cataract Services & Phacoemulsification | Anugraha Eye Hospital",
+      seoDesc: "Advanced micro-incision phacoemulsification cataract surgery with premium Monofocal, Multifocal, and Toric IOL implants in Vijayapura and Kalaburagi."
     },
     {
       id: "phaco-refractive",
-      title: "PHACO AND REFRACTIVE",
-      shortDesc: "Blade-free refractive cataract and vision correction surgery",
-      fullDesc: "The refractive errors of an eye can be treated either by glasses or contact lenses, or using refractive surgeries. Phacoemulsification is a modern cataract surgery method in which the eye's internal lens is emulsified with an ultrasonic handpiece and aspirated from the eye.",
-      category: "Refractive & Phaco",
-      desc: "The refractive errors of an eye can be treated either by glasses or contact lenses, or using refractive surgeries. Phacoemulsification is a modern cataract surgery method in which the eye's internal lens is emulsified with an ultrasonic handpiece and aspirated from the eye.",
+      slug: "phaco-refractive",
+      title: "Phaco and Refractive",
+      subtitle: "Advanced Presbyopia Correction & Refractive Lens Surgery",
+      category: "Refractive & Phaco Surgery",
+      shortDesc: "Photorefractive surgery is generally used to treat cases of presbyopia, an age-related pathology defined by the decline in accommodation of the lens. Refractive surgery can correct refractive errors like nearsightedness, farsightedness, astigmatism and presbyopia. Some of these surgeries reduce the cornea. Others implant a lens in your eye. Either way, the goal is the same. These surgeries focus light correctly on the retina so you can see more clearly.",
+      fullDesc: "Photorefractive surgery is generally used to treat cases of presbyopia, an age-related pathology defined by the decline in accommodation of the lens. Refractive surgery can correct refractive errors like nearsightedness, farsightedness, astigmatism and presbyopia. Some of these surgeries reduce the cornea. Others implant a lens in your eye. Either way, the goal is the same. These surgeries focus light correctly on the retina so you can see more clearly.",
+      desc: "Photorefractive surgery is generally used to treat cases of presbyopia, an age-related pathology defined by the decline in accommodation of the lens. Refractive surgery can correct refractive errors like nearsightedness, farsightedness, astigmatism and presbyopia. Some of these surgeries reduce the cornea. Others implant a lens in your eye. Either way, the goal is the same. These surgeries focus light correctly on the retina so you can see more clearly.",
       imagePlaceholder: "assets/services/lasik_contoura.jpg",
       heroImage: "assets/services/lasik_contoura.jpg",
-      symptoms: "Spectacle dependency, myopia, hyperopia, astigmatism, cataract visual disturbance.",
-      diagnosis: "Pentacam Corneal Topography, Pachymetry, Wavefront Aberrometry, Dilated Funduscopy.",
-      treatment: "Topography-Guided Contoura Vision, Femtosecond Blade-Free LASIK, Micro-incision Phacoemulsification.",
-      technology: "Wavelight EX500 Excimer Laser, FS200 Femtosecond Laser, Alcon Centurion Phaco.",
-      doctorIds: ["dr-lingadalli"],
-      relatedDoctors: ["Dr. Prabhugouda B. Lingadalli"],
+      serviceImage: "assets/services/lasik_contoura.jpg",
+      relatedDoctorIds: ["dr-santoshgouda-patil"],
+      relatedDoctors: ["Dr. Santoshgouda. B. Patil"],
       availableHospitals: ["Vijayapura Main Campus", "Kalaburagi Base Hospital"],
+      clinicalDetails: {
+        overview: "Refractive phacoemulsification and photorefractive surgery provide permanent solutions for presbyopia, myopia, hyperopia, and astigmatism. By reshaping the corneal surface or implanting multifocal/EDOF lenses, light rays are precisely focused onto the retina, restoring sharp near, intermediate, and distance vision.",
+        conditions: [
+          "Presbyopia (age-related loss of near focusing accommodation)",
+          "Myopia (nearsightedness) and Hyperopia (farsightedness)",
+          "Corneal and lenticular astigmatism",
+          "High refractive errors unsuitable for standard surface laser ablation"
+        ],
+        symptoms: [
+          "Difficulty reading fine print or using mobile screens without reading glasses",
+          "Eye fatigue, strain, and brow-ache after close-up computer work",
+          "Blurred distance vision accompanied by night-time glare",
+          "Inconvenience of juggling multiple pairs of reading and distance glasses"
+        ],
+        diagnosis: [
+          "Corneal Topography & Wavefront Aberrometry (Pentacam HR Mapping)",
+          "Central and peripheral corneal pachymetry",
+          "Manifest and Cycloplegic Subjective Refraction",
+          "High-Precision Optical Biometry for ICL/IOL sizing"
+        ],
+        treatment: [
+          "Refractive Lens Exchange (RLE) with Multifocal/Extended Depth of Focus (EDOF) IOLs",
+          "Implantable Collamer Lens (ICL / Phakic IOL) for high refractive powers",
+          "Customized corneal surface ablation and photorefractive correction"
+        ],
+        procedure: [
+          "1. Custom optical mapping creates a high-precision wavefront ablation profile.",
+          "2. Numbing drops ensure zero discomfort during treatment.",
+          "3. Micro-incision phaco or laser delivery reshapes the optical pathway.",
+          "4. Custom IOL or ICL positioned in the optical axis.",
+          "5. Visual focus recalibrated for clear multi-distance sight."
+        ],
+        benefits: [
+          "Permanent freedom from bifocal, progressive, or reading spectacles",
+          "High-definition contrast sensitivity under varied lighting conditions",
+          "Quick, painless outpatient procedure with rapid stabilization",
+          "Long-term visual stability for active professional lifestyles"
+        ],
+        preparation: [
+          "Refrain from wearing soft contact lenses 1 week prior to consultation",
+          "Undergo thorough dilated retinal examination",
+          "Review medication history and lifestyle visual requirements"
+        ],
+        recovery: [
+          "Rapid visual adaptation within 24 to 48 hours",
+          "Avoid rubbing the eyes or swimming for 2 weeks",
+          "Follow-up examinations on Day 1, Month 1, and Month 3"
+        ],
+        whenToConsult: [
+          "When arm-length reading becomes difficult due to presbyopia",
+          "When glasses or contact lenses cause chronic dry eyes and discomfort",
+          "When seeking active, spectacle-free lifestyle solutions"
+        ]
+      },
+      faqs: [
+        { q: "What is the difference between phaco and standard refractive surgery?", a: "Phaco refractive surgery replaces the natural aging lens with a customized multi-focal lens, while laser refractive surgery reshapes the outer corneal surface." },
+        { q: "Can presbyopia return after phaco refractive surgery?", a: "No. Because the natural lens is replaced with a permanent multi-focal IOL, presbyopia cannot recur." }
+      ],
       displayOrder: 2,
-      published: true
+      published: true,
+      seoTitle: "Phaco and Refractive Surgery | Anugraha Eye Hospital",
+      seoDesc: "Specialized photorefractive and phaco surgery correcting presbyopia, myopia, and astigmatism at Anugraha Eye Hospital."
     },
     {
-      id: "vitreo-retinal",
-      title: "VITREO RETINAL SURGERY",
-      shortDesc: "Advanced vitreoretinal surgery, diabetic retinopathy & macular care",
-      fullDesc: "The vitreo-retinal system refers to the vitreous humor and retina. Vitreoretinal surgery is performed when patient vision is compromised due to diseases affecting retina or vitreous.",
-      category: "Medical & Surgical Retina",
-      desc: "The vitreo-retinal system refers to the vitreous humor and retina. Vitreoretinal surgery is performed when patient vision is compromised due to diseases affecting retina or vitreous.",
-      bullets: [
-        "Diabetic tractional retinal detachment",
-        "Macular hole",
-        "Epiretinal membrane / pucker",
-        "Retinal tear or detachment",
-        "Intraocular foreign body removal",
-        "Endophthalmitis or severe eye infection"
-      ],
+      id: "vitreo-retinal-surgery",
+      slug: "vitreo-retinal-surgery",
+      title: "Vitreo Retinal Surgery",
+      subtitle: "Micro-Incision Vitrectomy, Retinal Detachment & Macular Hole Care",
+      category: "Vitreoretinal Super-Specialty",
+      shortDesc: "The only treatment option is a surgery called vitrectomy and that surgery is undertaken to help restore your eye to close the retinal hole. The success of the operation involves careful removal of membranes around the hole and maintaining face down posture for up to 2 weeks on a very strict basis to allow the gas to close that hole.",
+      fullDesc: "The only treatment option is a surgery called vitrectomy and that surgery is undertaken to help restore your eye to close the retinal hole. The success of the operation involves careful removal of membranes around the hole and maintaining face down posture for up to 2 weeks on a very strict basis to allow the gas to close that hole.",
+      desc: "The only treatment option is a surgery called vitrectomy and that surgery is undertaken to help restore your eye to close the retinal hole. The success of the operation involves careful removal of membranes around the hole and maintaining face down posture for up to 2 weeks on a very strict basis to allow the gas to close that hole.",
       imagePlaceholder: "assets/services/retina_care.jpg",
       heroImage: "assets/services/retina_care.jpg",
-      symptoms: "Floating spots or cobwebs in vision, flashes of light, dark curtain-like shadow over visual field.",
-      diagnosis: "Fundus Fluorescein Angiography (FFA), High-Definition Macular OCT, B-Scan Ophthalmic Ultrasound.",
-      treatment: "Green Laser Retinal Photocoagulation, Intravitreal Anti-VEGF Injections, 25G Pars Plana Vitrectomy.",
-      technology: "Zeiss Macular OCT, Frequency Doubled Nd:YAG Green Laser, Constellation Vitrectomy Suite.",
-      doctorIds: ["dr-anuj-vora"],
-      relatedDoctors: ["Dr. Anuj A. Vora"],
-      availableHospitals: ["Vijayapura Main Campus", "Kalaburagi Base Hospital"],
+      serviceImage: "assets/services/retina_care.jpg",
+      relatedDoctorIds: ["dr-anand-gannur"],
+      relatedDoctors: ["Dr. Anand G. Gannur"],
+      availableHospitals: ["Vijayapura Main Campus"],
+      clinicalDetails: {
+        overview: "Vitreo-retinal surgery addresses complex disorders of the vitreous humor and neurosensory retina. Advanced micro-incision sutureless vitrectomy (MIVS) repairs retinal tears, diabetic vitreous hemorrhages, tractional detachments, and macular holes using state-of-the-art gas/silicone oil tamponade.",
+        conditions: [
+          "Full-thickness macular holes and epiretinal membranes (macular pucker)",
+          "Rhegmatogenous, tractional, and exudative retinal detachments",
+          "Proliferative diabetic retinopathy and non-clearing vitreous hemorrhage",
+          "Retinal vein occlusions (CRVO/BRVO), retinal tears, and macular edema"
+        ],
+        symptoms: [
+          "Sudden shower of dark floaters or cobweb-like specks across vision",
+          "Flashes of light (photopsia) in the peripheral field of vision",
+          "A dark curtain or shadow descending over part of your visual field",
+          "Distorted, wavy straight lines (metamorphopsia) and central blind spots"
+        ],
+        diagnosis: [
+          "High-Definition Macular Optical Coherence Tomography (Spectral Domain OCT)",
+          "Fundus Fluorescein Angiography (FFA) to map retinal vascular perfusion",
+          "Ophthalmic B-Scan Ultrasound for dense vitreous hemorrhages",
+          "Ultra-widefield Indirect Ophthalmoscopy under full pupillary dilation"
+        ],
+        treatment: [
+          "23G / 25G / 27G Micro-Incision Pars Plana Vitrectomy (MIVS)",
+          "Internal Limiting Membrane (ILM) peeling using biocompatible vital dyes",
+          "Endolaser retinal photocoagulation and trans-scleral cryopexy",
+          "Intraocular Gas (C3F8 / SF6) or Medical-Grade Silicone Oil tamponade",
+          "Intravitreal anti-VEGF (Accentrix, Lucentis, Eylea) and steroid implants"
+        ],
+        procedure: [
+          "• Laser surgery can repair a retinal tear or hole.",
+          "• Shrinking irregular blood vessels via green laser photocoagulation.",
+          "• Freezing (cryopexy) to secure torn retinal margins.",
+          "• Injecting air or gas into your eye to tamponade the hole.",
+          "• Indenting the surface of your eye (scleral buckling).",
+          "• Evacuating and replacing the fluid in the eye (vitrectomy).",
+          "• Implanting medicine (anti-VEGF/steroids) into the eye.",
+          "• Implanting a retinal prosthesis where clinically indicated."
+        ],
+        benefits: [
+          "Preserves sight and prevents irreversible neurosensory blindness",
+          "Repairs anatomical tears and reattaches separated retina",
+          "Minimally invasive sutureless vitrectomy ports for faster comfort",
+          "Comprehensive diabetic eye care safeguarding rural populations"
+        ],
+        preparation: [
+          "Comprehensive dilated vitreoretinal mapping and systemic sugar control",
+          "Discontinue blood thinners under physician supervision if advised",
+          "Prepare home accommodations for face-down positioning if required"
+        ],
+        recovery: [
+          "Strict face-down positioning for up to 2 weeks if gas tamponade is used",
+          "Do not travel by air or ascend high altitudes while intraocular gas is present",
+          "Apply prescribed antibiotic and cycloplegic eye drops diligently",
+          "Regular milestone check-ups to verify complete hole closure"
+        ],
+        whenToConsult: [
+          "Sudden onset of flashes and floaters (Immediate Emergency)",
+          "Dark shadow or curtain covering any part of your vision",
+          "Sudden blurring of central vision in diabetic or high-myopia patients"
+        ]
+      },
+      faqs: [
+        { q: "Why is face-down positioning required after macular hole surgery?", a: "The gas bubble floats upward inside the eye. Maintaining a face-down posture ensures the bubble presses directly against the macular hole, sealing it securely." },
+        { q: "Can vitrectomy be performed under local anesthesia?", a: "Yes. Most micro-incision vitrectomies are performed comfortably under local peribulbar block anesthesia with same-day recovery." }
+      ],
       displayOrder: 3,
-      published: true
+      published: true,
+      seoTitle: "Vitreo Retinal Surgery | Anugraha Eye Hospital",
+      seoDesc: "Specialized vitrectomy surgery, retinal detachment repair, and macular hole treatment by Head of Vitreo Retina Dr. Anand G. Gannur."
     },
     {
-      id: "pediatric-squint",
-      title: "PEDIATRIC SQUINT",
-      shortDesc: "Childhood vision screening, strabismus squint surgery & amblyopia therapy",
-      fullDesc: "Strabismus (also known as squint) is a condition in which the eyes do not properly align with each other when looking at an object. It can be present in children and adults. Early treatment prevents permanent lazy eye (amblyopia).",
-      category: "Pediatric Eye Care",
-      desc: "Strabismus (also known as squint) is a condition in which the eyes do not properly align with each other when looking at an object. It can be present in children and adults. Early treatment prevents permanent lazy eye (amblyopia).",
+      id: "paediatric-squint",
+      slug: "paediatric-squint",
+      title: "Paediatric Squint",
+      subtitle: "Children's Strabismus Correction, Amblyopia & Binocular Alignment",
+      category: "Pediatric Ophthalmology",
+      shortDesc: "The main treatment for a squint is glasses – these can help if a squint is caused by a problem with your child’s eyesight, such as large-angle hyperopia. Eye exercises – exercises for the muscles that control eye movement may sometimes help the eyes work together better. There is no specific age limit for squint eye surgery but surgery before six years of age is important to get the best desired results. For this treatment, doctors may perform surgical correction or exercises to help properly align your eyes.",
+      fullDesc: "The main treatment for a squint is glasses – these can help if a squint is caused by a problem with your child’s eyesight, such as large-angle hyperopia. Eye exercises – exercises for the muscles that control eye movement may sometimes help the eyes work together better. There is no specific age limit for squint eye surgery but surgery before six years of age is important to get the best desired results. For this treatment, doctors may perform surgical correction or exercises to help properly align your eyes.",
+      desc: "The main treatment for a squint is glasses – these can help if a squint is caused by a problem with your child’s eyesight, such as large-angle hyperopia. Eye exercises – exercises for the muscles that control eye movement may sometimes help the eyes work together better. There is no specific age limit for squint eye surgery but surgery before six years of age is important to get the best desired results. For this treatment, doctors may perform surgical correction or exercises to help properly align your eyes.",
       imagePlaceholder: "assets/services/pediatric_ophthalmology.jpg",
       heroImage: "assets/services/pediatric_ophthalmology.jpg",
-      symptoms: "Misaligned or crossed eyes (squint), holding objects close to face, squinting while watching TV.",
-      diagnosis: "Cycloplegic Refraction, Orthoptic Binocular Assessment, Synoptophore Evaluation.",
-      treatment: "Occlusion (patching) amblyopia therapy, Prism spectacle correction, Surgical extraocular muscle resection/recession.",
-      technology: "Clement Clarke Synoptophore, Retinomax Handheld Autorefractor.",
-      doctorIds: ["dr-lingadalli", "dr-shridevi"],
-      relatedDoctors: ["Dr. Prabhugouda B. Lingadalli", "Dr. Shridevi Biradar"],
+      serviceImage: "assets/services/pediatric_ophthalmology.jpg",
+      relatedDoctorIds: ["dr-santoshgouda-patil", "dr-rohini-patil"],
+      relatedDoctors: ["Dr. Santoshgouda. B. Patil", "Dr. Rohini. S. Patil"],
       availableHospitals: ["Vijayapura Main Campus"],
+      clinicalDetails: {
+        overview: "Pediatric squint (strabismus) and amblyopia (lazy eye) require specialized, compassionate clinical intervention during early childhood. Corrective spectacles, occlusion therapy, orthoptic exercises, and precise extraocular muscle microsurgery restore proper eye alignment, depth perception, and binocular single vision.",
+        conditions: [
+          "Esotropia (inward turning) and Exotropia (outward turning eyes)",
+          "Amblyopia ('Lazy Eye') caused by refractive asymmetry or strabismus",
+          "Accommodative squints caused by uncorrected hyperopia",
+          "Congenital nystagmus, ocular torticollis (head tilt), and diplopia"
+        ],
+        symptoms: [
+          "Crossed, drifting, or misaligned eyes in photos or daily gaze",
+          "Child closing one eye in bright sunlight or tilting the head",
+          "Poor 3D depth perception, stumbling or difficulty catching balls",
+          "Holding books or screens unusually close to the face"
+        ],
+        diagnosis: [
+          "Cycloplegic Refraction with child-friendly retinoscopy",
+          "Prism Cover Test and Hirschberg Corneal Reflex evaluation",
+          "Synoptophore Orthoptic Assessment for binocular fusion",
+          "Dilated Fundus Examination to rule out organic pathology"
+        ],
+        treatment: [
+          "Prescription corrective spectacles for refractive squints",
+          "Occlusion (patching) therapy to strengthen the lazy eye",
+          "Orthoptic synoptophore exercises to build fusion reserve",
+          "Extraocular muscle recession, resection, or plication microsurgery"
+        ],
+        procedure: [
+          "1. Comprehensive orthoptic measurement establishes the deviation angle in prism diopters.",
+          "2. Child-safe general anesthesia administered by pediatric anesthetists.",
+          "3. Tiny incisions made in the conjunctiva to access extraocular muscles.",
+          "4. Muscle attachments carefully adjusted (weakened or tightened) to balance alignment.",
+          "5. Absorbable sutures placed with no requirement for suture removal."
+        ],
+        benefits: [
+          "Restores normal ocular alignment and balanced appearance",
+          "Enables development of 3D stereoscopic depth perception",
+          "Critical developmental treatment before age 6 optimizes visual acuity",
+          "Eliminates abnormal compensatory head tilt and neck strain"
+        ],
+        preparation: [
+          "Pediatric pre-anesthetic medical check-up",
+          "Fasting guidelines explained clearly for child safety",
+          "Explain the procedure gently to build comfort and confidence"
+        ],
+        recovery: [
+          "Same-day or overnight discharge with child-safe eye dressing",
+          "Mild redness settles comfortably within 1-2 weeks",
+          "Resume school and non-contact activities within 7-10 days",
+          "Post-operative orthoptic check-up at 1 week, 1 month, and 3 months"
+        ],
+        whenToConsult: [
+          "Any noticeable eye turn or misalignment observed in infants or toddlers",
+          "Child consistently tilts head to one side while watching television",
+          "Difficulty focusing on toys or tracking moving objects smoothly"
+        ]
+      },
+      faqs: [
+        { q: "Why is surgery recommended before 6 years of age?", a: "The visual centers in the child's brain develop rapidly up to age 6. Aligning the eyes early allows the brain to develop normal 3D binocular vision." },
+        { q: "Will squint surgery improve eyesight?", a: "Squint surgery aligns the eyes physically. If a lazy eye (amblyopia) is present, occlusion patching therapy and spectacles are used alongside surgery to improve visual acuity." }
+      ],
       displayOrder: 4,
-      published: true
+      published: true,
+      seoTitle: "Paediatric Squint & Strabismus Care | Anugraha Eye Hospital",
+      seoDesc: "Expert pediatric squint alignment, amblyopia therapy, and strabismus microsurgery by Dr. Santoshgouda Patil and Dr. Rohini Patil."
     },
     {
       id: "glaucoma",
-      title: "GLAUCOMA",
-      shortDesc: "Early IOP detection, visual field perimetry & trabeculectomy filtering surgery",
-      fullDesc: "Glaucoma is a term for a group of eye diseases that damage the optic nerve, often caused by abnormally high pressure in the eye. Treatment includes specialized medical drops, laser therapy, and filtering surgery.",
-      category: "Glaucoma Care",
-      desc: "Glaucoma is a term for a group of eye diseases that damage the optic nerve, often caused by abnormally high pressure in the eye. Treatment includes specialized medical drops, laser therapy, and filtering surgery.",
+      slug: "glaucoma",
+      title: "Glaucoma",
+      subtitle: "Early IOP Detection, Selective Laser SLT & Filtration Surgery",
+      category: "Glaucoma Management",
+      shortDesc: "Glaucoma is treated often starts with prescription eye drops. Some may decrease eye pressure by improving how fluid drains from your eye. Others decrease the amount of fluid your eye makes. Depending on how low your eye pressure needs to be, you may be prescribed more than one eye drop, selective laser therapy, or microsurgery.",
+      fullDesc: "Glaucoma is treated often starts with prescription eye drops. Some may decrease eye pressure by improving how fluid drains from your eye. Others decrease the amount of fluid your eye makes. Depending on how low your eye pressure needs to be, you may be prescribed more than one eye drop, selective laser therapy, or microsurgery.",
+      desc: "Glaucoma is treated often starts with prescription eye drops. Some may decrease eye pressure by improving how fluid drains from your eye. Others decrease the amount of fluid your eye makes. Depending on how low your eye pressure needs to be, you may be prescribed more than one eye drop, selective laser therapy, or microsurgery.",
       imagePlaceholder: "assets/services/glaucoma_management.jpg",
       heroImage: "assets/services/glaucoma_management.jpg",
-      symptoms: "Gradual loss of peripheral vision, severe eye pain, halos around lights, redness.",
-      diagnosis: "Goldmann Applanation Tonometry, Humphrey Visual Field (HVF) Perimetry, Cirrus HD-OCT RNFL.",
-      treatment: "Prostaglandin analog eye drops, Selective Laser Trabeculoplasty (SLT), Trabeculectomy filtering surgery.",
-      technology: "Humphrey Field Analyzer 3, Zeiss Cirrus HD-OCT, Nd:YAG Laser.",
-      doctorIds: ["dr-malini"],
-      relatedDoctors: ["Dr. Malini P L"],
+      serviceImage: "assets/services/glaucoma_management.jpg",
+      relatedDoctorIds: ["dr-cauvery-shethe", "dr-malini"],
+      relatedDoctors: ["Dr. Cauvery Shethe", "Dr. Malini P L"],
       availableHospitals: ["Vijayapura Main Campus", "Kalaburagi Base Hospital"],
-      displayOrder: 5,
-      published: true
-    },
-    {
-      id: "cornea-lasik-eyebank",
-      title: "CORNEA, LASIK & EYE BANK",
-      shortDesc: "Corneal diseases, keratoconus cross-linking, LASIK & eye bank services",
-      fullDesc: "Cornea is the transparent front part of the eye that covers the iris, pupil, and anterior chamber. Our department offers treatment for corneal diseases, keratoconus, LASIK, and 24x7 eye banking services.",
-      category: "Cornea & Refractive",
-      desc: "Cornea is the transparent front part of the eye that covers the iris, pupil, and anterior chamber. Our department offers treatment for corneal diseases, keratoconus, LASIK, and 24x7 eye banking services.",
-      imagePlaceholder: "assets/services/cornea_oculoplasty.jpg",
-      heroImage: "assets/services/cornea_oculoplasty.jpg",
-      symptoms: "Severe foreign body sensation, corneal clouding, photophobia, reduced visual clarity.",
-      diagnosis: "Slit-Lamp Fluorescein Staining, Corneal Topography, Schirmer Tear Test, Corneal Pachymetry.",
-      treatment: "Corneal Collagen Cross-Linking (C3R) for Keratoconus, Pterygium Autografting, Eye Bank Donation Triage.",
-      technology: "UVA Corneal Cross-Linking Device, Corneal Pachymeter, Topolyzer Vario.",
-      doctorIds: ["dr-sunanda", "dr-malini"],
-      relatedDoctors: ["Dr. Sunanda Lingadalli", "Dr. Malini P L"],
-      availableHospitals: ["Vijayapura Main Campus", "Kalaburagi Base Hospital"],
-      displayOrder: 6,
-      published: true
-    },
-    {
-      id: "oculoplasty-surgery",
-      title: "OCULOPLASTY SURGERY",
-      shortDesc: "Eyelid ptosis repair, lacrimal DCR tear duct surgery & reconstruction",
-      fullDesc: "Ophthalmic plastic surgery dealing with reconstructive and cosmetic surgery of the eyelids, orbit, and tear duct system.",
-      category: "Reconstructive Surgery",
-      desc: "Ophthalmic plastic surgery dealing with reconstructive and cosmetic surgery of the eyelids, orbit, and tear duct system.",
-      bullets: [
-        "Ptosis (Drooping eyelid) repair",
-        "Lacrimal DCR tear duct surgery",
-        "Ectropion & Entropion repair",
-        "Orbital reconstruction"
+      clinicalDetails: {
+        overview: "Glaucoma, often known as the 'silent thief of sight', damages the optic nerve through elevated intraocular pressure. Early detection using computerized visual fields and OCT scans, coupled with medical drops, Selective Laser Trabeculoplasty (SLT), and filtering trabeculectomy, prevents irreversible vision loss.",
+        conditions: [
+          "Primary Open-Angle Glaucoma (POAG)",
+          "Angle-Closure Glaucoma (Acute & Chronic)",
+          "Normal-Tension Glaucoma (NTG)",
+          "Secondary Glaucoma (Pseudoexfoliation, Pigmentary, Steroid-Induced)"
+        ],
+        symptoms: [
+          "Gradual, painless loss of peripheral (side) vision",
+          "Tunnel vision in advanced, undetected stages",
+          "Severe eye ache, headache, redness, and colored halos (in acute angle-closure)",
+          "Difficulty adjusting to dark rooms or evening light"
+        ],
+        diagnosis: [
+          "Goldmann Applanation Tonometry for precise IOP measurement",
+          "Humphrey Automated Visual Field Perimetry (HVF 24-2/30-2)",
+          "High-Definition Cirrus OCT scans of the Retinal Nerve Fiber Layer (RNFL)",
+          "Gonioscopy to assess open vs. narrow drainage angles",
+          "Central Corneal Thickness (CCT) Pachymetry"
+        ],
+        treatment: [
+          "Topical pressure-lowering eye drops (Prostaglandins, Beta-blockers, Carbonic anhydrase inhibitors)",
+          "Selective Laser Trabeculoplasty (SLT) and Nd:YAG Laser Peripheral Iridotomy (LPI)",
+          "Trabeculectomy microsurgery with anti-metabolite (Mitomycin-C)",
+          "Glaucoma Drainage Device (Ahmed Valve) implantation"
+        ],
+        procedure: [
+          "1. Target pressure calibrated based on baseline RNFL thickness and field loss.",
+          "2. Initial therapy begins with targeted drainage/production eye drop drops.",
+          "3. If medications are insufficient, non-invasive laser (SLT/YAG) is delivered in OPD.",
+          "4. For progressive cases, guarded filtration trabeculectomy creates a safe drainage bleb.",
+          "5. Long-term IOP monitoring ensures lifelong optic nerve protection."
+        ],
+        benefits: [
+          "Halts progressive optic nerve damage and preserves remaining vision",
+          "Customized target IOP protocols personalized to individual risk factors",
+          "Quick in-clinic laser treatments without surgical incisions",
+          "Routine monitoring prevents silent progression to blindness"
+        ],
+        preparation: [
+          "Continue all prescribed glaucoma eye drops up to the morning of evaluation",
+          "Bring current medication bottles and previous visual field reports",
+          "Avoid excessive caffeine or fluid intake immediately before pressure checks"
+        ],
+        recovery: [
+          "Eye drop therapy requires lifelong regular application at fixed times",
+          "Post-laser patients resume normal activities the same day",
+          "Post-trabeculectomy patients avoid rubbing the eye and strenuous work for 4 weeks",
+          "Visual field and OCT tests repeated every 6-12 months"
+        ],
+        whenToConsult: [
+          "Family history of glaucoma, diabetes, or hypertension (Annual screening)",
+          "Over age 40 (Essential annual eye pressure check)",
+          "Sudden severe eye pain accompanied by blurred vision and halos around lights"
+        ]
+      },
+      faqs: [
+        { q: "Can vision lost to glaucoma be restored?", a: "No. Vision lost to optic nerve damage cannot be recovered, which is why early detection and pressure control are vital." },
+        { q: "How often should eye pressure be checked?", a: "Glaucoma patients should be evaluated every 3 to 6 months to ensure eye pressure remains at the safe target level." }
       ],
-      imagePlaceholder: "assets/services/cornea_oculoplasty.jpg",
-      heroImage: "assets/services/cornea_oculoplasty.jpg",
-      symptoms: "Drooping eyelids (ptosis), constant tearing/watering eyes, inward or outward turned eyelids.",
-      diagnosis: "Exophthalmometry, Lacrimal Syringing & Probing, Eyelid Margin Assessment.",
-      treatment: "Levator Resection for Ptosis, Endonasal / External DCR for blocked tear ducts, Entropion/Ectropion repair.",
-      technology: "Radiofrequency Electrosurgical Unit, Micro-surgical Oculoplastic Instrument Sets.",
-      doctorIds: ["dr-malini"],
-      relatedDoctors: ["Dr. Malini P L"],
-      availableHospitals: ["Vijayapura Main Campus"],
-      displayOrder: 7,
-      published: true
+      displayOrder: 5,
+      published: true,
+      seoTitle: "Glaucoma Diagnostics & Surgery | Anugraha Eye Hospital",
+      seoDesc: "Specialized glaucoma screening, optic nerve OCT, laser SLT, and trabeculectomy surgery by Dr. Cauvery Shethe."
     },
     {
-      id: "lasik-service",
-      title: "Lasik service",
-      shortDesc: "Modern blade-free LASIK & Contoura vision spectacle removal",
-      fullDesc: "Modern blade-free LASIK and Contoura Vision laser treatments designed to permanently eliminate dependence on glasses and contact lenses.",
-      category: "Laser Refractive",
-      desc: "Modern blade-free LASIK and Contoura Vision laser treatments designed to permanently eliminate dependence on glasses and contact lenses.",
+      id: "cornea-lasik-eye-bank",
+      slug: "cornea-lasik-eye-bank",
+      title: "Cornea, LASIK & Eye Bank",
+      subtitle: "Corneal Grafting, Donor Preservation, Keratoconus & LASIK Surgery",
+      category: "Cornea & Eye Banking",
+      shortDesc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eye’s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye. Eye Bank: The Hospital is responsible for cornea harvesting or harvesting and preserving donor corneas, and making available to trained corneal graft surgeons. Eye Bank is an integral part of the local health system; they may be attached to a hospital or located in a separate building.",
+      fullDesc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eye’s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye. Eye Bank: The Hospital is responsible for cornea harvesting or harvesting and preserving donor corneas, and making available to trained corneal graft surgeons. Eye Bank is an integral part of the local health system; they may be attached to a hospital or located in a separate building.",
+      desc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eye’s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye. Eye Bank: The Hospital is responsible for cornea harvesting or harvesting and preserving donor corneas, and making available to trained corneal graft surgeons. Eye Bank is an integral part of the local health system; they may be attached to a hospital or located in a separate building.",
+      imagePlaceholder: "assets/services/cornea_oculoplasty.jpg",
+      heroImage: "assets/services/cornea_oculoplasty.jpg",
+      serviceImage: "assets/services/cornea_oculoplasty.jpg",
+      relatedDoctorIds: ["dr-malini", "dr-madhu-gannur"],
+      relatedDoctors: ["Dr. Malini P L", "Dr. Madhu A. Gannur"],
+      availableHospitals: ["Vijayapura Main Campus", "Kalaburagi Base Hospital"],
+      clinicalDetails: {
+        overview: "Our Cornea and Eye Bank unit integrates advanced refractive corneal remodeling with community eye banking and sight-restoring corneal transplantation. We harvest, evaluate, and preserve donor corneas according to international standards, supplying healthy tissue for full-thickness (PKP) and lamellar (DSEK/DALK) keratoplasty.",
+        conditions: [
+          "Corneal opacity, scars, and post-infectious leukomas",
+          "Keratoconus and corneal ectasia",
+          "Bullous keratopathy and endothelial dystrophy",
+          "Pterygium, recurrent corneal erosions, and dry eye disease",
+          "Refractive myopia, hyperopia, and astigmatism"
+        ],
+        symptoms: [
+          "Severe reduction in vision due to cloudy or hazy cornea",
+          "Extreme sensitivity to light (photophobia) and foreign body sensation",
+          "Painful, watering red eye from corneal ulcers or abrasions",
+          "Progressive irregular astigmatism requiring frequent glass changes"
+        ],
+        diagnosis: [
+          "Slit-Lamp Biomicroscopy with Fluorescein & Rose Bengal staining",
+          "Corneal Topography & Pachymetry (Pentacam Mapping)",
+          "Specular Microscopy for Donor and Patient Endothelial Density",
+          "Microbiological Culture & Sensitivity of corneal scrapings"
+        ],
+        treatment: [
+          "Penetrating Keratoplasty (PKP) full-thickness corneal transplantation",
+          "Lamellar Keratoplasty (DSEK, DMEK, DALK) for selective layer replacement",
+          "Corneal Collagen Cross-Linking (C3R / CXL) for Keratoconus",
+          "Pterygium excision with conjunctival autograft and fibrin glue (sutureless)",
+          "24/7 Community Eye Donation Harvesting & Tissue Preservation"
+        ],
+        procedure: [
+          "1. Donor cornea harvested with strict serological screening and tissue preservation.",
+          "2. Patient's damaged corneal tissue precisely excised using micro-trephines.",
+          "3. Donor graft button placed and secured with microscopic 10-0 nylon sutures.",
+          "4. Anti-rejection regimens initiated immediately.",
+          "5. Regular follow-up ensures graft clarity and visual rehabilitation."
+        ],
+        benefits: [
+          "Restores eyesight to patients with corneal blindness",
+          "Active Eye Bank serves the entire North Karnataka healthcare network",
+          "Advanced lamellar techniques significantly reduce graft rejection risks",
+          "Sutureless pterygium surgery prevents recurrence with rapid healing"
+        ],
+        preparation: [
+          "Donor corneas matched according to strict medical quality protocols",
+          "Patients with active infections treated with antimicrobial therapy prior to surgery",
+          "Counseling provided regarding long-term graft care and eye protection"
+        ],
+        recovery: [
+          "Protective eye shield worn continuously for the initial weeks",
+          "Strict compliance with immunosuppressive and lubricant eye drops",
+          "Suture adjustment or selective removal performed over 6-12 months",
+          "Regular lifelong follow-ups to maintain graft transparency"
+        ],
+        whenToConsult: [
+          "Cloudy white patch developing on the clear part of your eye",
+          "Sudden painful red eye with light sensitivity (Urgent Corneal Ulcer)",
+          "Pledge eye donation in honor of loved ones or report a death for harvesting"
+        ]
+      },
+      faqs: [
+        { q: "How can someone pledge their eyes for donation?", a: "You can pledge by signing an eye donation form at Anugraha Eye Hospital. In the event of a death, family members can contact our 24/7 Eye Bank helpline." },
+        { q: "How soon after death must corneas be harvested?", a: "Corneal harvesting should ideally be completed within 6 hours after death to ensure optimal tissue viability." }
+      ],
+      displayOrder: 6,
+      published: true,
+      seoTitle: "Cornea, LASIK & Eye Bank | Anugraha Eye Hospital",
+      seoDesc: "Corneal transplantation, keratoconus C3R cross-linking, and community Eye Bank services led by Dr. Malini and Dr. Madhu Gannur."
+    },
+    {
+      id: "oculoplasty",
+      slug: "oculoplasty",
+      title: "Oculoplasty Surgery",
+      subtitle: "Blepharoplasty, Eyelid Ptosis, Orbit Reconstruction & Lacrimal DCR",
+      category: "Oculoplastic & Orbital Surgery",
+      shortDesc: "The most common procedures we perform include: Blepharoplasty and eyelid ptosis surgery, lacrimal and orbit. Supported by Advanced Computer Theatres, Special Rooms and Wards, Medical Laboratories, and In-House Optical and Pharmacy services.",
+      fullDesc: "The most common procedures we perform include: Blepharoplasty and eyelid ptosis surgery, lacrimal and orbit. Supported by Advanced Computer Theatres, Special Rooms and Wards, Medical Laboratories, and In-House Optical and Pharmacy services.",
+      desc: "The most common procedures we perform include: Blepharoplasty and eyelid ptosis surgery, lacrimal and orbit. Supported by Advanced Computer Theatres, Special Rooms and Wards, Medical Laboratories, and In-House Optical and Pharmacy services.",
+      imagePlaceholder: "assets/services/cornea_oculoplasty.jpg",
+      heroImage: "assets/services/cornea_oculoplasty.jpg",
+      serviceImage: "assets/services/cornea_oculoplasty.jpg",
+      relatedDoctorIds: ["dr-rohini-patil"],
+      relatedDoctors: ["Dr. Rohini. S. Patil"],
+      availableHospitals: ["Vijayapura Main Campus"],
+      clinicalDetails: {
+        overview: "Oculoplasty is the super-specialty that combines ophthalmic microsurgery with facial plastic surgery. Treating disorders of the eyelids, tear drainage channels (lacrimal system), and eye socket (orbit), our specialists restore both vital ocular protective function and refined aesthetic symmetry.",
+        conditions: [
+          "Ptosis (drooping of the upper eyelid restricting visual field)",
+          "Entropion (inward turned lid) and Ectropion (outward turned lid)",
+          "Dacryocystitis and blocked tear ducts causing constant tearing",
+          "Eyelid tumors, cysts, xanthelasma, and chalazions",
+          "Orbital fractures, trauma, and anophthalmic socket for custom prosthetic eyes"
+        ],
+        symptoms: [
+          "Eyelid drooping down over the pupil, causing visual blockage and tired look",
+          "Constant overflow of tears (epiphora) down the cheek",
+          "Inward turning eyelashes scratching the cornea with redness and pain",
+          "Lumps or swelling on the eyelids or at the inner corner of the eye"
+        ],
+        diagnosis: [
+          "Margin Reflex Distance (MRD-1, MRD-2) and Levator Muscle Excursion testing",
+          "Lacrimal Syringing & Probing to pinpoint drainage blockage",
+          "Exophthalmometry to measure eyeball protrusion",
+          "CT / MRI Orbit scans for traumatic injuries and orbital tumors"
+        ],
+        treatment: [
+          "Levator Palpebrae Superioris (LPS) Resection or Frontalis Sling for Ptosis",
+          "Endonasal or External Dacryocystorhinostomy (DCR) for blocked tear ducts",
+          "Cosmetic and Functional Blepharoplasty for excess eyelid skin",
+          "Custom-crafted ocular prosthetic artificial eye fitting"
+        ],
+        procedure: [
+          "1. High-resolution anatomical measurement of eyelid crease and tear pathways.",
+          "2. Local or general anesthesia administered depending on case complexity.",
+          "3. Precise microsurgical adjustment of eyelid levator muscles or tear channels.",
+          "4. Fine cosmetic micro-suturing aligned along natural skin creases.",
+          "5. Same-day recovery with minimal periocular bruising."
+        ],
+        benefits: [
+          "Restores full, unobstructed field of vision",
+          "Resolves chronic, embarrassing watering and tear duct infections",
+          "Natural, rejuvenated aesthetic appearance with hidden incision lines",
+          "Equipped with Advanced Computer Theatres and Special Recovery Rooms"
+        ],
+        preparation: [
+          "Avoid aspirin or anticoagulant medications for 5 days prior to surgery",
+          "Clean eyelid margins with warm compresses if chronic blepharitis is present",
+          "Arrange transportation home after the day-care procedure"
+        ],
+        recovery: [
+          "Apply cold compresses for 48 hours to minimize minor swelling",
+          "Keep incision lines dry for 5 days until stitch removal",
+          "Normal social activities resumed within 7 to 10 days",
+          "Routine post-op assessment on Day 7 and Month 1"
+        ],
+        whenToConsult: [
+          "Drooping upper eyelid obstructing reading or driving vision",
+          "Persistent watery eye requiring constant wiping with handkerchief",
+          "Eyelashes rubbing directly against the eye causing irritation"
+        ]
+      },
+      faqs: [
+        { q: "Will ptosis surgery leave visible scars on the eyelid?", a: "Incisions are placed discreetly within the natural upper eyelid crease, making surgical lines virtually invisible once healed." },
+        { q: "How is a blocked tear duct (DCR) treated?", a: "DCR creates a new, direct bypass channel between the lacrimal sac and nasal cavity, permanently resolving watery eyes." }
+      ],
+      displayOrder: 7,
+      published: true,
+      seoTitle: "Oculoplasty Surgery & Eyelid Ptosis | Anugraha Eye Hospital",
+      seoDesc: "Specialized blepharoplasty, ptosis correction, orbital reconstruction, and lacrimal DCR surgery by Dr. Rohini S. Patil."
+    },
+    {
+      id: "lasik",
+      slug: "lasik",
+      title: "LASIK Service",
+      subtitle: "Blade-Free Contoura Vision Laser Vision Correction",
+      category: "Laser Vision Correction",
+      shortDesc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eye’s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye.",
+      fullDesc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eye’s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye.",
+      desc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eye’s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye.",
       imagePlaceholder: "assets/services/lasik_contoura.jpg",
       heroImage: "assets/services/lasik_contoura.jpg",
-      symptoms: "Spectacle dependency, contact lens intolerance, glare, astigmatism.",
-      diagnosis: "Pentacam Corneal Topography, Pachymetry, Dry Eye Tear Film Evaluation.",
-      treatment: "Topography-Guided Contoura Vision, Femtosecond Blade-Free Flap LASIK.",
-      technology: "Wavelight EX500 Excimer Laser, FS200 Femtosecond Laser.",
-      doctorIds: ["dr-sunanda", "dr-malini"],
-      relatedDoctors: ["Dr. Sunanda Lingadalli", "Dr. Malini P L"],
+      serviceImage: "assets/services/lasik_contoura.jpg",
+      relatedDoctorIds: ["dr-malini", "dr-madhu-gannur", "dr-lingadalli"],
+      relatedDoctors: ["Dr. Malini P L", "Dr. Madhu A. Gannur", "Dr. Prabhugouda B. Lingadalli"],
       availableHospitals: ["Vijayapura Main Campus"],
+      clinicalDetails: {
+        overview: "LASIK (Laser-Assisted in Situ Keratomileusis) and Topography-Guided Contoura Vision offer the ultimate freedom from spectacles and contact lenses. By creating an ultra-thin corneal flap and utilizing cool ultraviolet excimer laser beams, corneal curvature is recontoured to deliver sharp, uncompromised 20/20 vision.",
+        conditions: [
+          "Myopia (Nearsightedness) up to -10.0 Diopters",
+          "Hyperopia (Farsightedness) up to +4.0 Diopters",
+          "Astigmatism (Cylindrical power) up to 5.0 Diopters",
+          "Spectacle intolerance in athletes, pilots, and military aspirants"
+        ],
+        symptoms: [
+          "Dependence on glasses or contact lenses for daily tasks",
+          "Eyestrain, headaches, and dry eyes from long contact lens wear",
+          "Difficulty participating in swimming, sports, and outdoor activities with glasses",
+          "Distorted night vision and halos around lights"
+        ],
+        diagnosis: [
+          "Corneal Topography & Elevation Mapping (Pentacam HR)",
+          "Corneal Pachymetry to ensure safe stromal bed thickness",
+          "Dry Eye Evaluation (TBUT & Schirmer Test)",
+          "Pupillometry and Dilated Peripheral Retina Screening"
+        ],
+        treatment: [
+          "Topography-Guided Contoura Vision LASIK",
+          "Blade-Free Femto-LASIK with customized flap creation",
+          "Advanced Surface Ablation (Customized PRK) for thinner corneas"
+        ],
+        procedure: [
+          "1. Anesthetic numbing drops placed in both eyes — zero pain.",
+          "2. Femtosecond laser creates a uniform, microscopically thin corneal flap.",
+          "3. Flap is gently lifted, exposing the underlying stromal bed.",
+          "4. Excimer laser reshapes the cornea in less than 30 seconds per eye.",
+          "5. Flap is repositioned, adhering securely without stitches within 2 minutes."
+        ],
+        benefits: [
+          "Clear vision without glasses achieved within 24 hours",
+          "Quick 10-minute painless outpatient procedure for both eyes",
+          "MyAlcon verified high-precision topography-guided laser platform",
+          "Long-term visual stability and confidence for active lifestyles"
+        ],
+        preparation: [
+          "Stop wearing soft contact lenses 5-7 days before evaluation",
+          "Avoid applying eye makeup or perfumes on the day of surgery",
+          "Have a light meal prior to coming for your laser procedure"
+        ],
+        recovery: [
+          "Rest eyes for 4-6 hours following surgery",
+          "Wear protective goggles while sleeping for 1 week",
+          "Avoid swimming, eye rubbing, and makeup for 2 weeks",
+          "Follow-up visits on Day 1, Week 1, and Month 1"
+        ],
+        whenToConsult: [
+          "Age 18+ with stable spectacle prescription for at least 1 year",
+          "Looking for permanent freedom from reading and distance glasses",
+          "Preparing for police, defense, aviation, or competitive fitness careers"
+        ]
+      },
+      faqs: [
+        { q: "Is LASIK permanent?", a: "Yes. The laser permanently reshapes the corneal curvature, providing lasting vision correction." },
+        { q: "How soon can I return to work after LASIK?", a: "Most patients return to office and screen work within 24 to 48 hours post-procedure." }
+      ],
       displayOrder: 8,
-      published: true
+      published: true,
+      seoTitle: "LASIK Service & Contoura Vision | Anugraha Eye Hospital",
+      seoDesc: "Topography-guided Contoura Vision and blade-free LASIK laser eye surgery in Vijayapura."
     },
     {
       id: "ocular-trauma",
+      slug: "ocular-trauma",
       title: "Ocular Trauma",
-      shortDesc: "24x7 emergency ophthalmic trauma & chemical eye injury repair",
-      fullDesc: "24x7 emergency service treating mechanical and chemical eye injuries, corneal lacerations, intraocular foreign bodies, and globe reconstruction.",
-      category: "Emergency Eye Care",
-      desc: "24x7 emergency service treating mechanical and chemical eye injuries, corneal lacerations, intraocular foreign bodies, and globe reconstruction.",
-      imagePlaceholder: "assets/services/cataract_surgery.jpg",
-      heroImage: "assets/services/cataract_surgery.jpg",
-      symptoms: "Sudden eye pain, traumatic vision drop, corneal cut/laceration, chemical splash.",
-      diagnosis: "Emergency Slit-Lamp Biomicroscopy, Non-Contact Intraocular Pressure check, CT Orbit Triage.",
-      treatment: "Primary Corneal / Scleral Repair, Foreign Body Removal, Vitrectomy for Traumatic Cataract.",
-      technology: "Operating Microscopes, Emergency Ophthalmic Surgical Suite.",
-      doctorIds: ["dr-malini"],
-      relatedDoctors: ["Dr. Malini P L"],
+      subtitle: "24/7 Emergency Ophthalmic Care, Perforating Injury & Reconstruction",
+      category: "Emergency & Trauma Care",
+      shortDesc: "Ocular trauma is one of the most under-recognized causes of vision loss in the developing world. Blunt or penetrating ocular trauma can lead to vision loss through cataract or glaucoma, hyphema and retinal damage. Our dedicated emergency trauma service provides immediate microsurgical repair and prevention guidance to safeguard sight.",
+      fullDesc: "Ocular trauma is one of the most under-recognized causes of vision loss in the developing world. Blunt or penetrating ocular trauma can lead to vision loss through cataract or glaucoma, hyphema and retinal damage. Our dedicated emergency trauma service provides immediate microsurgical repair and prevention guidance to safeguard sight.",
+      desc: "Ocular trauma is one of the most under-recognized causes of vision loss in the developing world. Blunt or penetrating ocular trauma can lead to vision loss through cataract or glaucoma, hyphema and retinal damage. Our dedicated emergency trauma service provides immediate microsurgical repair and prevention guidance to safeguard sight.",
+      imagePlaceholder: "assets/services/community_screening.jpg",
+      heroImage: "assets/services/community_screening.jpg",
+      serviceImage: "assets/services/community_screening.jpg",
+      relatedDoctorIds: ["dr-rohini-patil"],
+      relatedDoctors: ["Dr. Rohini. S. Patil"],
       availableHospitals: ["Vijayapura Main Campus", "Kalaburagi Base Hospital"],
+      clinicalDetails: {
+        overview: "Ocular trauma requires urgent, specialized ophthalmic management to prevent permanent blindness. Our round-the-clock emergency team provides rapid triage, primary corneal/scleral laceration repair, traumatic cataract extraction, hyphema drainage, and intraocular foreign body removal.",
+        conditions: [
+          "Open Globe Injuries (corneal and scleral lacerations/ruptures)",
+          "Closed Globe Injuries (contusion, hyphema, traumatic iridodialysis)",
+          "Intraocular Foreign Bodies (metallic/wood fragments)",
+          "Chemical Burns (acid and alkali splash injuries)",
+          "Traumatic cataract, secondary glaucoma, and orbital blow-out fractures"
+        ],
+        symptoms: [
+          "Severe eye pain, sudden vision loss, or blackout following injury",
+          "Visible bleeding in the front of the eye (hyphema) or leaking fluid",
+          "Deformed pupil or visible foreign object embedded in the eye",
+          "Inability to open the eyelid or move the eye in all directions"
+        ],
+        diagnosis: [
+          "Emergency Slit-Lamp Biomicroscopy with Seidel test for leak detection",
+          "Non-Contact Ocular B-Scan Ultrasound (avoiding pressure on open globe)",
+          "High-Resolution CT Scan of Orbit for foreign body localization",
+          "Continuous pH monitoring and copious lavage for chemical burns"
+        ],
+        treatment: [
+          "Primary micro-surgical corneal/scleral wound repair with 10-0 nylon",
+          "Emergency anterior chamber wash for total hyphema",
+          "Intraocular foreign body (IOFB) removal via micro-vitrectomy",
+          "Immediate copious chemical neutralization and amniotic membrane grafting",
+          "Broad-spectrum intravitreal and systemic antibiotic prophylaxis"
+        ],
+        procedure: [
+          "1. Immediate emergency stabilization — DO NOT press or rub the injured eye.",
+          "2. Rigid protective eye shield placed without pressure on the globe.",
+          "3. Emergency imaging confirms absence/presence of foreign bodies.",
+          "4. Under emergency micro-surgical conditions, globe integrity is restored.",
+          "5. Intensive post-operative anti-inflammatory and antibiotic therapy initiated."
+        ],
+        benefits: [
+          "24/7 Emergency trauma triage team ready for instant intervention",
+          "Preserves globe integrity and salvages maximum potential vision",
+          "State-of-the-art modular operating theatres with HEPA laminar air flow",
+          "Epidemiological preventive counseling for agricultural & industrial workers"
+        ],
+        preparation: [
+          "In case of injury: DO NOT rub the eye, DO NOT apply home remedies",
+          "In chemical injury: Flush immediately with clean tap water for 15 minutes",
+          "Rush directly to Anugraha Eye Hospital emergency desk without delay"
+        ],
+        recovery: [
+          "Protective eye shield worn continuously during healing",
+          "Strict bed rest with head elevation for hyphema cases",
+          "Avoid heavy lifting, bending forward, or straining",
+          "Daily clinical monitoring during early post-operative phase"
+        ],
+        whenToConsult: [
+          "ANY sharp, blunt, or chemical injury to the eye (IMMEDIATE 24/7 EMERGENCY)",
+          "Sudden loss of vision following a blow to the face or eye",
+          "Suspected foreign body entry while welding, grinding, or farming"
+        ]
+      },
+      faqs: [
+        { q: "What should I do immediately after an eye injury?", a: "Do NOT rub or wash the eye if it is a cut or puncture. Place a rigid cup or shield over the eye without pressing on it and come immediately to our 24/7 Emergency Desk." },
+        { q: "What is the first-aid for a chemical splash in the eye?", a: "Flush the eye immediately and continuously with clean running water for 15 minutes, keeping the eyelids open, and rush to the hospital immediately." }
+      ],
       displayOrder: 9,
-      published: true
-    }
-  ],
-      imagePlaceholder: "assets/services/cornea_oculoplasty.jpg",
-      heroImage: "assets/services/cornea_oculoplasty.jpg",
-      symptoms: "Drooping eyelids (ptosis), constant tearing/watering eyes, inward or outward turned eyelids (entropion/ectropion), eyelid lumps.",
-      diagnosis: "Exophthalmometry, Lacrimal Syringing & Probing, Eyelid Margin Assessment, CT Orbit Imaging Review.",
-      treatment: "Levator Resection for Ptosis, Endonasal / External DCR for blocked tear ducts, Entropion/Ectropion repair, Custom Prosthetic Eye Fitting.",
-      technology: "Radiofrequency Electrosurgical Unit, Micro-surgical Oculoplastic Instrument Sets.",
-      relatedDoctors: ["Dr. Malini P L"],
-      availableHospitals: ["Vijayapura Main Campus"],
-      faq: "Oculoplastic surgeries restore both cosmetic appearance and essential eyelid/tear drainage function.",
-      displayOrder: 6,
       published: true,
-      seoTitle: "Oculoplasty & Eyelid Surgery | Anugraha Eye Hospital",
-      seoDesc: "Specialized eyelid ptosis repair, lacrimal DCR surgery, and ophthalmic facial plastic surgery in Vijayapura."
-    },
-    {
-      id: "cornea",
-      title: "Cornea & External Eye Disease",
-      shortDesc: "Dry eye clinic, pterygium autografting & corneal cross-linking (C3R)",
-      fullDesc: "Corneal health clinic providing dry eye evaluation, corneal ulcer therapy, pterygium excision with autografting, collagen cross-linking (C3R), and emergency corneal injury care.",
-      category: "Corneal Health",
-      desc: "Corneal health clinic providing dry eye evaluation, corneal ulcer therapy, pterygium excision with autografting, collagen cross-linking (C3R), and emergency corneal injury care.",
-      imagePlaceholder: "assets/services/cornea_oculoplasty.jpg",
-      heroImage: "assets/services/cornea_oculoplasty.jpg",
-      symptoms: "Severe foreign body sensation, eye redness, corneal white spots, severe photophobia (light sensitivity), burning sensation.",
-      diagnosis: "Slit-Lamp Fluorescein Staining, Corneal Topography, Schirmer Tear Test, Corneal Scraping & Microbiology.",
-      treatment: "Corneal Collagen Cross-Linking (C3R) for Keratoconus, Pterygium Excision with Conjunctival Autograft & Fibrin Glue, Intensive Antimicrobial Therapy.",
-      technology: "UVA Corneal Cross-Linking Device, Corneal Pachymeter, High-Res Slit Lamp with Imaging.",
-      relatedDoctors: ["Dr. Prabhugouda B. Lingadalli"],
-      availableHospitals: ["Vijayapura Main Campus", "Kalaburagi Base Hospital"],
-      faq: "Early corneal cross-linking halts the progression of keratoconus and preserves visual acuity in teenagers and young adults.",
-      displayOrder: 7,
-      published: true,
-      seoTitle: "Cornea Clinic & Keratoconus Cross-Linking | Anugraha Eye Hospital",
-      seoDesc: "Specialized corneal diagnostics, keratoconus C3R cross-linking, and sutureless pterygium surgery in Vijayapura."
-    },
-    {
-      id: "opticals",
-      title: "Optometry, Spectacles & Pharmacy",
-      shortDesc: "Computerized eye refraction, prescription glasses, contact lenses & eye drops",
-      fullDesc: "In-house optical dispensing offering computer refraction, high-grade optical frames, specialty contact lenses, low vision aids, and an accredited ophthalmic pharmacy.",
-      category: "Optometry & Pharmacy",
-      desc: "In-house optical dispensing offering computer refraction, high-grade optical frames, specialty contact lenses, low vision aids, and an accredited ophthalmic pharmacy.",
-      imagePlaceholder: "assets/services/optical_services.jpg",
-      heroImage: "assets/services/optical_services.jpg",
-      symptoms: "Eye strain, frequent headaches, difficulty focusing on reading or digital screens, night driving glare.",
-      diagnosis: "Automated & Manifest Subjective Refraction, Keratometry, Contrast Sensitivity Assessment, Contact Lens Trial Fitting.",
-      treatment: "Custom Progressive / Bifocal / Anti-Glare Lenses, Toric & Soft Contact Lenses, Certified Ophthalmic Drops & Lubricants.",
-      technology: "Digital Auto-Refractor-Keratometer, Automated Lensmeter, Contrast Sensitivity Charts.",
-      relatedDoctors: ["Dr. Malini P L"],
-      availableHospitals: ["Vijayapura Main Campus", "Kalaburagi Base Hospital", "All 8 Vision Centers"],
-      faq: "All optical prescriptions are checked with certified computerized refraction and high-precision lens edge fitting.",
-      displayOrder: 8,
-      published: true,
-      seoTitle: "Optometry, Optical Dispensing & Pharmacy | Anugraha Eye Hospital",
-      seoDesc: "In-house precision optometry, prescription eyewear, contact lens clinic, and specialized ophthalmic pharmacy."
+      seoTitle: "24/7 Emergency Ocular Trauma Care | Anugraha Eye Hospital",
+      seoDesc: "Round-the-clock emergency eye trauma repair, corneal tear closure, and ocular reconstruction by Dr. Rohini S. Patil."
     }
   ],
 
@@ -971,12 +1528,302 @@ const DEFAULT_DATA = {
     { from: "/educationandtraining", to: "/academics", status: 301, reason: "Streamline academic silo" },
     { from: "/drmalinipl", to: "/about-us/leadership", status: 301, reason: "Consolidate profile pages" },
     { from: "/drprabhugoudabingadalli", to: "/about-us/leadership", status: 301, reason: "Consolidate profile pages" }
+  ],
+
+  partnerships: [
+    {
+      id: "zeiss",
+      name: "ZEISS",
+      category: "Precision Optics & Visual Diagnostics",
+      logo: "assets/partners/zeiss.svg",
+      tagline: "Carl Zeiss Meditec",
+      displayOrder: 1,
+      published: true
+    },
+    {
+      id: "healthskape",
+      name: "HEALTHSKAPE MEDICALS PVT. LTD.",
+      category: "Surgical Equipment & Medical Devices",
+      logo: "assets/partners/healthskape.svg",
+      tagline: "Healthskape Medicals Pvt. Ltd.",
+      displayOrder: 2,
+      published: true
+    },
+    {
+      id: "aurolab",
+      name: "AUROLAB",
+      category: "Intraocular Lenses & Consumables",
+      logo: "assets/partners/aurolab.svg",
+      tagline: "SEE NEW POSSIBILITIES",
+      displayOrder: 3,
+      published: true
+    },
+    {
+      id: "alcon",
+      name: "Alcon",
+      category: "Phacoemulsification & Vitrectomy Platforms",
+      logo: "assets/partners/alcon.svg",
+      tagline: "Alcon Laboratories",
+      displayOrder: 4,
+      published: true
+    },
+    {
+      id: "appasamy",
+      name: "APPASAMY ASSOCIATES",
+      category: "Ophthalmic Instruments & Microscopes",
+      logo: "assets/partners/appasamy.svg",
+      tagline: "Empowering Vision*",
+      displayOrder: 5,
+      published: true
+    },
+    {
+      id: "caregroups",
+      name: "care groups",
+      category: "Sight Solutions & Hydrophobic IOLs",
+      logo: "assets/partners/caregroups.svg",
+      tagline: "Care Group Sight Solutions",
+      displayOrder: 6,
+      published: true
+    }
+  ],
+
+  equipment: [
+    {
+      id: "reichert-7-nct",
+      name: "Reichert 7 NCT",
+      image: "assets/equipment/reichert_7_nct.jpg",
+      altText: "Reichert 7 NCT",
+      category: "Diagnostic & Tonometry",
+      displayOrder: 1,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "rebound-tonometer",
+      name: "Rebound Tonometer",
+      image: "assets/equipment/rebound_tonometer.jpg",
+      altText: "Rebound Tonometer",
+      category: "Tonometry & IOP Diagnostics",
+      displayOrder: 2,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "poket-7000-ark",
+      name: "Poket 7000 ARK",
+      image: "assets/equipment/poket_7000_ark.jpg",
+      altText: "Poket 7000 ARK",
+      category: "Refraction & Keratometry",
+      displayOrder: 3,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "potec-plm-8000pd",
+      name: "Auto-refractometer POTEC PLM-8000PD",
+      image: "assets/equipment/potec_plm_8000pd.jpg",
+      altText: "Auto-refractometer POTEC PLM-8000PD",
+      category: "Digital Refractometry",
+      displayOrder: 4,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "ophthalmic-ultrasound-scanner",
+      name: "Ophthalmic Ultrasound Scanner",
+      image: "assets/equipment/ophthalmic_ultrasound_scanner.jpg",
+      altText: "Ophthalmic Ultrasound Scanner",
+      category: "Ocular Ultrasonography",
+      displayOrder: 5,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "marvel-b-scan",
+      name: "Marvel B Scan",
+      image: "assets/equipment/marvel_b_scan.jpg",
+      altText: "Marvel B Scan",
+      category: "Posterior Segment Ultrasound",
+      displayOrder: 6,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "digital-slit-lamp-imaging",
+      name: "Ophthalmic-Digital-Slit-Lamp-with-Camera-Imaging",
+      image: "assets/equipment/digital_slit_lamp_imaging.jpg",
+      altText: "Ophthalmic-Digital-Slit-Lamp-with-Camera-Imaging",
+      category: "Digital Slit Lamp Imaging",
+      displayOrder: 7,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "wavelight-ex-500",
+      name: "WaveLight EX 500",
+      image: "assets/equipment/wavelight_ex_500.jpg",
+      altText: "WaveLight EX 500",
+      category: "Corneal Refractive Laser",
+      displayOrder: 8,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "alcon-infiniti-phaco",
+      name: "Alcon Infiniti Phaco",
+      image: "assets/equipment/alcon_infiniti_phaco.jpg",
+      altText: "Alcon Infiniti Phaco",
+      category: "Cataract Phacoemulsification",
+      displayOrder: 9,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "alcon-constellation",
+      name: "Alcon Constellation Machine",
+      image: "assets/equipment/alcon_constellation.jpg",
+      altText: "Alcon Constellation Machine",
+      category: "Vitreo-Retinal Surgical Platform",
+      displayOrder: 10,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "mel-80-excimer",
+      name: "MEL 80 Excimer Laser/Lasik",
+      image: "assets/equipment/mel_80_excimer_laser.jpg",
+      altText: "MEL 80 Excimer Laser/Lasik",
+      category: "Carl Zeiss Refractive Suite",
+      displayOrder: 11,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "yag-laser",
+      name: "YAG Laser",
+      image: "assets/equipment/yag_laser.jpg",
+      altText: "YAG Laser",
+      category: "Capsulotomy & Iridotomy Laser",
+      displayOrder: 12,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "canon-fundus-camera",
+      name: "Canon Fundus Camera",
+      image: "assets/equipment/canon_fundus_camera.jpg",
+      altText: "Canon Fundus Camera",
+      category: "Digital Retinal Imaging",
+      displayOrder: 13,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "vertical-autoclave",
+      name: "VERTICAL AUTOCLAVE- LAB MODEL",
+      image: "assets/equipment/vertical_autoclave.jpg",
+      altText: "VERTICAL AUTOCLAVE- LAB MODEL",
+      category: "Sterilization & Infection Control",
+      displayOrder: 14,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "a-scan",
+      name: "A-Scan",
+      image: "assets/equipment/a_scan.jpg",
+      altText: "A-Scan",
+      category: "Ocular Biometry & IOL Power",
+      displayOrder: 15,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "eto-sterilizer-ka2",
+      name: "ETO Sterilizer KA2 Model",
+      image: "assets/equipment/eto_sterilizer_ka2.jpg",
+      altText: "ETO Sterilizer KA2 Model",
+      category: "Modular OT Gas Sterilization",
+      displayOrder: 16,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "eto-sterilizer-printer-ka2",
+      name: "Fully Automatic Ethylene Oxide Sterilizer Model With Inbuilt Printer, KA-2 Series",
+      image: "assets/equipment/eto_sterilizer_printer_ka2.jpg",
+      altText: "Fully Automatic Ethylene Oxide Sterilizer Model With Inbuilt Printer, KA-2 Series",
+      category: "Automated Sterilization Record",
+      displayOrder: 17,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "oct-scanner",
+      name: "OCT",
+      image: "assets/equipment/oct_scanner.jpg",
+      altText: "OCT",
+      category: "Optical Coherence Tomography",
+      displayOrder: 18,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "multispot-green-laser-1",
+      name: "Multispot Green Laser",
+      image: "assets/equipment/multispot_green_laser_1.jpg",
+      altText: "Multispot Green Laser",
+      category: "532nm Retinal Photocoagulator",
+      displayOrder: 19,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "slit-lamp-imaging",
+      name: "SLIT LAMP IMAGING",
+      image: "assets/equipment/slit_lamp_imaging.jpg",
+      altText: "SLIT LAMP IMAGING",
+      category: "High Resolution Anterior Imaging",
+      displayOrder: 20,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "multispot-green-laser-2",
+      name: "Multispot Green Laser",
+      image: "assets/equipment/multispot_green_laser_2.jpg",
+      altText: "Multispot Green Laser",
+      category: "Pattern Scanning Laser",
+      displayOrder: 21,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "lumera-i-zeiss",
+      name: "Lumera i Zeiss Surgical Microscope",
+      image: "assets/equipment/lumera_i_zeiss_microscope.jpg",
+      altText: "Lumera i Zeiss Surgical Microscope",
+      category: "Carl Zeiss Microsurgical Suite",
+      displayOrder: 22,
+      isActive: true,
+      published: true
+    },
+    {
+      id: "luxor-ophthalmic-microscope",
+      name: "LuxOR Surgical Ophthalmic Microscope",
+      image: "assets/equipment/luxor_ophthalmic_microscope.jpg",
+      altText: "LuxOR Surgical Ophthalmic Microscope",
+      category: "Alcon Red-Reflex Surgical Microscope",
+      displayOrder: 23,
+      isActive: true,
+      published: true
+    }
   ]
 };
 
 class Store {
   constructor() {
-    this.key = "anugraha_hospital_store_v2";
+    this.key = "anugraha_hospital_store_v1";
     this.data = this.load();
   }
 
@@ -1007,9 +1854,56 @@ class Store {
           stats: { ...DEFAULT_DATA.stats, ...(parsed.stats || {}) },
           patientResources: { ...DEFAULT_DATA.patientResources, ...(parsed.patientResources || {}) },
           facilities: parsed.facilities || DEFAULT_DATA.facilities,
-          services: (parsed.services && parsed.services.length >= DEFAULT_DATA.services.length) ? parsed.services : DEFAULT_DATA.services,
-          leadership: (parsed.leadership && parsed.leadership.length >= DEFAULT_DATA.leadership.length) ? parsed.leadership : DEFAULT_DATA.leadership,
-          administration: (parsed.administration && parsed.administration.length >= DEFAULT_DATA.administration.length) ? parsed.administration : DEFAULT_DATA.administration,
+          services: (() => {
+            const current = parsed.services || [];
+            if (!current.length || current.length < DEFAULT_DATA.services.length || !current.find(s => s.id === 'cataract')) {
+              const map = new Map();
+              DEFAULT_DATA.services.forEach(s => map.set(s.id, s));
+              current.forEach(s => {
+                if (map.has(s.id)) {
+                  map.set(s.id, { ...map.get(s.id), ...s, clinicalDetails: { ...map.get(s.id).clinicalDetails, ...(s.clinicalDetails || {}) } });
+                } else {
+                  map.set(s.id, s);
+                }
+              });
+              return Array.from(map.values());
+            }
+            return current;
+          })(),
+          leadership: (() => {
+            const current = parsed.leadership || [];
+            if (!current.length || current.length < DEFAULT_DATA.leadership.length || !current.find(l => l.id === 'dr-poornima-patil')) {
+              const map = new Map();
+              DEFAULT_DATA.leadership.forEach(d => map.set(d.id, d));
+              current.forEach(d => {
+                if (map.has(d.id)) {
+                  map.set(d.id, { ...map.get(d.id), ...d });
+                } else {
+                  map.set(d.id, d);
+                }
+              });
+              return Array.from(map.values());
+            }
+            return current;
+          })(),
+          administration: parsed.administration || DEFAULT_DATA.administration,
+          equipment: (() => {
+            const current = parsed.equipment || [];
+            if (!current.length || current.length < DEFAULT_DATA.equipment.length || !current.find(e => e.id === 'wavelight-ex-500')) {
+              return DEFAULT_DATA.equipment;
+            }
+            const map = new Map();
+            DEFAULT_DATA.equipment.forEach(e => map.set(e.id, e));
+            current.forEach(e => {
+              if (map.has(e.id)) {
+                map.set(e.id, { ...map.get(e.id), ...e });
+              } else {
+                map.set(e.id, e);
+              }
+            });
+            return Array.from(map.values());
+          })(),
+          partnerships: parsed.partnerships || DEFAULT_DATA.partnerships,
           academics: parsed.academics || DEFAULT_DATA.academics,
           faqs: parsed.faqs || DEFAULT_DATA.faqs,
           empanelments: parsed.empanelments || DEFAULT_DATA.empanelments,
@@ -1183,8 +2077,22 @@ class Store {
     return this.data.services || DEFAULT_DATA.services;
   }
 
-  getServiceById(id) {
-    return this.getServices().find(s => s.id === id);
+  getServiceById(idOrSlug) {
+    if (!idOrSlug) return null;
+    const clean = String(idOrSlug).toLowerCase().trim();
+    const list = this.getServices();
+    return list.find(s => 
+      (s.id && s.id.toLowerCase() === clean) || 
+      (s.slug && s.slug.toLowerCase() === clean) ||
+      (s.id === 'cataract' && clean === 'cataract-phaco') ||
+      (s.id === 'cataract-phaco' && clean === 'cataract') ||
+      (s.id === 'vitreo-retinal-surgery' && (clean === 'retina' || clean === 'vitreoretinal')) ||
+      (s.id === 'paediatric-squint' && (clean === 'pediatric' || clean === 'pediatric-squint' || clean === 'squint')) ||
+      (s.id === 'cornea-lasik-eye-bank' && (clean === 'cornea' || clean === 'cornea-lasik' || clean === 'eye-bank')) ||
+      (s.id === 'oculoplasty' && (clean === 'oculoplasty-surgery' || clean === 'oculoplastic')) ||
+      (s.id === 'lasik' && (clean === 'lasik-service' || clean === 'lasik-contoura')) ||
+      (s.id === 'ocular-trauma' && (clean === 'trauma' || clean === 'emergency-trauma'))
+    );
   }
 
   updateService(id, fields) {
@@ -1432,6 +2340,55 @@ class Store {
 
   getRedirects() {
     return this.data.seoRedirects || DEFAULT_DATA.seoRedirects;
+  }
+
+  getPartnerships() {
+    return (this.data.partnerships || DEFAULT_DATA.partnerships || []).filter(p => p.published !== false);
+  }
+
+  getPartnershipById(id) {
+    return this.getPartnerships().find(p => p.id === id);
+  }
+
+  getEquipment() {
+    return (this.data.equipment || DEFAULT_DATA.equipment || []).filter(e => e.published !== false && e.isActive !== false);
+  }
+
+  getAllEquipment() {
+    return this.data.equipment || DEFAULT_DATA.equipment || [];
+  }
+
+  getEquipmentById(id) {
+    return this.getAllEquipment().find(e => e.id === id);
+  }
+
+  updateEquipment(id, fields) {
+    if (!this.data.equipment) this.data.equipment = [...DEFAULT_DATA.equipment];
+    const idx = this.data.equipment.findIndex(e => e.id === id);
+    if (idx !== -1) {
+      this.data.equipment[idx] = { ...this.data.equipment[idx], ...fields };
+      this.save();
+    }
+  }
+
+  addEquipment(item) {
+    if (!this.data.equipment) this.data.equipment = [...DEFAULT_DATA.equipment];
+    const newId = item.id || ('eq-' + Date.now());
+    this.data.equipment.push({
+      id: newId,
+      displayOrder: this.data.equipment.length + 1,
+      isActive: true,
+      published: true,
+      ...item
+    });
+    this.save();
+    return newId;
+  }
+
+  deleteEquipment(id) {
+    if (!this.data.equipment) return;
+    this.data.equipment = this.data.equipment.filter(e => e.id !== id);
+    this.save();
   }
 
   exportJSON() {

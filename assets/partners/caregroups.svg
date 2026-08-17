@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 140" width="100%" height="100%">
+  <!-- Circular Radial Emblem -->
+  <g transform="translate(60, 70)">
+    <!-- Central Ring -->
+    <circle cx="0" cy="0" r="14" fill="none" stroke="#1d4263" stroke-width="4.5"/>
+    <circle cx="0" cy="0" r="8" fill="#ffffff"/>
+    
+    <!-- 8 Surrounding Figures / Petals in Navy and Slate -->
+    <!-- Top & Bottom -->
+    <path d="M-6 -22 L6 -22 L9 -30 L-9 -30 Z" fill="#1d4263"/>
+    <circle cx="0" cy="-35" r="3.5" fill="#1d4263"/>
+    <path d="M-6 22 L6 22 L9 30 L-9 30 Z" fill="#1d4263"/>
+    <circle cx="0" cy="35" r="3.5" fill="#1d4263"/>
+
+    <!-- Left & Right -->
+    <path d="M-22 -6 L-22 6 L-30 9 L-30 -9 Z" fill="#1d4263"/>
+    <circle cx="-35" cy="0" r="3.5" fill="#1d4263"/>
+    <path d="M22 -6 L22 6 L30 9 L30 -9 Z" fill="#1d4263"/>
+    <circle cx="35" cy="0" r="3.5" fill="#1d4263"/>
+
+    <!-- Diagonals -->
+    <circle cx="-24" cy="-24" r="3" fill="#4a739c"/>
+    <circle cx="24" cy="-24" r="3" fill="#4a739c"/>
+    <circle cx="-24" cy="24" r="3" fill="#4a739c"/>
+    <circle cx="24" cy="24" r="3" fill="#4a739c"/>
+    <path d="M-12 -12 L-20 -20 M12 -12 L20 -20 M-12 12 L-20 20 M12 12 L20 20" stroke="#4a739c" stroke-width="3"/>
+  </g>
+
+  <!-- Typography: care groups -->
+  <text x="120" y="66" font-family="'Century Gothic', 'Montserrat', 'Trebuchet MS', Arial, sans-serif" font-size="32" font-weight="900" fill="#1d4263" letter-spacing="-0.5">care</text>
+  <text x="135" y="98" font-family="'Century Gothic', 'Montserrat', 'Trebuchet MS', Arial, sans-serif" font-size="34" font-weight="400" fill="#2d5f8b" letter-spacing="1">groups</text>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" width="100%" height="100%">
+  <!-- ZEISS Blue Badge with subtle bottom arch -->
+  <path d="M25 15 H175 V105 Q100 125 25 105 Z" fill="#00358e"/>
+  <!-- ZEISS Text -->
+  <text x="100" y="75" font-family="'Arial Black', 'Trebuchet MS', 'Helvetica Neue', sans-serif" font-size="34" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="1">ZEISS</text>
+</svg>
