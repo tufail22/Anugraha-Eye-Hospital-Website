@@ -8962,6 +8962,16 @@ document.addEventListener("DOMContentLoaded", () => {
     initSpotlightHoverTracker();
   }
 
+  // Real-time live synchronization listener across all devices, IP addresses, and browser tabs
+  window.addEventListener('anugraha-store-updated', (e) => {
+    // Re-render public pages and admin preview automatically
+    const activeEl = document.activeElement;
+    const isTyping = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.isContentEditable);
+    if (!isTyping) {
+      render();
+    }
+  });
+
   // Initial Run
   initInitialApertureLoader();
   render();

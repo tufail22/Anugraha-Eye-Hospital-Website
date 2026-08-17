@@ -1,9 +1,4 @@
-/**
- * Central State Store for Anugraha Eye Hospital
- * Uses localStorage for mock persistence in Admin Portal
- */
-
-const DEFAULT_DATA = {
+﻿{
   brand: {
     name: "Anugraha Eye Hospital",
     tagline: "Authentic. Affectionate. Affordable.",
@@ -34,7 +29,7 @@ const DEFAULT_DATA = {
       surgeries: "2,28,951+",
       camps: "2,715",
       freeCataracts: "50,000+",
-      rating: "4.8 ★"
+      rating: "4.8 â˜…"
     },
     sections: {
       whyAnugraha: true,
@@ -361,10 +356,10 @@ const DEFAULT_DATA = {
       type: "base",
       name: "Vijayapura Campus (Main)",
       description: "Premier super-specialty tertiary eye hospital featuring laminar airflow modular OTs, laser refractive suite, and diagnostic imaging.",
-      address: "Navabhag Main Road, Behind Central Bus Stand, Vijayapura – 586101",
+      address: "Navabhag Main Road, Behind Central Bus Stand, Vijayapura â€“ 586101",
       phone: "08352-220646",
       email: "vijayapura@anugrahaeyehospital.com",
-      hours: "8:00 AM – 9:00 PM daily",
+      hours: "8:00 AM â€“ 9:00 PM daily",
       emergencyInfo: "24x7 Ophthalmic Emergency & Trauma Desk available.",
       googleMapsUrl: "https://maps.google.com/?q=Anugraha+Eye+Hospital+Vijayapura",
       heroImage: "assets/services/cataract_surgery.jpg",
@@ -381,10 +376,10 @@ const DEFAULT_DATA = {
       type: "base",
       name: "Kalaburagi Campus",
       description: "Tertiary eye care base hospital offering specialized clinical care and the RGUHS-affiliated Anugraha Institute of Optometry.",
-      address: "Ring Road Junction, Opposite District Court Complex, Kalaburagi, Karnataka – 585105",
+      address: "Ring Road Junction, Opposite District Court Complex, Kalaburagi, Karnataka â€“ 585105",
       phone: "08472-245646",
       email: "kalaburagi@anugrahaeyehospital.com",
-      hours: "8:00 AM – 8:00 PM daily",
+      hours: "8:00 AM â€“ 8:00 PM daily",
       emergencyInfo: "24x7 Emergency Ophthalmic Care Service.",
       googleMapsUrl: "https://maps.google.com/?q=Anugraha+Eye+Hospital+Kalaburagi",
       heroImage: "assets/services/glaucoma_management.jpg",
@@ -401,11 +396,11 @@ const DEFAULT_DATA = {
       type: "vision-center",
       name: "Talikoti Vision Center",
       town: "Talikoti",
-      address: "Main Road, Talikoti Town, Vijayapura District, Karnataka – 586214",
+      address: "Main Road, Talikoti Town, Vijayapura District, Karnataka â€“ 586214",
       phone: "+91 74839 00963",
       whatsappPhone: "+91 94481 20646",
       description: "Primary vision screening, automated refraction, prescription spectacles, contact lens fitting, ophthalmic pharmacy, and emergency routing to Vijayapura Base Hospital.",
-      hours: "Mon–Sat 9am–8pm, Sun 9am–3pm (Free Sunday OPD)",
+      hours: "Monâ€“Sat 9amâ€“8pm, Sun 9amâ€“3pm (Free Sunday OPD)",
       doctorVisits: "Sundays (Free Specialist OPD)",
       googleMapsUrl: "https://maps.google.com/?q=Talikoti+Vision+Center",
       mainImage: "assets/services/optical_services.jpg",
@@ -418,11 +413,11 @@ const DEFAULT_DATA = {
       type: "vision-center",
       name: "Muddebihal Vision Center",
       town: "Muddebihal",
-      address: "Laxmi Eyecare Centre, Main Bus Stand Road, Muddebihal, Vijayapura District, Karnataka – 586212",
+      address: "Laxmi Eyecare Centre, Main Bus Stand Road, Muddebihal, Vijayapura District, Karnataka â€“ 586212",
       phone: "93805 44008",
       whatsappPhone: "+91 94481 20646",
       description: "Primary vision screening, computer visual acuity testing, prescription spectacles, contact lens clinic, and local pharmacy.",
-      hours: "Mon–Sat 9am–5pm, Sun closed",
+      hours: "Monâ€“Sat 9amâ€“5pm, Sun closed",
       doctorVisits: "Saturdays",
       googleMapsUrl: "https://maps.google.com/?q=Muddebihal+Vision+Center",
       mainImage: "assets/services/optical_services.jpg",
@@ -435,11 +430,11 @@ const DEFAULT_DATA = {
       type: "vision-center",
       name: "Sindagi Vision Center",
       town: "Sindagi",
-      address: "Main Market Road, Sindagi Town, Vijayapura District, Karnataka – 586128",
+      address: "Main Market Road, Sindagi Town, Vijayapura District, Karnataka â€“ 586128",
       phone: "08356-222446",
       whatsappPhone: "+91 94481 20646",
       description: "Comprehensive primary eye care clinic, digital vision testing, custom spectacle fitting, and direct referral triage to base hospital.",
-      hours: "Mon–Sat 9am–5pm, Sun closed",
+      hours: "Monâ€“Sat 9amâ€“5pm, Sun closed",
       doctorVisits: "Wednesdays",
       googleMapsUrl: "https://maps.google.com/?q=Sindagi+Vision+Center",
       mainImage: "assets/services/optical_services.jpg",
@@ -452,11 +447,11 @@ const DEFAULT_DATA = {
       type: "vision-center",
       name: "Indi Vision Center",
       town: "Indi",
-      address: "Station Road, Indi Town, Vijayapura District, Karnataka – 586209",
+      address: "Station Road, Indi Town, Vijayapura District, Karnataka â€“ 586209",
       phone: "63630 84440",
       whatsappPhone: "+91 94481 20646",
       description: "Primary care, prescription spectacles, contact lenses, pharmacy, 24x7 emergency triage.",
-      hours: "Mon–Sat 9am–5pm, Sun closed",
+      hours: "Monâ€“Sat 9amâ€“5pm, Sun closed",
       doctorVisits: "Tuesdays",
       googleMapsUrl: "https://maps.google.com/?q=Indi+Vision+Center",
       mainImage: "assets/services/optical_services.jpg",
@@ -469,11 +464,11 @@ const DEFAULT_DATA = {
       type: "vision-center",
       name: "B.Bagewadi Vision Center",
       town: "B.Bagewadi",
-      address: "Town Main Road, B.Bagewadi, Vijayapura District, Karnataka – 586203",
+      address: "Town Main Road, B.Bagewadi, Vijayapura District, Karnataka â€“ 586203",
       phone: "63635 16504",
       whatsappPhone: "+91 94481 20646",
       description: "Primary care, contact lens, spectacles, pharmacy, 24x7 emergency triage.",
-      hours: "Mon–Sat 9am–5pm, Sun closed",
+      hours: "Monâ€“Sat 9amâ€“5pm, Sun closed",
       doctorVisits: "Thursdays",
       googleMapsUrl: "https://maps.google.com/?q=BBagewadi+Vision+Center",
       mainImage: "assets/services/optical_services.jpg",
@@ -486,11 +481,11 @@ const DEFAULT_DATA = {
       type: "vision-center",
       name: "Chadachan Vision Center",
       town: "Chadachan",
-      address: "Main Market Road, Chadachan Town, Vijayapura District, Karnataka – 586205",
+      address: "Main Market Road, Chadachan Town, Vijayapura District, Karnataka â€“ 586205",
       phone: "90088 88951",
       whatsappPhone: "+91 94481 20646",
       description: "Primary care, contact lens, spectacles, pharmacy, emergency routing.",
-      hours: "Mon–Sat 9am–5pm, Sun closed",
+      hours: "Monâ€“Sat 9amâ€“5pm, Sun closed",
       doctorVisits: "Fridays",
       googleMapsUrl: "https://maps.google.com/?q=Chadachan+Vision+Center",
       mainImage: "assets/services/optical_services.jpg",
@@ -503,11 +498,11 @@ const DEFAULT_DATA = {
       type: "vision-center",
       name: "Nalatwad Vision Center",
       town: "Nalatwad",
-      address: "Nalatwad Town, Vijayapura District, Karnataka – 586212",
+      address: "Nalatwad Town, Vijayapura District, Karnataka â€“ 586212",
       phone: "93805 44008",
       whatsappPhone: "+91 94481 20646",
       description: "Primary care, contact lens, spectacles, pharmacy, 24x7 emergency.",
-      hours: "Mon–Sat 9am–8pm, Sun 9am–3pm",
+      hours: "Monâ€“Sat 9amâ€“8pm, Sun 9amâ€“3pm",
       doctorVisits: "Sundays (Free Sunday OPD)",
       googleMapsUrl: "https://maps.google.com/?q=Nalatwad+Vision+Center",
       mainImage: "assets/services/optical_services.jpg",
@@ -520,11 +515,11 @@ const DEFAULT_DATA = {
       type: "vision-center",
       name: "Tikota Vision Center",
       town: "Tikota",
-      address: "Tikota Town, Vijayapura District, Karnataka – 586130",
+      address: "Tikota Town, Vijayapura District, Karnataka â€“ 586130",
       phone: "70221 53988",
       whatsappPhone: "+91 94481 20646",
       description: "Primary care, contact lens, spectacles, pharmacy, 24x7 emergency.",
-      hours: "Mon–Sat 9am–5pm, Sun closed",
+      hours: "Monâ€“Sat 9amâ€“5pm, Sun closed",
       doctorVisits: "Mondays",
       googleMapsUrl: "https://maps.google.com/?q=Tikota+Vision+Center",
       mainImage: "assets/services/optical_services.jpg",
@@ -578,7 +573,7 @@ const DEFAULT_DATA = {
           "Sutureless, stitchless self-sealing clear corneal architectural incisions"
         ],
         procedure: [
-          "1. Topical anesthetic eye drops applied — zero painful needle injections.",
+          "1. Topical anesthetic eye drops applied â€” zero painful needle injections.",
           "2. Sub-2.2mm micro-incision created at the clear corneal margin.",
           "3. Ultrasonic micro-probe gently breaks down and aspirates the opacified natural lens.",
           "4. Foldable custom intraocular lens (IOL) is injected into the natural capsular bag.",
@@ -739,14 +734,14 @@ const DEFAULT_DATA = {
           "Intravitreal anti-VEGF (Accentrix, Lucentis, Eylea) and steroid implants"
         ],
         procedure: [
-          "• Laser surgery can repair a retinal tear or hole.",
-          "• Shrinking irregular blood vessels via green laser photocoagulation.",
-          "• Freezing (cryopexy) to secure torn retinal margins.",
-          "• Injecting air or gas into your eye to tamponade the hole.",
-          "• Indenting the surface of your eye (scleral buckling).",
-          "• Evacuating and replacing the fluid in the eye (vitrectomy).",
-          "• Implanting medicine (anti-VEGF/steroids) into the eye.",
-          "• Implanting a retinal prosthesis where clinically indicated."
+          "â€¢ Laser surgery can repair a retinal tear or hole.",
+          "â€¢ Shrinking irregular blood vessels via green laser photocoagulation.",
+          "â€¢ Freezing (cryopexy) to secure torn retinal margins.",
+          "â€¢ Injecting air or gas into your eye to tamponade the hole.",
+          "â€¢ Indenting the surface of your eye (scleral buckling).",
+          "â€¢ Evacuating and replacing the fluid in the eye (vitrectomy).",
+          "â€¢ Implanting medicine (anti-VEGF/steroids) into the eye.",
+          "â€¢ Implanting a retinal prosthesis where clinically indicated."
         ],
         benefits: [
           "Preserves sight and prevents irreversible neurosensory blindness",
@@ -786,9 +781,9 @@ const DEFAULT_DATA = {
       title: "Paediatric Squint",
       subtitle: "Children's Strabismus Correction, Amblyopia & Binocular Alignment",
       category: "Pediatric Ophthalmology",
-      shortDesc: "The main treatment for a squint is glasses – these can help if a squint is caused by a problem with your child’s eyesight, such as large-angle hyperopia. Eye exercises – exercises for the muscles that control eye movement may sometimes help the eyes work together better. There is no specific age limit for squint eye surgery but surgery before six years of age is important to get the best desired results. For this treatment, doctors may perform surgical correction or exercises to help properly align your eyes.",
-      fullDesc: "The main treatment for a squint is glasses – these can help if a squint is caused by a problem with your child’s eyesight, such as large-angle hyperopia. Eye exercises – exercises for the muscles that control eye movement may sometimes help the eyes work together better. There is no specific age limit for squint eye surgery but surgery before six years of age is important to get the best desired results. For this treatment, doctors may perform surgical correction or exercises to help properly align your eyes.",
-      desc: "The main treatment for a squint is glasses – these can help if a squint is caused by a problem with your child’s eyesight, such as large-angle hyperopia. Eye exercises – exercises for the muscles that control eye movement may sometimes help the eyes work together better. There is no specific age limit for squint eye surgery but surgery before six years of age is important to get the best desired results. For this treatment, doctors may perform surgical correction or exercises to help properly align your eyes.",
+      shortDesc: "The main treatment for a squint is glasses â€“ these can help if a squint is caused by a problem with your childâ€™s eyesight, such as large-angle hyperopia. Eye exercises â€“ exercises for the muscles that control eye movement may sometimes help the eyes work together better. There is no specific age limit for squint eye surgery but surgery before six years of age is important to get the best desired results. For this treatment, doctors may perform surgical correction or exercises to help properly align your eyes.",
+      fullDesc: "The main treatment for a squint is glasses â€“ these can help if a squint is caused by a problem with your childâ€™s eyesight, such as large-angle hyperopia. Eye exercises â€“ exercises for the muscles that control eye movement may sometimes help the eyes work together better. There is no specific age limit for squint eye surgery but surgery before six years of age is important to get the best desired results. For this treatment, doctors may perform surgical correction or exercises to help properly align your eyes.",
+      desc: "The main treatment for a squint is glasses â€“ these can help if a squint is caused by a problem with your childâ€™s eyesight, such as large-angle hyperopia. Eye exercises â€“ exercises for the muscles that control eye movement may sometimes help the eyes work together better. There is no specific age limit for squint eye surgery but surgery before six years of age is important to get the best desired results. For this treatment, doctors may perform surgical correction or exercises to help properly align your eyes.",
       imagePlaceholder: "assets/services/pediatric_ophthalmology.jpg",
       heroImage: "assets/services/pediatric_ophthalmology.jpg",
       serviceImage: "assets/services/pediatric_ophthalmology.jpg",
@@ -947,9 +942,9 @@ const DEFAULT_DATA = {
       title: "Cornea, LASIK & Eye Bank",
       subtitle: "Corneal Grafting, Donor Preservation, Keratoconus & LASIK Surgery",
       category: "Cornea & Eye Banking",
-      shortDesc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eye’s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye. Eye Bank: The Hospital is responsible for cornea harvesting or harvesting and preserving donor corneas, and making available to trained corneal graft surgeons. Eye Bank is an integral part of the local health system; they may be attached to a hospital or located in a separate building.",
-      fullDesc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eye’s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye. Eye Bank: The Hospital is responsible for cornea harvesting or harvesting and preserving donor corneas, and making available to trained corneal graft surgeons. Eye Bank is an integral part of the local health system; they may be attached to a hospital or located in a separate building.",
-      desc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eye’s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye. Eye Bank: The Hospital is responsible for cornea harvesting or harvesting and preserving donor corneas, and making available to trained corneal graft surgeons. Eye Bank is an integral part of the local health system; they may be attached to a hospital or located in a separate building.",
+      shortDesc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eyeâ€™s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye. Eye Bank: The Hospital is responsible for cornea harvesting or harvesting and preserving donor corneas, and making available to trained corneal graft surgeons. Eye Bank is an integral part of the local health system; they may be attached to a hospital or located in a separate building.",
+      fullDesc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eyeâ€™s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye. Eye Bank: The Hospital is responsible for cornea harvesting or harvesting and preserving donor corneas, and making available to trained corneal graft surgeons. Eye Bank is an integral part of the local health system; they may be attached to a hospital or located in a separate building.",
+      desc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eyeâ€™s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye. Eye Bank: The Hospital is responsible for cornea harvesting or harvesting and preserving donor corneas, and making available to trained corneal graft surgeons. Eye Bank is an integral part of the local health system; they may be attached to a hospital or located in a separate building.",
       imagePlaceholder: "assets/services/cornea_oculoplasty.jpg",
       heroImage: "assets/services/cornea_oculoplasty.jpg",
       serviceImage: "assets/services/cornea_oculoplasty.jpg",
@@ -1110,9 +1105,9 @@ const DEFAULT_DATA = {
       title: "LASIK Service",
       subtitle: "Blade-Free Contoura Vision Laser Vision Correction",
       category: "Laser Vision Correction",
-      shortDesc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eye’s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye.",
-      fullDesc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eye’s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye.",
-      desc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eye’s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye.",
+      shortDesc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eyeâ€™s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye.",
+      fullDesc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eyeâ€™s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye.",
+      desc: "During LASIK eye services, an eye surgeon creates a flap in the cornea, dome-shaped surface of the eye that accounts for a large part of the eyeâ€™s bending or refracting power. The flap allows the surgeon to reshape the cornea, which corrects the refractive problems in the eye.",
       imagePlaceholder: "assets/services/lasik_contoura.jpg",
       heroImage: "assets/services/lasik_contoura.jpg",
       serviceImage: "assets/services/lasik_contoura.jpg",
@@ -1145,7 +1140,7 @@ const DEFAULT_DATA = {
           "Advanced Surface Ablation (Customized PRK) for thinner corneas"
         ],
         procedure: [
-          "1. Anesthetic numbing drops placed in both eyes — zero pain.",
+          "1. Anesthetic numbing drops placed in both eyes â€” zero pain.",
           "2. Femtosecond laser creates a uniform, microscopically thin corneal flap.",
           "3. Flap is gently lifted, exposing the underlying stromal bed.",
           "4. Excimer laser reshapes the cornea in less than 30 seconds per eye.",
@@ -1227,7 +1222,7 @@ const DEFAULT_DATA = {
           "Broad-spectrum intravitreal and systemic antibiotic prophylaxis"
         ],
         procedure: [
-          "1. Immediate emergency stabilization — DO NOT press or rub the injured eye.",
+          "1. Immediate emergency stabilization â€” DO NOT press or rub the injured eye.",
           "2. Rigid protective eye shield placed without pressure on the globe.",
           "3. Emergency imaging confirms absence/presence of foreign bodies.",
           "4. Under emergency micro-surgical conditions, globe integrity is restored.",
@@ -1492,14 +1487,14 @@ const DEFAULT_DATA = {
   ],
 
   gallery: [
-    { id: 0, title: "Vijayapura Base Hospital Main Campus", category: "Base Hospital", src: "assets/services/cataract_surgery.jpg", caption: "Super-specialty base hospital building in Vijayapura.", filename: "cataract_surgery.jpg", type: "image/jpeg", size: "320 KB", dimensions: "1200 × 800", usedOn: "Vijayapura Campus Hero", uploadDate: "15 Aug 2026" },
-    { id: 1, title: "Laminar Airflow Operation Theatre Suite", category: "Operations", src: "assets/services/lasik_contoura.jpg", caption: "HEPA-filtered sterile ophthalmic surgical suite.", filename: "lasik_contoura.jpg", type: "image/jpeg", size: "290 KB", dimensions: "1200 × 800", usedOn: "LASIK Service", uploadDate: "15 Aug 2026" },
-    { id: 2, title: "Free Community Outreach Eye Camp", category: "Outreach Camps", src: "assets/services/community_eye_screening.jpg", caption: "Mobile screening unit examining rural demographics.", filename: "community_eye_screening.jpg", type: "image/jpeg", size: "310 KB", dimensions: "1200 × 800", usedOn: "About Us & Outreach", uploadDate: "15 Aug 2026" },
-    { id: 3, title: "Glaucoma Diagnostics Clinic", category: "Infrastructure", src: "assets/services/glaucoma_management.jpg", caption: "Humphrey perimetry visual fields suite.", filename: "glaucoma_management.jpg", type: "image/jpeg", size: "280 KB", dimensions: "1200 × 800", usedOn: "Glaucoma Specialty", uploadDate: "15 Aug 2026" },
-    { id: 4, title: "High-Resolution Retinal OCT Imaging", category: "Infrastructure", src: "assets/services/retina_care.jpg", caption: "Retinal OCT diagnostics & macula scanner.", filename: "retina_care.jpg", type: "image/jpeg", size: "340 KB", dimensions: "1200 × 800", usedOn: "Retina Specialty", uploadDate: "15 Aug 2026" },
-    { id: 5, title: "Pediatric Vision Screening Desk", category: "Pediatric Care", src: "assets/services/pediatric_ophthalmology.jpg", caption: "Specialized children's vision suite.", filename: "pediatric_ophthalmology.jpg", type: "image/jpeg", size: "270 KB", dimensions: "1200 × 800", usedOn: "Pediatric Specialty", uploadDate: "15 Aug 2026" },
-    { id: 6, title: "Cornea & Oculoplasty Clinic", category: "Operations", src: "assets/services/cornea_oculoplasty.jpg", caption: "Corneal cross-linking and eyelid suite.", filename: "cornea_oculoplasty.jpg", type: "image/jpeg", size: "315 KB", dimensions: "1200 × 800", usedOn: "Cornea & Oculoplasty", uploadDate: "15 Aug 2026" },
-    { id: 7, title: "In-House Optical Dispensing Clinic", category: "Opticals", src: "assets/services/optical_services.jpg", caption: "Prescription eyewear and optical dispensary.", filename: "optical_services.jpg", type: "image/jpeg", size: "305 KB", dimensions: "1200 × 800", usedOn: "Opticals & Vision Centers", uploadDate: "15 Aug 2026" }
+    { id: 0, title: "Vijayapura Base Hospital Main Campus", category: "Base Hospital", src: "assets/services/cataract_surgery.jpg", caption: "Super-specialty base hospital building in Vijayapura.", filename: "cataract_surgery.jpg", type: "image/jpeg", size: "320 KB", dimensions: "1200 Ã— 800", usedOn: "Vijayapura Campus Hero", uploadDate: "15 Aug 2026" },
+    { id: 1, title: "Laminar Airflow Operation Theatre Suite", category: "Operations", src: "assets/services/lasik_contoura.jpg", caption: "HEPA-filtered sterile ophthalmic surgical suite.", filename: "lasik_contoura.jpg", type: "image/jpeg", size: "290 KB", dimensions: "1200 Ã— 800", usedOn: "LASIK Service", uploadDate: "15 Aug 2026" },
+    { id: 2, title: "Free Community Outreach Eye Camp", category: "Outreach Camps", src: "assets/services/community_eye_screening.jpg", caption: "Mobile screening unit examining rural demographics.", filename: "community_eye_screening.jpg", type: "image/jpeg", size: "310 KB", dimensions: "1200 Ã— 800", usedOn: "About Us & Outreach", uploadDate: "15 Aug 2026" },
+    { id: 3, title: "Glaucoma Diagnostics Clinic", category: "Infrastructure", src: "assets/services/glaucoma_management.jpg", caption: "Humphrey perimetry visual fields suite.", filename: "glaucoma_management.jpg", type: "image/jpeg", size: "280 KB", dimensions: "1200 Ã— 800", usedOn: "Glaucoma Specialty", uploadDate: "15 Aug 2026" },
+    { id: 4, title: "High-Resolution Retinal OCT Imaging", category: "Infrastructure", src: "assets/services/retina_care.jpg", caption: "Retinal OCT diagnostics & macula scanner.", filename: "retina_care.jpg", type: "image/jpeg", size: "340 KB", dimensions: "1200 Ã— 800", usedOn: "Retina Specialty", uploadDate: "15 Aug 2026" },
+    { id: 5, title: "Pediatric Vision Screening Desk", category: "Pediatric Care", src: "assets/services/pediatric_ophthalmology.jpg", caption: "Specialized children's vision suite.", filename: "pediatric_ophthalmology.jpg", type: "image/jpeg", size: "270 KB", dimensions: "1200 Ã— 800", usedOn: "Pediatric Specialty", uploadDate: "15 Aug 2026" },
+    { id: 6, title: "Cornea & Oculoplasty Clinic", category: "Operations", src: "assets/services/cornea_oculoplasty.jpg", caption: "Corneal cross-linking and eyelid suite.", filename: "cornea_oculoplasty.jpg", type: "image/jpeg", size: "315 KB", dimensions: "1200 Ã— 800", usedOn: "Cornea & Oculoplasty", uploadDate: "15 Aug 2026" },
+    { id: 7, title: "In-House Optical Dispensing Clinic", category: "Opticals", src: "assets/services/optical_services.jpg", caption: "Prescription eyewear and optical dispensary.", filename: "optical_services.jpg", type: "image/jpeg", size: "305 KB", dimensions: "1200 Ã— 800", usedOn: "Opticals & Vision Centers", uploadDate: "15 Aug 2026" }
   ],
 
   news: [
@@ -1819,720 +1814,4 @@ const DEFAULT_DATA = {
       published: true
     }
   ]
-};
-
-class Store {
-  constructor() {
-    this.key = "anugraha_hospital_store_v1";
-    this.data = this.load();
-    this.initRealtimeSync();
-  }
-
-  load() {
-    try {
-      const saved = localStorage.getItem(this.key);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        // Deep merge with defaults to ensure all fields exist safely and modifications are retained
-        return {
-          ...DEFAULT_DATA,
-          ...parsed,
-          brand: { ...DEFAULT_DATA.brand, ...(parsed.brand || {}) },
-          homepage: { 
-            ...DEFAULT_DATA.homepage, 
-            ...(parsed.homepage || {}),
-            primaryCta: { ...DEFAULT_DATA.homepage.primaryCta, ...(parsed.homepage?.primaryCta || {}) },
-            secondaryCta: { ...DEFAULT_DATA.homepage.secondaryCta, ...(parsed.homepage?.secondaryCta || {}) },
-            trustStats: { ...DEFAULT_DATA.homepage.trustStats, ...(parsed.homepage?.trustStats || {}) },
-            sections: { ...DEFAULT_DATA.homepage.sections, ...(parsed.homepage?.sections || {}) }
-          },
-          about: { 
-            ...DEFAULT_DATA.about, 
-            ...(parsed.about || {}),
-            coreValues: parsed.about?.coreValues || DEFAULT_DATA.about.coreValues,
-            milestones: parsed.about?.milestones || DEFAULT_DATA.about.milestones
-          },
-          stats: { ...DEFAULT_DATA.stats, ...(parsed.stats || {}) },
-          patientResources: { ...DEFAULT_DATA.patientResources, ...(parsed.patientResources || {}) },
-          facilities: parsed.facilities || DEFAULT_DATA.facilities,
-          services: (() => {
-            const current = parsed.services || [];
-            if (!current.length || current.length < DEFAULT_DATA.services.length || !current.find(s => s.id === 'cataract')) {
-              const map = new Map();
-              DEFAULT_DATA.services.forEach(s => map.set(s.id, s));
-              current.forEach(s => {
-                if (map.has(s.id)) {
-                  map.set(s.id, { ...map.get(s.id), ...s, clinicalDetails: { ...map.get(s.id).clinicalDetails, ...(s.clinicalDetails || {}) } });
-                } else {
-                  map.set(s.id, s);
-                }
-              });
-              return Array.from(map.values());
-            }
-            return current;
-          })(),
-          leadership: (() => {
-            const current = parsed.leadership || [];
-            if (!current.length || current.length < DEFAULT_DATA.leadership.length || !current.find(l => l.id === 'dr-poornima-patil')) {
-              const map = new Map();
-              DEFAULT_DATA.leadership.forEach(d => map.set(d.id, d));
-              current.forEach(d => {
-                if (map.has(d.id)) {
-                  map.set(d.id, { ...map.get(d.id), ...d });
-                } else {
-                  map.set(d.id, d);
-                }
-              });
-              return Array.from(map.values());
-            }
-            return current;
-          })(),
-          administration: parsed.administration || DEFAULT_DATA.administration,
-          equipment: (() => {
-            const current = parsed.equipment || [];
-            if (!current.length || current.length < DEFAULT_DATA.equipment.length || !current.find(e => e.id === 'wavelight-ex-500')) {
-              return DEFAULT_DATA.equipment;
-            }
-            const map = new Map();
-            DEFAULT_DATA.equipment.forEach(e => map.set(e.id, e));
-            current.forEach(e => {
-              if (map.has(e.id)) {
-                map.set(e.id, { ...map.get(e.id), ...e });
-              } else {
-                map.set(e.id, e);
-              }
-            });
-            return Array.from(map.values());
-          })(),
-          partnerships: parsed.partnerships || DEFAULT_DATA.partnerships,
-          academics: parsed.academics || DEFAULT_DATA.academics,
-          faqs: parsed.faqs || DEFAULT_DATA.faqs,
-          empanelments: parsed.empanelments || DEFAULT_DATA.empanelments,
-          news: parsed.news || DEFAULT_DATA.news,
-          gallery: parsed.gallery || DEFAULT_DATA.gallery
-        };
-      }
-    } catch (e) {
-      console.warn("Failed to load store from localStorage", e);
-    }
-    return JSON.parse(JSON.stringify(DEFAULT_DATA));
-  }
-
-  sync() {
-    this.data = this.load();
-    return this.data;
-  }
-
-  initRealtimeSync() {
-    if (typeof window === 'undefined') return;
-
-    // 1. Initial remote fetch on page load from any device / IP
-    this.fetchRemoteData();
-
-    // 2. Listen to BroadcastChannel for real-time cross-tab sync
-    if ('BroadcastChannel' in window) {
-      try {
-        this.channel = new BroadcastChannel('anugraha_store_channel');
-        this.channel.onmessage = (event) => {
-          if (event.data && event.data.type === 'STORE_UPDATED') {
-            this.data = this.load();
-            window.dispatchEvent(new CustomEvent('anugraha-store-updated', { detail: this.data }));
-          }
-        };
-      } catch (e) {
-        // fallback
-      }
-    }
-
-    // 3. Listen to window storage events (cross-tab sync fallback)
-    window.addEventListener('storage', (e) => {
-      if (e.key === this.key && e.newValue) {
-        this.data = this.load();
-        window.dispatchEvent(new CustomEvent('anugraha-store-updated', { detail: this.data }));
-      }
-    });
-
-    // 4. Background polling sync (every 3.5s) to detect updates made from other devices/IPs
-    setInterval(() => {
-      this.fetchRemoteData(true);
-    }, 3500);
-
-    // 5. Re-check on tab focus / visibility change
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') {
-        this.fetchRemoteData(true);
-      }
-    });
-  }
-
-  async fetchRemoteData(silent = false) {
-    if (typeof window === 'undefined') return;
-    try {
-      const endpoints = ['/api/store', 'data/store.json'];
-      let remoteData = null;
-
-      for (const endpoint of endpoints) {
-        try {
-          const res = await fetch(`${endpoint}?t=${Date.now()}`, {
-            headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' }
-          });
-          if (res.ok) {
-            remoteData = await res.json();
-            if (remoteData && remoteData.brand) break;
-          }
-        } catch (err) {
-          // try next endpoint
-        }
-      }
-
-      if (remoteData && remoteData.brand) {
-        const currentSavedTime = localStorage.getItem('anugraha_last_saved_time_epoch') || '0';
-        const remoteTime = remoteData._lastUpdatedEpoch || remoteData.lastUpdatedEpoch || 0;
-        
-        const currentLocalStr = localStorage.getItem(this.key);
-        const remoteJsonStr = JSON.stringify(remoteData);
-
-        if (!currentLocalStr || remoteJsonStr !== currentLocalStr) {
-          const merged = {
-            ...DEFAULT_DATA,
-            ...remoteData,
-            brand: { ...DEFAULT_DATA.brand, ...(remoteData.brand || {}) },
-            homepage: { ...DEFAULT_DATA.homepage, ...(remoteData.homepage || {}) },
-            stats: { ...DEFAULT_DATA.stats, ...(remoteData.stats || {}) },
-            about: { ...DEFAULT_DATA.about, ...(remoteData.about || {}) },
-            facilities: remoteData.facilities || DEFAULT_DATA.facilities,
-            services: remoteData.services || DEFAULT_DATA.services,
-            leadership: remoteData.leadership || DEFAULT_DATA.leadership,
-            administration: remoteData.administration || DEFAULT_DATA.administration,
-            equipment: remoteData.equipment || DEFAULT_DATA.equipment,
-            partnerships: remoteData.partnerships || DEFAULT_DATA.partnerships
-          };
-
-          this.data = merged;
-          localStorage.setItem(this.key, JSON.stringify(merged));
-          if (remoteTime) {
-            localStorage.setItem('anugraha_last_saved_time_epoch', String(remoteTime));
-          }
-          
-          window.dispatchEvent(new CustomEvent('anugraha-store-updated', { detail: this.data }));
-        }
-      }
-    } catch (e) {
-      if (!silent) console.warn("Remote store sync skipped:", e);
-    }
-  }
-
-  save() {
-    try {
-      const nowEpoch = Date.now();
-      this.data._lastUpdatedEpoch = nowEpoch;
-
-      const jsonStr = JSON.stringify(this.data);
-      localStorage.setItem(this.key, jsonStr);
-      localStorage.setItem('anugraha_last_saved_time_epoch', String(nowEpoch));
-      
-      const timestamp = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      localStorage.setItem('anugraha_last_saved_time', timestamp);
-      
-      if (typeof window !== 'undefined') {
-        // 1. Dispatch local event for active view
-        window.dispatchEvent(new CustomEvent('anugraha-store-updated', { detail: this.data }));
-
-        // 2. Broadcast to all open tabs
-        if (this.channel) {
-          this.channel.postMessage({ type: 'STORE_UPDATED', epoch: nowEpoch });
-        }
-
-        // 3. Post to Server API to persist to disk for all devices/IPs
-        fetch('/api/store', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json; charset=utf-8'
-          },
-          body: jsonStr
-        }).catch(err => {
-          // If on pure static host, local sync remains active
-          console.log("Server API sync:", err.message);
-        });
-      }
-    } catch (e) {
-      console.error("Failed to save store to localStorage", e);
-    }
-  }
-
-  reset() {
-    this.data = JSON.parse(JSON.stringify(DEFAULT_DATA));
-    this.save();
-  }
-
-  // BRAND & GENERAL
-  getBrand() {
-    return this.data.brand || DEFAULT_DATA.brand;
-  }
-
-  updateBrand(fields) {
-    this.data.brand = { ...this.getBrand(), ...fields };
-    this.save();
-  }
-
-  // HOMEPAGE
-  getHomepage() {
-    return this.data.homepage || DEFAULT_DATA.homepage;
-  }
-
-  updateHomepage(fields) {
-    this.data.homepage = { ...this.getHomepage(), ...fields };
-    this.save();
-  }
-
-  // ABOUT US
-  getAbout() {
-    return this.data.about || DEFAULT_DATA.about;
-  }
-
-  updateAbout(fields) {
-    this.data.about = { ...this.getAbout(), ...fields };
-    this.save();
-  }
-
-  // STATS
-  getStats() {
-    return this.data.stats || DEFAULT_DATA.stats;
-  }
-
-  updateStats(fields) {
-    this.data.stats = { ...this.getStats(), ...fields };
-    this.save();
-  }
-
-  // LEADERSHIP
-  getLeadership() {
-    return this.data.leadership || DEFAULT_DATA.leadership;
-  }
-
-  getLeaderById(id) {
-    return this.getLeadership().find(l => l.id === id);
-  }
-
-  updateLeadership(id, fields) {
-    if (!this.data.leadership) this.data.leadership = [...DEFAULT_DATA.leadership];
-    const idx = this.data.leadership.findIndex(l => l.id === id);
-    if (idx !== -1) {
-      this.data.leadership[idx] = { ...this.data.leadership[idx], ...fields };
-      this.save();
-    }
-  }
-
-  addLeadership(leader) {
-    if (!this.data.leadership) this.data.leadership = [...DEFAULT_DATA.leadership];
-    const newId = leader.id || ('doc-' + Date.now());
-    this.data.leadership.push({ id: newId, displayOrder: this.data.leadership.length + 1, published: true, ...leader });
-    this.save();
-    return newId;
-  }
-
-  deleteLeadership(id) {
-    if (!this.data.leadership) return;
-    this.data.leadership = this.data.leadership.filter(l => l.id !== id);
-    this.save();
-  }
-
-  // ADMINISTRATION TEAM
-  getAdministration() {
-    return this.data.administration || DEFAULT_DATA.administration;
-  }
-
-  updateAdminMember(id, fields) {
-    if (!this.data.administration) this.data.administration = [...DEFAULT_DATA.administration];
-    const idx = this.data.administration.findIndex(m => m.id === id);
-    if (idx !== -1) {
-      this.data.administration[idx] = { ...this.data.administration[idx], ...fields };
-      this.save();
-    }
-  }
-
-  addAdminMember(member) {
-    if (!this.data.administration) this.data.administration = [...DEFAULT_DATA.administration];
-    const newId = member.id || ('admin-' + Date.now());
-    this.data.administration.push({ id: newId, displayOrder: this.data.administration.length + 1, published: true, ...member });
-    this.save();
-    return newId;
-  }
-
-  deleteAdminMember(id) {
-    if (!this.data.administration) return;
-    this.data.administration = this.data.administration.filter(m => m.id !== id);
-    this.save();
-  }
-
-  // FACILITIES (Hospitals & Vision Centers)
-  getFacilities() {
-    return this.data.facilities || DEFAULT_DATA.facilities;
-  }
-
-  getFacilityById(id) {
-    return this.getFacilities().find(f => f.id === id);
-  }
-
-  updateFacility(id, fields) {
-    if (!this.data.facilities) this.data.facilities = [...DEFAULT_DATA.facilities];
-    const idx = this.data.facilities.findIndex(f => f.id === id);
-    if (idx !== -1) {
-      this.data.facilities[idx] = { ...this.data.facilities[idx], ...fields };
-      this.save();
-    }
-  }
-
-  addFacility(fac) {
-    if (!this.data.facilities) this.data.facilities = [...DEFAULT_DATA.facilities];
-    const newId = fac.id || ('fac-' + Date.now());
-    this.data.facilities.push({ id: newId, displayOrder: this.data.facilities.length + 1, published: true, ...fac });
-    this.save();
-    return newId;
-  }
-
-  deleteFacility(id) {
-    if (!this.data.facilities) return;
-    this.data.facilities = this.data.facilities.filter(f => f.id !== id);
-    this.save();
-  }
-
-  // SERVICES
-  getServices() {
-    return this.data.services || DEFAULT_DATA.services;
-  }
-
-  getServiceById(idOrSlug) {
-    if (!idOrSlug) return null;
-    const clean = String(idOrSlug).toLowerCase().trim();
-    const list = this.getServices();
-    return list.find(s => 
-      (s.id && s.id.toLowerCase() === clean) || 
-      (s.slug && s.slug.toLowerCase() === clean) ||
-      (s.id === 'cataract' && clean === 'cataract-phaco') ||
-      (s.id === 'cataract-phaco' && clean === 'cataract') ||
-      (s.id === 'vitreo-retinal-surgery' && (clean === 'retina' || clean === 'vitreoretinal')) ||
-      (s.id === 'paediatric-squint' && (clean === 'pediatric' || clean === 'pediatric-squint' || clean === 'squint')) ||
-      (s.id === 'cornea-lasik-eye-bank' && (clean === 'cornea' || clean === 'cornea-lasik' || clean === 'eye-bank')) ||
-      (s.id === 'oculoplasty' && (clean === 'oculoplasty-surgery' || clean === 'oculoplastic')) ||
-      (s.id === 'lasik' && (clean === 'lasik-service' || clean === 'lasik-contoura')) ||
-      (s.id === 'ocular-trauma' && (clean === 'trauma' || clean === 'emergency-trauma'))
-    );
-  }
-
-  updateService(id, fields) {
-    if (!this.data.services) this.data.services = [...DEFAULT_DATA.services];
-    const idx = this.data.services.findIndex(s => s.id === id);
-    if (idx !== -1) {
-      this.data.services[idx] = { ...this.data.services[idx], ...fields };
-      this.save();
-    }
-  }
-
-  updateServiceImage(id, newPath) {
-    this.updateService(id, { imagePlaceholder: newPath, heroImage: newPath });
-  }
-
-  // ACADEMICS
-  getAcademics() {
-    return this.data.academics || DEFAULT_DATA.academics;
-  }
-
-  getAcademicProgramById(id) {
-    let lookupId = id;
-    if (lookupId === 'bscoptometry') lookupId = 'bsc-optometry';
-    return this.getAcademics().find(p => p.id === lookupId);
-  }
-
-  updateAcademicProgram(id, updatedData) {
-    if (!this.data.academics) this.data.academics = [...DEFAULT_DATA.academics];
-    const index = this.data.academics.findIndex(p => p.id === id);
-    if (index !== -1) {
-      this.data.academics[index] = { ...this.data.academics[index], ...updatedData };
-      this.save();
-    }
-  }
-
-  // PATIENT RESOURCES
-  getPatientResources() {
-    return this.data.patientResources || DEFAULT_DATA.patientResources;
-  }
-
-  updatePatientResources(fields) {
-    this.data.patientResources = { ...this.getPatientResources(), ...fields };
-    this.save();
-  }
-
-  // FAQS
-  getFaqs() {
-    return this.data.faqs || DEFAULT_DATA.faqs;
-  }
-
-  getFaqById(id) {
-    return this.getFaqs().find(f => f.id === id);
-  }
-
-  updateFaq(id, fields) {
-    if (!this.data.faqs) this.data.faqs = [...DEFAULT_DATA.faqs];
-    const idx = this.data.faqs.findIndex(f => f.id === id);
-    if (idx !== -1) {
-      this.data.faqs[idx] = { ...this.data.faqs[idx], ...fields };
-      this.save();
-    }
-  }
-
-  addFaq(faq) {
-    if (!this.data.faqs) this.data.faqs = [...DEFAULT_DATA.faqs];
-    const newId = faq.id || ('faq-' + Date.now());
-    this.data.faqs.push({ id: newId, displayOrder: this.data.faqs.length + 1, published: true, ...faq });
-    this.save();
-    return newId;
-  }
-
-  deleteFaq(id) {
-    if (!this.data.faqs) return;
-    this.data.faqs = this.data.faqs.filter(f => f.id !== id);
-    this.save();
-  }
-
-  // EMPANELMENTS / INSURANCE
-  getEmpanelments() {
-    return this.data.empanelments || DEFAULT_DATA.empanelments;
-  }
-
-  addEmpanelment(item) {
-    if (!this.data.empanelments) this.data.empanelments = [...DEFAULT_DATA.empanelments];
-    this.data.empanelments.push({ displayOrder: this.data.empanelments.length + 1, published: true, ...item });
-    this.save();
-  }
-
-  updateEmpanelment(code, fields) {
-    if (!this.data.empanelments) this.data.empanelments = [...DEFAULT_DATA.empanelments];
-    const idx = this.data.empanelments.findIndex(e => e.code === code);
-    if (idx !== -1) {
-      this.data.empanelments[idx] = { ...this.data.empanelments[idx], ...fields };
-      this.save();
-    }
-  }
-
-  removeEmpanelment(code) {
-    if (!this.data.empanelments) return;
-    this.data.empanelments = this.data.empanelments.filter(e => e.code !== code);
-    this.save();
-  }
-
-  // NEWS
-  getNews() {
-    return this.data.news || DEFAULT_DATA.news;
-  }
-
-  addNewsItem(item) {
-    if (!this.data.news) this.data.news = [...DEFAULT_DATA.news];
-    const newId = 'news-' + Date.now();
-    this.data.news.unshift({ id: newId, date: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }), published: true, ...item });
-    this.save();
-    return newId;
-  }
-
-  updateNewsItem(id, fields) {
-    if (!this.data.news) this.data.news = [...DEFAULT_DATA.news];
-    const idx = this.data.news.findIndex(n => n.id === id);
-    if (idx !== -1) {
-      this.data.news[idx] = { ...this.data.news[idx], ...fields };
-      this.save();
-    }
-  }
-
-  removeNewsItem(id) {
-    if (!this.data.news) return;
-    this.data.news = this.data.news.filter(n => n.id !== id);
-    this.save();
-  }
-
-  // MEDIA & GALLERY
-  getGallery() {
-    return this.data.gallery || DEFAULT_DATA.gallery;
-  }
-
-  addGalleryItem(item) {
-    if (!this.data.gallery) this.data.gallery = [...DEFAULT_DATA.gallery];
-    const newId = Date.now();
-    this.data.gallery.unshift({ 
-      id: newId, 
-      uploadDate: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }), 
-      ...item 
-    });
-    this.save();
-    return newId;
-  }
-
-  updateGalleryItem(id, fields) {
-    if (!this.data.gallery) this.data.gallery = [...DEFAULT_DATA.gallery];
-    const idx = this.data.gallery.findIndex(g => g.id === id);
-    if (idx !== -1) {
-      this.data.gallery[idx] = { ...this.data.gallery[idx], ...fields };
-      this.save();
-    }
-  }
-
-  removeGalleryItem(id) {
-    if (!this.data.gallery) return;
-    this.data.gallery = this.data.gallery.filter(g => g.id !== id);
-    this.save();
-  }
-
-  // Real Dynamic Image Usage Tracker
-  getImageUsage(src) {
-    if (!src) return [];
-    const usedOn = [];
-    const clean = s => (s || '').trim();
-
-    // Check Brand Logo
-    if (clean(this.data.brand?.logo) === clean(src)) {
-      usedOn.push("Official Website Logo (Header & Footer)");
-    }
-
-    // Check Homepage Hero
-    if (clean(this.data.homepage?.heroImage) === clean(src)) {
-      usedOn.push("Homepage Hero Background Banner");
-    }
-
-    // Check Doctor / Leadership Profiles
-    (this.data.leadership || []).forEach(doc => {
-      if (clean(doc.photo) === clean(src)) {
-        usedOn.push(`${doc.name} (Doctor Profile Photo)`);
-      }
-    });
-
-    // Check Administration Team Member Profiles
-    (this.data.administration || []).forEach(member => {
-      if (clean(member.photo) === clean(src)) {
-        usedOn.push(`${member.name} (Admin Team Portrait)`);
-      }
-    });
-
-    // Check Base Hospitals & Vision Centers
-    (this.data.facilities || []).forEach(fac => {
-      if (clean(fac.heroImage) === clean(src) || clean(fac.mainImage) === clean(src) || (fac.galleryImages || []).includes(src)) {
-        usedOn.push(`${fac.name} (${fac.type === 'base' ? 'Hospital' : 'Vision Center'} Page)`);
-      }
-    });
-
-    // Check Services & Specialties
-    (this.data.services || []).forEach(srv => {
-      if (clean(srv.heroImage) === clean(src) || clean(srv.imagePlaceholder) === clean(src)) {
-        usedOn.push(`${srv.title} (Specialty Hero Banner)`);
-      }
-    });
-
-    // Check News Articles
-    (this.data.news || []).forEach(newsItem => {
-      if (clean(newsItem.image) === clean(src)) {
-        usedOn.push(`News: "${newsItem.title.slice(0, 32)}..."`);
-      }
-    });
-
-    // Check Video Thumbnails
-    (this.data.videos || []).forEach(v => {
-      if (clean(v.thumbnail) === clean(src)) {
-        usedOn.push(`Video: "${v.title.slice(0, 32)}..."`);
-      }
-    });
-
-    return usedOn;
-  }
-
-  getAuditInfo() {
-    return {
-      lastModified: localStorage.getItem('anugraha_last_saved_time') || 'Active Session (Synced)',
-      lastModifiedBy: 'web@admin (Super Admin)',
-      createdDate: '15 Aug 2001 (25-Year Foundation)',
-      status: 'Live & Synchronized (Frontend Prototype Store)'
-    };
-  }
-
-  getDataGaps() {
-    return this.data.dataGaps || DEFAULT_DATA.dataGaps || {};
-  }
-
-  getVideos() {
-    return this.data.videos || DEFAULT_DATA.videos;
-  }
-
-  getHandouts() {
-    return this.data.handouts || DEFAULT_DATA.handouts;
-  }
-
-  getRedirects() {
-    return this.data.seoRedirects || DEFAULT_DATA.seoRedirects;
-  }
-
-  getPartnerships() {
-    return (this.data.partnerships || DEFAULT_DATA.partnerships || []).filter(p => p.published !== false);
-  }
-
-  getPartnershipById(id) {
-    return this.getPartnerships().find(p => p.id === id);
-  }
-
-  getEquipment() {
-    return (this.data.equipment || DEFAULT_DATA.equipment || []).filter(e => e.published !== false && e.isActive !== false);
-  }
-
-  getAllEquipment() {
-    return this.data.equipment || DEFAULT_DATA.equipment || [];
-  }
-
-  getEquipmentById(id) {
-    return this.getAllEquipment().find(e => e.id === id);
-  }
-
-  updateEquipment(id, fields) {
-    if (!this.data.equipment) this.data.equipment = [...DEFAULT_DATA.equipment];
-    const idx = this.data.equipment.findIndex(e => e.id === id);
-    if (idx !== -1) {
-      this.data.equipment[idx] = { ...this.data.equipment[idx], ...fields };
-      this.save();
-    }
-  }
-
-  addEquipment(item) {
-    if (!this.data.equipment) this.data.equipment = [...DEFAULT_DATA.equipment];
-    const newId = item.id || ('eq-' + Date.now());
-    this.data.equipment.push({
-      id: newId,
-      displayOrder: this.data.equipment.length + 1,
-      isActive: true,
-      published: true,
-      ...item
-    });
-    this.save();
-    return newId;
-  }
-
-  deleteEquipment(id) {
-    if (!this.data.equipment) return;
-    this.data.equipment = this.data.equipment.filter(e => e.id !== id);
-    this.save();
-  }
-
-  exportJSON() {
-    return JSON.stringify(this.data, null, 2);
-  }
-
-  importJSON(jsonString) {
-    try {
-      const parsed = JSON.parse(jsonString);
-      if (parsed && parsed.brand && parsed.stats) {
-        this.data = parsed;
-        this.save();
-        return true;
-      }
-    } catch (e) {
-      console.error("Invalid JSON format", e);
-    }
-    return false;
-  }
 }
-
-window.appStore = new Store();
