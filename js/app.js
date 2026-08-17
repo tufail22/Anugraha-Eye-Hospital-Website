@@ -377,35 +377,13 @@ document.addEventListener("DOMContentLoaded", () => {
       path = redirectMap[path];
     }
 
-    const motionSafe = window.useMotionSafe ? window.useMotionSafe() : { isMotionSafe: true };
-
-    // Reduced-motion safeguard: Route changes become an instant cut (0ms fade/slide)
-    if (!motionSafe.isMotionSafe) {
+    // Setting window.location.hash triggers handleHashRoute automatically
+    if (window.location.hash === '#' + path || window.location.hash === path) {
       currentPath = path;
-      window.location.hash = path;
-      window.scrollTo({ top: 0, behavior: 'auto' });
       render();
-      return;
+    } else {
+      window.location.hash = '#' + path;
     }
-
-    // Trigger Top Progress Bar & Smooth Exit/Entrance Transition
-    window.triggerTopProgressBar();
-    
-    appContainer.classList.add("page-exit");
-
-    setTimeout(() => {
-      currentPath = path;
-      window.location.hash = path;
-      window.scrollTo({ top: 0, behavior: 'auto' });
-      render();
-
-      appContainer.classList.remove("page-exit");
-      appContainer.classList.add("page-enter");
-
-      setTimeout(() => {
-        appContainer.classList.remove("page-enter");
-      }, 300);
-    }, 180);
   }
 
   // Dynamic Route Dispatcher & Hash Change Synchronizer
@@ -438,24 +416,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Handle hash changes in URL bar directly
+  // Handle hash changes in URL bar directly (single canonical route handler)
   window.addEventListener('hashchange', handleHashRoute);
-
-  // Cross-Tab Real-time Synchronizer (When user edits in Admin tab, public tabs update instantly)
-  window.addEventListener('storage', (e) => {
-    if (!e.key || e.key === store.key || e.key === 'anugraha_hospital_store_v1') {
-      store.sync();
-      render();
-    }
-  });
-
-  // Intra-page Store Update Synchronizer
-  window.addEventListener('anugraha-store-updated', () => {
-    store.sync();
-    if (!currentPath.startsWith('/admin')) {
-      render();
-    }
-  });
 
   // Mobile Drawer Toggle State
   window.isMobileDrawerOpen = window.isMobileDrawerOpen || false;
@@ -9098,14 +9060,17 @@ document.addEventListener("DOMContentLoaded", () => {
     initSpotlightHoverTracker();
   }
 
-  // Real-time live synchronization listener across all devices, IP addresses, and browser tabs
+  // Consolidated & Debounced Real-Time Synchronization Listener
+  let storeUpdateDebounceTimer = null;
   window.addEventListener('anugraha-store-updated', (e) => {
-    // Re-render public pages and admin preview automatically
-    const activeEl = document.activeElement;
-    const isTyping = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.isContentEditable);
-    if (!isTyping) {
-      render();
-    }
+    if (storeUpdateDebounceTimer) clearTimeout(storeUpdateDebounceTimer);
+    storeUpdateDebounceTimer = setTimeout(() => {
+      const activeEl = document.activeElement;
+      const isTyping = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.isContentEditable);
+      if (!isTyping) {
+        render();
+      }
+    }, 150);
   });
 
   // Initial Run
