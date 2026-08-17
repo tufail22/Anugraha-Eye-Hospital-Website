@@ -2150,6 +2150,9 @@ class Store {
     if (idx !== -1) {
       this.data.leadership[idx] = { ...this.data.leadership[idx], ...fields };
       this.save();
+      if (window.cmsClient && typeof window.cmsClient.saveDoctor === 'function') {
+        window.cmsClient.saveDoctor(this.data.leadership[idx]);
+      }
     }
   }
 
@@ -2178,6 +2181,9 @@ class Store {
     if (idx !== -1) {
       this.data.administration[idx] = { ...this.data.administration[idx], ...fields };
       this.save();
+      if (window.cmsClient && typeof window.cmsClient.saveAdministration === 'function') {
+        window.cmsClient.saveAdministration(this.data.administration[idx]);
+      }
     }
   }
 
@@ -2210,6 +2216,9 @@ class Store {
     if (idx !== -1) {
       this.data.facilities[idx] = { ...this.data.facilities[idx], ...fields };
       this.save();
+      if (window.cmsClient && typeof window.cmsClient.saveFacility === 'function') {
+        window.cmsClient.saveFacility(this.data.facilities[idx]);
+      }
     }
   }
 
@@ -2256,6 +2265,9 @@ class Store {
     if (idx !== -1) {
       this.data.services[idx] = { ...this.data.services[idx], ...fields };
       this.save();
+      if (window.cmsClient && typeof window.cmsClient.saveService === 'function') {
+        window.cmsClient.saveService(this.data.services[idx]);
+      }
     }
   }
 
@@ -2386,13 +2398,17 @@ class Store {
 
   addGalleryItem(item) {
     if (!this.data.gallery) this.data.gallery = [...DEFAULT_DATA.gallery];
-    const newId = Date.now();
-    this.data.gallery.unshift({ 
+    const newId = item.id || `gal_${Date.now()}`;
+    const galleryEntry = { 
       id: newId, 
       uploadDate: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }), 
       ...item 
-    });
+    };
+    this.data.gallery.unshift(galleryEntry);
     this.save();
+    if (window.cmsClient && typeof window.cmsClient.saveGalleryItem === 'function') {
+      window.cmsClient.saveGalleryItem(galleryEntry);
+    }
     return newId;
   }
 
@@ -2407,8 +2423,15 @@ class Store {
 
   removeGalleryItem(id) {
     if (!this.data.gallery) return;
+    const item = this.data.gallery.find(g => g.id === id);
     this.data.gallery = this.data.gallery.filter(g => g.id !== id);
     this.save();
+    if (window.cmsClient && typeof window.cmsClient.deleteGalleryItem === 'function') {
+      window.cmsClient.deleteGalleryItem(id);
+    }
+    if (item && item.src && window.cmsClient && typeof window.cmsClient.deleteFromCloudStorage === 'function') {
+      window.cmsClient.deleteFromCloudStorage(item.src);
+    }
   }
 
   // Real Dynamic Image Usage Tracker
@@ -2523,6 +2546,9 @@ class Store {
     if (idx !== -1) {
       this.data.equipment[idx] = { ...this.data.equipment[idx], ...fields };
       this.save();
+      if (window.cmsClient && typeof window.cmsClient.saveEquipment === 'function') {
+        window.cmsClient.saveEquipment(this.data.equipment[idx]);
+      }
     }
   }
 
@@ -2544,6 +2570,9 @@ class Store {
     if (!this.data.equipment) return;
     this.data.equipment = this.data.equipment.filter(e => e.id !== id);
     this.save();
+    if (window.cmsClient && typeof window.cmsClient.deleteEquipment === 'function') {
+      window.cmsClient.deleteEquipment(id);
+    }
   }
 
   exportJSON() {

@@ -5464,15 +5464,32 @@ document.addEventListener("DOMContentLoaded", () => {
     img.src = objectUrl;
   };
 
-  // Backward compatibility wrapper for older direct upload triggers
+  // Backward compatibility wrapper for direct upload triggers (uploads to cloud storage)
   window.validateAndReadImageFile = function(file, callback, options = {}) {
-    window.validateImageFile(file, options, (img, meta, objectUrl) => {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        URL.revokeObjectURL(objectUrl);
-        callback(e.target.result, meta);
-      };
-      reader.readAsDataURL(file);
+    window.validateImageFile(file, options, async (img, meta, objectUrl) => {
+      URL.revokeObjectURL(objectUrl);
+      let finalUrl = null;
+      if (window.uploadToCloudStorage && window.isSupabaseConfigured && window.isSupabaseConfigured()) {
+        try {
+          window.showAdminToast("Uploading image to Cloud Storage...", "success");
+          const uploadRes = await window.uploadToCloudStorage(file, options.context || 'general', meta.filename);
+          if (uploadRes && uploadRes.url) {
+            finalUrl = uploadRes.url;
+          }
+        } catch (e) {
+          console.warn("[Cloud Storage] Upload warning, falling back to data URL:", e);
+        }
+      }
+
+      if (!finalUrl) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          callback(e.target.result, meta);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        callback(finalUrl, meta);
+      }
     });
   };
 
@@ -5654,10 +5671,10 @@ document.addEventListener("DOMContentLoaded", () => {
     window.openImageCropModal(file, { context }, callback);
   };
 
-  // Canvas-based aspect-ratio cropping engine
-  window.applyCropAndSave = function() {
+  // Canvas-based aspect-ratio cropping engine with Cloud Storage persistence
+  window.applyCropAndSave = async function() {
     if (!window.activeCropModalData) return;
-    const { img, meta, selectedRatio, onSaveCallback } = window.activeCropModalData;
+    const { img, meta, selectedRatio, context, onSaveCallback } = window.activeCropModalData;
 
     const naturalWidth = img.naturalWidth || img.width;
     const naturalHeight = img.naturalHeight || img.height;
@@ -5669,7 +5686,7 @@ document.addEventListener("DOMContentLoaded", () => {
       canvas.height = naturalHeight;
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0);
-      outDataUrl = canvas.toDataURL(meta.type, 0.92);
+      outDataUrl = canvas.toDataURL(meta.type || 'image/jpeg', 0.92);
     } else {
       let targetRatio = 1;
       if (selectedRatio === '1:1') targetRatio = 1;
@@ -5695,13 +5712,27 @@ document.addEventListener("DOMContentLoaded", () => {
       canvas.height = Math.round(cropHeight);
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, offsetX, offsetY, cropWidth, cropHeight, 0, 0, canvas.width, canvas.height);
-      outDataUrl = canvas.toDataURL(meta.type, 0.92);
+      outDataUrl = canvas.toDataURL(meta.type || 'image/jpeg', 0.92);
       meta.dimensions = `${canvas.width} × ${canvas.height}`;
     }
 
     window.closeImageCropModal();
+
+    let finalUrl = outDataUrl;
+    if (window.uploadToCloudStorage && window.isSupabaseConfigured && window.isSupabaseConfigured()) {
+      try {
+        window.showAdminToast("Uploading image to Cloud Storage...", "success");
+        const uploadResult = await window.uploadToCloudStorage(outDataUrl, context || 'general', meta.filename);
+        if (uploadResult && uploadResult.url) {
+          finalUrl = uploadResult.url;
+        }
+      } catch (err) {
+        console.warn("[Cloud Storage] Cloud upload warning, using local preview:", err);
+      }
+    }
+
     if (onSaveCallback) {
-      onSaveCallback(outDataUrl, meta);
+      onSaveCallback(finalUrl, meta);
     }
   };
 
@@ -8316,16 +8347,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const file = event.target.files[0];
     if (!file) return;
 
-    window.validateAndReadImageFile(file, (base64, meta) => {
+    window.openImageCropModal(file, { context: 'brand', defaultRatio: '1:1' }, (finalUrl, meta) => {
       const store = window.appStore;
-      store.updateBrand({ logo: base64 });
+      store.updateBrand({ logo: finalUrl });
       store.addGalleryItem({
         title: "Hospital Official Logo",
         category: "Branding",
-        src: base64,
-        ...meta
+        src: finalUrl,
+        filename: meta.filename || file.name,
+        type: meta.type || file.type,
+        size: meta.size,
+        dimensions: meta.dimensions,
+        uploadDate: new Date().toLocaleDateString('en-IN')
       });
-      window.showAdminToast("Official logo updated successfully!", "success");
+      window.showAdminToast("Official logo uploaded & published!", "success");
       render();
     });
   };
@@ -8334,40 +8369,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const file = event.target.files[0];
     if (!file) return;
 
-    const validExtensions = /\.(jpg|jpeg|png)$/i;
-    const validMimes = ['image/jpeg', 'image/png', 'image/jpg', 'image/pjpeg', 'image/x-png'];
-
-    if (!validExtensions.test(file.name) || (file.type && !validMimes.includes(file.type.toLowerCase()))) {
-      window.showAdminToast("Invalid format! Only JPG, JPEG, and PNG images are allowed.", "error");
-      event.target.value = '';
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const base64 = e.target.result;
+    window.openImageCropModal(file, { context: 'hero', defaultRatio: '16:9' }, (finalUrl, meta) => {
       const preview = document.getElementById('admin-hero-img-preview');
-      if (preview) preview.src = base64;
+      if (preview) preview.src = finalUrl;
 
       const store = window.appStore;
-      store.updateHomepage({ heroImage: base64 });
+      store.updateHomepage({ heroImage: finalUrl });
       store.addGalleryItem({
         title: "Homepage Hero Background",
         category: "Homepage Hero",
-        src: base64,
-        filename: file.name,
-        type: file.type || 'image/jpeg',
-        size: (file.size / 1024).toFixed(1) + ' KB',
-        uploadDate: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
+        src: finalUrl,
+        filename: meta.filename || file.name,
+        type: meta.type || file.type,
+        size: meta.size,
+        dimensions: meta.dimensions,
+        uploadDate: new Date().toLocaleDateString('en-IN')
       });
 
-      window.showAdminToast("Hero background asset uploaded & applied!", "success");
+      window.showAdminToast("Hero background asset uploaded & published!", "success");
       render();
-    };
-    reader.onerror = function() {
-      window.showAdminToast("Failed to read image file.", "error");
-    };
-    reader.readAsDataURL(file);
+    });
   };
 
   // ABOUT US HANDLERS
@@ -8441,16 +8462,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const file = event.target.files[0];
     if (!file) return;
 
-    window.validateAndReadImageFile(file, (base64, meta) => {
+    window.openImageCropModal(file, { context: 'doctors', defaultRatio: '1:1' }, (finalUrl, meta) => {
       const store = window.appStore;
-      store.updateLeadership(docId, { photo: base64 });
+      store.updateLeadership(docId, { photo: finalUrl });
       store.addGalleryItem({
         title: `Doctor Profile - ${docId}`,
         category: "Doctor Profiles",
-        src: base64,
-        ...meta
+        src: finalUrl,
+        filename: meta.filename || file.name,
+        type: meta.type || file.type,
+        size: meta.size,
+        dimensions: meta.dimensions,
+        uploadDate: new Date().toLocaleDateString('en-IN')
       });
-      window.showAdminToast("Doctor photo updated!", "success");
+      window.showAdminToast("Doctor photo uploaded & published!", "success");
       render();
     });
   };
@@ -8674,16 +8699,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const file = event.target.files[0];
     if (!file) return;
 
-    window.validateAndReadImageFile(file, (base64, meta) => {
+    window.openImageCropModal(file, { context: 'services', defaultRatio: '16:9' }, (finalUrl, meta) => {
       const store = window.appStore;
-      store.updateServiceImage(serviceId, base64);
+      store.updateServiceImage(serviceId, finalUrl);
       store.addGalleryItem({
         title: `Service Asset - ${serviceId}`,
         category: "Services",
-        src: base64,
-        ...meta
+        src: finalUrl,
+        filename: meta.filename || file.name,
+        type: meta.type || file.type,
+        size: meta.size,
+        dimensions: meta.dimensions,
+        uploadDate: new Date().toLocaleDateString('en-IN')
       });
-      window.showAdminToast("Service photo updated!", "success");
+      window.showAdminToast("Service photo uploaded & published!", "success");
       render();
     });
   };
@@ -8793,15 +8822,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const file = event.target.files[0];
     if (!file) return;
 
-    window.validateAndReadImageFile(file, (base64, meta) => {
+    window.openImageCropModal(file, { context: 'gallery', defaultRatio: 'original' }, (finalUrl, meta) => {
       const store = window.appStore;
       store.addGalleryItem({
         title: file.name.replace(/\.[^/.]+$/, ""),
         category: "Media Library",
-        src: base64,
-        ...meta
+        src: finalUrl,
+        filename: meta.filename || file.name,
+        type: meta.type || file.type,
+        size: meta.size,
+        dimensions: meta.dimensions,
+        uploadDate: new Date().toLocaleDateString('en-IN')
       });
-      window.showAdminToast("Image uploaded to Media Library!", "success");
+      window.showAdminToast("Image uploaded to Media Library & Cloud Storage!", "success");
       render();
     });
   };
