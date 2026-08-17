@@ -1959,10 +1959,10 @@ class Store {
       }
     });
 
-    // 5. Background polling sync (every 3.5s) to detect updates made from other devices/IPs
+    // 5. Background safety polling sync (every 15s) to detect updates if WebSocket drops
     setInterval(() => {
       this.fetchRemoteData(true);
-    }, 3500);
+    }, 15000);
 
     // 6. Re-check on tab focus / visibility change
     document.addEventListener('visibilitychange', () => {
@@ -2008,30 +2008,30 @@ class Store {
       }
 
       if (remoteData && (remoteData.brand || remoteData.homepage)) {
-        const currentSavedTime = localStorage.getItem('anugraha_last_saved_time_epoch') || '0';
         const remoteTime = remoteData._lastUpdatedEpoch || remoteData.lastUpdatedEpoch || 0;
         
+        const merged = {
+          ...DEFAULT_DATA,
+          ...remoteData,
+          brand: { ...DEFAULT_DATA.brand, ...(remoteData.brand || {}) },
+          homepage: { ...DEFAULT_DATA.homepage, ...(remoteData.homepage || {}) },
+          stats: { ...DEFAULT_DATA.stats, ...(remoteData.stats || {}) },
+          about: { ...DEFAULT_DATA.about, ...(remoteData.about || {}) },
+          facilities: remoteData.facilities || DEFAULT_DATA.facilities,
+          services: remoteData.services || DEFAULT_DATA.services,
+          leadership: remoteData.leadership || DEFAULT_DATA.leadership,
+          administration: remoteData.administration || DEFAULT_DATA.administration,
+          equipment: remoteData.equipment || DEFAULT_DATA.equipment,
+          partnerships: remoteData.partnerships || DEFAULT_DATA.partnerships
+        };
+
         const currentLocalStr = localStorage.getItem(this.key);
-        const remoteJsonStr = JSON.stringify(remoteData);
+        const mergedJsonStr = JSON.stringify(merged);
 
-        if (!currentLocalStr || remoteJsonStr !== currentLocalStr) {
-          const merged = {
-            ...DEFAULT_DATA,
-            ...remoteData,
-            brand: { ...DEFAULT_DATA.brand, ...(remoteData.brand || {}) },
-            homepage: { ...DEFAULT_DATA.homepage, ...(remoteData.homepage || {}) },
-            stats: { ...DEFAULT_DATA.stats, ...(remoteData.stats || {}) },
-            about: { ...DEFAULT_DATA.about, ...(remoteData.about || {}) },
-            facilities: remoteData.facilities || DEFAULT_DATA.facilities,
-            services: remoteData.services || DEFAULT_DATA.services,
-            leadership: remoteData.leadership || DEFAULT_DATA.leadership,
-            administration: remoteData.administration || DEFAULT_DATA.administration,
-            equipment: remoteData.equipment || DEFAULT_DATA.equipment,
-            partnerships: remoteData.partnerships || DEFAULT_DATA.partnerships
-          };
-
+        // Only dispatch update if the actual merged data content has genuinely changed
+        if (!currentLocalStr || mergedJsonStr !== currentLocalStr) {
           this.data = merged;
-          localStorage.setItem(this.key, JSON.stringify(merged));
+          localStorage.setItem(this.key, mergedJsonStr);
           if (remoteTime) {
             localStorage.setItem('anugraha_last_saved_time_epoch', String(remoteTime));
           }

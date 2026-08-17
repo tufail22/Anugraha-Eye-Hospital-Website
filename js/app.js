@@ -42,6 +42,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 450);
   };
 
+  // Reliable Image Preloader Promise
+  window.preloadImage = function(url) {
+    return new Promise((resolve) => {
+      if (!url || typeof url !== 'string') return resolve(url);
+      const img = new Image();
+      let finished = false;
+      img.onload = () => {
+        if (!finished) {
+          finished = true;
+          resolve(url);
+        }
+      };
+      img.onerror = () => {
+        if (!finished) {
+          finished = true;
+          resolve(url);
+        }
+      };
+      img.src = url;
+      // 4-second fallback timeout so rendering never stalls
+      setTimeout(() => {
+        if (!finished) {
+          finished = true;
+          resolve(url);
+        }
+      }, 4000);
+    });
+  };
+
   /* FRONTEND-ONLY TRUST BOUNDARY: XSS Sanitizer for admin-entered rich text — must be re-enforced server-side before production deployment with a real backend */
   window.sanitizeHTML = function(input) {
     if (!input) return '';
@@ -1044,10 +1073,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!mask) return;
 
+    // If hero already entered once in this session, keep it fully visible without restarting animation
+    if (window.hasHeroEntered) {
+      mask.style.opacity = '1';
+      if (eyebrow) { eyebrow.style.opacity = '1'; eyebrow.style.transform = 'none'; }
+      wordSpans.forEach(span => span.classList.add('is-revealed'));
+      if (subheadline) { subheadline.style.opacity = '1'; subheadline.style.transform = 'none'; }
+      if (ctas) { ctas.style.opacity = '1'; ctas.style.transform = 'none'; }
+      return;
+    }
+
     const motionSafe = window.useMotionSafe ? window.useMotionSafe() : { isMotionSafe: true };
 
     // Reduced-motion safeguard: single simple opacity fade, no stagger, no slide
     if (!motionSafe.isMotionSafe) {
+      window.hasHeroEntered = true;
       mask.style.opacity = '1';
       if (eyebrow) { eyebrow.style.opacity = '1'; eyebrow.style.transform = 'none'; }
       wordSpans.forEach(span => span.classList.add('is-revealed'));
@@ -1088,6 +1128,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ctas.style.opacity = '1';
         ctas.style.transform = 'translateY(0px)';
       }
+      window.hasHeroEntered = true;
     }, 650);
   }
 
@@ -1244,15 +1285,15 @@ document.addEventListener("DOMContentLoaded", () => {
         
         <!-- 1. HERO SECTION -->
         <section class="relative max-w-7xl mx-auto px-4 hero-section-root">
-          <div class="relative rounded-3xl overflow-hidden min-h-[500px] flex items-center p-8 sm:p-12 md:p-16 bg-cover bg-center border border-teal-900/30 shadow-2xl hero-parallax-bg" style="background-image: url('${home.heroImage || 'assets/hero-bg.png'}');">
+          <div id="hero-banner-container" class="relative rounded-3xl overflow-hidden min-h-[500px] flex items-center p-8 sm:p-12 md:p-16 bg-cover bg-center border border-teal-900/30 shadow-2xl hero-parallax-bg bg-[#062c26]" style="background-image: url('${home.heroImage || 'assets/hero-bg.png'}');">
             
             <!-- Dark Vision Blue Gradient Overlay with Aperture Mask Reveal -->
-            <div class="absolute inset-0 bg-gradient-to-r from-[#062c26] via-[#062c26]/95 to-transparent opacity-0 transition-opacity duration-700 ease-out hero-aperture-mask"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-[#062c26] via-[#062c26]/95 to-transparent ${window.hasHeroEntered ? 'opacity-100' : 'opacity-0'} transition-opacity duration-700 ease-out hero-aperture-mask"></div>
 
             <div class="relative z-10 max-w-2xl space-y-6 text-white">
               
               <!-- Eyebrow Badge -->
-              <div class="hero-eyebrow inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold text-xs tracking-wide border border-emerald-500/30 opacity-0 transform translate-y-4 transition-all duration-300">
+              <div class="hero-eyebrow inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold text-xs tracking-wide border border-emerald-500/30 ${window.hasHeroEntered ? 'opacity-100 transform-none' : 'opacity-0 transform translate-y-4'} transition-all duration-300">
                 <div class="w-5 h-5 rounded-full bg-white flex items-center justify-center p-0.5 shadow-sm overflow-hidden shrink-0">
                   <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
                 </div>
@@ -1262,23 +1303,23 @@ document.addEventListener("DOMContentLoaded", () => {
               <!-- Word-by-Word Stagger H1 Headline -->
               <h1 class="hero-h1 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] font-heading text-white">
                 ${home.heroHeading ? `<span>${home.heroHeading}</span>` : `
-                  <span class="hero-word-span">Authentic.</span> 
-                  <span class="hero-word-span">Affectionate.</span><br/>
-                  <span class="hero-word-span text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-amber-300 to-emerald-200">Affordable.</span> 
-                  <span class="hero-word-span">Eye</span> 
-                  <span class="hero-word-span">Care</span> 
-                  <span class="hero-word-span">for</span> 
-                  <span class="hero-word-span">All.</span>
+                  <span class="hero-word-span ${window.hasHeroEntered ? 'is-revealed' : ''}">Authentic.</span> 
+                  <span class="hero-word-span ${window.hasHeroEntered ? 'is-revealed' : ''}">Affectionate.</span><br/>
+                  <span class="hero-word-span ${window.hasHeroEntered ? 'is-revealed' : ''} text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-amber-300 to-emerald-200">Affordable.</span> 
+                  <span class="hero-word-span ${window.hasHeroEntered ? 'is-revealed' : ''}">Eye</span> 
+                  <span class="hero-word-span ${window.hasHeroEntered ? 'is-revealed' : ''}">Care</span> 
+                  <span class="hero-word-span ${window.hasHeroEntered ? 'is-revealed' : ''}">for</span> 
+                  <span class="hero-word-span ${window.hasHeroEntered ? 'is-revealed' : ''}">All.</span>
                 `}
               </h1>
 
               <!-- Subheadline -->
-              <p class="hero-subheadline text-base sm:text-lg text-slate-200 leading-relaxed font-normal opacity-0 transform translate-y-4 transition-all duration-300">
+              <p class="hero-subheadline text-base sm:text-lg text-slate-200 leading-relaxed font-normal ${window.hasHeroEntered ? 'opacity-100 transform-none' : 'opacity-0 transform translate-y-4'} transition-all duration-300">
                 ${home.heroDescription || `Founded by <strong>${brand.founder}</strong>, ${brand.name} is North Karnataka's premier tertiary eye care destination, operating 2 base hospitals and ${visionCenters.length} rural Vision Centers.`}
               </p>
 
               <!-- Hero Direct Contact CTAs with Magnetic Effect and easeSpring Settle -->
-              <div class="hero-ctas flex flex-wrap items-center gap-4 pt-2 opacity-0 transform translate-y-6 transition-all duration-500">
+              <div class="hero-ctas flex flex-wrap items-center gap-4 pt-2 ${window.hasHeroEntered ? 'opacity-100 transform-none' : 'opacity-0 transform translate-y-6'} transition-all duration-500">
                 <a href="${home.primaryCta?.link || `tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}`}" class="btn-call-now btn-shine-glow magnetic-btn px-6 py-4 rounded-2xl font-bold text-sm shadow-xl flex items-center gap-3 group">
                   <div class="w-8 h-8 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
@@ -8250,21 +8291,30 @@ document.addEventListener("DOMContentLoaded", () => {
     if (modal) modal.remove();
   };
 
-  window.applyImageToTarget = function(imageSrc, targetType, targetId) {
+  window.applyImageToTarget = async function(imageSrc, targetType, targetId) {
     const store = window.appStore;
     if (targetType === 'homepage-hero') {
+      await window.preloadImage(imageSrc);
+      const heroContainer = document.getElementById('hero-banner-container');
+      if (heroContainer) {
+        heroContainer.style.backgroundImage = `url("${imageSrc}")`;
+      }
       store.updateHomepage({ heroImage: imageSrc });
       window.showAdminToast("Applied image to Homepage Hero Banner!", "success");
     } else if (targetType === 'brand-logo') {
+      await window.preloadImage(imageSrc);
       store.updateBrand({ logo: imageSrc });
       window.showAdminToast("Applied image as Official Website Logo!", "success");
     } else if (targetType === 'doctor') {
+      await window.preloadImage(imageSrc);
       store.updateLeadership(targetId, { photo: imageSrc });
       window.showAdminToast("Updated doctor portrait photo!", "success");
     } else if (targetType === 'admin-team') {
+      await window.preloadImage(imageSrc);
       store.updateAdminMember(targetId, { photo: imageSrc });
       window.showAdminToast("Updated administration team portrait photo!", "success");
     } else if (targetType === 'facility') {
+      await window.preloadImage(imageSrc);
       store.updateFacility(targetId, { heroImage: imageSrc });
       window.showAdminToast("Updated hospital facility hero photo!", "success");
     }
@@ -8369,10 +8419,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const file = event.target.files[0];
     if (!file) return;
 
-    window.openImageCropModal(file, { context: 'hero', defaultRatio: '16:9' }, (finalUrl, meta) => {
+    window.openImageCropModal(file, { context: 'hero', defaultRatio: '16:9' }, async (finalUrl, meta) => {
       const preview = document.getElementById('admin-hero-img-preview');
       if (preview) preview.src = finalUrl;
 
+      // 1. Preload image in memory before updating hero view
+      await window.preloadImage(finalUrl);
+
+      // 2. Smoothly update hero background in DOM if present
+      const heroContainer = document.getElementById('hero-banner-container');
+      if (heroContainer) {
+        heroContainer.style.backgroundImage = `url("${finalUrl}")`;
+      }
+
+      // 3. Update store and gallery
       const store = window.appStore;
       store.updateHomepage({ heroImage: finalUrl });
       store.addGalleryItem({

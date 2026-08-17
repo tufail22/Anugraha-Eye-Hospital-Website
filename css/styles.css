@@ -696,8 +696,9 @@ html.lenis, html.lenis body {
 
 /* HERO SCROLL PARALLAX BG */
 .hero-parallax-bg {
-  transition: transform 0.1s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
+  background-color: #062c26;
+  transition: background-image 0.35s ease-in-out, transform 0.1s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, background-image;
 }
 
 /* DESKTOP MAGNETIC CTA BUTTONS */
