@@ -5903,7 +5903,14 @@ document.addEventListener("DOMContentLoaded", () => {
       return renderAdminLoginGate();
     }
 
-    const activeTab = window.activeAdminTab || 'dashboard';
+    let activeTab = window.activeAdminTab || 'dashboard';
+    if (currentPath.startsWith('/admin/')) {
+      const sub = currentPath.replace('/admin/', '').trim();
+      if (sub && sub !== 'login') {
+        activeTab = sub;
+        window.activeAdminTab = sub;
+      }
+    }
 
     const navItems = [
       { id: 'dashboard', label: '🏠 Dashboard' },
@@ -7975,6 +7982,8 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.removeItem('anugraha_remembered_user');
       }
 
+      window.activeAdminTab = 'dashboard';
+      window.location.hash = '#/admin/dashboard';
       window.showAdminToast("Authenticated successfully. Opening CMS Console...", "success");
       render();
     } catch (ex) {
@@ -8016,7 +8025,11 @@ document.addEventListener("DOMContentLoaded", () => {
       await window.authClient.signOut();
     } else {
       sessionStorage.removeItem('anugraha_admin_auth');
+      sessionStorage.removeItem('anugraha_admin_user');
+      sessionStorage.removeItem('anugraha_admin_token');
     }
+    window.activeAdminTab = 'dashboard';
+    window.location.hash = '#/admin';
     window.showAdminToast("Signed out of CMS Console", "success");
     render();
   };
@@ -8033,6 +8046,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
     window.activeAdminTab = tabId;
+    window.location.hash = `#/admin/${tabId}`;
     render();
   };
 
