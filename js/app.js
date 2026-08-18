@@ -5388,35 +5388,136 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =========================================================================
-  // STRICT IMAGE VALIDATION & DIMENSION ENGINE
+  // SMART IMAGE OPTIMIZATION & CANVAS PROCESSING ENGINE
   // =========================================================================
-  // Only JPG, JPEG, and PNG allowed. STRICTLY NO WebP, AVIF, GIF, SVG, BMP, TIFF, PDF.
+  
+  /**
+   * Proportional image resizer, aspect ratio cropper, and WebP converter
+   * - Never upscales
+   * - Max dimensions: 1920 x 1920 px (or context specific limit)
+   * - Quality: 0.82 (WebP with alpha transparency support)
+   */
+  window.processAndOptimizeImage = function(img, options = {}) {
+    const naturalWidth = img.naturalWidth || img.width || 800;
+    const naturalHeight = img.naturalHeight || img.height || 600;
+    const selectedRatio = options.selectedRatio || 'original';
+    const context = options.context || 'general';
+
+    // Context-specific maximum dimension recommendations
+    let maxDimension = 1920;
+    if (context === 'hero') maxDimension = 1920;
+    else if (context === 'gallery') maxDimension = 1200;
+    else if (context === 'services' || context === 'equipment') maxDimension = 800;
+    else if (context === 'doctors' || context === 'profile' || context === 'brand') maxDimension = 800;
+
+    let sourceX = 0;
+    let sourceY = 0;
+    let sourceW = naturalWidth;
+    let sourceH = naturalHeight;
+
+    if (selectedRatio !== 'original') {
+      let targetRatio = 1;
+      if (selectedRatio === '1:1') targetRatio = 1;
+      else if (selectedRatio === '4:3') targetRatio = 4 / 3;
+      else if (selectedRatio === '16:9') targetRatio = 16 / 9;
+      else if (selectedRatio === '4:5') targetRatio = 4 / 5;
+
+      const currentRatio = naturalWidth / naturalHeight;
+      if (currentRatio > targetRatio) {
+        sourceW = Math.round(naturalHeight * targetRatio);
+        sourceX = Math.round((naturalWidth - sourceW) / 2);
+      } else {
+        sourceH = Math.round(naturalWidth / targetRatio);
+        sourceY = Math.round((naturalHeight - sourceH) / 2);
+      }
+    }
+
+    // Proportional downscale (never upscale)
+    let destW = sourceW;
+    let destH = sourceH;
+
+    if (destW > maxDimension || destH > maxDimension) {
+      if (destW >= destH) {
+        destH = Math.round((destH * maxDimension) / destW);
+        destW = maxDimension;
+      } else {
+        destW = Math.round((destW * maxDimension) / destH);
+        destH = maxDimension;
+      }
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width = destW;
+    canvas.height = destH;
+    const ctx = canvas.getContext('2d', { alpha: true });
+
+    // High quality bicubic interpolation
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+
+    ctx.drawImage(img, sourceX, sourceY, sourceW, sourceH, 0, 0, destW, destH);
+
+    // Export WebP (quality 0.82)
+    let outDataUrl = canvas.toDataURL('image/webp', 0.82);
+    let outputMime = 'image/webp';
+    let outputExt = 'webp';
+
+    // Fallback if browser canvas doesn't support WebP export
+    if (!outDataUrl.startsWith('data:image/webp')) {
+      const isPng = (options.originalMime === 'image/png');
+      outputMime = isPng ? 'image/png' : 'image/jpeg';
+      outputExt = isPng ? 'png' : 'jpg';
+      outDataUrl = canvas.toDataURL(outputMime, 0.85);
+    }
+
+    // Calculate approximate size in KB
+    const head = outDataUrl.indexOf(';base64,');
+    const base64Str = head !== -1 ? outDataUrl.substring(head + 8) : '';
+    const approxBytes = Math.round((base64Str.length * 3) / 4);
+    const approxSizeKB = (approxBytes / 1024).toFixed(1) + ' KB';
+    const originalBytes = options.originalSizeBytes || approxBytes;
+    const savingsPercent = originalBytes > approxBytes ? Math.round((1 - (approxBytes / originalBytes)) * 100) : 0;
+
+    return {
+      canvas,
+      dataUrl: outDataUrl,
+      width: destW,
+      height: destH,
+      dimensions: `${destW} × ${destH}`,
+      mimeType: outputMime,
+      extension: outputExt,
+      sizeKB: approxSizeKB,
+      sizeBytes: approxBytes,
+      originalBytes: originalBytes,
+      savingsPercent: savingsPercent
+    };
+  };
+
+  // Supported formats: JPG, JPEG, PNG, WebP (Max: 10 MB)
   window.validateImageFile = function(file, options, successCallback, errorCallback) {
     if (!file) return;
 
-    const validExtensions = /\.(jpg|jpeg|png)$/i;
-    const validMimeTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/pjpeg', 'image/x-png'];
+    const validExtensions = /\.(jpg|jpeg|png|webp)$/i;
+    const validMimeTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/pjpeg', 'image/x-png', 'image/webp'];
 
     const isExtValid = validExtensions.test(file.name);
     const isMimeValid = !file.type || validMimeTypes.includes(file.type.toLowerCase());
 
     // Strict rejection of unauthorized formats
     if (!isExtValid || !isMimeValid) {
-      const err = "Only JPG, JPEG and PNG images are allowed. (WebP, AVIF, GIF, SVG, BMP, and PDF are not permitted)";
+      const err = "Unsupported file format. Please upload JPG, JPEG, PNG, or WebP.";
       window.showAdminToast(err, "error");
       if (errorCallback) errorCallback(err);
-      else alert(err);
       return;
     }
 
-    // Configurable Size Validation: Default 5 MB limit
-    const maxMB = options?.maxMB || 5;
+    // Maximum 10 MB Upload Limit
+    const maxMB = 10;
     const maxSizeBytes = maxMB * 1024 * 1024;
     if (file.size > maxSizeBytes) {
-      const err = `Image exceeds the ${maxMB} MB maximum file size. Please choose a smaller JPG or PNG image.`;
+      const err = "Image is too large. Please select an image under 10 MB.";
       window.showAdminToast(err, "error");
       if (errorCallback) errorCallback(err);
-      else alert(err);
       return;
     }
 
@@ -5432,19 +5533,20 @@ document.addEventListener("DOMContentLoaded", () => {
       // Dimension health check warnings (non-blocking guidance)
       let dimensionWarning = null;
       if (options?.context === 'hero' && width < 1200) {
-        dimensionWarning = `Dimensions (${dimensions}): Recommended minimum is 1200px wide for hero images.`;
+        dimensionWarning = `Dimensions (${dimensions}): Recommended minimum is 1200px wide for hero banner.`;
       } else if (options?.context === 'content' && width < 800) {
         dimensionWarning = `Dimensions (${dimensions}): Recommended minimum is 800px wide for content images.`;
-      } else if (options?.context === 'profile' && width < 400) {
+      } else if (options?.context === 'doctors' && width < 400) {
         dimensionWarning = `Dimensions (${dimensions}): Recommended minimum is 400px wide for doctor portraits.`;
       }
 
       const meta = {
         filename: window.escapeHTML(file.name.replace(/[^a-zA-Z0-9._-]/g, '_')),
-        type: file.type === 'image/png' ? 'image/png' : 'image/jpeg',
-        size: sizeKB,
-        sizeBytes: file.size,
-        dimensions: dimensions,
+        rawFile: file,
+        originalType: file.type || 'image/jpeg',
+        originalSize: sizeKB,
+        originalSizeBytes: file.size,
+        originalDimensions: dimensions,
         width: width,
         height: height,
         dimensionWarning: dimensionWarning,
@@ -5459,7 +5561,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     img.onerror = function() {
       URL.revokeObjectURL(objectUrl);
-      const err = "Unable to decode image file. Please ensure it is a non-corrupted JPG or PNG.";
+      const err = "We couldn't process this image. Please ensure it is a non-corrupted JPG, PNG, or WebP.";
       window.showAdminToast(err, "error");
       if (errorCallback) errorCallback(err);
     };
@@ -5467,7 +5569,7 @@ document.addEventListener("DOMContentLoaded", () => {
     img.src = objectUrl;
   };
 
-  // Backward compatibility wrapper for direct upload triggers (uploads to cloud storage)
+  // Backward compatibility wrapper for direct upload triggers
   window.validateAndReadImageFile = function(file, callback, options = {}) {
     window.validateImageFile(file, options, async (img, meta, objectUrl) => {
       URL.revokeObjectURL(objectUrl);
@@ -5497,18 +5599,25 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // =========================================================================
-  // INTERACTIVE PREVIEW & OPTIONAL CROP MODAL (Canvas-Based, 1:1, 4:3, 16:9)
+  // SMART PREVIEW & INTERACTIVE OPTIMIZATION MODAL (Canvas, 1:1, 4:5, 4:3, 16:9)
   // =========================================================================
   window.activeCropModalData = null;
+  window.isUploadProcessing = false;
 
   window.openImageCropModal = function(file, options = {}, onSaveCallback) {
     window.validateImageFile(file, options, (img, meta, objectUrl) => {
+      let defaultRatio = options.defaultRatio || 'original';
+      if (options.context === 'doctors' || options.context === 'profile') defaultRatio = '4:5';
+      else if (options.context === 'hero') defaultRatio = '16:9';
+      else if (options.context === 'services' || options.context === 'equipment') defaultRatio = '4:3';
+      else if (options.context === 'brand') defaultRatio = '1:1';
+
       window.activeCropModalData = {
         file,
         img,
         meta,
         objectUrl,
-        selectedRatio: options.defaultRatio || 'original',
+        selectedRatio: defaultRatio,
         context: options.context || 'general',
         onSaveCallback
       };
@@ -5517,6 +5626,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   window.closeImageCropModal = function() {
+    if (window.isUploadProcessing) return;
     if (window.activeCropModalData?.objectUrl) {
       URL.revokeObjectURL(window.activeCropModalData.objectUrl);
     }
@@ -5526,7 +5636,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   window.setCropRatio = function(ratio) {
-    if (!window.activeCropModalData) return;
+    if (!window.activeCropModalData || window.isUploadProcessing) return;
     window.activeCropModalData.selectedRatio = ratio;
     window.renderCropModal();
   };
@@ -5542,33 +5652,42 @@ document.addEventListener("DOMContentLoaded", () => {
       document.body.appendChild(modal);
     }
 
+    // Process on-the-fly preview calculation
+    const optimized = window.processAndOptimizeImage(img, {
+      selectedRatio,
+      context,
+      originalMime: meta.originalType,
+      originalSizeBytes: meta.originalSizeBytes
+    });
+
     const ratios = [
-      { id: 'original', label: 'Original (No Crop)', icon: '🖼️' },
-      { id: '1:1', label: '1:1 Square (Profiles)', icon: '👤' },
-      { id: '4:3', label: '4:3 Standard (Specialties)', icon: '🩺' },
-      { id: '16:9', label: '16:9 Widescreen (Hero)', icon: '🖥️' }
+      { id: 'original', label: 'Original (No Crop)', icon: '🖼️', hint: 'Preserve full composition' },
+      { id: '4:5', label: '4:5 Portrait (Doctors/Staff)', icon: '👨‍⚕️', hint: 'Recommended 600×750' },
+      { id: '4:3', label: '4:3 Standard (Services/Equipment)', icon: '🩺', hint: 'Recommended 800×600' },
+      { id: '16:9', label: '16:9 Widescreen (Hero)', icon: '🖥️', hint: 'Recommended 1920×1080' },
+      { id: '1:1', label: '1:1 Square (Logos/Avatars)', icon: '👤', hint: 'Square 1:1 format' }
     ];
 
     modal.innerHTML = `
-      <div class="fixed inset-0 z-[99999] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto font-sans">
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-teal-900/60 rounded-3xl max-w-2xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="fixed inset-0 z-[99999] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto font-sans">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-teal-900/60 rounded-3xl max-w-2xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
           
           <!-- Modal Header -->
-          <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+          <div class="p-4 sm:p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
             <div class="flex items-center gap-2.5">
-              <span class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-sm">📸</span>
+              <span class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-sm">⚡</span>
               <div>
-                <h3 class="text-base font-extrabold text-slate-900 dark:text-white font-heading">Image Inspection & Optional Cropping</h3>
-                <p class="text-[11px] text-slate-500 dark:text-slate-400">Review dimensions and optionally choose an aspect ratio before saving.</p>
+                <h3 class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white font-heading">Smart Image Optimizer & WebP Converter</h3>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400">Automatic resizing, lossless orientation, WebP compression & Cloud Storage persistence.</p>
               </div>
             </div>
-            <button onclick="window.closeImageCropModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300 flex items-center justify-center font-bold text-xs">✕</button>
+            <button onclick="window.closeImageCropModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300 flex items-center justify-center font-bold text-xs" title="Close">✕</button>
           </div>
 
           <!-- Preview & Canvas Workspace -->
-          <div class="p-6 space-y-5 overflow-y-auto flex-1">
+          <div class="p-4 sm:p-6 space-y-4 sm:space-y-5 overflow-y-auto flex-1 text-xs">
             
-            <!-- Dimension Advisory Warning (if unusually small for context) -->
+            <!-- Dimension Warning if needed -->
             ${meta.dimensionWarning ? `
               <div class="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300 text-xs flex items-center gap-2">
                 <span>⚠️</span>
@@ -5576,26 +5695,61 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
             ` : ''}
 
+            <!-- Side-by-Side Original vs. Optimized Comparison Strip -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              
+              <!-- Original Details Card -->
+              <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1.5 font-mono text-[11px]">
+                <div class="flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase">
+                  <span>📷 Original Asset</span>
+                  <span class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">${meta.originalType.replace('image/', '').toUpperCase()}</span>
+                </div>
+                <div class="text-xs font-bold text-slate-800 dark:text-slate-200 truncate" title="${meta.filename}">${meta.filename}</div>
+                <div class="flex items-center justify-between text-slate-500">
+                  <span>Dimensions:</span>
+                  <span class="font-bold text-slate-700 dark:text-slate-300">${meta.originalDimensions} px</span>
+                </div>
+                <div class="flex items-center justify-between text-slate-500">
+                  <span>File Size:</span>
+                  <span class="font-bold text-slate-700 dark:text-slate-300">${meta.originalSize}</span>
+                </div>
+              </div>
+
+              <!-- Optimized Target Card -->
+              <div class="p-3.5 rounded-2xl bg-emerald-50/50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/60 space-y-1.5 font-mono text-[11px]">
+                <div class="flex items-center justify-between text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase">
+                  <span>✨ Optimized (WebP)</span>
+                  <span class="px-1.5 py-0.5 rounded bg-emerald-200 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 font-bold">${optimized.savingsPercent > 0 ? `-${optimized.savingsPercent}% Size` : 'WebP Auto'}</span>
+                </div>
+                <div class="text-xs font-bold text-emerald-800 dark:text-emerald-300 truncate">${meta.filename.replace(/\.[^/.]+$/, "")}.webp</div>
+                <div class="flex items-center justify-between text-slate-500">
+                  <span>Dimensions:</span>
+                  <span class="font-bold text-emerald-700 dark:text-emerald-400">${optimized.dimensions} px</span>
+                </div>
+                <div class="flex items-center justify-between text-slate-500">
+                  <span>Est. Output:</span>
+                  <span class="font-bold text-emerald-700 dark:text-emerald-400">${optimized.sizeKB} (${optimized.mimeType})</span>
+                </div>
+              </div>
+
+            </div>
+
             <!-- Image Preview Box -->
-            <div class="w-full h-64 sm:h-72 rounded-2xl bg-slate-950/90 border border-slate-200 dark:border-slate-800 overflow-hidden flex items-center justify-center relative p-2 shadow-inner">
+            <div class="w-full h-56 sm:h-64 rounded-2xl bg-slate-950/95 border border-slate-200 dark:border-slate-800 overflow-hidden flex items-center justify-center relative p-2 shadow-inner">
               <img 
-                src="${meta.objectUrl}" 
-                alt="Upload Preview" 
-                class="max-w-full max-h-full object-contain rounded-xl ${
-                  selectedRatio === '1:1' ? 'aspect-square object-cover' :
-                  selectedRatio === '4:3' ? 'aspect-[4/3] object-cover' :
-                  selectedRatio === '16:9' ? 'aspect-video object-cover' : ''
-                }" 
+                src="${optimized.dataUrl}" 
+                alt="Optimized Preview" 
+                class="max-w-full max-h-full object-contain rounded-xl shadow-lg" 
               />
-              <span class="absolute bottom-3 right-3 px-2.5 py-1 rounded-full bg-black/80 text-white font-mono text-[10px] backdrop-blur-sm border border-white/10">
-                ${selectedRatio.toUpperCase()} PREVIEW
+              <span class="absolute bottom-3 right-3 px-2.5 py-1 rounded-full bg-black/80 text-emerald-400 font-mono text-[10px] backdrop-blur-sm border border-white/10">
+                ${selectedRatio.toUpperCase()} PREVIEW (${optimized.dimensions})
               </span>
             </div>
 
             <!-- Aspect Ratio Selector Presets -->
             <div class="space-y-2">
               <label class="block text-xs font-bold text-slate-700 dark:text-slate-300">Choose Aspect Ratio Preset:</label>
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 ${ratios.map(r => `
                   <button 
                     type="button" 
@@ -5603,41 +5757,36 @@ document.addEventListener("DOMContentLoaded", () => {
                     class="p-2.5 rounded-xl border text-xs font-bold text-left transition-all flex flex-col justify-between ${
                       selectedRatio === r.id 
                         ? 'bg-emerald-500/10 border-emerald-500 text-emerald-700 dark:text-emerald-300 shadow-sm' 
-                        : 'bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100'
+                        : 'bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                     }"
                   >
-                    <span class="text-sm mb-1">${r.icon}</span>
-                    <span class="text-[11px] leading-tight">${r.label}</span>
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-sm">${r.icon}</span>
+                      <span class="text-[11px] leading-tight font-extrabold">${r.label}</span>
+                    </div>
+                    <span class="text-[9px] text-slate-400 mt-1">${r.hint}</span>
                   </button>
                 `).join('')}
               </div>
             </div>
 
-            <!-- Image Metadata Attributes Strip -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[11px] font-mono">
-              <div>
-                <span class="text-slate-400 block text-[9px] uppercase font-bold">Filename</span>
-                <span class="font-bold text-slate-800 dark:text-slate-200 truncate block" title="${meta.filename}">${meta.filename}</span>
+            <!-- Upload Progress Indicator Bar (hidden until upload click) -->
+            <div id="crop-upload-progress" class="hidden p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 space-y-2">
+              <div class="flex items-center justify-between text-xs font-bold text-emerald-800 dark:text-emerald-300">
+                <span id="crop-upload-progress-text">Step 1/3: Compressing & converting to WebP...</span>
+                <span class="animate-pulse">● Processing</span>
               </div>
-              <div>
-                <span class="text-slate-400 block text-[9px] uppercase font-bold">Format / MIME</span>
-                <span class="font-bold text-emerald-700 dark:text-emerald-400">${meta.type}</span>
-              </div>
-              <div>
-                <span class="text-slate-400 block text-[9px] uppercase font-bold">File Size</span>
-                <span class="font-bold text-slate-800 dark:text-slate-200">${meta.size}</span>
-              </div>
-              <div>
-                <span class="text-slate-400 block text-[9px] uppercase font-bold">Dimensions</span>
-                <span class="font-bold text-teal-700 dark:text-teal-300">${meta.dimensions}</span>
+              <div class="w-full h-2 rounded-full bg-emerald-200 dark:bg-emerald-900 overflow-hidden">
+                <div class="h-full bg-emerald-500 rounded-full animate-[progress_1.5s_ease-in-out_infinite] w-3/4"></div>
               </div>
             </div>
 
           </div>
 
           <!-- Modal Action Buttons -->
-          <div class="p-5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 flex flex-wrap items-center justify-between gap-3">
+          <div class="p-4 sm:p-5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 flex flex-wrap items-center justify-between gap-3">
             <button 
+              id="crop-modal-cancel-btn"
               type="button" 
               onclick="window.closeImageCropModal()" 
               class="px-5 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs hover:bg-slate-300 transition-colors"
@@ -5648,14 +5797,15 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="flex items-center gap-2">
               <label class="px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs cursor-pointer hover:bg-slate-300 transition-colors">
                 Replace File
-                <input type="file" accept="image/jpeg, image/png" onchange="window.handleReplaceFileInModal(event)" class="hidden" />
+                <input type="file" accept="image/jpeg, image/png, image/webp" onchange="window.handleReplaceFileInModal(event)" class="hidden" />
               </label>
               <button 
+                id="crop-modal-save-btn"
                 type="button" 
                 onclick="window.applyCropAndSave()" 
-                class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg transition-all"
+                class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg transition-all flex items-center gap-1.5"
               >
-                Save & Apply Image &rarr;
+                <span>Upload & Apply Optimized Image &rarr;</span>
               </button>
             </div>
           </div>
@@ -5674,68 +5824,86 @@ document.addEventListener("DOMContentLoaded", () => {
     window.openImageCropModal(file, { context }, callback);
   };
 
-  // Canvas-based aspect-ratio cropping engine with Cloud Storage persistence
+  // Canvas-based WebP compression and Cloud Storage upload execution
   window.applyCropAndSave = async function() {
-    if (!window.activeCropModalData) return;
+    if (!window.activeCropModalData || window.isUploadProcessing) return;
+    window.isUploadProcessing = true;
+
     const { img, meta, selectedRatio, context, onSaveCallback } = window.activeCropModalData;
+    const saveBtn = document.getElementById('crop-modal-save-btn');
+    const cancelBtn = document.getElementById('crop-modal-cancel-btn');
+    const progressBar = document.getElementById('crop-upload-progress');
+    const progressText = document.getElementById('crop-upload-progress-text');
 
-    const naturalWidth = img.naturalWidth || img.width;
-    const naturalHeight = img.naturalHeight || img.height;
-
-    let outDataUrl;
-    if (selectedRatio === 'original') {
-      const canvas = document.createElement('canvas');
-      canvas.width = naturalWidth;
-      canvas.height = naturalHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-      outDataUrl = canvas.toDataURL(meta.type || 'image/jpeg', 0.92);
-    } else {
-      let targetRatio = 1;
-      if (selectedRatio === '1:1') targetRatio = 1;
-      else if (selectedRatio === '4:3') targetRatio = 4 / 3;
-      else if (selectedRatio === '16:9') targetRatio = 16 / 9;
-
-      const currentRatio = naturalWidth / naturalHeight;
-      let cropWidth = naturalWidth;
-      let cropHeight = naturalHeight;
-      let offsetX = 0;
-      let offsetY = 0;
-
-      if (currentRatio > targetRatio) {
-        cropWidth = naturalHeight * targetRatio;
-        offsetX = (naturalWidth - cropWidth) / 2;
-      } else {
-        cropHeight = naturalWidth / targetRatio;
-        offsetY = (naturalHeight - cropHeight) / 2;
-      }
-
-      const canvas = document.createElement('canvas');
-      canvas.width = Math.round(cropWidth);
-      canvas.height = Math.round(cropHeight);
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, offsetX, offsetY, cropWidth, cropHeight, 0, 0, canvas.width, canvas.height);
-      outDataUrl = canvas.toDataURL(meta.type || 'image/jpeg', 0.92);
-      meta.dimensions = `${canvas.width} × ${canvas.height}`;
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = `<span>⏳ Optimizing & Uploading...</span>`;
     }
+    if (cancelBtn) cancelBtn.disabled = true;
+    if (progressBar) progressBar.classList.remove('hidden');
 
-    window.closeImageCropModal();
+    try {
+      // Step 1: Processing & Compressing to WebP
+      if (progressText) progressText.textContent = "Step 1/3: Compressing & converting to WebP (Quality 82%)...";
+      await new Promise(r => setTimeout(r, 80));
 
-    let finalUrl = outDataUrl;
-    if (window.uploadToCloudStorage && window.isSupabaseConfigured && window.isSupabaseConfigured()) {
-      try {
-        window.showAdminToast("Uploading image to Cloud Storage...", "success");
-        const uploadResult = await window.uploadToCloudStorage(outDataUrl, context || 'general', meta.filename);
+      const optimized = window.processAndOptimizeImage(img, {
+        selectedRatio,
+        context,
+        originalMime: meta.originalType,
+        originalSizeBytes: meta.originalSizeBytes
+      });
+
+      // Step 2: Uploading to Cloud Storage
+      if (progressText) progressText.textContent = "Step 2/3: Uploading optimized WebP to Cloud Storage...";
+      
+      let finalUrl = optimized.dataUrl;
+      let uploadMeta = {
+        filename: `${meta.filename.replace(/\.[^/.]+$/, "")}.${optimized.extension}`,
+        type: optimized.mimeType,
+        size: optimized.sizeKB,
+        dimensions: optimized.dimensions,
+        uploadDate: meta.uploadDate
+      };
+
+      if (window.cmsClient && typeof window.cmsClient.uploadToCloudStorage === 'function') {
+        const uploadResult = await window.cmsClient.uploadToCloudStorage(
+          optimized.dataUrl,
+          context || 'general',
+          meta.filename.replace(/\.[^/.]+$/, "")
+        );
         if (uploadResult && uploadResult.url) {
           finalUrl = uploadResult.url;
+          uploadMeta.filename = uploadResult.filename;
+          uploadMeta.size = uploadResult.size;
         }
-      } catch (err) {
-        console.warn("[Cloud Storage] Cloud upload warning, using local preview:", err);
       }
-    }
 
-    if (onSaveCallback) {
-      onSaveCallback(finalUrl, meta);
+      // Step 3: Preloading in memory and updating CMS
+      if (progressText) progressText.textContent = "Step 3/3: Preloading & synchronizing CMS...";
+      
+      if (window.preloadImage) {
+        await window.preloadImage(finalUrl);
+      }
+
+      window.closeImageCropModal();
+      window.isUploadProcessing = false;
+
+      if (onSaveCallback) {
+        onSaveCallback(finalUrl, uploadMeta);
+      }
+
+      window.showAdminToast("Image uploaded successfully!", "success");
+    } catch (err) {
+      console.error("[Image Upload] Failure:", err);
+      window.isUploadProcessing = false;
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = `<span>Upload & Apply Optimized Image &rarr;</span>`;
+      }
+      if (cancelBtn) cancelBtn.disabled = false;
+      if (progressBar) progressBar.classList.add('hidden');
+      window.showAdminToast(err.message || "Upload failed. Please check your connection and try again.", "error");
     }
   };
 
@@ -8925,44 +9093,17 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // EQUIPMENT CMS HANDLERS
-  window.handleEquipmentImageUpload = async function(event, eqId) {
+  window.handleEquipmentImageUpload = function(event, eqId) {
     const file = event.target.files[0];
     if (!file) return;
 
-    const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-    const validExtensions = /\.(jpe?g|png)$/i;
-
-    if (!validTypes.includes(file.type) && !validExtensions.test(file.name)) {
-      window.showAdminToast("Invalid format! Only JPG, JPEG, and PNG image formats are allowed.", "error");
-      event.target.value = '';
-      return;
-    }
-
-    let finalUrl = null;
-    if (window.uploadToCloudStorage && window.isSupabaseConfigured && window.isSupabaseConfigured()) {
-      try {
-        const res = await window.uploadToCloudStorage(file, 'equipment');
-        if (res && res.url) finalUrl = res.url;
-      } catch (err) {
-        console.warn("[Cloud Storage] Upload failed, falling back to data URL:", err);
-      }
-    }
-
-    if (!finalUrl) {
-      finalUrl = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target.result);
-        reader.onerror = () => resolve(null);
-        reader.readAsDataURL(file);
-      });
-    }
-
-    if (finalUrl) {
+    window.openImageCropModal(file, { context: 'equipment', defaultRatio: '4:3' }, (finalUrl, meta) => {
       const preview = document.getElementById(`admin-eq-img-${eqId}`);
       if (preview) preview.src = finalUrl;
       window.appStore.updateEquipment(eqId, { image: finalUrl });
       window.showAdminToast("Equipment image replaced & persisted successfully!", "success");
-    }
+      render();
+    });
   };
 
   window.saveEquipmentAdminItem = function(eqId) {

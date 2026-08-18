@@ -32,27 +32,27 @@ $adminHeaders = @{
     "Content-Type" = "application/json"
 }
 
-# 1. TEST PNG UPLOAD TO CLOUD STORAGE
-$testFileName = "hero_test_$([DateTimeOffset]::UtcNow.ToUnixTimeSeconds()).png"
-$storageUploadUrl = "$baseUrl/storage/v1/object/hospital-media/hero/$testFileName"
-$pngBytes = [byte[]]@(0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D, 0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x08, 0x06, 0x00, 0x00, 0x00, 0x1F, 0x15, 0xC4, 0x89, 0x00, 0x00, 0x00, 0x0D, 0x49, 0x44, 0x41, 0x54, 0x78, 0x9C, 0x63, 0x60, 0x60, 0x60, 0x00, 0x00, 0x00, 0x04, 0x00, 0x01, 0x27, 0x34, 0x27, 0x0A, 0x00, 0x00, 0x00, 0x00, 0x49, 0x45, 0x4E, 0x44, 0xAE, 0x42, 0x60, 0x82)
+# 1. TEST WEBP & PNG UPLOAD TO CLOUD STORAGE (SMART IMAGE OPTIMIZATION PIPELINE)
+$webpFileName = "hero_optimized_$([DateTimeOffset]::UtcNow.ToUnixTimeSeconds()).webp"
+$storageUploadUrl = "$baseUrl/storage/v1/object/hospital-media/hero/$webpFileName"
+$webpBytes = [byte[]]@(0x52, 0x49, 0x46, 0x46, 0x1A, 0x00, 0x00, 0x00, 0x57, 0x45, 0x42, 0x50, 0x56, 0x50, 0x38, 0x4C, 0x0E, 0x00, 0x00, 0x00, 0x2F, 0x00, 0x00, 0x00, 0x00, 0x07, 0x00, 0xFF, 0x01, 0xFE, 0xFB, 0xFD, 0x00, 0x00)
 
 $storageHeaders = @{
     "apikey" = $apiKey
     "Authorization" = "Bearer $jwtToken"
-    "Content-Type" = "image/png"
+    "Content-Type" = "image/webp"
     "x-upsert" = "true"
 }
 
 try {
-    $res = Invoke-RestMethod -Uri $storageUploadUrl -Method POST -Headers $storageHeaders -Body $pngBytes
-    $cdnUrl = "$baseUrl/storage/v1/object/public/hospital-media/hero/$testFileName"
-    Write-Host "[PASS] 1. Cloud Storage Upload Succeeded (Key: $($res.Key))" -ForegroundColor Green
+    $res = Invoke-RestMethod -Uri $storageUploadUrl -Method POST -Headers $storageHeaders -Body $webpBytes
+    $cdnUrl = "$baseUrl/storage/v1/object/public/hospital-media/hero/$webpFileName"
+    Write-Host "[PASS] 1. Cloud Storage WebP Upload Succeeded (Key: $($res.Key))" -ForegroundColor Green
     
     # 2. TEST CDN URL ACCESSIBILITY
     $cdnCheck = Invoke-WebRequest -Uri $cdnUrl -UseBasicParsing
     if ($cdnCheck.StatusCode -eq 200) {
-        Write-Host "[PASS] 2. Image Public CDN URL Accessible (HTTP 200 OK)" -ForegroundColor Green
+        Write-Host "[PASS] 2. Optimized WebP Public CDN URL Accessible (HTTP 200 OK)" -ForegroundColor Green
     } else {
         Write-Host "[FAIL] 2. CDN returned HTTP $($cdnCheck.StatusCode)" -ForegroundColor Red
     }
