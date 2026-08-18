@@ -115,7 +115,7 @@ const DEFAULT_DATA = {
       location: "Vijayapura / Kalaburagi",
       areasOfExpertise: "Micro-incision Phacoemulsification, Premium IOL Implantation, Contoura Vision LASIK, Community Ophthalmology",
       languages: "Kannada, English, Hindi, Marathi",
-      photo: "dr_lingadalli_portrait_1786794914757.jpg",
+      photo: "assets/doctors/dr_lingadalli.jpg",
       displayOrder: 1,
       published: true,
       seoTitle: "Dr. Prabhugouda B. Lingadalli | Chairman & Founder | Anugraha Eye Hospital",
@@ -148,7 +148,7 @@ const DEFAULT_DATA = {
       location: "Vijayapura",
       areasOfExpertise: "Comprehensive Eye Care, Glaucoma Diagnostics, Medical Retina, Ophthalmic Administration",
       languages: "Kannada, English, Hindi",
-      photo: "dr_malini_portrait_1786794961083.jpg",
+      photo: "assets/doctors/dr_malini.jpg",
       displayOrder: 2,
       published: true,
       seoTitle: "Dr. Malini P L | Medical Director | Anugraha Eye Hospital",
@@ -1280,8 +1280,8 @@ const DEFAULT_DATA = {
       applicationInfo: "Submit CV and surgical logbook to academic desk at contactus@anugrahaeyehospital.com",
       desc: "Super-specialty surgical fellowship providing intensive hands-on surgical volume in High-Volume Phacoemulsification, Refractive Surgery (LASIK/Contoura Vision), and Medical Retina under Dr. Lingadalli & senior surgical mentors.",
       credibilityBadge: "Super-Specialty Surgical Training",
-      imagePlaceholder: "assets/placeholders/academic-fellowships-placeholder.svg",
-      image: "assets/placeholders/academic-fellowships-placeholder.svg",
+      imagePlaceholder: "assets/services/cataract_surgery.jpg",
+      image: "assets/services/cataract_surgery.jpg",
       brochureLink: "#/academics",
       applyLink: "#/contact",
       published: true,
@@ -1304,8 +1304,8 @@ const DEFAULT_DATA = {
       applicationInfo: "Centralized merit counseling through National Board of Examinations (NBEMS)",
       desc: "Highly prestigious NBE-accredited post-graduate ophthalmic residency training program providing comprehensive clinical rotations, wet lab training, academic seminars, and surgical exposure across all super-specialties.",
       credibilityBadge: "NBE Recognized Post-Graduate Seat",
-      imagePlaceholder: "assets/placeholders/academic-dnb-placeholder.svg",
-      image: "assets/placeholders/academic-dnb-placeholder.svg",
+      imagePlaceholder: "assets/services/cataract_surgery.jpg",
+      image: "assets/services/cataract_surgery.jpg",
       brochureLink: "#/academics",
       applyLink: "#/contact",
       published: true,
@@ -1328,8 +1328,8 @@ const DEFAULT_DATA = {
       applicationInfo: "Direct admission via State Paramedical Board counseling and institutional quota",
       desc: "State-recognized paramedical diploma training healthcare technicians in clinical assistance, OT instrumentation maintenance, visual refraction, patient pre-checkups, and ophthalmic diagnostics.",
       credibilityBadge: "Paramedical Board Karnataka Approved",
-      imagePlaceholder: "assets/placeholders/academic-dot-placeholder.svg",
-      image: "assets/placeholders/academic-dot-placeholder.svg",
+      imagePlaceholder: "assets/services/optical_services.jpg",
+      image: "assets/services/optical_services.jpg",
       brochureLink: "#/academics",
       applyLink: "#/contact",
       published: true,
@@ -1352,8 +1352,8 @@ const DEFAULT_DATA = {
       applicationInfo: "Admission through RGUHS Allied Health Sciences portal or direct campus office application",
       desc: "Premier RGUHS-affiliated 4-year undergraduate degree program offering rigorous academic coursework and clinical internship in advanced diagnostic machinery, binocular vision, contact lens fitting, and low vision rehabilitation.",
       credibilityBadge: "RGUHS Affiliated Degree Program",
-      imagePlaceholder: "assets/placeholders/academic-bsc-placeholder.svg",
-      image: "assets/placeholders/academic-bsc-placeholder.svg",
+      imagePlaceholder: "assets/services/optical_services.jpg",
+      image: "assets/services/optical_services.jpg",
       brochureLink: "#/academics",
       applyLink: "#/contact",
       published: true,
@@ -1494,7 +1494,7 @@ const DEFAULT_DATA = {
   gallery: [
     { id: 0, title: "Vijayapura Base Hospital Main Campus", category: "Base Hospital", src: "assets/services/cataract_surgery.jpg", caption: "Super-specialty base hospital building in Vijayapura.", filename: "cataract_surgery.jpg", type: "image/jpeg", size: "320 KB", dimensions: "1200 × 800", usedOn: "Vijayapura Campus Hero", uploadDate: "15 Aug 2026" },
     { id: 1, title: "Laminar Airflow Operation Theatre Suite", category: "Operations", src: "assets/services/lasik_contoura.jpg", caption: "HEPA-filtered sterile ophthalmic surgical suite.", filename: "lasik_contoura.jpg", type: "image/jpeg", size: "290 KB", dimensions: "1200 × 800", usedOn: "LASIK Service", uploadDate: "15 Aug 2026" },
-    { id: 2, title: "Free Community Outreach Eye Camp", category: "Outreach Camps", src: "assets/services/community_eye_screening.jpg", caption: "Mobile screening unit examining rural demographics.", filename: "community_eye_screening.jpg", type: "image/jpeg", size: "310 KB", dimensions: "1200 × 800", usedOn: "About Us & Outreach", uploadDate: "15 Aug 2026" },
+    { id: 2, title: "Free Community Outreach Eye Camp", category: "Outreach Camps", src: "assets/services/community_screening.jpg", caption: "Mobile screening unit examining rural demographics.", filename: "community_screening.jpg", type: "image/jpeg", size: "310 KB", dimensions: "1200 × 800", usedOn: "About Us & Outreach", uploadDate: "15 Aug 2026" },
     { id: 3, title: "Glaucoma Diagnostics Clinic", category: "Infrastructure", src: "assets/services/glaucoma_management.jpg", caption: "Humphrey perimetry visual fields suite.", filename: "glaucoma_management.jpg", type: "image/jpeg", size: "280 KB", dimensions: "1200 × 800", usedOn: "Glaucoma Specialty", uploadDate: "15 Aug 2026" },
     { id: 4, title: "High-Resolution Retinal OCT Imaging", category: "Infrastructure", src: "assets/services/retina_care.jpg", caption: "Retinal OCT diagnostics & macula scanner.", filename: "retina_care.jpg", type: "image/jpeg", size: "340 KB", dimensions: "1200 × 800", usedOn: "Retina Specialty", uploadDate: "15 Aug 2026" },
     { id: 5, title: "Pediatric Vision Screening Desk", category: "Pediatric Care", src: "assets/services/pediatric_ophthalmology.jpg", caption: "Specialized children's vision suite.", filename: "pediatric_ophthalmology.jpg", type: "image/jpeg", size: "270 KB", dimensions: "1200 × 800", usedOn: "Pediatric Specialty", uploadDate: "15 Aug 2026" },
@@ -1503,7 +1503,7 @@ const DEFAULT_DATA = {
   ],
 
   news: [
-    { id: "news-1", title: "Chairman Dr. P.B. Lingadalli Conferred Karnataka Rajyostava Award", shortDesc: "Government of Karnataka recognizes Dr. Prabhugouda Lingadalli's 25 years of continuous community eye care and 50,000+ free cataract surgeries.", content: "The Government of Karnataka has officially conferred the prestigious Karnataka Rajyostava Award upon Dr. Prabhugouda B. Lingadalli in recognition of his selfless contribution to eradicating preventable blindness across rural North Karnataka through Anugraha Eye Hospital.", date: "15 November 2021", category: "Institutional Honors", image: "assets/services/community_eye_screening.jpg", published: true },
+    { id: "news-1", title: "Chairman Dr. P.B. Lingadalli Conferred Karnataka Rajyostava Award", shortDesc: "Government of Karnataka recognizes Dr. Prabhugouda Lingadalli's 25 years of continuous community eye care and 50,000+ free cataract surgeries.", content: "The Government of Karnataka has officially conferred the prestigious Karnataka Rajyostava Award upon Dr. Prabhugouda B. Lingadalli in recognition of his selfless contribution to eradicating preventable blindness across rural North Karnataka through Anugraha Eye Hospital.", date: "15 November 2021", category: "Institutional Honors", image: "assets/services/community_screening.jpg", published: true },
     { id: "news-2", title: "Anugraha Institute of Optometry Kalaburagi Expands RGUHS Degree Intake", shortDesc: "Rajiv Gandhi University of Health Sciences approves expanded seat quota for B.Sc Optometry candidates at Kalaburagi campus.", content: "Rajiv Gandhi University of Health Sciences (RGUHS) has sanctioned additional seat capacity for the B.Sc Optometry degree program at Anugraha Institute of Optometry, Kalaburagi, enabling more students to pursue professional eye care careers.", date: "20 August 2025", category: "Academic Expansion", image: "assets/services/optical_services.jpg", published: true },
     { id: "news-3", title: "Milestone: 2.28 Lakh Lifetime Surgeries Achieved Across Base Hospitals", shortDesc: "Combined surgical volume across Vijayapura and Kalaburagi base hospitals crosses 2.28 lakh operations with 99.4% clinical success.", content: "Anugraha Eye Hospital has surpassed 2,28,951 lifetime micro-incision surgeries across its Vijayapura and Kalaburagi base hospitals, maintaining exceptional clinical safety standards and comprehensive patient satisfaction.", date: "10 January 2026", category: "Clinical Outreach", image: "assets/services/cataract_surgery.jpg", published: true }
   ],
@@ -1511,7 +1511,7 @@ const DEFAULT_DATA = {
   videos: [
     { id: "vid-1", title: "Understanding Phacoemulsification Micro-Incision Cataract Surgery", duration: "4:15", embedId: "cataract-phaco-guide", thumbnail: "assets/services/cataract_surgery.jpg" },
     { id: "vid-2", title: "MyAlcon Verified Contoura Vision LASIK Procedure Walkthrough", duration: "3:45", embedId: "lasik-contoura-demo", thumbnail: "assets/services/lasik_contoura.jpg" },
-    { id: "vid-3", title: "Mobile Outreach Eye Camps: Serving Rural North Karnataka", duration: "5:20", embedId: "outreach-camps-docu", thumbnail: "assets/services/community_eye_screening.jpg" }
+    { id: "vid-3", title: "Mobile Outreach Eye Camps: Serving Rural North Karnataka", duration: "5:20", embedId: "outreach-camps-docu", thumbnail: "assets/services/community_screening.jpg" }
   ],
 
   handouts: [

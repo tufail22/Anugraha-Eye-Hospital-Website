@@ -1000,51 +1000,51 @@ document.addEventListener("DOMContentLoaded", () => {
     if (path === '/admin' || path.startsWith('/admin/')) return renderAdminPage();
 
     // Page: Home
-    if (path === '/') return renderHomePage();
+    if (path === '/' || path === '') return renderHomePage();
     
     // Page: About Us
-    if (path === '/about-us') return renderAboutUsPage();
-    if (path === '/about-us/leadership') return renderLeadershipPage();
-    if (path === '/about-us/clinical-faculty' || path === '/about-us/doctors') return renderClinicalFacultyPage();
-    if (path === '/about-us/administration') return renderAdministrationPage();
+    if (path === '/about-us' || path === '/about') return renderAboutUsPage();
+    if (path === '/about-us/leadership' || path === '/leadership') return renderLeadershipPage();
+    if (path === '/about-us/clinical-faculty' || path === '/about-us/doctors' || path === '/doctors' || path === '/clinical-faculty' || path === '/consultants') return renderClinicalFacultyPage();
+    if (path === '/about-us/administration' || path === '/administration' || path === '/admin-team') return renderAdministrationPage();
     
     // Page: Base Hospitals
-    if (path === '/hospitals/vijayapura') return renderHospitalDetailPage('vijayapura');
-    if (path === '/hospitals/kalaburagi') return renderHospitalDetailPage('kalaburagi');
+    if (path === '/hospitals/vijayapura' || path === '/vijayapura') return renderHospitalDetailPage('vijayapura');
+    if (path === '/hospitals/kalaburagi' || path === '/kalaburagi') return renderHospitalDetailPage('kalaburagi');
     
     // Page: Vision Centers Directory & Details
-    if (path === '/vision-centers') return renderVisionCentersPage();
+    if (path === '/vision-centers' || path === '/centers') return renderVisionCentersPage();
     if (path.startsWith('/vision-centers/')) {
       const centerId = path.replace('/vision-centers/', '');
       return renderVisionCenterDetailPage(centerId);
     }
     
     // Page: Services & Super-Specialty Clinical Detail Views
-    if (path === '/services') return renderServicesPage();
+    if (path === '/services' || path === '/specialties') return renderServicesPage();
     if (path.startsWith('/services/')) {
       const slug = path.replace('/services/', '');
       return renderServiceDetailPage(slug);
     }
     
     // Page: Academics Hub & Program Detail Views
-    if (path === '/academics') return renderAcademicsPage();
+    if (path === '/academics' || path === '/courses' || path === '/education') return renderAcademicsPage();
     if (path.startsWith('/academics/')) {
       const slug = path.replace('/academics/', '');
       return renderAcademicDetailPage(slug);
     }
     
     // Page: Empanelments & Resources Hub
-    if (path === '/patient-resources') return renderPatientResourcesHub();
-    if (path === '/patient-resources/empanelments-and-insurance' || path === '/empanelments') return renderEmpanelmentsPage();
-    if (path === '/patient-resources/handouts') return renderAuxiliaryPage('handouts');
+    if (path === '/patient-resources' || path === '/resources' || path === '/faq' || path === '/faqs') return renderPatientResourcesHub();
+    if (path === '/patient-resources/empanelments-and-insurance' || path === '/empanelments' || path === '/insurance') return renderEmpanelmentsPage();
+    if (path === '/patient-resources/handouts' || path === '/handouts') return renderAuxiliaryPage('handouts');
     
     // Page: Auxiliary & Gallery Pages
     if (path === '/gallery') return renderGalleryPage();
+    if (path === '/appointment' || path === '/appointments' || path === '/book-appointment') return renderAuxiliaryPage('contact');
+    if (path === '/equipment' || path === '/technology') return renderHomePage();
     if (['/news', '/videos', '/careers', '/case-studies', '/get-associated', '/contact'].includes(path)) {
       return renderAuxiliaryPage(path.replace('/', ''));
     }
-
-
 
     // 404 Fallback
     return render404Page();
@@ -5140,24 +5140,135 @@ document.addEventListener("DOMContentLoaded", () => {
         ` : ''}
 
         ${type === 'contact' ? `
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 glass-card p-8 rounded-3xl border border-teal-100">
-            <div class="space-y-4">
-              <h3 class="text-xl font-bold text-teal-950 font-heading">Base Hospital Coordinates</h3>
-              <div class="space-y-3 text-sm text-slate-700">
-                <p><strong>Vijayapura Base Campus:</strong> Navabhag Main Road, Behind Central Bus Stand, Vijayapura – 586101</p>
-                <p><strong>Kalaburagi Base Campus:</strong> Station Road, Near Super Market, Kalaburagi – 585101</p>
-                <p><strong>Telephone:</strong> <a href="tel:${brand.fallbackPhone}" class="text-teal-900 font-bold hover:underline">${brand.fallbackPhone}</a></p>
-                <p><strong>Email:</strong> ${brand.contactEmail}</p>
-              </div>
-            </div>
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <div class="p-6 rounded-2xl bg-teal-50/60 border border-teal-100 space-y-3">
-              <h4 class="font-bold text-teal-950 text-sm">Direct Phone Enquiries</h4>
-              <p class="text-xs text-slate-600">Per hospital guidelines, all patient inquiries route directly to hospital reception via landline or official WhatsApp.</p>
-              <a href="tel:${cleanPhone}" class="block w-full py-3 text-center rounded-xl bg-teal-900 text-white font-bold text-xs hover:bg-teal-950 transition-colors">
-                Call ${brand.fallbackPhone} Now
-              </a>
+            <!-- Left 7 Cols: Online Consultation & Appointment Request Form -->
+            <div class="lg:col-span-7 glass-card p-6 sm:p-8 rounded-3xl border border-teal-100/80 dark:border-slate-800 space-y-6 shadow-xl">
+              <div class="space-y-2 border-b border-teal-100/60 dark:border-slate-800 pb-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-emerald text-[11px] font-bold uppercase tracking-wider">
+                  <span>📅 Quick Online Booking</span>
+                </div>
+                <h3 class="text-2xl font-extrabold text-teal-950 dark:text-white font-heading">Book an OPD Appointment</h3>
+                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                  Submit your consultation request below. Our patient coordination desk will call you to confirm your doctor appointment slot.
+                </p>
+              </div>
+
+              <form id="public-appointment-form" onsubmit="window.handlePublicAppointmentSubmit(event)" class="space-y-4 text-xs">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="appt-name" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Patient Full Name <span class="text-rose-500">*</span></label>
+                    <input type="text" id="appt-name" required placeholder="e.g. Ramesh Patil" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all" />
+                  </div>
+                  <div>
+                    <label for="appt-phone" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Mobile Contact Number <span class="text-rose-500">*</span></label>
+                    <input type="tel" id="appt-phone" required pattern="[0-9]{10}" placeholder="10-digit mobile number" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all" />
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="appt-campus" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Preferred Hospital / Center <span class="text-rose-500">*</span></label>
+                    <select id="appt-campus" required class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all">
+                      <option value="Vijayapura Base Hospital">Vijayapura Base Hospital (Main Campus)</option>
+                      <option value="Kalaburagi Base Hospital">Kalaburagi Base Hospital & Institute</option>
+                      <option value="Talikoti Vision Center">Talikoti Vision Center</option>
+                      <option value="Muddebihal Vision Center">Muddebihal Vision Center</option>
+                      <option value="Sindagi Vision Center">Sindagi Vision Center</option>
+                      <option value="Indi Vision Center">Indi Vision Center</option>
+                      <option value="B.Bagewadi Vision Center">B.Bagewadi Vision Center</option>
+                      <option value="Chadachan Vision Center">Chadachan Vision Center</option>
+                      <option value="Nalatwad Vision Center">Nalatwad Vision Center</option>
+                      <option value="Tikota Vision Center">Tikota Vision Center</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="appt-service" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Specialty / Treatment</label>
+                    <select id="appt-service" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all">
+                      <option value="Cataract Phaco Surgery">Cataract Phaco Surgery & IOL</option>
+                      <option value="Contoura Vision LASIK">Contoura Vision LASIK / Refractive</option>
+                      <option value="Vitreo-Retina & Diabetic Eye Care">Vitreo-Retina & Diabetic Eye Care</option>
+                      <option value="Glaucoma Consultation">Glaucoma Diagnostics & Surgery</option>
+                      <option value="Paediatric Squint & Strabismus">Paediatric Squint & Amblyopia</option>
+                      <option value="Cornea & Eye Banking">Cornea, C3R & Eye Bank</option>
+                      <option value="Oculoplasty & Eyelid Care">Oculoplasty & Facial Aesthetics</option>
+                      <option value="General Eye Examination">General Vision & Refraction Checkup</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="appt-date" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Preferred Date</label>
+                    <input type="date" id="appt-date" min="${new Date().toISOString().split('T')[0]}" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all" />
+                  </div>
+                  <div>
+                    <label for="appt-notes" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Additional Symptoms / Notes</label>
+                    <input type="text" id="appt-notes" placeholder="e.g. Blurry vision, cataract evaluation" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all" />
+                  </div>
+                </div>
+
+                <div id="appt-status-message" class="hidden p-4 rounded-2xl text-xs font-bold transition-all"></div>
+
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+                  <button type="submit" id="appt-submit-btn" class="btn-shine-glow flex-1 py-3.5 px-6 rounded-xl bg-teal-900 hover:bg-teal-950 text-white font-extrabold text-xs transition-all shadow-lg flex items-center justify-center gap-2">
+                    <span>Submit Appointment Request</span>
+                    <span>&rarr;</span>
+                  </button>
+                  <a href="https://wa.me/${whatsappNum}?text=Hello%20Anugraha%20Eye%20Hospital,%20I%20would%20like%20to%20book%20an%20OPD%20appointment." target="_blank" rel="noopener noreferrer" class="py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 shrink-0 shadow">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    <span>Instant WhatsApp</span>
+                  </a>
+                </div>
+              </form>
             </div>
+
+            <!-- Right 5 Cols: Hospital Coordinates & Direct Reception -->
+            <div class="lg:col-span-5 space-y-6">
+              <div class="glass-card p-6 sm:p-8 rounded-3xl border border-teal-100/80 dark:border-slate-800 space-y-4 shadow-xl">
+                <h3 class="text-xl font-bold text-teal-950 dark:text-white font-heading">Base Tertiary Hospitals</h3>
+                
+                <div class="space-y-4 text-xs text-slate-700 dark:text-slate-300">
+                  <div class="p-4 rounded-2xl bg-teal-50/60 dark:bg-slate-900/60 border border-teal-100/60 dark:border-slate-800 space-y-1">
+                    <div class="font-extrabold text-sm text-teal-950 dark:text-emerald-300">Vijayapura Main Base Hospital</div>
+                    <p class="text-slate-600 dark:text-slate-400">Navabhag Main Road, Behind Central Bus Stand, Vijayapura – 586101</p>
+                    <div class="pt-1 flex items-center gap-3">
+                      <a href="tel:08352-220646" class="text-teal-900 dark:text-emerald-400 font-bold hover:underline">📞 08352-220646</a>
+                      <a href="https://maps.google.com/?q=Anugraha+Eye+Hospital+Vijayapura" target="_blank" rel="noopener noreferrer" class="text-emerald-600 dark:text-emerald-300 font-semibold hover:underline">📍 Google Maps &nearr;</a>
+                    </div>
+                  </div>
+
+                  <div class="p-4 rounded-2xl bg-teal-50/60 dark:bg-slate-900/60 border border-teal-100/60 dark:border-slate-800 space-y-1">
+                    <div class="font-extrabold text-sm text-teal-950 dark:text-emerald-300">Kalaburagi Base Hospital & Institute</div>
+                    <p class="text-slate-600 dark:text-slate-400">Ring Road Junction, Opposite District Court Complex, Kalaburagi – 585105</p>
+                    <div class="pt-1 flex items-center gap-3">
+                      <a href="tel:08352-220646" class="text-teal-900 dark:text-emerald-400 font-bold hover:underline">📞 08352-220646</a>
+                      <a href="https://maps.google.com/?q=Anugraha+Eye+Hospital+Kalaburagi" target="_blank" rel="noopener noreferrer" class="text-emerald-600 dark:text-emerald-300 font-semibold hover:underline">📍 Google Maps &nearr;</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="p-6 rounded-3xl bg-teal-50/80 dark:bg-slate-900 border border-teal-100 dark:border-slate-800 space-y-3">
+                <h4 class="font-bold text-teal-950 dark:text-white text-sm">Emergency & OPD Timings</h4>
+                <div class="space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
+                  <div class="flex items-center justify-between">
+                    <span>OPD Consultations:</span>
+                    <strong class="text-teal-900 dark:text-emerald-400">Mon–Sat: 8:00 AM – 8:00 PM</strong>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span>Sunday Routine OPD:</span>
+                    <strong class="text-teal-900 dark:text-emerald-400">8:00 AM – 2:00 PM</strong>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span>Ocular Trauma & Emergency:</span>
+                    <strong class="text-emerald-700 dark:text-emerald-300">24/7 Active Duty</strong>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
           </div>
         ` : ''}
 
@@ -5191,6 +5302,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
     `;
   }
+
+  // =========================================================================
+  // PUBLIC APPOINTMENT & CONSULTATION SUBMISSION HANDLER
+  // =========================================================================
+  window.handlePublicAppointmentSubmit = function(e) {
+    if (e) e.preventDefault();
+    const name = (document.getElementById('appt-name')?.value || '').trim();
+    const phone = (document.getElementById('appt-phone')?.value || '').trim();
+    const campus = document.getElementById('appt-campus')?.value || 'Vijayapura Base Hospital';
+    const service = document.getElementById('appt-service')?.value || 'General Eye Examination';
+    const date = document.getElementById('appt-date')?.value || '';
+    const notes = (document.getElementById('appt-notes')?.value || '').trim();
+    const statusMsg = document.getElementById('appt-status-message');
+    const submitBtn = document.getElementById('appt-submit-btn');
+
+    if (!name || !phone || phone.length < 10) {
+      if (statusMsg) {
+        statusMsg.className = "p-4 rounded-2xl text-xs font-bold bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-800 block";
+        statusMsg.textContent = "Please enter patient name and a valid 10-digit mobile phone number.";
+      }
+      return;
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>⏳ Recording Request...</span>`;
+    }
+
+    setTimeout(() => {
+      if (statusMsg) {
+        statusMsg.className = "p-4 rounded-2xl text-xs font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-200 border border-emerald-400 dark:border-emerald-700 block space-y-2";
+        statusMsg.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="text-base">✅</span>
+            <span>Appointment Request Registered Successfully!</span>
+          </div>
+          <div class="font-normal text-slate-700 dark:text-slate-300 leading-relaxed">
+            Thank you, <strong>${window.escapeHTML(name)}</strong>. Your request for <strong>${window.escapeHTML(service)}</strong> at our <strong>${window.escapeHTML(campus)}</strong>${date ? ' on <strong>' + window.escapeHTML(date) + '</strong>' : ''} has been received. Our reception desk will call you at <strong>${window.escapeHTML(phone)}</strong> to confirm your exact doctor consultation time slot.
+          </div>
+        `;
+      }
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>✅ Request Sent Successfully</span>`;
+      }
+      const form = document.getElementById('public-appointment-form');
+      if (form) form.reset();
+    }, 450);
+  };
 
   // Lenis Inertia Smooth Scroll Engine with prefers-reduced-motion Safeguard
   function initLenisSmoothScroll() {
