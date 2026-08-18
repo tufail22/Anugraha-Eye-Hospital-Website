@@ -43,8 +43,8 @@ if ($bottomBarCount -eq 1) {
 }
 
 # 5. Verify Bottom Bar Buttons
-if ($appJs -match 'Call Now' -and $appJs -match 'Appointment' -and $appJs -match 'WhatsApp Direct Chat') {
-    Write-Host "[PASS] 5. Mobile Bottom Bar contains all 3 primary actions: Call Now, Appointment, WhatsApp" -ForegroundColor Green
+if ($appJs -match 'Call Now' -and ($appJs -match 'Contact Desk' -or $appJs -match 'Appointment') -and $appJs -match 'WhatsApp Direct Chat') {
+    Write-Host "[PASS] 5. Mobile Bottom Bar contains all 3 primary actions: Call Now, Contact Desk, WhatsApp" -ForegroundColor Green
 } else {
     Write-Host "[FAIL] 5. Mobile bottom bar missing one of the primary actions" -ForegroundColor Red
     exit 1

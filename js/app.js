@@ -631,7 +631,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 <a href="#/about-us/administration" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Administration Team (6)</a>
                 <a href="#/about-us#vision-mission" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Vision & Mission</a>
                 <a href="#/about-us#geographical-spread" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Geographical Spread</a>
-                <a href="#/about-us#partnerships" class="block px-4 py-2 text-sm text-slate-700 hover:bg-teal-50 hover:text-teal-900">Community Partnerships</a>
               </div>
             </div>
 
@@ -812,9 +811,9 @@ document.addEventListener("DOMContentLoaded", () => {
           <span class="truncate">Call Now</span>
         </a>
 
-        <a href="#/contact" class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all min-h-[44px]">
-          <svg class="w-4 h-4 text-slate-950 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          <span class="truncate">Appointment</span>
+        <a href="#/contact" class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all min-h-[44px]">
+          <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 012-2V7a2 2 0 01-2-2H5a2 2 0 01-2 2v10a2 2 0 012 2z"/></svg>
+          <span class="truncate">Contact Desk</span>
         </a>
         
         <a href="https://wa.me/${brand.whatsappPhone.replace(/[^0-9]/g, '')}" target="_blank" rel="noopener noreferrer" title="WhatsApp Direct Chat" aria-label="Chat on WhatsApp" class="w-11 h-11 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white flex items-center justify-center shrink-0 shadow-md active:scale-95 transition-all border border-emerald-300/40 min-h-[44px] min-w-[44px]">
@@ -824,61 +823,13 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // Render Multi-Column Footer with Networking & Partnerships Section, Admin Editable Links & Single Low-Emphasis Admin Login Link
+  // Render Multi-Column Footer with Admin Editable Links & Single Low-Emphasis Admin Login Link
   function renderFooter() {
     const brand = store.getBrand();
     const facilities = store.getFacilities().filter(f => f.type === 'vision-center');
     const currentYear = new Date().getFullYear();
 
     return `
-      <!-- NETWORKING AND PARTNERSHIPS SECTION (ABOVE FOOTER) -->
-      <section class="max-w-7xl mx-auto px-4 mt-20 mb-4 font-sans">
-        <div class="glass-card rounded-3xl p-8 sm:p-12 border border-teal-100/80 dark:border-teal-900/50 shadow-xl bg-white dark:bg-slate-900/90 relative overflow-hidden space-y-8">
-          
-          <div class="text-center space-y-2 max-w-2xl mx-auto">
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-teal-950 dark:text-white font-heading tracking-tight">
-              Networking and Partnerships
-            </h2>
-          </div>
-
-          <!-- 6 Partners Logos Grid (Matching Reference Layout: 2 Rows x 3 Columns) -->
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-6 sm:gap-10 items-center justify-center">
-            
-            <!-- Partner 1: ZEISS -->
-            <div class="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/60 shadow-xs hover:shadow-md hover-lift flex items-center justify-center min-h-[140px] transition-all group">
-              <img src="assets/partners/zeiss.svg" alt="ZEISS" class="h-20 w-auto max-w-[170px] object-contain group-hover:scale-105 transition-transform" />
-            </div>
-
-            <!-- Partner 2: HEALTHSKAPE MEDICALS PVT. LTD. -->
-            <div class="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/60 shadow-xs hover:shadow-md hover-lift flex items-center justify-center min-h-[140px] transition-all group">
-              <img src="assets/partners/healthskape.svg" alt="HEALTHSKAPE MEDICALS PVT. LTD." class="h-20 w-auto max-w-[210px] object-contain group-hover:scale-105 transition-transform" />
-            </div>
-
-            <!-- Partner 3: AUROLAB -->
-            <div class="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/60 shadow-xs hover:shadow-md hover-lift flex items-center justify-center min-h-[140px] transition-all group">
-              <img src="assets/partners/aurolab.svg" alt="AUROLAB - SEE NEW POSSIBILITIES" class="h-16 w-auto max-w-[200px] object-contain group-hover:scale-105 transition-transform" />
-            </div>
-
-            <!-- Partner 4: Alcon -->
-            <div class="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/60 shadow-xs hover:shadow-md hover-lift flex items-center justify-center min-h-[140px] transition-all group">
-              <img src="assets/partners/alcon.svg" alt="Alcon" class="h-14 w-auto max-w-[190px] object-contain group-hover:scale-105 transition-transform" />
-            </div>
-
-            <!-- Partner 5: APPASAMY ASSOCIATES -->
-            <div class="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/60 shadow-xs hover:shadow-md hover-lift flex items-center justify-center min-h-[140px] transition-all group">
-              <img src="assets/partners/appasamy.svg" alt="APPASAMY ASSOCIATES - Empowering Vision*" class="h-16 w-auto max-w-[210px] object-contain group-hover:scale-105 transition-transform" />
-            </div>
-
-            <!-- Partner 6: care groups -->
-            <div class="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/60 shadow-xs hover:shadow-md hover-lift flex items-center justify-center min-h-[140px] transition-all group">
-              <img src="assets/partners/caregroups.svg" alt="care groups" class="h-16 w-auto max-w-[210px] object-contain group-hover:scale-105 transition-transform" />
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
       <footer class="bg-[#041a17] text-slate-300 pt-16 pb-28 sm:pb-32 lg:pb-16 mt-16 border-t border-teal-900/60 font-sans relative z-10">
         <div class="max-w-7xl mx-auto px-4">
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-teal-900/60">
@@ -1868,7 +1819,61 @@ document.addEventListener("DOMContentLoaded", () => {
           </section>
         ` : ''}
 
-        <!-- 9. COMMUNITY OUTREACH PANEL -->
+        <!-- 9. NETWORKING AND PARTNERSHIPS SECTION (HOMEPAGE ONLY) -->
+        <section class="max-w-7xl mx-auto px-4 font-sans">
+          <div class="glass-card rounded-3xl p-8 sm:p-12 border border-teal-100/80 dark:border-teal-900/50 shadow-xl bg-white dark:bg-slate-900/90 relative overflow-hidden space-y-8">
+            
+            <div class="text-center space-y-2 max-w-2xl mx-auto">
+              <span class="px-3 py-1 rounded-full badge-emerald font-bold text-xs uppercase tracking-wider">
+                Clinical & Technology Collaboration
+              </span>
+              <h2 class="text-3xl sm:text-4xl font-extrabold text-teal-950 dark:text-white font-heading tracking-tight">
+                Networking and Partnerships
+              </h2>
+              <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
+                Partnering with global ophthalmic technology leaders and healthcare innovators to deliver world-class eye care standards across North Karnataka.
+              </p>
+            </div>
+
+            <!-- 6 Partners Logos Grid (2 Rows x 3 Columns) -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6 sm:gap-10 items-center justify-center">
+              
+              <!-- Partner 1: ZEISS -->
+              <div class="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/60 shadow-xs hover:shadow-md hover-lift flex items-center justify-center min-h-[140px] transition-all group">
+                <img src="assets/partners/zeiss.svg" alt="ZEISS" class="h-20 w-auto max-w-[170px] object-contain group-hover:scale-105 transition-transform" />
+              </div>
+
+              <!-- Partner 2: HEALTHSKAPE MEDICALS PVT. LTD. -->
+              <div class="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/60 shadow-xs hover:shadow-md hover-lift flex items-center justify-center min-h-[140px] transition-all group">
+                <img src="assets/partners/healthskape.svg" alt="HEALTHSKAPE MEDICALS PVT. LTD." class="h-20 w-auto max-w-[210px] object-contain group-hover:scale-105 transition-transform" />
+              </div>
+
+              <!-- Partner 3: AUROLAB -->
+              <div class="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/60 shadow-xs hover:shadow-md hover-lift flex items-center justify-center min-h-[140px] transition-all group">
+                <img src="assets/partners/aurolab.svg" alt="AUROLAB - SEE NEW POSSIBILITIES" class="h-16 w-auto max-w-[200px] object-contain group-hover:scale-105 transition-transform" />
+              </div>
+
+              <!-- Partner 4: Alcon -->
+              <div class="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/60 shadow-xs hover:shadow-md hover-lift flex items-center justify-center min-h-[140px] transition-all group">
+                <img src="assets/partners/alcon.svg" alt="Alcon" class="h-14 w-auto max-w-[190px] object-contain group-hover:scale-105 transition-transform" />
+              </div>
+
+              <!-- Partner 5: APPASAMY ASSOCIATES -->
+              <div class="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/60 shadow-xs hover:shadow-md hover-lift flex items-center justify-center min-h-[140px] transition-all group">
+                <img src="assets/partners/appasamy.svg" alt="APPASAMY ASSOCIATES - Empowering Vision*" class="h-16 w-auto max-w-[210px] object-contain group-hover:scale-105 transition-transform" />
+              </div>
+
+              <!-- Partner 6: care groups -->
+              <div class="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/60 shadow-xs hover:shadow-md hover-lift flex items-center justify-center min-h-[140px] transition-all group">
+                <img src="assets/partners/caregroups.svg" alt="care groups" class="h-16 w-auto max-w-[210px] object-contain group-hover:scale-105 transition-transform" />
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        <!-- 9b. COMMUNITY OUTREACH PANEL -->
         ${sections.communityImpact !== false ? `
           <section class="max-w-7xl mx-auto px-4">
             <div class="glass-card rounded-3xl p-8 border border-teal-100 space-y-6">
@@ -1921,10 +1926,10 @@ document.addEventListener("DOMContentLoaded", () => {
           <section class="max-w-7xl mx-auto px-4">
             <div class="bento-card-luxury rounded-3xl p-8 sm:p-12 text-center space-y-6 border border-teal-200 shadow-2xl relative overflow-hidden">
               <div class="max-w-2xl mx-auto space-y-3">
-                <span class="px-3 py-1 rounded-full badge-emerald font-bold text-xs uppercase tracking-wider">Book Your Consultation Today</span>
+                <span class="px-3 py-1 rounded-full badge-emerald font-bold text-xs uppercase tracking-wider">Direct Patient Consultation</span>
                 <h2 class="text-3xl sm:text-4xl font-extrabold text-teal-950 font-heading">Ready to Restore Your Vision?</h2>
                 <p class="text-slate-600 text-sm leading-relaxed">
-                  Walk in to our Vijayapura Main Campus, Kalaburagi Base Hospital, or visit your nearest rural Vision Center.
+                  Contact our doctors directly via phone or WhatsApp, or walk in to our Vijayapura Main Campus, Kalaburagi Base Hospital, or your nearest Vision Center.
                 </p>
               </div>
 
@@ -1933,8 +1938,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   <svg class="w-5 h-5 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                   <span>Call Hospital: ${brand.fallbackPhone}</span>
                 </a>
-                <a href="#/contact" class="px-8 py-4 rounded-2xl bg-teal-900 hover:bg-teal-800 text-white font-extrabold text-sm shadow-xl">
-                  Book Online Appointment &rarr;
+                <a href="https://wa.me/${(brand.whatsappPhone || '917483900963').replace(/[^0-9]/g, '')}?text=Hello%20Anugraha%20Eye%20Hospital,%20I%20would%20like%20to%20consult%20regarding%20eye%20care." target="_blank" rel="noopener noreferrer" class="px-8 py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm shadow-xl flex items-center gap-2">
+                  <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                  <span>WhatsApp Consultation &rarr;</span>
                 </a>
               </div>
             </div>
@@ -2176,38 +2182,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </section>
 
-        <!-- SECTION 5: NETWORKING & PARTNERSHIPS SECTION -->
-        <section class="glass-card rounded-3xl p-8 sm:p-10 border border-teal-100 space-y-6">
-          <div class="space-y-2">
-            <span class="px-3 py-1 rounded-full badge-coral font-semibold text-xs uppercase tracking-wider">Ecosystem Outreach</span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-teal-950 font-heading">Networking & Community Partnerships</h2>
-            <p class="text-slate-600 text-sm">Collaborating with civic, non-profit, and public health partners to deliver eye care irrespective of caste, creed, or background.</p>
-          </div>
-
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-            ${[
-              { name: "Primary Health Centres", tag: "Public Health" },
-              { name: "Gram Panchayats", tag: "Local Civic" },
-              { name: "Lions Club International", tag: "Service Org" },
-              { name: "Indian Red Cross Society", tag: "Humanitarian" },
-              { name: "Rotary Club", tag: "Philanthropy" },
-              { name: "Self-Help Groups (SHGs)", tag: "Community" },
-              { name: "Educational Trusts", tag: "School Vision" },
-              { name: "ASHA Workers Network", tag: "Grassroots" },
-              { name: "Anganwadi Staff", tag: "Child Care" },
-              { name: "Local Civic Leaders", tag: "Advocacy" },
-              { name: "NGO Partners", tag: "Field Relief" },
-              { name: "Health Departments", tag: "Govt Partner" }
-            ].map(p => `
-              <div class="p-3.5 rounded-2xl bg-teal-50/70 border border-teal-100 text-center hover:bg-teal-100/80 transition-colors flex flex-col justify-between space-y-1">
-                <div class="text-xs font-bold text-teal-950 font-heading">${p.name}</div>
-                <div class="text-[10px] font-semibold text-teal-700 uppercase tracking-wider">${p.tag}</div>
-              </div>
-            `).join('')}
-          </div>
-        </section>
-
-        <!-- SECTION 6: SUB-NAVIGATION DIRECTORY CARDS (3-Column Layout) -->
+        <!-- SECTION 5: SUB-NAVIGATION DIRECTORY CARDS (3-Column Layout) -->
         <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
           
           <!-- Card 1: Leadership & Awards -->
@@ -2755,12 +2730,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     </a>
 
                     <a 
-                      href="https://wa.me/${(brand.whatsappPhone || '917483900963').replace(/[^0-9]/g, '')}?text=Hello%20Anugraha%20Eye%20Hospital,%20I%20would%20like%20to%20book%20an%20appointment%20with%20${encodeURIComponent(doc.name)}" 
+                      href="https://wa.me/${(brand.whatsappPhone || '917483900963').replace(/[^0-9]/g, '')}?text=Hello%20Anugraha%20Eye%20Hospital,%20I%20would%20like%20to%20consult%20with%20${encodeURIComponent(doc.name)}" 
                       target="_blank" 
                       rel="noopener noreferrer" 
                       class="px-4 py-2 rounded-xl bg-teal-950 dark:bg-emerald-600 hover:bg-emerald-600 dark:hover:bg-emerald-500 text-white font-bold text-xs font-heading shadow transition-all flex items-center gap-1.5"
                     >
-                      <span>Book Consultation</span>
+                      <span>WhatsApp Consult</span>
                       <span>&rarr;</span>
                     </a>
                   </div>
@@ -2798,32 +2773,34 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </section>
 
-        <!-- Bottom Cross-Navigation & Appointment CTA -->
+        <!-- Bottom Cross-Navigation & Consultation CTA -->
         <div class="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-[#062c26] via-teal-950 to-[#062c26] text-white border border-teal-800 shadow-2xl space-y-6">
           <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div class="space-y-2 max-w-2xl">
               <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-900/80 border border-emerald-400/40 text-emerald-300 font-bold text-[10px] uppercase tracking-wider">
-                OPD Schedule & Consultation Booking
+                Direct Patient Consultation
               </div>
               <h3 class="text-2xl sm:text-3xl font-extrabold font-heading text-white">Consult With Our Specialist Faculty</h3>
               <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                Specialist doctors are available during outpatient department (OPD) hours from Monday to Saturday, 9:00 AM to 6:00 PM. Emergency eye trauma is attended 24/7.
+                Connect directly with our doctors via phone or WhatsApp. Specialist doctors are available during outpatient department (OPD) hours from Monday to Saturday, 8:00 AM to 8:00 PM. Emergency eye trauma is attended 24/7.
               </p>
             </div>
 
             <div class="flex flex-wrap items-center gap-3 shrink-0">
               <a 
                 href="tel:${(brand.fallbackPhone || '08352-220646').replace(/[^0-9+]/g, '')}" 
-                class="px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg flex items-center gap-2 transition-all"
+                class="px-6 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs shadow-lg flex items-center gap-2 transition-all"
               >
                 <span>Call Helpline: ${brand.fallbackPhone || '08352-220646'}</span>
                 <span>&rarr;</span>
               </a>
               <a 
-                href="#/about-us" 
-                class="px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs transition-colors"
+                href="https://wa.me/${(brand.whatsappPhone || '917483900963').replace(/[^0-9]/g, '')}?text=Hello%20Anugraha%20Eye%20Hospital,%20I%20would%20like%20to%20consult%20a%20specialist." 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg flex items-center gap-2 transition-all"
               >
-                About Our Hospital
+                <span>WhatsApp Consultation &rarr;</span>
               </a>
             </div>
           </div>
@@ -3818,19 +3795,19 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="pt-2 flex flex-wrap items-center gap-4">
               <a 
                 href="tel:${(brand.fallbackPhone || '08352-220646').replace(/[^0-9+]/g, '')}" 
-                class="px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg transition-all flex items-center gap-2"
+                class="px-6 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs shadow-lg transition-all flex items-center gap-2"
               >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                <span>Book OPD Consultation: ${brand.fallbackPhone || '08352-220646'}</span>
+                <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                <span>Call OPD Helpline: ${brand.fallbackPhone || '08352-220646'}</span>
               </a>
 
               <a 
                 href="https://wa.me/${(brand.whatsappPhone || '917483900963').replace(/[^0-9]/g, '')}?text=Hello%20Anugraha%20Eye%20Hospital,%20I%20would%20like%20to%20consult%20regarding%20${encodeURIComponent(service.title)}" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                class="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs transition-colors flex items-center gap-2"
+                class="px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs transition-colors flex items-center gap-2 shadow-lg"
               >
-                <span>WhatsApp Appointment</span>
+                <span>WhatsApp Consultation</span>
                 <span>&rarr;</span>
               </a>
 
@@ -4130,25 +4107,27 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-900/80 border border-emerald-400/40 text-emerald-300 font-bold text-[10px] uppercase tracking-wider">
                 Anugraha Eye Hospital &bull; Authentic &bull; Affectionate &bull; Affordable
               </div>
-              <h3 class="text-2xl sm:text-3xl font-extrabold font-heading text-white">Book an Appointment for ${service.title}</h3>
+              <h3 class="text-2xl sm:text-3xl font-extrabold font-heading text-white">Consult Our Specialists for ${service.title}</h3>
               <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                Consult with our specialized ophthalmic surgeons at our Vijayapura Base Hospital or Kalaburagi Base Hospital campuses. Walk-ins welcome during OPD hours.
+                Connect directly with our doctors via Phone Helpline or WhatsApp, or walk in to Vijayapura Base Hospital or Kalaburagi Base Hospital during OPD hours.
               </p>
             </div>
 
             <div class="flex flex-wrap items-center gap-3 shrink-0">
               <a 
                 href="tel:${(brand.fallbackPhone || '08352-220646').replace(/[^0-9+]/g, '')}" 
-                class="px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg flex items-center gap-2 transition-all"
+                class="px-6 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs shadow-lg flex items-center gap-2 transition-all"
               >
-                <span>Call Vijayapura: ${brand.fallbackPhone || '08352-220646'}</span>
+                <span>Call Helpline: ${brand.fallbackPhone || '08352-220646'}</span>
                 <span>&rarr;</span>
               </a>
               <a 
-                href="#/services" 
-                class="px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs transition-colors"
+                href="https://wa.me/${(brand.whatsappPhone || '917483900963').replace(/[^0-9]/g, '')}?text=Hello%20Anugraha%20Eye%20Hospital,%20I%20would%20like%20to%20consult%20regarding%20${encodeURIComponent(service.title)}." 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg flex items-center gap-2 transition-all"
               >
-                View Other Specialties
+                <span>WhatsApp Consultation &rarr;</span>
               </a>
             </div>
           </div>
@@ -5118,85 +5097,89 @@ document.addEventListener("DOMContentLoaded", () => {
         ${type === 'contact' ? `
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <!-- Left 7 Cols: Online Consultation & Appointment Request Form -->
-            <div class="lg:col-span-7 glass-card p-6 sm:p-8 rounded-3xl border border-teal-100/80 dark:border-slate-800 space-y-6 shadow-xl">
-              <div class="space-y-2 border-b border-teal-100/60 dark:border-slate-800 pb-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-emerald text-[11px] font-bold uppercase tracking-wider">
-                  <span>📅 Quick Online Booking</span>
+            <!-- Left 7 Cols: Direct Patient Contact & Consultation Hub (Call & WhatsApp) -->
+            <div class="lg:col-span-7 space-y-6">
+              
+              <!-- Direct Consultation Card -->
+              <div class="glass-card p-6 sm:p-8 rounded-3xl border border-teal-100/80 dark:border-slate-800 space-y-6 shadow-xl">
+                <div class="space-y-2 border-b border-teal-100/60 dark:border-slate-800 pb-4">
+                  <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-emerald text-[11px] font-bold uppercase tracking-wider">
+                    <span>📞 Instant Patient Contact</span>
+                  </div>
+                  <h3 class="text-2xl font-extrabold text-teal-950 dark:text-white font-heading">Consult Our Doctors</h3>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                    We have streamlined all consultations. Patients can connect directly with our hospital reception and doctors through instant <strong>Phone Calls</strong> and <strong>WhatsApp</strong>, or walk in directly to any campus.
+                  </p>
                 </div>
-                <h3 class="text-2xl font-extrabold text-teal-950 dark:text-white font-heading">Book an OPD Appointment</h3>
-                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Submit your consultation request below. Our patient coordination desk will call you to confirm your doctor appointment slot.
-                </p>
-              </div>
 
-              <form id="public-appointment-form" onsubmit="window.handlePublicAppointmentSubmit(event)" class="space-y-4 text-xs">
+                <!-- 2 Primary Contact Actions: Call & WhatsApp -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label for="appt-name" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Patient Full Name <span class="text-rose-500">*</span></label>
-                    <input type="text" id="appt-name" required placeholder="e.g. Ramesh Patil" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all" />
+                  
+                  <!-- Action 1: Direct Phone Call -->
+                  <div class="p-5 rounded-2xl bg-amber-500/10 border border-amber-400/40 space-y-3 flex flex-col justify-between">
+                    <div class="space-y-1.5">
+                      <div class="flex items-center gap-2 text-amber-700 dark:text-amber-300 font-extrabold text-sm">
+                        <span class="w-7 h-7 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center text-xs">📞</span>
+                        <span>Direct Hospital Call</span>
+                      </div>
+                      <p class="text-[11px] text-slate-600 dark:text-slate-400">
+                        Speak immediately with our patient reception desk for doctor availability and OPD tokens.
+                      </p>
+                    </div>
+                    <a href="tel:${cleanPhone}" class="w-full py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 shadow-md transition-all">
+                      <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                      <span>Call: ${brand.fallbackPhone}</span>
+                    </a>
                   </div>
-                  <div>
-                    <label for="appt-phone" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Mobile Contact Number <span class="text-rose-500">*</span></label>
-                    <input type="tel" id="appt-phone" required pattern="[0-9]{10}" placeholder="10-digit mobile number" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all" />
+
+                  <!-- Action 2: WhatsApp Chat -->
+                  <div class="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-400/40 space-y-3 flex flex-col justify-between">
+                    <div class="space-y-1.5">
+                      <div class="flex items-center gap-2 text-emerald-700 dark:text-emerald-300 font-extrabold text-sm">
+                        <span class="w-7 h-7 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-xs">💬</span>
+                        <span>WhatsApp Consultation</span>
+                      </div>
+                      <p class="text-[11px] text-slate-600 dark:text-slate-400">
+                        Send queries, medical reports, or consult doctor schedules instantly on WhatsApp.
+                      </p>
+                    </div>
+                    <a href="https://wa.me/${whatsappNum}?text=Hello%20Anugraha%20Eye%20Hospital,%20I%20would%20like%20to%20consult%20a%20doctor." target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-md transition-all">
+                      <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                      <span>WhatsApp Consultation</span>
+                    </a>
                   </div>
+
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label for="appt-campus" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Preferred Hospital / Center <span class="text-rose-500">*</span></label>
-                    <select id="appt-campus" required class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all">
-                      <option value="Vijayapura Base Hospital">Vijayapura Base Hospital (Main Campus)</option>
-                      <option value="Kalaburagi Base Hospital">Kalaburagi Base Hospital & Institute</option>
-                      <option value="Talikoti Vision Center">Talikoti Vision Center</option>
-                      <option value="Muddebihal Vision Center">Muddebihal Vision Center</option>
-                      <option value="Sindagi Vision Center">Sindagi Vision Center</option>
-                      <option value="Indi Vision Center">Indi Vision Center</option>
-                      <option value="B.Bagewadi Vision Center">B.Bagewadi Vision Center</option>
-                      <option value="Chadachan Vision Center">Chadachan Vision Center</option>
-                      <option value="Nalatwad Vision Center">Nalatwad Vision Center</option>
-                      <option value="Tikota Vision Center">Tikota Vision Center</option>
-                    </select>
+                <!-- Emergency 24/7 Hotline Strip -->
+                <div class="p-4 rounded-2xl bg-teal-900 text-white flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-red-600 text-white font-extrabold flex items-center justify-center shrink-0">
+                      🚨
+                    </div>
+                    <div>
+                      <div class="font-bold text-xs">24/7 Ophthalmic Trauma & Emergency Helpline</div>
+                      <div class="text-[11px] text-teal-200">Acute chemical injuries, blunt ocular trauma, and sudden vision loss</div>
+                    </div>
                   </div>
-                  <div>
-                    <label for="appt-service" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Specialty / Treatment</label>
-                    <select id="appt-service" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all">
-                      <option value="Cataract Phaco Surgery">Cataract Phaco Surgery & IOL</option>
-                      <option value="Contoura Vision LASIK">Contoura Vision LASIK / Refractive</option>
-                      <option value="Vitreo-Retina & Diabetic Eye Care">Vitreo-Retina & Diabetic Eye Care</option>
-                      <option value="Glaucoma Consultation">Glaucoma Diagnostics & Surgery</option>
-                      <option value="Paediatric Squint & Strabismus">Paediatric Squint & Amblyopia</option>
-                      <option value="Cornea & Eye Banking">Cornea, C3R & Eye Bank</option>
-                      <option value="Oculoplasty & Eyelid Care">Oculoplasty & Facial Aesthetics</option>
-                      <option value="General Eye Examination">General Vision & Refraction Checkup</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label for="appt-date" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Preferred Date</label>
-                    <input type="date" id="appt-date" min="${new Date().toISOString().split('T')[0]}" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all" />
-                  </div>
-                  <div>
-                    <label for="appt-notes" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Additional Symptoms / Notes</label>
-                    <input type="text" id="appt-notes" placeholder="e.g. Blurry vision, cataract evaluation" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all" />
-                  </div>
-                </div>
-
-                <div id="appt-status-message" class="hidden p-4 rounded-2xl text-xs font-bold transition-all"></div>
-
-                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
-                  <button type="submit" id="appt-submit-btn" class="btn-shine-glow flex-1 py-3.5 px-6 rounded-xl bg-teal-900 hover:bg-teal-950 text-white font-extrabold text-xs transition-all shadow-lg flex items-center justify-center gap-2">
-                    <span>Submit Appointment Request</span>
-                    <span>&rarr;</span>
-                  </button>
-                  <a href="https://wa.me/${whatsappNum}?text=Hello%20Anugraha%20Eye%20Hospital,%20I%20would%20like%20to%20book%20an%20OPD%20appointment." target="_blank" rel="noopener noreferrer" class="py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 shrink-0 shadow">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-                    <span>Instant WhatsApp</span>
+                  <a href="tel:+919448120646" class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-extrabold text-xs shrink-0 transition-all">
+                    Call 24/7 Desk: +91 94481 20646
                   </a>
                 </div>
-              </form>
+
+                <!-- Walk-In Information -->
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2 text-xs">
+                  <div class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span>Walk-In Registration Process</span>
+                  </div>
+                  <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                    Patients may walk in directly to our Vijayapura Main Hospital or Kalaburagi Base Hospital during OPD hours without prior online booking. Registration is handled directly at the main entrance reception counter with priority triage for senior citizens and acute emergency cases.
+                  </p>
+                </div>
+
+              </div>
+
             </div>
 
             <!-- Right 5 Cols: Hospital Coordinates & Direct Reception -->
@@ -8284,12 +8267,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
                   <label class="py-2 px-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs cursor-pointer text-center">
                     Replace
-                    <input type="file" accept="image/jpeg, image/png" onchange="window.handleReplaceMediaItem(${item.id}, event)" class="hidden" />
+                    <input type="file" accept="image/jpeg, image/png" onchange="window.handleReplaceMediaItem('${window.escapeHTML(String(item.id))}', event)" class="hidden" />
                   </label>
 
                   <button 
                     type="button" 
-                    onclick="window.deleteGalleryItemChecked(${item.id})" 
+                    onclick="window.deleteGalleryItemChecked('${window.escapeHTML(String(item.id))}')" 
                     class="py-2 px-3 rounded-xl bg-red-100 dark:bg-red-950/80 hover:bg-red-200 text-red-700 dark:text-red-300 font-bold text-xs transition-colors" 
                     title="Delete Image"
                   >
@@ -8611,9 +8594,9 @@ document.addEventListener("DOMContentLoaded", () => {
   window.handleReplaceMediaItem = function(id, event) {
     const file = event.target.files[0];
     if (!file) return;
-    window.openImageCropModal(file, { context: 'media-replace' }, (base64, meta) => {
+    window.openImageCropModal(file, { context: 'media-replace' }, async (base64, meta) => {
       const store = window.appStore;
-      store.updateGalleryItem(id, {
+      await store.updateGalleryItem(id, {
         src: base64,
         filename: meta.filename,
         type: meta.type,
@@ -8626,9 +8609,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  window.deleteGalleryItemChecked = function(id) {
+  window.deleteGalleryItemChecked = async function(id) {
     const store = window.appStore;
-    const item = (store.getGallery() || []).find(g => g.id === id);
+    const gallery = store.getGallery() || [];
+    const item = gallery.find(g => g.id === id || String(g.id) === String(id));
     if (!item) return;
 
     const usage = store.getImageUsage(item.src);
@@ -8644,7 +8628,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    store.removeGalleryItem(id);
+    await store.removeGalleryItem(id);
     window.showAdminToast(`Deleted ${item.filename || 'image'} from library`, "success");
     render();
   };

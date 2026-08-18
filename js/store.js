@@ -2094,7 +2094,12 @@ class Store {
           leadership: remoteData.leadership || DEFAULT_DATA.leadership,
           administration: remoteData.administration || DEFAULT_DATA.administration,
           equipment: remoteData.equipment || DEFAULT_DATA.equipment,
-          partnerships: remoteData.partnerships || DEFAULT_DATA.partnerships
+          partnerships: remoteData.partnerships || DEFAULT_DATA.partnerships,
+          academics: remoteData.academics || DEFAULT_DATA.academics,
+          faqs: remoteData.faqs || DEFAULT_DATA.faqs,
+          empanelments: remoteData.empanelments || DEFAULT_DATA.empanelments,
+          news: remoteData.news || DEFAULT_DATA.news,
+          gallery: Array.isArray(remoteData.gallery) ? remoteData.gallery : (Array.isArray(this.data?.gallery) ? this.data.gallery : (Array.isArray(parsed?.gallery) ? parsed.gallery : DEFAULT_DATA.gallery))
         };
 
         const currentLocalStr = localStorage.getItem(this.key);
@@ -2501,24 +2506,35 @@ class Store {
   }
 
   updateGalleryItem(id, fields) {
-    if (!this.data.gallery) this.data.gallery = [...DEFAULT_DATA.gallery];
-    const idx = this.data.gallery.findIndex(g => g.id === id);
+    if (!this.data.gallery) this.data.gallery = [...(DEFAULT_DATA.gallery || [])];
+    const idx = this.data.gallery.findIndex(g => g.id === id || String(g.id) === String(id));
     if (idx !== -1) {
       this.data.gallery[idx] = { ...this.data.gallery[idx], ...fields };
       this.save();
+      if (window.cmsClient && typeof window.cmsClient.saveGalleryItem === 'function') {
+        window.cmsClient.saveGalleryItem(this.data.gallery[idx]);
+      }
     }
   }
 
-  removeGalleryItem(id) {
-    if (!this.data.gallery) return;
-    const item = this.data.gallery.find(g => g.id === id);
-    this.data.gallery = this.data.gallery.filter(g => g.id !== id);
+  async removeGalleryItem(id) {
+    if (!this.data.gallery) this.data.gallery = [...(DEFAULT_DATA.gallery || [])];
+    const item = this.data.gallery.find(g => g.id === id || String(g.id) === String(id));
+    this.data.gallery = this.data.gallery.filter(g => g.id !== id && String(g.id) !== String(id));
     this.save();
     if (window.cmsClient && typeof window.cmsClient.deleteGalleryItem === 'function') {
-      window.cmsClient.deleteGalleryItem(id);
+      try {
+        await window.cmsClient.deleteGalleryItem(id);
+      } catch (err) {
+        console.warn("[Store] Delete gallery DB item warning:", err);
+      }
     }
     if (item && item.src && window.cmsClient && typeof window.cmsClient.deleteFromCloudStorage === 'function') {
-      window.cmsClient.deleteFromCloudStorage(item.src);
+      try {
+        await window.cmsClient.deleteFromCloudStorage(item.src);
+      } catch (err) {
+        console.warn("[Store] Delete storage warning:", err);
+      }
     }
   }
 
