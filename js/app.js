@@ -7300,14 +7300,28 @@ document.addEventListener("DOMContentLoaded", () => {
                 Manage executive leadership profiles, qualifications, and 1:1 portrait photos for the public administration page.
               </p>
             </div>
-            <button onclick="window.addAdminTeamMember(event)" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg inline-flex items-center gap-1.5 shrink-0">
-              <span>+ Add Staff Member</span>
-            </button>
+            <div class="flex flex-wrap items-center gap-3">
+              <button 
+                id="save-all-admin-team-btn" 
+                type="button" 
+                onclick="window.saveAllAdministrationMembers()" 
+                class="px-5 py-2.5 rounded-xl bg-teal-900 hover:bg-teal-800 text-white font-extrabold text-xs shadow-lg inline-flex items-center gap-1.5 shrink-0 transition-all"
+              >
+                <span>💾 Save All Profiles</span>
+              </button>
+              <button 
+                type="button" 
+                onclick="window.addAdminTeamMember(event)" 
+                class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg inline-flex items-center gap-1.5 shrink-0 transition-all"
+              >
+                <span>+ Add Staff Member</span>
+              </button>
+            </div>
           </div>
 
           <div class="space-y-6">
             ${adminTeam.map((m, idx) => {
-              const initials = m.name.split(' ').map(n => n[0]).slice(0, 2).join('');
+              const initials = (m.name || 'Admin').split(' ').map(n => n[0]).slice(0, 2).join('');
               return `
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-5 shadow-sm hover:shadow-md transition-all">
                   
@@ -7316,7 +7330,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="flex items-center gap-2.5">
                       <span class="font-extrabold text-slate-900 dark:text-white text-base font-heading">${m.name}</span>
                       <span class="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono text-[10px] font-bold">
-                        ${m.department || m.role}
+                        ${m.department || m.role || 'Executive'}
                       </span>
                       <span class="px-2.5 py-0.5 rounded-full ${m.published !== false ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300' : 'bg-slate-200 dark:bg-slate-800 text-slate-600'} font-mono text-[10px] font-bold">
                         ${m.published !== false ? '● Published' : '○ Draft'}
@@ -7333,7 +7347,7 @@ document.addEventListener("DOMContentLoaded", () => {
                       </button>
                       <button 
                         type="button" 
-                        onclick="window.deleteAdminTeamMember(${idx})" 
+                        onclick="window.deleteAdminTeamMember('${m.id}')" 
                         class="px-3 py-1.5 rounded-xl bg-red-100 dark:bg-red-950/80 hover:bg-red-200 text-red-700 dark:text-red-300 font-bold text-xs"
                       >
                         Delete
@@ -7367,7 +7381,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="flex flex-wrap items-center gap-2">
                       <label class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs cursor-pointer shadow transition-all">
                         ${m.photo ? 'Replace Portrait' : '+ Upload Portrait'}
-                        <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminTeamPhotoFile(event, '${m.id}')" class="hidden" />
+                        <input type="file" accept="image/jpeg, image/png, image/webp" onchange="window.handleAdminTeamPhotoFile(event, '${m.id}')" class="hidden" />
                       </label>
 
                       ${m.photo ? `
@@ -7388,8 +7402,8 @@ document.addEventListener("DOMContentLoaded", () => {
                       <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Full Name</label>
                       <input 
                         type="text" 
-                        id="admin-team-name-${idx}" 
-                        value="${window.escapeHTML(m.name)}" 
+                        id="admin-team-name-${m.id}" 
+                        value="${window.escapeHTML(m.name || '')}" 
                         oninput="window.markAdminDirty()" 
                         class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" 
                       />
@@ -7399,8 +7413,8 @@ document.addEventListener("DOMContentLoaded", () => {
                       <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Position / Role</label>
                       <input 
                         type="text" 
-                        id="admin-team-role-${idx}" 
-                        value="${window.escapeHTML(m.position || m.role)}" 
+                        id="admin-team-role-${m.id}" 
+                        value="${window.escapeHTML(m.position || m.role || '')}" 
                         oninput="window.markAdminDirty()" 
                         class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" 
                       />
@@ -7410,7 +7424,7 @@ document.addEventListener("DOMContentLoaded", () => {
                       <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Department</label>
                       <input 
                         type="text" 
-                        id="admin-team-dept-${idx}" 
+                        id="admin-team-dept-${m.id}" 
                         value="${window.escapeHTML(m.department || '')}" 
                         oninput="window.markAdminDirty()" 
                         class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" 
@@ -7421,7 +7435,7 @@ document.addEventListener("DOMContentLoaded", () => {
                       <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Tenure / Experience</label>
                       <input 
                         type="text" 
-                        id="admin-team-tenure-${idx}" 
+                        id="admin-team-tenure-${m.id}" 
                         value="${window.escapeHTML(m.tenure || '10 Years')}" 
                         oninput="window.markAdminDirty()" 
                         class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" 
@@ -7433,8 +7447,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Qualifications & Certifications</label>
                     <input 
                       type="text" 
-                      id="admin-team-qual-${idx}" 
-                      value="${window.escapeHTML(m.qualifications)}" 
+                      id="admin-team-qual-${m.id}" 
+                      value="${window.escapeHTML(m.qualifications || m.degrees || '')}" 
                       oninput="window.markAdminDirty()" 
                       class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" 
                     />
@@ -7443,18 +7457,19 @@ document.addEventListener("DOMContentLoaded", () => {
                   <div>
                     <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Biography / Responsibilities Narrative</label>
                     <textarea 
-                      id="admin-team-desc-${idx}" 
+                      id="admin-team-desc-${m.id}" 
                       rows="3" 
                       oninput="window.markAdminDirty()" 
                       class="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 outline-none leading-relaxed"
-                    >${window.escapeHTML(m.desc)}</textarea>
+                    >${window.escapeHTML(m.desc || m.bio || '')}</textarea>
                   </div>
 
                   <!-- Save & Preview Footer -->
                   <div class="flex items-center gap-3 pt-2">
                     <button 
+                      id="admin-team-save-btn-${m.id}"
                       type="button" 
-                      onclick="window.saveAdminTeamMember(${idx})" 
+                      onclick="window.saveAdminTeamMember('${m.id}', ${idx})" 
                       class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg transition-all"
                     >
                       Save Member Details
@@ -9185,99 +9200,238 @@ document.addEventListener("DOMContentLoaded", () => {
     const file = event.target.files[0];
     if (!file) return;
 
-    window.openImageCropModal(file, { context: 'profile', defaultRatio: '1:1' }, (base64, meta) => {
-      const store = window.appStore;
-      store.updateAdminMember(memberId, { photo: base64 });
-      store.addGalleryItem({
-        title: `Administration Portrait - ${memberId}`,
-        category: "Staff Profiles",
-        src: base64,
-        filename: meta.filename,
-        type: meta.type,
-        size: meta.size,
-        dimensions: meta.dimensions,
-        uploadDate: meta.uploadDate,
-        usedOn: "Administration Team Page"
-      });
-      window.showAdminToast("Administration profile photo updated successfully!", "success");
-      render();
+    window.openImageCropModal(file, { context: 'profile', defaultRatio: '1:1' }, async (finalUrl, meta) => {
+      const store = window.appStore || store;
+      try {
+        await store.updateAdminMember(memberId, { photo: finalUrl });
+        store.addGalleryItem({
+          title: `Administration Portrait - ${memberId}`,
+          category: "Staff Profiles",
+          src: finalUrl,
+          filename: meta.filename,
+          type: meta.type,
+          size: meta.size,
+          dimensions: meta.dimensions,
+          uploadDate: meta.uploadDate,
+          usedOn: "Administration Team Page"
+        });
+        window.showAdminToast("Administration profile photo updated successfully!", "success");
+        render();
+      } catch (err) {
+        console.error("[Admin Photo Upload Error]:", err);
+        window.showAdminToast("Failed to update photo: " + err.message, "error");
+      }
     });
   };
 
-  window.removeAdminTeamPhoto = function(memberId) {
+  window.removeAdminTeamPhoto = async function(memberId) {
     if (confirm("Remove profile photo for this team member?")) {
-      const store = window.appStore;
-      store.updateAdminMember(memberId, { photo: "" });
-      window.showAdminToast("Profile photo removed", "success");
-      render();
+      const store = window.appStore || store;
+      try {
+        await store.updateAdminMember(memberId, { photo: "" });
+        window.showAdminToast("Profile photo removed", "success");
+        render();
+      } catch (err) {
+        window.showAdminToast("Failed to remove photo: " + err.message, "error");
+      }
     }
   };
 
-  window.toggleAdminMemberPublish = function(id) {
-    const store = window.appStore;
+  window.toggleAdminMemberPublish = async function(id) {
+    const store = window.appStore || store;
     const list = store.getAdministration();
-    const member = list.find(m => m.id === id);
+    const member = list.find(m => m.id === id || String(m.id) === String(id));
     if (member) {
       const newStatus = member.published === false ? true : false;
-      store.updateAdminMember(id, { published: newStatus });
-      window.showAdminToast(`Staff profile ${newStatus ? 'Published' : 'Unpublished'}`, "success");
-      render();
+      try {
+        await store.updateAdminMember(id, { published: newStatus });
+        window.showAdminToast(`Staff profile ${newStatus ? 'Published' : 'Unpublished'}`, "success");
+        render();
+      } catch (err) {
+        window.showAdminToast("Failed to update status: " + err.message, "error");
+      }
     }
   };
 
-  window.addAdminTeamMember = function(e) {
+  window.addAdminTeamMember = async function(e) {
     if (e) e.preventDefault();
     const name = prompt("Enter Administrative Staff Member Name:", "New Staff Member");
     if (name) {
-      const store = window.appStore;
-      store.addAdminMember({
-        name,
-        role: "Ophthalmic Administrator",
-        position: "Ophthalmic Administrator",
-        department: "Operations",
-        tenure: "5+ Years",
-        qualifications: "Graduate Degree",
-        desc: "Administrative coordination and quality healthcare management."
-      });
-      window.showAdminToast("Added staff member", "success");
-      render();
+      const store = window.appStore || store;
+      const id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || ('admin-' + Date.now());
+      try {
+        await store.addAdminMember({
+          id,
+          name,
+          role: "Ophthalmic Administrator",
+          position: "Ophthalmic Administrator",
+          department: "Operations",
+          tenure: "5+ Years",
+          qualifications: "Graduate Degree",
+          degrees: "Graduate Degree",
+          desc: "Administrative coordination and quality healthcare management.",
+          bio: "Administrative coordination and quality healthcare management.",
+          published: true
+        });
+        window.showAdminToast(`Added staff member "${name}"`, "success");
+        render();
+      } catch (err) {
+        window.showAdminToast("Failed to add staff member: " + err.message, "error");
+      }
     }
   };
 
-  window.deleteAdminTeamMember = function(index) {
-    const list = window.appStore.getAdministration();
-    const member = list[index];
+  window.deleteAdminTeamMember = async function(idOrIndex) {
+    const store = window.appStore || store;
+    const list = store.getAdministration() || [];
+    let member = typeof idOrIndex === 'number' ? list[idOrIndex] : list.find(m => m.id === idOrIndex || String(m.id) === String(idOrIndex));
+    if (!member && typeof idOrIndex === 'string' && !isNaN(idOrIndex)) {
+      member = list[Number(idOrIndex)];
+    }
     if (!member) return;
     if (confirm(`Are you sure you want to delete staff member "${member.name}"?`)) {
-      window.appStore.deleteAdminMember(member.id);
-      window.showAdminToast("Staff member deleted", "success");
-      render();
+      try {
+        await store.deleteAdminMember(member.id);
+        window.showAdminToast(`Staff member "${member.name}" deleted`, "success");
+        render();
+      } catch (err) {
+        window.showAdminToast("Failed to delete staff member: " + err.message, "error");
+      }
     }
   };
 
-  window.saveAdminTeamMember = function(index) {
-    const store = window.appStore;
-    const member = store.getAdministration()[index];
-    if (member) {
-      const name = document.getElementById(`admin-team-name-${index}`)?.value || member.name;
-      const role = document.getElementById(`admin-team-role-${index}`)?.value || member.role;
-      const dept = document.getElementById(`admin-team-dept-${index}`)?.value || member.department;
-      const tenure = document.getElementById(`admin-team-tenure-${index}`)?.value || member.tenure || '10 Years';
-      const qual = document.getElementById(`admin-team-qual-${index}`)?.value || member.qualifications;
-      const desc = document.getElementById(`admin-team-desc-${index}`)?.value || member.desc;
+  window.saveAdminTeamMember = async function(idOrIndex, fallbackIndex) {
+    const store = window.appStore || store;
+    const adminList = store.getAdministration() || [];
+    let member = null;
+    let index = -1;
 
-      store.updateAdminMember(member.id, { 
+    if (typeof idOrIndex === 'string') {
+      index = adminList.findIndex(m => m.id === idOrIndex || String(m.id) === String(idOrIndex));
+      if (index !== -1) member = adminList[index];
+    }
+    if (!member && typeof idOrIndex === 'number') {
+      index = idOrIndex;
+      member = adminList[index];
+    }
+    if (!member && fallbackIndex !== undefined && fallbackIndex >= 0) {
+      index = fallbackIndex;
+      member = adminList[index];
+    }
+
+    if (!member) {
+      window.showAdminToast("Unable to find staff member to save", "error");
+      return;
+    }
+
+    // Retrieve input elements by member ID with fallback to array index
+    const nameEl = document.getElementById(`admin-team-name-${member.id}`) || document.getElementById(`admin-team-name-${index}`);
+    const roleEl = document.getElementById(`admin-team-role-${member.id}`) || document.getElementById(`admin-team-role-${index}`);
+    const deptEl = document.getElementById(`admin-team-dept-${member.id}`) || document.getElementById(`admin-team-dept-${index}`);
+    const tenureEl = document.getElementById(`admin-team-tenure-${member.id}`) || document.getElementById(`admin-team-tenure-${index}`);
+    const qualEl = document.getElementById(`admin-team-qual-${member.id}`) || document.getElementById(`admin-team-qual-${index}`);
+    const descEl = document.getElementById(`admin-team-desc-${member.id}`) || document.getElementById(`admin-team-desc-${index}`);
+
+    const name = nameEl ? nameEl.value.trim() : member.name;
+    const role = roleEl ? roleEl.value.trim() : (member.role || member.position || '');
+    const dept = deptEl ? deptEl.value.trim() : (member.department || '');
+    const tenure = tenureEl ? tenureEl.value.trim() : (member.tenure || '10 Years');
+    const qual = qualEl ? qualEl.value.trim() : (member.qualifications || member.degrees || '');
+    const desc = descEl ? descEl.value.trim() : (member.desc || member.bio || '');
+
+    const btn = document.getElementById(`admin-team-save-btn-${member.id}`) || document.getElementById(`admin-team-save-btn-${index}`);
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = `<span>⏳ Saving...</span>`;
+    }
+
+    try {
+      const res = await store.updateAdminMember(member.id, { 
         name, 
         role, 
         position: role, 
         department: dept, 
         tenure, 
         qualifications: qual, 
-        desc 
+        degrees: qual,
+        desc,
+        bio: desc
       });
-      window.clearAdminDirty();
-      window.showAdminToast(`Saved details for ${name}`, "success");
-      render();
+
+      if (res && res.error) {
+        window.showAdminToast("Save failed: " + res.error, "error");
+      } else {
+        window.clearAdminDirty();
+        window.showAdminToast(`Saved details for ${name} permanently!`, "success");
+        render();
+      }
+    } catch (err) {
+      console.error("[Save Admin Member Error]:", err);
+      window.showAdminToast("Unable to save staff member: " + err.message, "error");
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Save Member Details</span>`;
+      }
+    }
+  };
+
+  window.saveAllAdministrationMembers = async function() {
+    const store = window.appStore || store;
+    const adminList = store.getAdministration() || [];
+    const saveBtn = document.getElementById('save-all-admin-team-btn');
+
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = `<span>⏳ Saving All ${adminList.length} Profiles...</span>`;
+    }
+
+    try {
+      const updatedList = adminList.map((member, idx) => {
+        const nameEl = document.getElementById(`admin-team-name-${member.id}`) || document.getElementById(`admin-team-name-${idx}`);
+        const roleEl = document.getElementById(`admin-team-role-${member.id}`) || document.getElementById(`admin-team-role-${idx}`);
+        const deptEl = document.getElementById(`admin-team-dept-${member.id}`) || document.getElementById(`admin-team-dept-${idx}`);
+        const tenureEl = document.getElementById(`admin-team-tenure-${member.id}`) || document.getElementById(`admin-team-tenure-${idx}`);
+        const qualEl = document.getElementById(`admin-team-qual-${member.id}`) || document.getElementById(`admin-team-qual-${idx}`);
+        const descEl = document.getElementById(`admin-team-desc-${member.id}`) || document.getElementById(`admin-team-desc-${idx}`);
+
+        const name = nameEl ? nameEl.value.trim() : member.name;
+        const role = roleEl ? roleEl.value.trim() : (member.role || member.position || '');
+        const dept = deptEl ? deptEl.value.trim() : (member.department || '');
+        const tenure = tenureEl ? tenureEl.value.trim() : (member.tenure || '10 Years');
+        const qual = qualEl ? qualEl.value.trim() : (member.qualifications || member.degrees || '');
+        const desc = descEl ? descEl.value.trim() : (member.desc || member.bio || '');
+
+        return {
+          ...member,
+          name,
+          role,
+          position: role,
+          department: dept,
+          tenure,
+          qualifications: qual,
+          degrees: qual,
+          desc,
+          bio: desc
+        };
+      });
+
+      const res = await store.updateAllAdminMembers(updatedList);
+      if (res && res.error) {
+        window.showAdminToast("Save failed: " + res.error, "error");
+      } else {
+        window.clearAdminDirty();
+        window.showAdminToast(`All ${updatedList.length} Administration profiles saved permanently!`, "success");
+        render();
+      }
+    } catch (err) {
+      console.error("[Save All Admin Members Error]:", err);
+      window.showAdminToast("Unable to bulk save administration profiles: " + err.message, "error");
+    } finally {
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = `<span>💾 Save All Profiles</span>`;
+      }
     }
   };
 

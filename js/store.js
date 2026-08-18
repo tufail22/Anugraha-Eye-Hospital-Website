@@ -2249,37 +2249,85 @@ class Store {
     return this.data.administration || DEFAULT_DATA.administration;
   }
 
-  updateAdminMember(id, fields) {
+  async updateAdminMember(id, fields) {
     if (!this.data.administration) this.data.administration = [...DEFAULT_DATA.administration];
     const idx = this.data.administration.findIndex(m => m.id === id || String(m.id) === String(id));
     if (idx !== -1) {
-      this.data.administration[idx] = { ...this.data.administration[idx], ...fields };
+      const existing = this.data.administration[idx];
+      const updated = { ...existing, ...fields };
+
+      // Synchronize alias pairs bidirectionally
+      if (fields.role !== undefined) updated.position = fields.role;
+      if (fields.position !== undefined && fields.role === undefined) updated.role = fields.position;
+      if (fields.qualifications !== undefined) updated.degrees = fields.qualifications;
+      if (fields.degrees !== undefined && fields.qualifications === undefined) updated.qualifications = fields.degrees;
+      if (fields.desc !== undefined) updated.bio = fields.desc;
+      if (fields.bio !== undefined && fields.desc === undefined) updated.desc = fields.bio;
+
+      this.data.administration[idx] = updated;
       this.save();
       if (window.cmsClient && typeof window.cmsClient.saveAdministration === 'function') {
-        window.cmsClient.saveAdministration(this.data.administration[idx]);
+        return await window.cmsClient.saveAdministration(updated);
       }
+      return { success: true };
     }
+    return { success: false, error: "Member not found" };
   }
 
-  addAdminMember(member) {
+  async updateAllAdminMembers(teamList) {
+    if (!Array.isArray(teamList)) return { success: false, error: "Invalid data" };
+    
+    // Normalize aliases on each member
+    const normalized = teamList.map(m => {
+      const item = { ...m };
+      if (item.role && !item.position) item.position = item.role;
+      if (item.position && !item.role) item.role = item.position;
+      if (item.qualifications && !item.degrees) item.degrees = item.qualifications;
+      if (item.degrees && !item.qualifications) item.qualifications = item.degrees;
+      if (item.desc && !item.bio) item.bio = item.desc;
+      if (item.bio && !item.desc) item.desc = item.bio;
+      return item;
+    });
+
+    this.data.administration = normalized;
+    this.save();
+    if (window.cmsClient && typeof window.cmsClient.saveAllAdministration === 'function') {
+      return await window.cmsClient.saveAllAdministration(normalized);
+    }
+    return { success: true };
+  }
+
+  async addAdminMember(member) {
     if (!this.data.administration) this.data.administration = [...DEFAULT_DATA.administration];
     const newId = member.id || ('admin-' + Date.now());
-    const newEntry = { id: newId, displayOrder: this.data.administration.length + 1, published: true, ...member };
+    const newEntry = { 
+      id: newId, 
+      displayOrder: this.data.administration.length + 1, 
+      published: true, 
+      role: member.role || member.position || 'Administrator',
+      position: member.position || member.role || 'Administrator',
+      qualifications: member.qualifications || member.degrees || '',
+      degrees: member.degrees || member.qualifications || '',
+      desc: member.desc || member.bio || '',
+      bio: member.bio || member.desc || '',
+      ...member 
+    };
     this.data.administration.push(newEntry);
     this.save();
     if (window.cmsClient && typeof window.cmsClient.saveAdministration === 'function') {
-      window.cmsClient.saveAdministration(newEntry);
+      return await window.cmsClient.saveAdministration(newEntry);
     }
     return newId;
   }
 
-  deleteAdminMember(id) {
-    if (!this.data.administration) return;
+  async deleteAdminMember(id) {
+    if (!this.data.administration) return { success: true };
     this.data.administration = this.data.administration.filter(m => m.id !== id && String(m.id) !== String(id));
     this.save();
     if (window.cmsClient && typeof window.cmsClient.deleteAdminMember === 'function') {
-      window.cmsClient.deleteAdminMember(id);
+      return await window.cmsClient.deleteAdminMember(id);
     }
+    return { success: true };
   }
 
   // FACILITIES (Hospitals & Vision Centers)
