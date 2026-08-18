@@ -1,0 +1,1787 @@
+{
+    "cms_gallery":  {
+                        "value":  [
+                                      {
+                                          "id":  "gal_1787034745802",
+                                          "title":  "Homepage Hero Background",
+                                          "category":  "Homepage Hero",
+                                          "src":  "https://fihrlxfitctsedthcdlf.supabase.co/storage/v1/object/public/hospital-media/hero/gemini_generated_image_ybsygoybsygoybsy-1787034743056.webp",
+                                          "filename":  "gemini_generated_image_ybsygoybsygoybsy-1787034743056.webp",
+                                          "type":  "image/webp",
+                                          "size":  "144.8 KB",
+                                          "dimensions":  "1920 × 1080",
+                                          "upload_date":  "18/8/2026",
+                                          "published":  true,
+                                          "created_at":  "2026-08-18T06:32:26.200137+00:00",
+                                          "updated_at":  "2026-08-18T06:32:25.829+00:00"
+                                      },
+                                      {
+                                          "id":  "gal_1787034784753",
+                                          "title":  "Doctor Profile - dr-lingadalli",
+                                          "category":  "Doctor Profiles",
+                                          "src":  "https://fihrlxfitctsedthcdlf.supabase.co/storage/v1/object/public/hospital-media/doctors/whatsapp_image_2026-08-17_at_5-11-1787034783689.webp",
+                                          "filename":  "whatsapp_image_2026-08-17_at_5-11-1787034783689.webp",
+                                          "type":  "image/webp",
+                                          "size":  "20.6 KB",
+                                          "dimensions":  "640 × 800",
+                                          "upload_date":  "18/8/2026",
+                                          "published":  true,
+                                          "created_at":  "2026-08-18T06:33:04.954396+00:00",
+                                          "updated_at":  "2026-08-18T06:33:04.788+00:00"
+                                      },
+                                      {
+                                          "id":  "gal_1787034809716",
+                                          "title":  "Doctor Profile - dr-malini",
+                                          "category":  "Doctor Profiles",
+                                          "src":  "https://fihrlxfitctsedthcdlf.supabase.co/storage/v1/object/public/hospital-media/doctors/whatsapp_image_2026-08-17_at_5-11-1787034808791.webp",
+                                          "filename":  "whatsapp_image_2026-08-17_at_5-11-1787034808791.webp",
+                                          "type":  "image/webp",
+                                          "size":  "25.4 KB",
+                                          "dimensions":  "640 × 800",
+                                          "upload_date":  "18/8/2026",
+                                          "published":  true,
+                                          "created_at":  "2026-08-18T06:33:29.889692+00:00",
+                                          "updated_at":  "2026-08-18T06:33:29.741+00:00"
+                                      },
+                                      {
+                                          "id":  "gal_1787034832098",
+                                          "title":  "Doctor Profile - dr-poornima-patil",
+                                          "category":  "Doctor Profiles",
+                                          "src":  "https://fihrlxfitctsedthcdlf.supabase.co/storage/v1/object/public/hospital-media/doctors/whatsapp_image_2026-08-17_at_5-11-1787034831298.webp",
+                                          "filename":  "whatsapp_image_2026-08-17_at_5-11-1787034831298.webp",
+                                          "type":  "image/webp",
+                                          "size":  "21.9 KB",
+                                          "dimensions":  "640 × 800",
+                                          "upload_date":  "18/8/2026",
+                                          "published":  true,
+                                          "created_at":  "2026-08-18T06:33:52.314763+00:00",
+                                          "updated_at":  "2026-08-18T06:33:52.133+00:00"
+                                      },
+                                      {
+                                          "id":  "gal_1787034885887",
+                                          "title":  "Administration Portrait - vishwanath-patil",
+                                          "category":  "Staff Profiles",
+                                          "src":  "https://fihrlxfitctsedthcdlf.supabase.co/storage/v1/object/public/hospital-media/profile/chatgpt_image_aug_16__2026__07_59_13_pm-1787034884892.webp",
+                                          "filename":  "chatgpt_image_aug_16__2026__07_59_13_pm-1787034884892.webp",
+                                          "type":  "image/webp",
+                                          "size":  "19.9 KB",
+                                          "dimensions":  "800 × 800",
+                                          "upload_date":  "18 Aug 2026",
+                                          "published":  true,
+                                          "created_at":  "2026-08-18T06:34:46.085815+00:00",
+                                          "updated_at":  "2026-08-18T06:34:45.918+00:00"
+                                      },
+                                      {
+                                          "id":  "gal_1787034917551",
+                                          "title":  "Administration Portrait - sunil-kodaganur",
+                                          "category":  "Staff Profiles",
+                                          "src":  "https://fihrlxfitctsedthcdlf.supabase.co/storage/v1/object/public/hospital-media/profile/chatgpt_image_aug_16__2026__07_59_13_pm-1787034916467.webp",
+                                          "filename":  "chatgpt_image_aug_16__2026__07_59_13_pm-1787034916467.webp",
+                                          "type":  "image/webp",
+                                          "size":  "19.9 KB",
+                                          "dimensions":  "800 × 800",
+                                          "upload_date":  "18 Aug 2026",
+                                          "published":  true,
+                                          "created_at":  "2026-08-18T06:35:17.717569+00:00",
+                                          "updated_at":  "2026-08-18T06:35:17.58+00:00"
+                                      },
+                                      {
+                                          "id":  "gal_1787038678531",
+                                          "title":  "Hospital Official Logo",
+                                          "category":  "Branding",
+                                          "src":  "https://fihrlxfitctsedthcdlf.supabase.co/storage/v1/object/public/hospital-media/brand/chatgpt_image_aug_16__2026__07_59_13_pm-1787038677139.webp",
+                                          "filename":  "chatgpt_image_aug_16__2026__07_59_13_pm-1787038677139.webp",
+                                          "type":  "image/webp",
+                                          "size":  "19.9 KB",
+                                          "dimensions":  "800 × 800",
+                                          "upload_date":  "18/8/2026",
+                                          "published":  true,
+                                          "created_at":  "2026-08-18T07:37:58.764103+00:00",
+                                          "updated_at":  "2026-08-18T07:37:58.541+00:00"
+                                      },
+                                      {
+                                          "id":  "gal_1787038785007",
+                                          "title":  "Homepage Hero Background",
+                                          "category":  "Homepage Hero",
+                                          "src":  "https://fihrlxfitctsedthcdlf.supabase.co/storage/v1/object/public/hospital-media/hero/gemini_generated_image_ybsygoybsygoybsy-1787038783611.webp",
+                                          "filename":  "gemini_generated_image_ybsygoybsygoybsy-1787038783611.webp",
+                                          "type":  "image/webp",
+                                          "size":  "144.8 KB",
+                                          "dimensions":  "1920 × 1080",
+                                          "upload_date":  "18/8/2026",
+                                          "published":  true,
+                                          "created_at":  "2026-08-18T07:39:45.196445+00:00",
+                                          "updated_at":  "2026-08-18T07:39:45.019+00:00"
+                                      }
+                                  ],
+                        "Count":  8
+                    },
+    "cms_news":  {
+                     "value":  [
+
+                               ],
+                     "Count":  0
+                 },
+    "cms_services":  {
+                         "value":  [
+                                       {
+                                           "id":  "cataract",
+                                           "name":  "Cataract Services",
+                                           "title":  "Micro-Incision Phacoemulsification (MICS) \u0026 Premium IOLs",
+                                           "short_desc":  "Advanced stitchless micro-incision cataract surgery using world-renowned Alcon Infiniti phacoemulsification platforms and foldable toric/multifocal intraocular lenses.",
+                                           "hero_image":  "assets/services/cataract_surgery.jpg",
+                                           "benefits":  [
+                                                            "Stitchless 2.2mm micro-incision",
+                                                            "Same-day walk-in walk-out daycare surgery",
+                                                            "Monofocal, Toric \u0026 Multifocal IOL implants",
+                                                            "Rapid visual recovery in 24 hours"
+                                                        ],
+                                           "symptoms":  [
+                                                            "Cloudy, blurry or dimmed vision",
+                                                            "Difficulty seeing in low light/night driving",
+                                                            "Faded colors or yellowish hue",
+                                                            "Frequent changes in eyeglass prescription"
+                                                        ],
+                                           "who_needs_it":  [
+                                                                "Patients over 50 with gradual vision drop",
+                                                                "Diabetic patients with early nuclear sclerosis",
+                                                                "Individuals with glare and halo disturbance"
+                                                            ],
+                                           "procedures":  [
+                                                              "Topical Drop Anesthesia",
+                                                              "High-Frequency Ultrasound Phaco",
+                                                              "Foldable IOL Implantation",
+                                                              "Post-Op Day-1 Evaluation"
+                                                          ],
+                                           "faq_list":  [
+
+                                                        ],
+                                           "clinical_details":  {
+                                                                    "recovery":  "24-48 Hours",
+                                                                    "technology":  "Alcon Infiniti OZil Torsional",
+                                                                    "incisionSize":  "2.2mm MICS"
+                                                                },
+                                           "display_order":  1,
+                                           "published":  true,
+                                           "created_at":  "2026-08-17T12:54:23.221845+00:00",
+                                           "updated_at":  "2026-08-17T12:54:23.221845+00:00"
+                                       },
+                                       {
+                                           "id":  "lasik-contoura",
+                                           "name":  "LASIK \u0026 Contoura Vision",
+                                           "title":  "Topography-Guided Laser Refractive Suite",
+                                           "short_desc":  "Permanent freedom from glasses and contact lenses using the Carl Zeiss MEL 80 and WaveLight EX 500 excimer laser platforms.",
+                                           "hero_image":  "assets/services/lasik_contoura.jpg",
+                                           "benefits":  [
+                                                            "22,000 elevation-point custom corneal mapping",
+                                                            "High-definition 6/6 and better visual acuity",
+                                                            "10-minute painless procedural time",
+                                                            "Zero blade flap creation option"
+                                                        ],
+                                           "symptoms":  [
+                                                            "Nearsightedness (Myopia)",
+                                                            "Farsightedness (Hyperopia)",
+                                                            "Astigmatism (Cylindrical power)"
+                                                        ],
+                                           "who_needs_it":  [
+                                                                "Individuals aged 18-40 with stable prescription",
+                                                                "Armed forces \u0026 aviation aspirants",
+                                                                "Active sports professionals"
+                                                            ],
+                                           "procedures":  [
+                                                              "Corneal Wavefront Tomography",
+                                                              "Excimer Laser Resurfacing",
+                                                              "Flap Repositioning",
+                                                              "Next-Day Clearance"
+                                                          ],
+                                           "faq_list":  [
+
+                                                        ],
+                                           "clinical_details":  {
+                                                                    "suite":  "WaveLight EX 500 \u0026 Zeiss MEL 80",
+                                                                    "laserRate":  "500 Hz",
+                                                                    "eyeTracker":  "1050 Hz Multi-Spatial"
+                                                                },
+                                           "display_order":  2,
+                                           "published":  true,
+                                           "created_at":  "2026-08-17T12:54:23.221845+00:00",
+                                           "updated_at":  "2026-08-17T12:54:23.221845+00:00"
+                                       },
+                                       {
+                                           "id":  "vitreo-retina",
+                                           "name":  "Vitreo-Retina Services",
+                                           "title":  "Advanced Retinal Diagnostics \u0026 Surgical Workstation",
+                                           "short_desc":  "Comprehensive medical and surgical retinal care for diabetic retinopathy, retinal detachment, macular degeneration, and vascular occlusions using Alcon Constellation 25G vitrectomy.",
+                                           "hero_image":  "assets/services/retina_care.jpg",
+                                           "benefits":  [
+                                                            "25G/27G sutureless micro-incision vitrectomy",
+                                                            "High-resolution Spectral-Domain OCT imaging",
+                                                            "Multispot green pattern retinal laser photocoagulation",
+                                                            "Intravitreal Anti-VEGF injection suite"
+                                                        ],
+                                           "symptoms":  [
+                                                            "Sudden shower of floaters or flashes of light",
+                                                            "Curtain-like dark shadow across visual field",
+                                                            "Distorted straight lines (Metamorphopsia)",
+                                                            "Central dark blind spot"
+                                                        ],
+                                           "who_needs_it":  [
+                                                                "Diabetic patients with retinopathy",
+                                                                "High myopes with retinal lattice degeneration",
+                                                                "Age-related macular degeneration (AMD) patients"
+                                                            ],
+                                           "procedures":  [
+                                                              "Fluorescein Fundus Angiography (FFA)",
+                                                              "OCT Retinal Tomography",
+                                                              "Green Laser Photocoagulation",
+                                                              "25G Constellation Vitrectomy"
+                                                          ],
+                                           "faq_list":  [
+
+                                                        ],
+                                           "clinical_details":  {
+                                                                    "cutRate":  "10,000 Cuts/Min",
+                                                                    "platform":  "Alcon Constellation Vision System",
+                                                                    "laserWavelength":  "532nm Multispot"
+                                                                },
+                                           "display_order":  3,
+                                           "published":  true,
+                                           "created_at":  "2026-08-17T12:54:23.221845+00:00",
+                                           "updated_at":  "2026-08-17T12:54:23.221845+00:00"
+                                       },
+                                       {
+                                           "id":  "glaucoma",
+                                           "name":  "Glaucoma Management",
+                                           "title":  "Early Detection, Visual Fields \u0026 Filtering Surgery",
+                                           "short_desc":  "Specialized diagnostic tonometry, Humphrey automated perimetry, and trabeculectomy / laser iridotomy for preserving optic nerve health against irreversible sight loss.",
+                                           "hero_image":  "assets/services/glaucoma_management.jpg",
+                                           "benefits":  [
+                                                            "Non-contact \u0026 Goldman applanation tonometry",
+                                                            "Humphrey visual field automated perimetry",
+                                                            "Nd:YAG laser peripheral iridotomy (LPI)",
+                                                            "Trabeculectomy \u0026 glaucoma drainage devices"
+                                                        ],
+                                           "symptoms":  [
+                                                            "Gradual loss of peripheral vision (Tunnel vision)",
+                                                            "Severe eye ache with headache and nausea",
+                                                            "Colored halos around lights",
+                                                            "Elevated intraocular pressure (IOP)"
+                                                        ],
+                                           "who_needs_it":  [
+                                                                "Individuals over 40 with positive family history",
+                                                                "Patients on long-term steroid medications",
+                                                                "High myopes and hypertensive patients"
+                                                            ],
+                                           "procedures":  [
+                                                              "Pachymetry Corneal Thickness",
+                                                              "RNFL Nerve Fiber OCT",
+                                                              "Humphrey Perimetry",
+                                                              "YAG Laser Iridotomy"
+                                                          ],
+                                           "faq_list":  [
+
+                                                        ],
+                                           "clinical_details":  {
+                                                                    "laser":  "Nd:YAG Capsulotomy/Iridotomy",
+                                                                    "perimetry":  "Automated Visual Field Analyzer",
+                                                                    "tonometer":  "Reichert 7 NCT \u0026 Rebound"
+                                                                },
+                                           "display_order":  4,
+                                           "published":  true,
+                                           "created_at":  "2026-08-17T12:54:23.221845+00:00",
+                                           "updated_at":  "2026-08-17T12:54:23.221845+00:00"
+                                       },
+                                       {
+                                           "id":  "pediatric",
+                                           "name":  "Pediatric Ophthalmology",
+                                           "title":  "Amblyopia, Squint \u0026 Childhood Vision Care",
+                                           "short_desc":  "Specialized child-friendly ophthalmic evaluation for strabismus (squint), lazy eye (amblyopia), pediatric cataracts, and refractive errors in infants and children.",
+                                           "hero_image":  "assets/services/pediatric_ophthalmology.jpg",
+                                           "benefits":  [
+                                                            "Child-friendly objective streak retinoscopy",
+                                                            "Squint (Strabismus) surgical correction",
+                                                            "Amblyopia occlusion therapy \u0026 synoptophore exercises",
+                                                            "Congenital cataract micro-surgery"
+                                                        ],
+                                           "symptoms":  [
+                                                            "Misalignment or crossing of the eyes (Squint)",
+                                                            "Holding books very close or head tilting",
+                                                            "Frequent eye rubbing or blinking",
+                                                            "White pupil reflex (Leukocoria) in photos"
+                                                        ],
+                                           "who_needs_it":  [
+                                                                "Infants and toddlers with developmental vision delays",
+                                                                "School-going children with academic visual fatigue",
+                                                                "Children with crossed or wandering eyes"
+                                                            ],
+                                           "procedures":  [
+                                                              "Cycloplegic Refraction",
+                                                              "Orthoptic Squint Assessment",
+                                                              "Synoptophore Fusion Exercises",
+                                                              "Extraocular Muscle Surgery"
+                                                          ],
+                                           "faq_list":  [
+
+                                                        ],
+                                           "clinical_details":  {
+                                                                    "unit":  "Child-Friendly Diagnostic Clinic",
+                                                                    "anesthesia":  "Pediatric Daycare Anesthesia Setup"
+                                                                },
+                                           "display_order":  5,
+                                           "published":  true,
+                                           "created_at":  "2026-08-17T12:54:23.221845+00:00",
+                                           "updated_at":  "2026-08-17T12:54:23.221845+00:00"
+                                       },
+                                       {
+                                           "id":  "cornea-oculoplasty",
+                                           "name":  "Cornea \u0026 Oculoplasty",
+                                           "title":  "Corneal Collagen Cross-Linking (C3R) \u0026 Eyelid Aesthetics",
+                                           "short_desc":  "Advanced medical management of keratoconus, corneal ulcers, pterygium excision with conjunctival autograft, and functional oculoplastic eyelid surgery.",
+                                           "hero_image":  "assets/services/cornea_oculoplasty.jpg",
+                                           "benefits":  [
+                                                            "Corneal collagen cross-linking (C3R) with Riboflavin",
+                                                            "Pterygium surgery with sutureless fibrin glue graft",
+                                                            "Ptosis (drooping eyelid) correction",
+                                                            "Dacryocystorhinostomy (DCR) for watering eyes"
+                                                        ],
+                                           "symptoms":  [
+                                                            "Conical bulging of cornea with progressive astigmatism",
+                                                            "Fleshy growth advancing over cornea (Pterygium)",
+                                                            "Drooping upper eyelid obstructing vision",
+                                                            "Persistent eye watering and discharge"
+                                                        ],
+                                           "who_needs_it":  [
+                                                                "Young keratoconus patients with worsening cylinder power",
+                                                                "Outdoor workers with sun exposure and pterygium",
+                                                                "Patients with eyelid deformities and blocked tear ducts"
+                                                            ],
+                                           "procedures":  [
+                                                              "Corneal Topography Pentacam",
+                                                              "UV-A Riboflavin Crosslinking",
+                                                              "Pterygium Autografting",
+                                                              "Eyelid Levator Resection"
+                                                          ],
+                                           "faq_list":  [
+
+                                                        ],
+                                           "clinical_details":  {
+                                                                    "c3rUnit":  "UV-A Crosslinking System",
+                                                                    "cornealSuite":  "Zeiss Corneal Tomography"
+                                                                },
+                                           "display_order":  6,
+                                           "published":  true,
+                                           "created_at":  "2026-08-17T12:54:23.221845+00:00",
+                                           "updated_at":  "2026-08-17T12:54:23.221845+00:00"
+                                       },
+                                       {
+                                           "id":  "opticals-pharmacy",
+                                           "name":  "In-House Optical \u0026 Pharmacy",
+                                           "title":  "Precision Computerized Lens Edging \u0026 Ophthalmic Pharmacy",
+                                           "short_desc":  "State-of-the-art POTEC computerized lensometry, digital lens dispensing, anti-reflective blue-cut lenses, and genuine 24/7 ophthalmic pharmaceuticals.",
+                                           "hero_image":  "assets/services/optical_contact_lenses.jpg",
+                                           "benefits":  [
+                                                            "POTEC digital lensometry and automatic edging",
+                                                            "UV420 Blue-Cut and progressive digital lenses",
+                                                            "RGP and soft therapeutic contact lenses",
+                                                            "Cold-chain stored genuine ophthalmic eye drops"
+                                                        ],
+                                           "symptoms":  [
+                                                            "Blurry vision requiring optical correction",
+                                                            "Computer vision syndrome and screen glare fatigue",
+                                                            "Dryness requiring preservative-free lubricants"
+                                                        ],
+                                           "who_needs_it":  [
+                                                                "All patients with refractive prescriptions",
+                                                                "Corporate professionals with digital screen use",
+                                                                "Post-operative surgical patients needing medications"
+                                                            ],
+                                           "procedures":  [
+                                                              "Computerized ARK Refraction",
+                                                              "Frame Fitting \u0026 Pupillary Distance Measurement",
+                                                              "Precision Lens Edging",
+                                                              "Quality Inspection Check"
+                                                          ],
+                                           "faq_list":  [
+
+                                                        ],
+                                           "clinical_details":  {
+                                                                    "pharmacy":  "24/7 Temperature-Controlled Cold Chain",
+                                                                    "lensometer":  "POTEC PLM-8000PD"
+                                                                },
+                                           "display_order":  7,
+                                           "published":  true,
+                                           "created_at":  "2026-08-17T12:54:23.221845+00:00",
+                                           "updated_at":  "2026-08-17T12:54:23.221845+00:00"
+                                       },
+                                       {
+                                           "id":  "community-outreach",
+                                           "name":  "Community Eye Health \u0026 Outreach",
+                                           "title":  "Free District-Wide Screening Camps \u0026 AB-ARK Care",
+                                           "short_desc":  "Over 2,715 mobile rural eye screening camps conducted across Vijayapura and Kalaburagi districts, delivering free surgical sight restoration under Ayushman Bharat AB-ARK.",
+                                           "hero_image":  "assets/services/community_eye_screening.jpg",
+                                           "benefits":  [
+                                                            "Free mobile vision screening in remote rural villages",
+                                                            "Complimentary hospital transport and surgical admission",
+                                                            "Zero-cost cataract surgery under Government AB-ARK scheme",
+                                                            "Free post-operative medications and dark glasses"
+                                                        ],
+                                           "symptoms":  [
+                                                            "Blindness or severe visual impairment in rural citizens",
+                                                            "Inability to afford private clinical consultation",
+                                                            "Elderly citizens unable to travel to urban hospitals"
+                                                        ],
+                                           "who_needs_it":  [
+                                                                "Rural and economically disadvantaged citizens",
+                                                                "Senior citizens without family mobility support",
+                                                                "Government welfare card holders (BPL/AB-ARK)"
+                                                            ],
+                                           "procedures":  [
+                                                              "Door-to-Door Camp Screening",
+                                                              "Base Hospital Transport",
+                                                              "Pre-Op Clinical Clearance",
+                                                              "Daycare Surgery \u0026 Discharge"
+                                                          ],
+                                           "faq_list":  [
+
+                                                        ],
+                                           "clinical_details":  {
+                                                                    "footprint":  "Vijayapura \u0026 Kalaburagi",
+                                                                    "freeSurgeries":  "50,000+",
+                                                                    "campsCompleted":  "2,715+"
+                                                                },
+                                           "display_order":  8,
+                                           "published":  true,
+                                           "created_at":  "2026-08-17T12:54:23.221845+00:00",
+                                           "updated_at":  "2026-08-17T12:54:23.221845+00:00"
+                                       }
+                                   ],
+                         "Count":  8
+                     },
+    "cms_equipment":  {
+                          "value":  [
+                                        {
+                                            "id":  "reichert-7-nct",
+                                            "name":  "Reichert 7 NCT",
+                                            "image":  "assets/equipment/reichert_7_nct.jpg",
+                                            "alt_text":  "Reichert 7 NCT",
+                                            "category":  "Diagnostic \u0026 Tonometry",
+                                            "display_order":  1,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "rebound-tonometer",
+                                            "name":  "Rebound Tonometer",
+                                            "image":  "assets/equipment/rebound_tonometer.jpg",
+                                            "alt_text":  "Rebound Tonometer",
+                                            "category":  "Tonometry \u0026 IOP Diagnostics",
+                                            "display_order":  2,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "poket-7000-ark",
+                                            "name":  "Poket 7000 ARK",
+                                            "image":  "assets/equipment/poket_7000_ark.jpg",
+                                            "alt_text":  "Poket 7000 ARK",
+                                            "category":  "Refraction \u0026 Keratometry",
+                                            "display_order":  3,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "potec-plm-8000pd",
+                                            "name":  "Auto-refractometer POTEC PLM-8000PD",
+                                            "image":  "assets/equipment/potec_plm_8000pd.jpg",
+                                            "alt_text":  "Auto-refractometer POTEC PLM-8000PD",
+                                            "category":  "Digital Refractometry",
+                                            "display_order":  4,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "ophthalmic-ultrasound-scanner",
+                                            "name":  "Ophthalmic Ultrasound Scanner",
+                                            "image":  "assets/equipment/ophthalmic_ultrasound_scanner.jpg",
+                                            "alt_text":  "Ophthalmic Ultrasound Scanner",
+                                            "category":  "Ocular Ultrasonography",
+                                            "display_order":  5,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "marvel-b-scan",
+                                            "name":  "Marvel B Scan",
+                                            "image":  "assets/equipment/marvel_b_scan.jpg",
+                                            "alt_text":  "Marvel B Scan",
+                                            "category":  "Posterior Segment Ultrasound",
+                                            "display_order":  6,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "digital-slit-lamp-imaging",
+                                            "name":  "Ophthalmic-Digital-Slit-Lamp-with-Camera-Imaging",
+                                            "image":  "assets/equipment/digital_slit_lamp_imaging.jpg",
+                                            "alt_text":  "Ophthalmic-Digital-Slit-Lamp-with-Camera-Imaging",
+                                            "category":  "Digital Slit Lamp Imaging",
+                                            "display_order":  7,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "wavelight-ex-500",
+                                            "name":  "WaveLight EX 500",
+                                            "image":  "assets/equipment/wavelight_ex_500.jpg",
+                                            "alt_text":  "WaveLight EX 500",
+                                            "category":  "Corneal Refractive Laser",
+                                            "display_order":  8,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "alcon-infiniti-phaco",
+                                            "name":  "Alcon Infiniti Phaco",
+                                            "image":  "assets/equipment/alcon_infiniti_phaco.jpg",
+                                            "alt_text":  "Alcon Infiniti Phaco",
+                                            "category":  "Cataract Phacoemulsification",
+                                            "display_order":  9,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "alcon-constellation",
+                                            "name":  "Alcon Constellation Machine",
+                                            "image":  "assets/equipment/alcon_constellation.jpg",
+                                            "alt_text":  "Alcon Constellation Machine",
+                                            "category":  "Vitreo-Retinal Surgical Platform",
+                                            "display_order":  10,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "mel-80-excimer",
+                                            "name":  "MEL 80 Excimer Laser/Lasik",
+                                            "image":  "assets/equipment/mel_80_excimer_laser.jpg",
+                                            "alt_text":  "MEL 80 Excimer Laser/Lasik",
+                                            "category":  "Carl Zeiss Refractive Suite",
+                                            "display_order":  11,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "yag-laser",
+                                            "name":  "YAG Laser",
+                                            "image":  "assets/equipment/yag_laser.jpg",
+                                            "alt_text":  "YAG Laser",
+                                            "category":  "Capsulotomy \u0026 Iridotomy Laser",
+                                            "display_order":  12,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "canon-fundus-camera",
+                                            "name":  "Canon Fundus Camera",
+                                            "image":  "assets/equipment/canon_fundus_camera.jpg",
+                                            "alt_text":  "Canon Fundus Camera",
+                                            "category":  "Digital Retinal Imaging",
+                                            "display_order":  13,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "vertical-autoclave",
+                                            "name":  "VERTICAL AUTOCLAVE- LAB MODEL",
+                                            "image":  "assets/equipment/vertical_autoclave.jpg",
+                                            "alt_text":  "VERTICAL AUTOCLAVE- LAB MODEL",
+                                            "category":  "Sterilization \u0026 Infection Control",
+                                            "display_order":  14,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "a-scan",
+                                            "name":  "A-Scan",
+                                            "image":  "assets/equipment/a_scan.jpg",
+                                            "alt_text":  "A-Scan",
+                                            "category":  "Ocular Biometry \u0026 IOL Power",
+                                            "display_order":  15,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "eto-sterilizer-ka2",
+                                            "name":  "ETO Sterilizer KA2 Model",
+                                            "image":  "assets/equipment/eto_sterilizer_ka2.jpg",
+                                            "alt_text":  "ETO Sterilizer KA2 Model",
+                                            "category":  "Modular OT Gas Sterilization",
+                                            "display_order":  16,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "eto-sterilizer-printer-ka2",
+                                            "name":  "Fully Automatic Ethylene Oxide Sterilizer Model With Inbuilt Printer, KA-2 Series",
+                                            "image":  "assets/equipment/eto_sterilizer_printer_ka2.jpg",
+                                            "alt_text":  "Fully Automatic Ethylene Oxide Sterilizer Model With Inbuilt Printer, KA-2 Series",
+                                            "category":  "Automated Sterilization Record",
+                                            "display_order":  17,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "oct-scanner",
+                                            "name":  "OCT",
+                                            "image":  "assets/equipment/oct_scanner.jpg",
+                                            "alt_text":  "OCT",
+                                            "category":  "Optical Coherence Tomography",
+                                            "display_order":  18,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "multispot-green-laser-1",
+                                            "name":  "Multispot Green Laser (532nm)",
+                                            "image":  "assets/equipment/multispot_green_laser_1.jpg",
+                                            "alt_text":  "Multispot Green Laser (532nm)",
+                                            "category":  "532nm Retinal Photocoagulator",
+                                            "display_order":  19,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "slit-lamp-imaging",
+                                            "name":  "SLIT LAMP IMAGING",
+                                            "image":  "assets/equipment/slit_lamp_imaging.jpg",
+                                            "alt_text":  "SLIT LAMP IMAGING",
+                                            "category":  "High Resolution Anterior Imaging",
+                                            "display_order":  20,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "multispot-green-laser-2",
+                                            "name":  "Multispot Green Laser (Pattern Scanning)",
+                                            "image":  "assets/equipment/multispot_green_laser_2.jpg",
+                                            "alt_text":  "Multispot Green Laser (Pattern Scanning)",
+                                            "category":  "Pattern Scanning Laser",
+                                            "display_order":  21,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "lumera-i-zeiss",
+                                            "name":  "Lumera i Zeiss Surgical Microscope",
+                                            "image":  "assets/equipment/lumera_i_zeiss_microscope.jpg",
+                                            "alt_text":  "Lumera i Zeiss Surgical Microscope",
+                                            "category":  "Carl Zeiss Microsurgical Suite",
+                                            "display_order":  22,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "luxor-ophthalmic-microscope",
+                                            "name":  "LuxOR Surgical Ophthalmic Microscope",
+                                            "image":  "assets/equipment/luxor_ophthalmic_microscope.jpg",
+                                            "alt_text":  "LuxOR Surgical Ophthalmic Microscope",
+                                            "category":  "Alcon Red-Reflex Surgical Microscope",
+                                            "display_order":  23,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:53:48.932906+00:00",
+                                            "updated_at":  "2026-08-17T12:53:48.932906+00:00"
+                                        },
+                                        {
+                                            "id":  "eq-1",
+                                            "name":  "Reichert 7 NCT",
+                                            "image":  "https://fihrlxfitctsedthcdlf.supabase.co/storage/v1/object/public/hospital-media/hero/hero_optimized_1787040144.webp",
+                                            "alt_text":  "Reichert 7 Non-Contact Tonometer",
+                                            "category":  "Diagnostic",
+                                            "display_order":  1,
+                                            "is_active":  true,
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T13:26:22.519384+00:00",
+                                            "updated_at":  "2026-08-18T08:02:26+00:00"
+                                        }
+                                    ],
+                          "Count":  24
+                      },
+    "cms_site_settings":  {
+                              "value":  [
+                                            {
+                                                "id":  "stats",
+                                                "value":  {
+                                                              "freeCataracts":  "50,000+",
+                                                              "outreachCamps":  "2,715",
+                                                              "studentsScreened":  "10,000+",
+                                                              "lifetimeSurgeries":  "2,28,951+",
+                                                              "annualFreePatients":  "~10,000",
+                                                              "totalPeopleReached":  "~10 Lakh",
+                                                              "surgicalBenefitPercentage":  "15%+"
+                                                          },
+                                                "updated_at":  "2026-08-18T07:43:20.208+00:00",
+                                                "updated_by":  null
+                                            },
+                                            {
+                                                "id":  "about",
+                                                "value":  {
+                                                              "story":  "Founded in 2001 in Vijayapura by Dr. Prabhugouda B. Lingadalli, Anugraha Eye Hospital has evolved into North Karnataka preeminent ophthalmic institution. Guided by the core tenets of Authentic, Affectionate, and Affordable eye care, the hospital has restored sight to over 2.28 lakh patients and screened millions across rural communities.",
+                                                              "vision":  "Sight for all through Authentic, Affectionate and Affordable treatment and eradication of blindness through quality Eye care services.",
+                                                              "history":  "In 2001, Dr. Lingadalli established Anugraha Eye Hospital with a vision to eliminate preventable blindness in North Karnataka. Beginning as a specialized eye clinic in Vijayapura, the institution pioneered mobile outreach eye camps, reaching remote villages with free surgical care. Today, the hospital encompasses 2 super-specialty tertiary base hospitals in Vijayapura and Kalaburagi, 8 rural Vision Centers, and RGUHS-affiliated optometry and DNB residency academic programs.",
+                                                              "mission":  "Deliver quality, accessible eye care to all; excel in specialized eye care services; become a preferred destination for medical, paramedical and non-medical professionals; deploy advanced technology; promote preventive eye care and eye donation.",
+                                                              "coreValues":  [
+                                                                                 {
+                                                                                     "desc":  "Evidence-based, ethical ophthalmic treatments without commercial compromises.",
+                                                                                     "title":  "Authentic Clinical Integrity"
+                                                                                 },
+                                                                                 {
+                                                                                     "desc":  "Treating every patient with warmth, empathy, and personalized clinical attention.",
+                                                                                     "title":  "Affectionate Compassion"
+                                                                                 },
+                                                                                 {
+                                                                                     "desc":  "High-volume, subsidized and free surgical programs ensuring no patient is denied sight.",
+                                                                                     "title":  "Affordable Accessibility"
+                                                                                 },
+                                                                                 {
+                                                                                     "desc":  "State-of-the-art micro-incision phaco, Contoura Vision LASIK, and digital OCT diagnostics.",
+                                                                                     "title":  "Technological Excellence"
+                                                                                 }
+                                                                             ],
+                                                              "milestones":  [
+                                                                                 {
+                                                                                     "desc":  "Inception of Anugraha Eye Hospital by Dr. Prabhugouda B. Lingadalli.",
+                                                                                     "year":  "2001",
+                                                                                     "title":  "Foundation in Vijayapura"
+                                                                                 },
+                                                                                 {
+                                                                                     "desc":  "Initiation of free district-wide eye screening camps.",
+                                                                                     "year":  "2005",
+                                                                                     "title":  "Mobile Rural Outreach Camps"
+                                                                                 },
+                                                                                 {
+                                                                                     "desc":  "Establishment of the first rural Vision Centers in Talikoti and Muddebihal.",
+                                                                                     "year":  "2010",
+                                                                                     "title":  "Vision Centers Network"
+                                                                                 },
+                                                                                 {
+                                                                                     "desc":  "Launch of dedicated Vitreo-Retina, Glaucoma, and Pediatric clinics.",
+                                                                                     "year":  "2015",
+                                                                                     "title":  "Super-Specialty Expansion"
+                                                                                 },
+                                                                                 {
+                                                                                     "desc":  "Inauguration of the Kalaburagi Tertiary Base Hospital \u0026 Institute of Optometry.",
+                                                                                     "year":  "2020",
+                                                                                     "title":  "Kalaburagi Base Hospital"
+                                                                                 },
+                                                                                 {
+                                                                                     "desc":  "State honor conferred upon Chairman Dr. Lingadalli for rural blindness eradication.",
+                                                                                     "year":  "2021",
+                                                                                     "title":  "Karnataka Rajyostava Award"
+                                                                                 },
+                                                                                 {
+                                                                                     "desc":  "Celebrated 25 years of sight restoration with 2,28,951+ successful surgeries.",
+                                                                                     "year":  "2026",
+                                                                                     "title":  "2.28 Lakh Surgeries Milestone"
+                                                                                 }
+                                                                             ],
+                                                              "communityImpact":  "Over 25 years, Anugraha has conducted 2,715+ free outreach camps, performed 50,000+ free cataract surgeries for underprivileged patients, and screened 10,000+ school children across Vijayapura, Kalaburagi, and neighboring districts."
+                                                          },
+                                                "updated_at":  "2026-08-18T07:43:20.208+00:00",
+                                                "updated_by":  null
+                                            },
+                                            {
+                                                "id":  "brand",
+                                                "value":  {
+                                                              "logo":  "assets/official_logo.jpg",
+                                                              "name":  "Anugraha Eye Hospital",
+                                                              "vision":  "Sight for all through Authentic, Affectionate and Affordable treatment and eradication of blindness through quality Eye care services.",
+                                                              "founder":  "Dr. Prabhugouda B. Lingadalli",
+                                                              "mission":  "Deliver quality, accessible eye care to all; excel in specialized eye care services; become a preferred destination for medical, paramedical and non-medical professionals; deploy advanced technology; promote preventive eye care and eye donation.",
+                                                              "tagline":  "Authentic. Affectionate. Affordable.",
+                                                              "foundedYear":  2001,
+                                                              "socialLinks":  {
+                                                                                  "youtube":  "https://youtube.com",
+                                                                                  "facebook":  "https://facebook.com",
+                                                                                  "linkedin":  "https://linkedin.com",
+                                                                                  "instagram":  "https://instagram.com"
+                                                                              },
+                                                              "contactEmail":  "contactus@anugrahaeyehospital.com",
+                                                              "fallbackPhone":  "08352-220646",
+                                                              "whatsappPhone":  "+91 74839 00963"
+                                                          },
+                                                "updated_at":  "2026-08-18T08:02:09.569804+00:00",
+                                                "updated_by":  null
+                                            },
+                                            {
+                                                "id":  "homepage",
+                                                "value":  {
+                                                              "heroImage":  "https://fihrlxfitctsedthcdlf.supabase.co/storage/v1/object/public/hospital-media/hero/hero_optimized_1787040144.webp",
+                                                              "heroEyebrow":  "25+ Years of Clinical Excellence",
+                                                              "heroHeading":  "Advanced Micro-Incision Eye Care with Precision Robotics",
+                                                              "heroDescription":  "Equipped with state-of-the-art diagnostic and surgical ophthalmic systems."
+                                                          },
+                                                "updated_at":  "2026-08-18T08:02:25+00:00",
+                                                "updated_by":  null
+                                            },
+                                            {
+                                                "id":  "patientResources",
+                                                "value":  {
+                                                              "education":  "Regular eye examinations prevent asymptomatic conditions such as glaucoma, diabetic retinopathy, and age-related macular degeneration. Protect your eyes with UV-blocking sunglasses, take frequent screen breaks using the 20-20-20 rule, and maintain healthy glycemic levels.",
+                                                              "patientInfo":  "Anugraha Eye Hospital welcomes patients for both routine visual evaluations and advanced surgical consultations. Please bring any existing spectacle prescriptions, medical records, and government ID/health insurance cards to facilitate cashless registration.",
+                                                              "emergencyInfo":  "24/7 emergency ophthalmic services are active at our Vijayapura Main Campus and Kalaburagi Base Hospital for chemical burns, severe ocular trauma, acute angle-closure glaucoma, and sudden vision loss. Helpline: 08352-220646.",
+                                                              "insuranceInfo":  "Cashless hospitalization is available under Ayushman Bharat Arogya Karnataka (AB-ARK), Arogya Bhagya Yojane, Star Health, ICICI Lombard, and over 20 leading insurance providers and TPAs.",
+                                                              "appointmentInfo":  "OPD appointments are available Monday through Saturday from 8:00 AM to 8:00 PM. Walk-in patients are registered on a first-come, first-served basis, with priority triage for emergency eye trauma and elderly patients."
+                                                          },
+                                                "updated_at":  "2026-08-18T07:43:20.209+00:00",
+                                                "updated_by":  null
+                                            }
+                                        ],
+                              "Count":  5
+                          },
+    "cms_academics":  {
+                          "value":  [
+                                        {
+                                            "id":  "fellowships",
+                                            "name":  "Super-Specialty Clinical Fellowship",
+                                            "title":  "Fellowship in Phacoemulsification \u0026 Vitreo-Retina",
+                                            "degree":  "Post-Graduate Surgical Fellowship",
+                                            "affiliation":  "Anugraha Institutional Academic Board",
+                                            "duration":  "12 - 18 Months",
+                                            "eligibility":  "MS / DNB (Ophthalmology)",
+                                            "description":  "High-volume hands-on surgical training program under Founder Dr. P.B. Lingadalli with extensive modular OT exposure.",
+                                            "highlights":  [
+                                                               "500+ independent supervised phacoemulsification cases",
+                                                               "Hands-on training in toric and multifocal IOL alignment",
+                                                               "Medical \u0026 surgical retina training with 25G vitrectomy",
+                                                               "Clinical research, case presentation and journal clubs"
+                                                           ],
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                            "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                        },
+                                        {
+                                            "id":  "dnb-ophthalmology",
+                                            "name":  "NBEMS DNB Ophthalmology",
+                                            "title":  "National Board of Examinations Post-Graduate Residency",
+                                            "degree":  "DNB (Ophthalmology)",
+                                            "affiliation":  "NBEMS (National Board of Examinations in Medical Sciences)",
+                                            "duration":  "3 Years",
+                                            "eligibility":  "MBBS with NEET-PG Qualification",
+                                            "description":  "NBE-accredited post-graduate residency with comprehensive rotation through anterior and posterior segment surgical units.",
+                                            "highlights":  [
+                                                               "Recognized post-graduate qualification across India \u0026 globally",
+                                                               "Rotations across 3 laminar airflow modular OTs",
+                                                               "Comprehensive diagnostic exposure on OCT, Pentacam \u0026 Perimetry",
+                                                               "Dedicated thesis mentorship and sub-specialty clinics"
+                                                           ],
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                            "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                        },
+                                        {
+                                            "id":  "diploma-optometry",
+                                            "name":  "Diploma in Ophthalmic Technology (DOT)",
+                                            "title":  "Paramedical Clinical Training Program",
+                                            "degree":  "Diploma in Ophthalmic Technology",
+                                            "affiliation":  "Karnataka Paramedical Board",
+                                            "duration":  "2 Years",
+                                            "eligibility":  "PUC / 10+2 with Science (PCB)",
+                                            "description":  "Hands-on paramedical training preparing clinical ophthalmic technicians for diagnostic testing, refraction, and OT assistance.",
+                                            "highlights":  [
+                                                               "Practical training in automated and manual refraction",
+                                                               "Diagnostic testing: Tonometry, Keratometry \u0026 Slit Lamp",
+                                                               "Ophthalmic operation theatre sterilization \u0026 assistance",
+                                                               "100% placement record across eye hospitals and clinics"
+                                                           ],
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                            "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                        },
+                                        {
+                                            "id":  "bsc-optometry",
+                                            "name":  "B.Sc Optometry",
+                                            "title":  "Bachelor of Science in Optometry",
+                                            "degree":  "B.Sc Optometry Degree",
+                                            "affiliation":  "Rajiv Gandhi University of Health Sciences (RGUHS)",
+                                            "duration":  "4 Years (3 Yrs Academic + 1 Yr Internship)",
+                                            "eligibility":  "PUC / 10+2 with Physics, Chemistry, Biology \u0026 English (45% Min)",
+                                            "description":  "Comprehensive 4-year degree curriculum affiliated with RGUHS Bengaluru, preparing primary eye care clinicians and diagnostic optometrists.",
+                                            "highlights":  [
+                                                               "RGUHS recognized professional optometry curriculum",
+                                                               "1-year clinical internship across Anugraha tertiary hospitals",
+                                                               "Hands-on specialized contact lens, low vision \u0026 binocular vision",
+                                                               "High-demand career pathway in clinical optometry \u0026 research"
+                                                           ],
+                                            "published":  true,
+                                            "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                            "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                        }
+                                    ],
+                          "Count":  4
+                      },
+    "cms_facilities":  {
+                           "value":  [
+                                         {
+                                             "id":  "vijayapura",
+                                             "name":  "Vijayapura Base Hospital",
+                                             "type":  "base",
+                                             "address":  "Navabhag Main Road, Behind Central Bus Stand, Vijayapura – 586101",
+                                             "city":  "Vijayapura",
+                                             "district":  "Vijayapura",
+                                             "pincode":  "586101",
+                                             "phone":  "08352-220646",
+                                             "email":  "contactus@anugrahaeyehospital.com",
+                                             "hours":  "8:00 AM – 9:00 PM (Daily)",
+                                             "emergency":  "24/7 Emergency Ophthalmic Unit",
+                                             "map_url":  "https://maps.google.com/?q=Anugraha+Eye+Hospital+Vijayapura",
+                                             "hero_image":  "assets/services/cataract_surgery.jpg",
+                                             "services":  [
+                                                              "Cataract Surgery (MICS/Phaco)",
+                                                              "Contoura Vision \u0026 LASIK",
+                                                              "Vitreo-Retina Services",
+                                                              "Glaucoma Clinic",
+                                                              "Cornea \u0026 Oculoplasty",
+                                                              "Pediatric Ophthalmology",
+                                                              "In-House Optical \u0026 Pharmacy"
+                                                          ],
+                                             "facilities":  [
+                                                                "3 HEPA Laminar Airflow OTs",
+                                                                "In-house Optical Dispensing",
+                                                                "24/7 Ophthalmic Pharmacy",
+                                                                "Daycare Surgical Suites",
+                                                                "Air-conditioned Recovery Ward"
+                                                            ],
+                                             "doctors_schedule":  [
+                                                                      {
+                                                                          "day":  "Mon - Sat",
+                                                                          "time":  "9:00 AM - 8:00 PM",
+                                                                          "doctor":  "Dr. P.B. Lingadalli \u0026 Dr. Malini P L"
+                                                                      }
+                                                                  ],
+                                             "stats":  {
+                                                           "beds":  "50",
+                                                           "otCount":  "3",
+                                                           "annualSurgeries":  "12,000+"
+                                                       },
+                                             "coordinates":  {
+                                                                 "lat":  16.8302,
+                                                                 "lng":  75.7100
+                                                             },
+                                             "display_order":  1,
+                                             "published":  true,
+                                             "created_at":  "2026-08-17T12:54:09.035589+00:00",
+                                             "updated_at":  "2026-08-17T12:54:09.035589+00:00"
+                                         },
+                                         {
+                                             "id":  "kalaburagi",
+                                             "name":  "Kalaburagi Base Hospital \u0026 Institute of Optometry",
+                                             "type":  "base",
+                                             "address":  "Sedam Road, Near High Court Bench, Kalaburagi – 585105",
+                                             "city":  "Kalaburagi",
+                                             "district":  "Kalaburagi",
+                                             "pincode":  "585105",
+                                             "phone":  "08352-220646",
+                                             "email":  "contactus@anugrahaeyehospital.com",
+                                             "hours":  "9:00 AM – 7:00 PM (Mon - Sat)",
+                                             "emergency":  "24/7 Emergency Referral",
+                                             "map_url":  "https://maps.google.com/?q=Anugraha+Eye+Hospital+Kalaburagi",
+                                             "hero_image":  "assets/services/cataract_surgery.jpg",
+                                             "services":  [
+                                                              "Cataract Surgery",
+                                                              "Medical Retina",
+                                                              "Glaucoma Clinic",
+                                                              "Optometry Institute",
+                                                              "Optical \u0026 Pharmacy"
+                                                          ],
+                                             "facilities":  [
+                                                                "Modular Ophthalmic OT",
+                                                                "Optometry Clinical Laboratories",
+                                                                "In-house Optical Outlet",
+                                                                "Digital Diagnostic Wing"
+                                                            ],
+                                             "doctors_schedule":  [
+                                                                      {
+                                                                          "day":  "Mon - Sat",
+                                                                          "time":  "9:30 AM - 6:30 PM",
+                                                                          "doctor":  "Consultant Ophthalmic Surgeons"
+                                                                      }
+                                                                  ],
+                                             "stats":  {
+                                                           "beds":  "30",
+                                                           "otCount":  "2",
+                                                           "annualSurgeries":  "5,000+"
+                                                       },
+                                             "coordinates":  {
+                                                                 "lat":  17.3297,
+                                                                 "lng":  76.8343
+                                                             },
+                                             "display_order":  2,
+                                             "published":  true,
+                                             "created_at":  "2026-08-17T12:54:09.035589+00:00",
+                                             "updated_at":  "2026-08-17T12:54:09.035589+00:00"
+                                         },
+                                         {
+                                             "id":  "talikoti",
+                                             "name":  "Talikoti Vision Center",
+                                             "type":  "vision-center",
+                                             "address":  "Near Old Bus Stand, Main Road, Talikoti – 586214",
+                                             "city":  "Talikoti",
+                                             "district":  "Vijayapura",
+                                             "pincode":  "586214",
+                                             "phone":  "08356-270446",
+                                             "email":  "contactus@anugrahaeyehospital.com",
+                                             "hours":  "9:30 AM – 6:30 PM (Mon - Sat)",
+                                             "emergency":  "Emergency referral to Vijayapura Base Hospital",
+                                             "map_url":  "https://maps.google.com/?q=Talikoti+Vision+Center",
+                                             "hero_image":  "assets/services/cataract_surgery.jpg",
+                                             "services":  [
+                                                              "Primary Eye Examination",
+                                                              "Computerized Refraction",
+                                                              "Prescription Spectacles",
+                                                              "Cataract Pre-op Screening",
+                                                              "Free Sunday OPD Camps"
+                                                          ],
+                                             "facilities":  [
+                                                                "Auto-Refractometer",
+                                                                "Slit Lamp Imaging",
+                                                                "Optical Frame Gallery",
+                                                                "Pharmacy Dispensary"
+                                                            ],
+                                             "doctors_schedule":  [
+                                                                      {
+                                                                          "day":  "Sunday",
+                                                                          "time":  "10:00 AM - 2:00 PM",
+                                                                          "doctor":  "Visiting Consultant Surgeon"
+                                                                      }
+                                                                  ],
+                                             "stats":  {
+                                                           "screened":  "25,000+",
+                                                           "surgeriesReferred":  "4,200+"
+                                                       },
+                                             "coordinates":  {
+                                                                 "lat":  16.4789,
+                                                                 "lng":  76.3142
+                                                             },
+                                             "display_order":  3,
+                                             "published":  true,
+                                             "created_at":  "2026-08-17T12:54:09.035589+00:00",
+                                             "updated_at":  "2026-08-17T12:54:09.035589+00:00"
+                                         },
+                                         {
+                                             "id":  "muddebihal",
+                                             "name":  "Muddebihal Vision Center",
+                                             "type":  "vision-center",
+                                             "address":  "Behind KSRTC Bus Stand, Muddebihal – 586212",
+                                             "city":  "Muddebihal",
+                                             "district":  "Vijayapura",
+                                             "pincode":  "586212",
+                                             "phone":  "08356-221446",
+                                             "email":  "contactus@anugrahaeyehospital.com",
+                                             "hours":  "9:30 AM – 6:30 PM (Mon - Sat)",
+                                             "emergency":  "Emergency referral to Vijayapura Base Hospital",
+                                             "map_url":  "https://maps.google.com/?q=Muddebihal+Vision+Center",
+                                             "hero_image":  "assets/services/cataract_surgery.jpg",
+                                             "services":  [
+                                                              "Primary Eye Screening",
+                                                              "Digital Refraction",
+                                                              "Optical Dispensing",
+                                                              "Glaucoma Screening"
+                                                          ],
+                                             "facilities":  [
+                                                                "Auto-Refractometer",
+                                                                "Trial Lens Set",
+                                                                "Optical Outlet"
+                                                            ],
+                                             "doctors_schedule":  [
+                                                                      {
+                                                                          "day":  "Sunday",
+                                                                          "time":  "10:00 AM - 2:00 PM",
+                                                                          "doctor":  "Visiting Consultant Surgeon"
+                                                                      }
+                                                                  ],
+                                             "stats":  {
+                                                           "screened":  "22,000+",
+                                                           "surgeriesReferred":  "3,800+"
+                                                       },
+                                             "coordinates":  {
+                                                                 "lat":  16.3370,
+                                                                 "lng":  76.1310
+                                                             },
+                                             "display_order":  4,
+                                             "published":  true,
+                                             "created_at":  "2026-08-17T12:54:09.035589+00:00",
+                                             "updated_at":  "2026-08-17T12:54:09.035589+00:00"
+                                         },
+                                         {
+                                             "id":  "sindagi",
+                                             "name":  "Sindagi Vision Center",
+                                             "type":  "vision-center",
+                                             "address":  "Sindgi-Indi Road, Near Court Complex, Sindagi – 586128",
+                                             "city":  "Sindagi",
+                                             "district":  "Vijayapura",
+                                             "pincode":  "586128",
+                                             "phone":  "08356-222446",
+                                             "email":  "contactus@anugrahaeyehospital.com",
+                                             "hours":  "9:30 AM – 6:30 PM (Mon - Sat)",
+                                             "emergency":  "Emergency referral to Vijayapura Base Hospital",
+                                             "map_url":  "https://maps.google.com/?q=Sindagi+Vision+Center",
+                                             "hero_image":  "assets/services/cataract_surgery.jpg",
+                                             "services":  [
+                                                              "Primary Vision Screening",
+                                                              "Refraction \u0026 Glasses",
+                                                              "Diabetic Retinopathy Screening"
+                                                          ],
+                                             "facilities":  [
+                                                                "Diagnostic Suite",
+                                                                "Optical Dispensing",
+                                                                "Pharmacy Counter"
+                                                            ],
+                                             "doctors_schedule":  [
+                                                                      {
+                                                                          "day":  "Sunday",
+                                                                          "time":  "10:00 AM - 2:00 PM",
+                                                                          "doctor":  "Visiting Consultant Surgeon"
+                                                                      }
+                                                                  ],
+                                             "stats":  {
+                                                           "screened":  "20,000+",
+                                                           "surgeriesReferred":  "3,500+"
+                                                       },
+                                             "coordinates":  {
+                                                                 "lat":  16.9200,
+                                                                 "lng":  76.2300
+                                                             },
+                                             "display_order":  5,
+                                             "published":  true,
+                                             "created_at":  "2026-08-17T12:54:09.035589+00:00",
+                                             "updated_at":  "2026-08-17T12:54:09.035589+00:00"
+                                         },
+                                         {
+                                             "id":  "indi",
+                                             "name":  "Indi Vision Center",
+                                             "type":  "vision-center",
+                                             "address":  "Railway Station Road, Indi – 586209",
+                                             "city":  "Indi",
+                                             "district":  "Vijayapura",
+                                             "pincode":  "586209",
+                                             "phone":  "08359-225446",
+                                             "email":  "contactus@anugrahaeyehospital.com",
+                                             "hours":  "9:30 AM – 6:30 PM (Mon - Sat)",
+                                             "emergency":  "Emergency referral to Vijayapura Base Hospital",
+                                             "map_url":  "https://maps.google.com/?q=Indi+Vision+Center",
+                                             "hero_image":  "assets/services/cataract_surgery.jpg",
+                                             "services":  [
+                                                              "Eye Screening",
+                                                              "Spectacle Dispensing",
+                                                              "Cataract Surgical Counseling"
+                                                          ],
+                                             "facilities":  [
+                                                                "Refraction Room",
+                                                                "Optical Gallery"
+                                                            ],
+                                             "doctors_schedule":  [
+                                                                      {
+                                                                          "day":  "Sunday",
+                                                                          "time":  "10:00 AM - 2:00 PM",
+                                                                          "doctor":  "Visiting Consultant Surgeon"
+                                                                      }
+                                                                  ],
+                                             "stats":  {
+                                                           "screened":  "18,000+",
+                                                           "surgeriesReferred":  "3,100+"
+                                                       },
+                                             "coordinates":  {
+                                                                 "lat":  17.1800,
+                                                                 "lng":  75.9600
+                                                             },
+                                             "display_order":  6,
+                                             "published":  true,
+                                             "created_at":  "2026-08-17T12:54:09.035589+00:00",
+                                             "updated_at":  "2026-08-17T12:54:09.035589+00:00"
+                                         },
+                                         {
+                                             "id":  "bbagewadi",
+                                             "name":  "B. Bagewadi Vision Center",
+                                             "type":  "vision-center",
+                                             "address":  "Near Basaveshwara Circle, Basavana Bagewadi – 586203",
+                                             "city":  "B. Bagewadi",
+                                             "district":  "Vijayapura",
+                                             "pincode":  "586203",
+                                             "phone":  "08358-233446",
+                                             "email":  "contactus@anugrahaeyehospital.com",
+                                             "hours":  "9:30 AM – 6:30 PM (Mon - Sat)",
+                                             "emergency":  "Emergency referral to Vijayapura Base Hospital",
+                                             "map_url":  "https://maps.google.com/?q=B+Bagewadi+Vision+Center",
+                                             "hero_image":  "assets/services/cataract_surgery.jpg",
+                                             "services":  [
+                                                              "Primary Eye Care",
+                                                              "Refraction",
+                                                              "Spectacle Frames \u0026 Lenses"
+                                                          ],
+                                             "facilities":  [
+                                                                "Diagnostic Slit Lamp",
+                                                                "Optical Counter"
+                                                            ],
+                                             "doctors_schedule":  [
+                                                                      {
+                                                                          "day":  "Sunday",
+                                                                          "time":  "10:00 AM - 2:00 PM",
+                                                                          "doctor":  "Visiting Consultant Surgeon"
+                                                                      }
+                                                                  ],
+                                             "stats":  {
+                                                           "screened":  "19,500+",
+                                                           "surgeriesReferred":  "3,300+"
+                                                       },
+                                             "coordinates":  {
+                                                                 "lat":  16.5800,
+                                                                 "lng":  75.9700
+                                                             },
+                                             "display_order":  7,
+                                             "published":  true,
+                                             "created_at":  "2026-08-17T12:54:09.035589+00:00",
+                                             "updated_at":  "2026-08-17T12:54:09.035589+00:00"
+                                         },
+                                         {
+                                             "id":  "chadachan",
+                                             "name":  "Chadachan Vision Center",
+                                             "type":  "vision-center",
+                                             "address":  "Main Bazar, Near Bus Stand, Chadachan – 586205",
+                                             "city":  "Chadachan",
+                                             "district":  "Vijayapura",
+                                             "pincode":  "586205",
+                                             "phone":  "08359-244446",
+                                             "email":  "contactus@anugrahaeyehospital.com",
+                                             "hours":  "9:30 AM – 6:30 PM (Mon - Sat)",
+                                             "emergency":  "Emergency referral to Vijayapura Base Hospital",
+                                             "map_url":  "https://maps.google.com/?q=Chadachan+Vision+Center",
+                                             "hero_image":  "assets/services/cataract_surgery.jpg",
+                                             "services":  [
+                                                              "Rural Vision Care",
+                                                              "Refraction",
+                                                              "Free Camp Referral"
+                                                          ],
+                                             "facilities":  [
+                                                                "Refraction Suite",
+                                                                "Optical Counter"
+                                                            ],
+                                             "doctors_schedule":  [
+                                                                      {
+                                                                          "day":  "Sunday",
+                                                                          "time":  "10:00 AM - 2:00 PM",
+                                                                          "doctor":  "Visiting Consultant Surgeon"
+                                                                      }
+                                                                  ],
+                                             "stats":  {
+                                                           "screened":  "15,000+",
+                                                           "surgeriesReferred":  "2,800+"
+                                                       },
+                                             "coordinates":  {
+                                                                 "lat":  17.2100,
+                                                                 "lng":  75.7600
+                                                             },
+                                             "display_order":  8,
+                                             "published":  true,
+                                             "created_at":  "2026-08-17T12:54:09.035589+00:00",
+                                             "updated_at":  "2026-08-17T12:54:09.035589+00:00"
+                                         },
+                                         {
+                                             "id":  "nalatwad",
+                                             "name":  "Nalatwad Vision Center",
+                                             "type":  "vision-center",
+                                             "address":  "Muddebihal-Nalatwad Road, Nalatwad – 586124",
+                                             "city":  "Nalatwad",
+                                             "district":  "Vijayapura",
+                                             "pincode":  "586124",
+                                             "phone":  "08356-288446",
+                                             "email":  "contactus@anugrahaeyehospital.com",
+                                             "hours":  "9:30 AM – 6:30 PM (Mon - Sat)",
+                                             "emergency":  "Emergency referral to Vijayapura Base Hospital",
+                                             "map_url":  "https://maps.google.com/?q=Nalatwad+Vision+Center",
+                                             "hero_image":  "assets/services/cataract_surgery.jpg",
+                                             "services":  [
+                                                              "Primary Eye Screening",
+                                                              "Prescription Glasses",
+                                                              "Post-op Follow-up"
+                                                          ],
+                                             "facilities":  [
+                                                                "Auto-Refractometer",
+                                                                "Optical Display"
+                                                            ],
+                                             "doctors_schedule":  [
+                                                                      {
+                                                                          "day":  "Sunday",
+                                                                          "time":  "10:00 AM - 2:00 PM",
+                                                                          "doctor":  "Visiting Consultant Surgeon"
+                                                                      }
+                                                                  ],
+                                             "stats":  {
+                                                           "screened":  "14,000+",
+                                                           "surgeriesReferred":  "2,400+"
+                                                       },
+                                             "coordinates":  {
+                                                                 "lat":  16.2400,
+                                                                 "lng":  76.3500
+                                                             },
+                                             "display_order":  9,
+                                             "published":  true,
+                                             "created_at":  "2026-08-17T12:54:09.035589+00:00",
+                                             "updated_at":  "2026-08-17T12:54:09.035589+00:00"
+                                         },
+                                         {
+                                             "id":  "tikota",
+                                             "name":  "Tikota Vision Center",
+                                             "type":  "vision-center",
+                                             "address":  "Athani Road, Tikota – 586130",
+                                             "city":  "Tikota",
+                                             "district":  "Vijayapura",
+                                             "pincode":  "586130",
+                                             "phone":  "08352-230446",
+                                             "email":  "contactus@anugrahaeyehospital.com",
+                                             "hours":  "9:30 AM – 6:30 PM (Mon - Sat)",
+                                             "emergency":  "Emergency referral to Vijayapura Base Hospital",
+                                             "map_url":  "https://maps.google.com/?q=Tikota+Vision+Center",
+                                             "hero_image":  "assets/services/cataract_surgery.jpg",
+                                             "services":  [
+                                                              "Eye Examination",
+                                                              "Vision Correction",
+                                                              "Cataract Diagnosis"
+                                                          ],
+                                             "facilities":  [
+                                                                "Slit Lamp",
+                                                                "Optical Counter"
+                                                            ],
+                                             "doctors_schedule":  [
+                                                                      {
+                                                                          "day":  "Sunday",
+                                                                          "time":  "10:00 AM - 2:00 PM",
+                                                                          "doctor":  "Visiting Consultant Surgeon"
+                                                                      }
+                                                                  ],
+                                             "stats":  {
+                                                           "screened":  "13,500+",
+                                                           "surgeriesReferred":  "2,200+"
+                                                       },
+                                             "coordinates":  {
+                                                                 "lat":  16.8500,
+                                                                 "lng":  75.5200
+                                                             },
+                                             "display_order":  10,
+                                             "published":  true,
+                                             "created_at":  "2026-08-17T12:54:09.035589+00:00",
+                                             "updated_at":  "2026-08-17T12:54:09.035589+00:00"
+                                         }
+                                     ],
+                           "Count":  10
+                       },
+    "cms_administration":  {
+                               "value":  [
+                                             {
+                                                 "id":  "veena-patil",
+                                                 "name":  "Veena Patil",
+                                                 "role":  "Administrator, HR \u0026 Quality",
+                                                 "degrees":  "MBA (HR/Finance)",
+                                                 "department":  "Human Resources \u0026 NABH",
+                                                 "bio":  "Directing quality governance, human resources, and national accreditation protocols.",
+                                                 "photo":  "assets/official_logo.jpg",
+                                                 "display_order":  2,
+                                                 "published":  true,
+                                                 "created_at":  "2026-08-17T12:53:57.157296+00:00",
+                                                 "updated_at":  "2026-08-17T12:53:57.157296+00:00"
+                                             },
+                                             {
+                                                 "id":  "anand-patil",
+                                                 "name":  "Anand Patil",
+                                                 "role":  "Administrator, Business Development",
+                                                 "degrees":  "BA",
+                                                 "department":  "Business Development \u0026 Supply Chain",
+                                                 "bio":  "Leading procurement, optical dispensing, and pharmacy networks for over 25 years.",
+                                                 "photo":  "assets/official_logo.jpg",
+                                                 "display_order":  3,
+                                                 "published":  true,
+                                                 "created_at":  "2026-08-17T12:53:57.157296+00:00",
+                                                 "updated_at":  "2026-08-17T12:53:57.157296+00:00"
+                                             },
+                                             {
+                                                 "id":  "poornima-hunashyal",
+                                                 "name":  "Poornima Hunashyal",
+                                                 "role":  "Administrator, Support Services",
+                                                 "degrees":  "Diploma E\u0026C, CCNA",
+                                                 "department":  "IT \u0026 Operations Support",
+                                                 "bio":  "Managing institutional IT infrastructure, digital records, and hospital facilities.",
+                                                 "photo":  "assets/official_logo.jpg",
+                                                 "display_order":  4,
+                                                 "published":  true,
+                                                 "created_at":  "2026-08-17T12:53:57.157296+00:00",
+                                                 "updated_at":  "2026-08-17T12:53:57.157296+00:00"
+                                             },
+                                             {
+                                                 "id":  "dattatreyya-hosamath",
+                                                 "name":  "Dattatreyya Hosamath",
+                                                 "role":  "Administrator, Community Outreach",
+                                                 "degrees":  "BA, Diploma Optometry",
+                                                 "department":  "Outreach \u0026 Camp Coordination",
+                                                 "bio":  "Coordinating rural eye screening camps and community mobilization programs.",
+                                                 "photo":  "assets/official_logo.jpg",
+                                                 "display_order":  5,
+                                                 "published":  true,
+                                                 "created_at":  "2026-08-17T12:53:57.157296+00:00",
+                                                 "updated_at":  "2026-08-17T12:53:57.157296+00:00"
+                                             },
+                                             {
+                                                 "id":  "vishwanath-patil",
+                                                 "name":  "Vishwanath N Patil",
+                                                 "role":  "Administrator, Finance \u0026 Accounts",
+                                                 "degrees":  "BE (Civil) BLDEA VTU, Aravind Admin Trained",
+                                                 "department":  "Finance \u0026 Administration",
+                                                 "bio":  "Spearheading institutional financial operations, budgeting, and resource allocation since 2014.",
+                                                 "photo":  "https://fihrlxfitctsedthcdlf.supabase.co/storage/v1/object/public/hospital-media/profile/chatgpt_image_aug_16__2026__07_59_13_pm-1787034884892.webp",
+                                                 "display_order":  1,
+                                                 "published":  true,
+                                                 "created_at":  "2026-08-17T12:53:57.157296+00:00",
+                                                 "updated_at":  "2026-08-18T06:34:59.746+00:00"
+                                             },
+                                             {
+                                                 "id":  "sunil-kodaganur",
+                                                 "name":  "Sunil Kodaganur",
+                                                 "role":  "Administrator, Operations \u0026 Transport",
+                                                 "degrees":  "M.Com",
+                                                 "department":  "Operations \u0026 Logistics",
+                                                 "bio":  "Managing floor operations, emergency ambulance transport, and logistical dispatch.",
+                                                 "photo":  "https://fihrlxfitctsedthcdlf.supabase.co/storage/v1/object/public/hospital-media/profile/chatgpt_image_aug_16__2026__07_59_13_pm-1787034916467.webp",
+                                                 "display_order":  6,
+                                                 "published":  true,
+                                                 "created_at":  "2026-08-17T12:53:57.157296+00:00",
+                                                 "updated_at":  "2026-08-18T06:35:17.551+00:00"
+                                             }
+                                         ],
+                               "Count":  6
+                           },
+    "cms_doctors":  {
+                        "value":  [
+                                      {
+                                          "id":  "dr-lingadalli",
+                                          "name":  "Dr. Prabhugouda B. Lingadalli",
+                                          "title":  "Founder \u0026 Chairman",
+                                          "degrees":  "MBBS, MS (Ophthalmology), DNB, FAEH (Aravind), MCHS",
+                                          "specialization":  "Cataract, Cornea \u0026 Refractive Surgery",
+                                          "experience":  "25+ Years",
+                                          "bio":  "Visionary founder of Anugraha Eye Hospital. Pioneer in community ophthalmology and rural blindness eradication across North Karnataka. Conferred with Karnataka State Rajyostava Award (2021) and 12+ national and state accolades.",
+                                          "photo":  "https://fihrlxfitctsedthcdlf.supabase.co/storage/v1/object/public/hospital-media/doctors/whatsapp_image_2026-08-17_at_5-11-1787034783689.webp",
+                                          "awards":  [
+                                                         "Karnataka Rajyostava Award 2021",
+                                                         "Aravind Eye Hospital Fellow",
+                                                         "MCHS Fellowship"
+                                                     ],
+                                          "is_active":  true,
+                                          "display_order":  1,
+                                          "published":  true,
+                                          "created_at":  "2026-08-17T12:53:57.157296+00:00",
+                                          "updated_at":  "2026-08-18T06:33:11.126+00:00"
+                                      },
+                                      {
+                                          "id":  "dr-malini",
+                                          "name":  "Dr. Malini P L",
+                                          "title":  "Medical Director \u0026 Chief Surgeon",
+                                          "degrees":  "MBBS, DO, FGO",
+                                          "specialization":  "Comprehensive Ophthalmology \u0026 Clinical Governance",
+                                          "experience":  "20+ Years",
+                                          "bio":  "Co-founder and Medical Director directing clinical protocols, surgical excellence, and NABH accreditation standards across all hospital campuses.",
+                                          "photo":  "https://fihrlxfitctsedthcdlf.supabase.co/storage/v1/object/public/hospital-media/doctors/whatsapp_image_2026-08-17_at_5-11-1787034808791.webp",
+                                          "awards":  [
+                                                         "FGO Gold Medalist",
+                                                         "Clinical Excellence Award"
+                                                     ],
+                                          "is_active":  true,
+                                          "display_order":  2,
+                                          "published":  true,
+                                          "created_at":  "2026-08-17T12:53:57.157296+00:00",
+                                          "updated_at":  "2026-08-18T06:33:33.785+00:00"
+                                      },
+                                      {
+                                          "id":  "dr-poornima-patil",
+                                          "name":  "Dr. Poornima Patil",
+                                          "title":  "Comprehensive Ophthalmologist \u0026 Phaco Surgeon",
+                                          "degrees":  "M.B.B.S, D.O, FGO",
+                                          "specialization":  "Cataract Services \u0026 Comprehensive Ophthalmology",
+                                          "experience":  "12+ Years Experience",
+                                          "bio":  "Senior cataract and comprehensive ophthalmologist specializing in sutureless micro-incision phacoemulsification, intraocular lens implantation, and anterior segment diagnostics.",
+                                          "photo":  "https://fihrlxfitctsedthcdlf.supabase.co/storage/v1/object/public/hospital-media/doctors/whatsapp_image_2026-08-17_at_5-11-1787034831298.webp",
+                                          "awards":  [
+
+                                                     ],
+                                          "is_active":  true,
+                                          "display_order":  3,
+                                          "published":  true,
+                                          "created_at":  "2026-08-18T06:33:52.306795+00:00",
+                                          "updated_at":  "2026-08-18T06:33:56.053+00:00"
+                                      }
+                                  ],
+                        "Count":  3
+                    },
+    "cms_faqs":  {
+                     "value":  [
+                                   {
+                                       "id":  "faq-1",
+                                       "question":  "Is cataract surgery painful, and how long does recovery take?",
+                                       "answer":  "At Anugraha Eye Hospital, cataract surgery is performed using topical anesthetic eye drops without injections or stitches (MICS). The procedure takes approximately 10 to 15 minutes, and patients can resume normal daily activities within 24 to 48 hours.",
+                                       "category":  "Cataract Surgery",
+                                       "display_order":  1,
+                                       "published":  true,
+                                       "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                       "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                   },
+                                   {
+                                       "id":  "faq-2",
+                                       "question":  "What cashless insurance schemes are accepted at Anugraha?",
+                                       "answer":  "We accept major government welfare programs including Ayushman Bharat – Arogya Karnataka (AB-ARK), ECHS, and KPTCL, as well as leading private insurance TPAs like Star Health, HDFC ERGO, ICICI Lombard, Medi Assist, and Vidal Health.",
+                                       "category":  "Insurance \u0026 Billing",
+                                       "display_order":  2,
+                                       "published":  true,
+                                       "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                       "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                   },
+                                   {
+                                       "id":  "faq-3",
+                                       "question":  "Who is eligible for LASIK / Contoura Vision laser surgery?",
+                                       "answer":  "Candidates should be at least 18 years old, have had a stable glasses prescription for at least 12 months, and possess healthy corneas verified through our pre-LASIK Pentacam topography and pachymetry evaluation.",
+                                       "category":  "LASIK \u0026 Refractive",
+                                       "display_order":  3,
+                                       "published":  true,
+                                       "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                       "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                   },
+                                   {
+                                       "id":  "faq-4",
+                                       "question":  "How often should diabetic patients get their eyes checked?",
+                                       "answer":  "All diabetic individuals should undergo a dilated fundus eye examination and OCT scan at least once every 6 to 12 months to detect early diabetic retinopathy before irreversible vision loss occurs.",
+                                       "category":  "Retina \u0026 Diabetic Eye Care",
+                                       "display_order":  4,
+                                       "published":  true,
+                                       "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                       "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                   },
+                                   {
+                                       "id":  "faq-5",
+                                       "question":  "Do rural Vision Centers provide free doctor consultations?",
+                                       "answer":  "Yes, all 8 rural Vision Centers conduct free Sunday OPD triage camps with visiting consultant ophthalmic surgeons from the Vijayapura Base Hospital, in addition to weekday computerized eye examinations.",
+                                       "category":  "Vision Centers \u0026 Camps",
+                                       "display_order":  5,
+                                       "published":  true,
+                                       "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                       "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                   }
+                               ],
+                     "Count":  5
+                 },
+    "cms_partnerships":  {
+                             "value":  [
+                                           {
+                                               "id":  "zeiss",
+                                               "name":  "Carl Zeiss Meditec",
+                                               "logo":  "assets/partners/zeiss.svg",
+                                               "alt":  "ZEISS Medical Technology Partner",
+                                               "category":  "Surgical \u0026 Diagnostic Technology",
+                                               "display_order":  1,
+                                               "published":  true,
+                                               "created_at":  "2026-08-17T12:53:57.157296+00:00",
+                                               "updated_at":  "2026-08-17T12:53:57.157296+00:00"
+                                           },
+                                           {
+                                               "id":  "healthskape",
+                                               "name":  "Healthskape Medical",
+                                               "logo":  "assets/partners/healthskape.svg",
+                                               "alt":  "Healthskape Partner",
+                                               "category":  "Surgical Devices \u0026 Consumables",
+                                               "display_order":  2,
+                                               "published":  true,
+                                               "created_at":  "2026-08-17T12:53:57.157296+00:00",
+                                               "updated_at":  "2026-08-17T12:53:57.157296+00:00"
+                                           },
+                                           {
+                                               "id":  "aurolab",
+                                               "name":  "Aurolab",
+                                               "logo":  "assets/partners/aurolab.svg",
+                                               "alt":  "Aurolab Vision Care Partner",
+                                               "category":  "Intraocular Lenses \u0026 Pharmaceuticals",
+                                               "display_order":  3,
+                                               "published":  true,
+                                               "created_at":  "2026-08-17T12:53:57.157296+00:00",
+                                               "updated_at":  "2026-08-17T12:53:57.157296+00:00"
+                                           },
+                                           {
+                                               "id":  "alcon",
+                                               "name":  "Alcon Laboratories",
+                                               "logo":  "assets/partners/alcon.svg",
+                                               "alt":  "Alcon Surgical Platform Partner",
+                                               "category":  "Phacoemulsification \u0026 Vitreo-Retinal Platforms",
+                                               "display_order":  4,
+                                               "published":  true,
+                                               "created_at":  "2026-08-17T12:53:57.157296+00:00",
+                                               "updated_at":  "2026-08-17T12:53:57.157296+00:00"
+                                           },
+                                           {
+                                               "id":  "appasamy",
+                                               "name":  "Appasamy Associates",
+                                               "logo":  "assets/partners/appasamy.svg",
+                                               "alt":  "Appasamy Associates Partner",
+                                               "category":  "Diagnostic Lasers \u0026 Slit Lamps",
+                                               "display_order":  5,
+                                               "published":  true,
+                                               "created_at":  "2026-08-17T12:53:57.157296+00:00",
+                                               "updated_at":  "2026-08-17T12:53:57.157296+00:00"
+                                           },
+                                           {
+                                               "id":  "caregroups",
+                                               "name":  "Care Group",
+                                               "logo":  "assets/partners/caregroups.svg",
+                                               "alt":  "Care Group Partner",
+                                               "category":  "Ophthalmic Solutions \u0026 Surgical Devices",
+                                               "display_order":  6,
+                                               "published":  true,
+                                               "created_at":  "2026-08-17T12:53:57.157296+00:00",
+                                               "updated_at":  "2026-08-17T12:53:57.157296+00:00"
+                                           }
+                                       ],
+                             "Count":  6
+                         },
+    "cms_empanelments":  {
+                             "value":  [
+                                           {
+                                               "id":  "ab-ark",
+                                               "name":  "Ayushman Bharat – Arogya Karnataka (AB-ARK)",
+                                               "category":  "Government Schemes",
+                                               "code":  "GOVT-AB-ARK",
+                                               "published":  true,
+                                               "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                               "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                           },
+                                           {
+                                               "id":  "echs",
+                                               "name":  "Ex-Servicemen Contributory Health Scheme (ECHS)",
+                                               "category":  "Government Schemes",
+                                               "code":  "GOVT-ECHS",
+                                               "published":  true,
+                                               "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                               "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                           },
+                                           {
+                                               "id":  "cghs",
+                                               "name":  "Central Government Health Scheme (CGHS)",
+                                               "category":  "Government Schemes",
+                                               "code":  "GOVT-CGHS",
+                                               "published":  true,
+                                               "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                               "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                           },
+                                           {
+                                               "id":  "kpctcl",
+                                               "name":  "KPTCL / HESCOM State Electricity Employees Scheme",
+                                               "category":  "Government Schemes",
+                                               "code":  "GOVT-KPTCL",
+                                               "published":  true,
+                                               "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                               "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                           },
+                                           {
+                                               "id":  "star-health",
+                                               "name":  "Star Health and Allied Insurance",
+                                               "category":  "Private Insurance TPAs",
+                                               "code":  "TPA-STAR",
+                                               "published":  true,
+                                               "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                               "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                           },
+                                           {
+                                               "id":  "hdfc-ergo",
+                                               "name":  "HDFC ERGO General Insurance",
+                                               "category":  "Private Insurance TPAs",
+                                               "code":  "TPA-HDFC",
+                                               "published":  true,
+                                               "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                               "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                           },
+                                           {
+                                               "id":  "icici-lombard",
+                                               "name":  "ICICI Lombard General Insurance",
+                                               "category":  "Private Insurance TPAs",
+                                               "code":  "TPA-ICICI",
+                                               "published":  true,
+                                               "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                               "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                           },
+                                           {
+                                               "id":  "medi-assist",
+                                               "name":  "Medi Assist TPA Services",
+                                               "category":  "Private Insurance TPAs",
+                                               "code":  "TPA-MEDI",
+                                               "published":  true,
+                                               "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                               "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                           },
+                                           {
+                                               "id":  "vidal-health",
+                                               "name":  "Vidal Health TPA",
+                                               "category":  "Private Insurance TPAs",
+                                               "code":  "TPA-VIDAL",
+                                               "published":  true,
+                                               "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                               "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                           },
+                                           {
+                                               "id":  "heritage-health",
+                                               "name":  "Heritage Health Insurance TPA",
+                                               "category":  "Private Insurance TPAs",
+                                               "code":  "TPA-HERITAGE",
+                                               "published":  true,
+                                               "created_at":  "2026-08-17T12:54:34.103343+00:00",
+                                               "updated_at":  "2026-08-17T12:54:34.103343+00:00"
+                                           }
+                                       ],
+                             "Count":  10
+                         }
+}

@@ -1905,84 +1905,40 @@ class Store {
       const saved = localStorage.getItem(this.key);
       if (saved) {
         const parsed = JSON.parse(saved);
-        // Deep merge with defaults to ensure all fields exist safely and modifications are retained
-        return {
-          ...DEFAULT_DATA,
-          ...parsed,
-          brand: { ...DEFAULT_DATA.brand, ...(parsed.brand || {}) },
-          homepage: { 
-            ...DEFAULT_DATA.homepage, 
-            ...(parsed.homepage || {}),
-            primaryCta: { ...DEFAULT_DATA.homepage.primaryCta, ...(parsed.homepage?.primaryCta || {}) },
-            secondaryCta: { ...DEFAULT_DATA.homepage.secondaryCta, ...(parsed.homepage?.secondaryCta || {}) },
-            trustStats: { ...DEFAULT_DATA.homepage.trustStats, ...(parsed.homepage?.trustStats || {}) },
-            sections: { ...DEFAULT_DATA.homepage.sections, ...(parsed.homepage?.sections || {}) }
-          },
-          about: { 
-            ...DEFAULT_DATA.about, 
-            ...(parsed.about || {}),
-            coreValues: parsed.about?.coreValues || DEFAULT_DATA.about.coreValues,
-            milestones: parsed.about?.milestones || DEFAULT_DATA.about.milestones
-          },
-          stats: { ...DEFAULT_DATA.stats, ...(parsed.stats || {}) },
-          patientResources: { ...DEFAULT_DATA.patientResources, ...(parsed.patientResources || {}) },
-          facilities: parsed.facilities || DEFAULT_DATA.facilities,
-          services: (() => {
-            const current = parsed.services || [];
-            if (!current.length || current.length < DEFAULT_DATA.services.length || !current.find(s => s.id === 'cataract')) {
-              const map = new Map();
-              DEFAULT_DATA.services.forEach(s => map.set(s.id, s));
-              current.forEach(s => {
-                if (map.has(s.id)) {
-                  map.set(s.id, { ...map.get(s.id), ...s, clinicalDetails: { ...map.get(s.id).clinicalDetails, ...(s.clinicalDetails || {}) } });
-                } else {
-                  map.set(s.id, s);
-                }
-              });
-              return Array.from(map.values());
-            }
-            return current;
-          })(),
-          leadership: (() => {
-            const current = parsed.leadership || [];
-            if (!current.length || current.length < DEFAULT_DATA.leadership.length || !current.find(l => l.id === 'dr-poornima-patil')) {
-              const map = new Map();
-              DEFAULT_DATA.leadership.forEach(d => map.set(d.id, d));
-              current.forEach(d => {
-                if (map.has(d.id)) {
-                  map.set(d.id, { ...map.get(d.id), ...d });
-                } else {
-                  map.set(d.id, d);
-                }
-              });
-              return Array.from(map.values());
-            }
-            return current;
-          })(),
-          administration: parsed.administration || DEFAULT_DATA.administration,
-          equipment: (() => {
-            const current = parsed.equipment || [];
-            if (!current.length || current.length < DEFAULT_DATA.equipment.length || !current.find(e => e.id === 'wavelight-ex-500')) {
-              return DEFAULT_DATA.equipment;
-            }
-            const map = new Map();
-            DEFAULT_DATA.equipment.forEach(e => map.set(e.id, e));
-            current.forEach(e => {
-              if (map.has(e.id)) {
-                map.set(e.id, { ...map.get(e.id), ...e });
-              } else {
-                map.set(e.id, e);
-              }
-            });
-            return Array.from(map.values());
-          })(),
-          partnerships: parsed.partnerships || DEFAULT_DATA.partnerships,
-          academics: parsed.academics || DEFAULT_DATA.academics,
-          faqs: parsed.faqs || DEFAULT_DATA.faqs,
-          empanelments: parsed.empanelments || DEFAULT_DATA.empanelments,
-          news: parsed.news || DEFAULT_DATA.news,
-          gallery: parsed.gallery || DEFAULT_DATA.gallery
-        };
+        if (parsed && typeof parsed === 'object') {
+          return {
+            ...DEFAULT_DATA,
+            ...parsed,
+            brand: { ...DEFAULT_DATA.brand, ...(parsed.brand || {}) },
+            homepage: { 
+              ...DEFAULT_DATA.homepage, 
+              ...(parsed.homepage || {}),
+              primaryCta: { ...DEFAULT_DATA.homepage.primaryCta, ...(parsed.homepage?.primaryCta || {}) },
+              secondaryCta: { ...DEFAULT_DATA.homepage.secondaryCta, ...(parsed.homepage?.secondaryCta || {}) },
+              trustStats: { ...DEFAULT_DATA.homepage.trustStats, ...(parsed.homepage?.trustStats || {}) },
+              sections: { ...DEFAULT_DATA.homepage.sections, ...(parsed.homepage?.sections || {}) }
+            },
+            about: { 
+              ...DEFAULT_DATA.about, 
+              ...(parsed.about || {}),
+              coreValues: Array.isArray(parsed.about?.coreValues) ? parsed.about.coreValues : DEFAULT_DATA.about.coreValues,
+              milestones: Array.isArray(parsed.about?.milestones) ? parsed.about.milestones : DEFAULT_DATA.about.milestones
+            },
+            stats: { ...DEFAULT_DATA.stats, ...(parsed.stats || {}) },
+            patientResources: { ...DEFAULT_DATA.patientResources, ...(parsed.patientResources || {}) },
+            facilities: Array.isArray(parsed.facilities) ? parsed.facilities : DEFAULT_DATA.facilities,
+            services: Array.isArray(parsed.services) ? parsed.services : DEFAULT_DATA.services,
+            leadership: Array.isArray(parsed.leadership) ? parsed.leadership : DEFAULT_DATA.leadership,
+            administration: Array.isArray(parsed.administration) ? parsed.administration : DEFAULT_DATA.administration,
+            equipment: Array.isArray(parsed.equipment) ? parsed.equipment : DEFAULT_DATA.equipment,
+            partnerships: Array.isArray(parsed.partnerships) ? parsed.partnerships : DEFAULT_DATA.partnerships,
+            academics: Array.isArray(parsed.academics) ? parsed.academics : DEFAULT_DATA.academics,
+            faqs: Array.isArray(parsed.faqs) ? parsed.faqs : DEFAULT_DATA.faqs,
+            empanelments: Array.isArray(parsed.empanelments) ? parsed.empanelments : DEFAULT_DATA.empanelments,
+            news: Array.isArray(parsed.news) ? parsed.news : DEFAULT_DATA.news,
+            gallery: Array.isArray(parsed.gallery) ? parsed.gallery : DEFAULT_DATA.gallery
+          };
+        }
       }
     } catch (e) {
       console.warn("Failed to load store from localStorage", e);
@@ -2049,15 +2005,15 @@ class Store {
     try {
       let remoteData = null;
 
-      // 1. Try Supabase Cloud PostgreSQL First
+      // 1. Fetch from Supabase Cloud PostgreSQL First (SSOT)
       if (window.cmsClient && typeof window.cmsClient.fetchAllCMSData === 'function') {
         try {
           const supabaseData = await window.cmsClient.fetchAllCMSData();
-          if (supabaseData && (supabaseData.brand || supabaseData.homepage || supabaseData.equipment)) {
+          if (supabaseData && (supabaseData.brand || supabaseData.homepage || supabaseData.equipment || supabaseData.leadership)) {
             remoteData = supabaseData;
           }
         } catch (e) {
-          // fallback to rest
+          if (!silent) console.warn("[Store] Supabase fetch error:", e);
         }
       }
 
@@ -2079,28 +2035,45 @@ class Store {
         }
       }
 
-      if (remoteData && (remoteData.brand || remoteData.homepage)) {
-        const remoteTime = remoteData._lastUpdatedEpoch || remoteData.lastUpdatedEpoch || 0;
+      if (remoteData && (remoteData.brand || remoteData.homepage || remoteData.leadership || remoteData.services)) {
+        const remoteTime = remoteData._lastUpdatedEpoch || remoteData.lastUpdatedEpoch || Date.now();
+        const base = this.data || this.load();
         
+        // Strict non-destructive merge: remoteData from Supabase takes absolute priority over local and DEFAULT_DATA
         const merged = {
           ...DEFAULT_DATA,
+          ...base,
           ...remoteData,
-          brand: { ...DEFAULT_DATA.brand, ...(remoteData.brand || {}) },
-          homepage: { ...DEFAULT_DATA.homepage, ...(remoteData.homepage || {}) },
-          stats: { ...DEFAULT_DATA.stats, ...(remoteData.stats || {}) },
-          about: { ...DEFAULT_DATA.about, ...(remoteData.about || {}) },
-          patientResources: { ...DEFAULT_DATA.patientResources, ...(remoteData.patientResources || {}) },
-          facilities: remoteData.facilities || DEFAULT_DATA.facilities,
-          services: remoteData.services || DEFAULT_DATA.services,
-          leadership: remoteData.leadership || DEFAULT_DATA.leadership,
-          administration: remoteData.administration || DEFAULT_DATA.administration,
-          equipment: remoteData.equipment || DEFAULT_DATA.equipment,
-          partnerships: remoteData.partnerships || DEFAULT_DATA.partnerships,
-          academics: remoteData.academics || DEFAULT_DATA.academics,
-          faqs: remoteData.faqs || DEFAULT_DATA.faqs,
-          empanelments: remoteData.empanelments || DEFAULT_DATA.empanelments,
-          news: remoteData.news || DEFAULT_DATA.news,
-          gallery: Array.isArray(remoteData.gallery) ? remoteData.gallery : (Array.isArray(this.data?.gallery) ? this.data.gallery : (Array.isArray(parsed?.gallery) ? parsed.gallery : DEFAULT_DATA.gallery))
+          brand: { ...DEFAULT_DATA.brand, ...(base.brand || {}), ...(remoteData.brand || {}) },
+          homepage: { 
+            ...DEFAULT_DATA.homepage, 
+            ...(base.homepage || {}), 
+            ...(remoteData.homepage || {}),
+            primaryCta: { ...(DEFAULT_DATA.homepage?.primaryCta || {}), ...(base.homepage?.primaryCta || {}), ...(remoteData.homepage?.primaryCta || {}) },
+            secondaryCta: { ...(DEFAULT_DATA.homepage?.secondaryCta || {}), ...(base.homepage?.secondaryCta || {}), ...(remoteData.homepage?.secondaryCta || {}) },
+            trustStats: { ...(DEFAULT_DATA.homepage?.trustStats || {}), ...(base.homepage?.trustStats || {}), ...(remoteData.homepage?.trustStats || {}) },
+            sections: { ...(DEFAULT_DATA.homepage?.sections || {}), ...(base.homepage?.sections || {}), ...(remoteData.homepage?.sections || {}) }
+          },
+          stats: { ...DEFAULT_DATA.stats, ...(base.stats || {}), ...(remoteData.stats || {}) },
+          about: { 
+            ...DEFAULT_DATA.about, 
+            ...(base.about || {}), 
+            ...(remoteData.about || {}),
+            coreValues: Array.isArray(remoteData.about?.coreValues) ? remoteData.about.coreValues : (Array.isArray(base.about?.coreValues) ? base.about.coreValues : DEFAULT_DATA.about.coreValues),
+            milestones: Array.isArray(remoteData.about?.milestones) ? remoteData.about.milestones : (Array.isArray(base.about?.milestones) ? base.about.milestones : DEFAULT_DATA.about.milestones)
+          },
+          patientResources: { ...DEFAULT_DATA.patientResources, ...(base.patientResources || {}), ...(remoteData.patientResources || {}) },
+          facilities: Array.isArray(remoteData.facilities) ? remoteData.facilities : (Array.isArray(base.facilities) ? base.facilities : DEFAULT_DATA.facilities),
+          services: Array.isArray(remoteData.services) ? remoteData.services : (Array.isArray(base.services) ? base.services : DEFAULT_DATA.services),
+          leadership: Array.isArray(remoteData.leadership) ? remoteData.leadership : (Array.isArray(base.leadership) ? base.leadership : DEFAULT_DATA.leadership),
+          administration: Array.isArray(remoteData.administration) ? remoteData.administration : (Array.isArray(base.administration) ? base.administration : DEFAULT_DATA.administration),
+          equipment: Array.isArray(remoteData.equipment) ? remoteData.equipment : (Array.isArray(base.equipment) ? base.equipment : DEFAULT_DATA.equipment),
+          partnerships: Array.isArray(remoteData.partnerships) ? remoteData.partnerships : (Array.isArray(base.partnerships) ? base.partnerships : DEFAULT_DATA.partnerships),
+          academics: Array.isArray(remoteData.academics) ? remoteData.academics : (Array.isArray(base.academics) ? base.academics : DEFAULT_DATA.academics),
+          faqs: Array.isArray(remoteData.faqs) ? remoteData.faqs : (Array.isArray(base.faqs) ? base.faqs : DEFAULT_DATA.faqs),
+          empanelments: Array.isArray(remoteData.empanelments) ? remoteData.empanelments : (Array.isArray(base.empanelments) ? base.empanelments : DEFAULT_DATA.empanelments),
+          news: Array.isArray(remoteData.news) ? remoteData.news : (Array.isArray(base.news) ? base.news : DEFAULT_DATA.news),
+          gallery: Array.isArray(remoteData.gallery) ? remoteData.gallery : (Array.isArray(base.gallery) ? base.gallery : DEFAULT_DATA.gallery)
         };
 
         const currentLocalStr = localStorage.getItem(this.key);
