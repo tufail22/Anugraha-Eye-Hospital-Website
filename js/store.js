@@ -2089,6 +2089,7 @@ class Store {
           homepage: { ...DEFAULT_DATA.homepage, ...(remoteData.homepage || {}) },
           stats: { ...DEFAULT_DATA.stats, ...(remoteData.stats || {}) },
           about: { ...DEFAULT_DATA.about, ...(remoteData.about || {}) },
+          patientResources: { ...DEFAULT_DATA.patientResources, ...(remoteData.patientResources || {}) },
           facilities: remoteData.facilities || DEFAULT_DATA.facilities,
           services: remoteData.services || DEFAULT_DATA.services,
           leadership: remoteData.leadership || DEFAULT_DATA.leadership,
@@ -2252,15 +2253,22 @@ class Store {
   addLeadership(leader) {
     if (!this.data.leadership) this.data.leadership = [...DEFAULT_DATA.leadership];
     const newId = leader.id || ('doc-' + Date.now());
-    this.data.leadership.push({ id: newId, displayOrder: this.data.leadership.length + 1, published: true, ...leader });
+    const newEntry = { id: newId, displayOrder: this.data.leadership.length + 1, published: true, ...leader };
+    this.data.leadership.push(newEntry);
     this.save();
+    if (window.cmsClient && typeof window.cmsClient.saveDoctor === 'function') {
+      window.cmsClient.saveDoctor(newEntry);
+    }
     return newId;
   }
 
   deleteLeadership(id) {
     if (!this.data.leadership) return;
-    this.data.leadership = this.data.leadership.filter(l => l.id !== id);
+    this.data.leadership = this.data.leadership.filter(l => l.id !== id && String(l.id) !== String(id));
     this.save();
+    if (window.cmsClient && typeof window.cmsClient.deleteDoctor === 'function') {
+      window.cmsClient.deleteDoctor(id);
+    }
   }
 
   // ADMINISTRATION TEAM
@@ -2270,7 +2278,7 @@ class Store {
 
   updateAdminMember(id, fields) {
     if (!this.data.administration) this.data.administration = [...DEFAULT_DATA.administration];
-    const idx = this.data.administration.findIndex(m => m.id === id);
+    const idx = this.data.administration.findIndex(m => m.id === id || String(m.id) === String(id));
     if (idx !== -1) {
       this.data.administration[idx] = { ...this.data.administration[idx], ...fields };
       this.save();
@@ -2283,15 +2291,22 @@ class Store {
   addAdminMember(member) {
     if (!this.data.administration) this.data.administration = [...DEFAULT_DATA.administration];
     const newId = member.id || ('admin-' + Date.now());
-    this.data.administration.push({ id: newId, displayOrder: this.data.administration.length + 1, published: true, ...member });
+    const newEntry = { id: newId, displayOrder: this.data.administration.length + 1, published: true, ...member };
+    this.data.administration.push(newEntry);
     this.save();
+    if (window.cmsClient && typeof window.cmsClient.saveAdministration === 'function') {
+      window.cmsClient.saveAdministration(newEntry);
+    }
     return newId;
   }
 
   deleteAdminMember(id) {
     if (!this.data.administration) return;
-    this.data.administration = this.data.administration.filter(m => m.id !== id);
+    this.data.administration = this.data.administration.filter(m => m.id !== id && String(m.id) !== String(id));
     this.save();
+    if (window.cmsClient && typeof window.cmsClient.deleteAdminMember === 'function') {
+      window.cmsClient.deleteAdminMember(id);
+    }
   }
 
   // FACILITIES (Hospitals & Vision Centers)
@@ -2300,12 +2315,12 @@ class Store {
   }
 
   getFacilityById(id) {
-    return this.getFacilities().find(f => f.id === id);
+    return this.getFacilities().find(f => f.id === id || String(f.id) === String(id));
   }
 
   updateFacility(id, fields) {
     if (!this.data.facilities) this.data.facilities = [...DEFAULT_DATA.facilities];
-    const idx = this.data.facilities.findIndex(f => f.id === id);
+    const idx = this.data.facilities.findIndex(f => f.id === id || String(f.id) === String(id));
     if (idx !== -1) {
       this.data.facilities[idx] = { ...this.data.facilities[idx], ...fields };
       this.save();
@@ -2318,15 +2333,22 @@ class Store {
   addFacility(fac) {
     if (!this.data.facilities) this.data.facilities = [...DEFAULT_DATA.facilities];
     const newId = fac.id || ('fac-' + Date.now());
-    this.data.facilities.push({ id: newId, displayOrder: this.data.facilities.length + 1, published: true, ...fac });
+    const newEntry = { id: newId, displayOrder: this.data.facilities.length + 1, published: true, ...fac };
+    this.data.facilities.push(newEntry);
     this.save();
+    if (window.cmsClient && typeof window.cmsClient.saveFacility === 'function') {
+      window.cmsClient.saveFacility(newEntry);
+    }
     return newId;
   }
 
   deleteFacility(id) {
     if (!this.data.facilities) return;
-    this.data.facilities = this.data.facilities.filter(f => f.id !== id);
+    this.data.facilities = this.data.facilities.filter(f => f.id !== id && String(f.id) !== String(id));
     this.save();
+    if (window.cmsClient && typeof window.cmsClient.deleteFacility === 'function') {
+      window.cmsClient.deleteFacility(id);
+    }
   }
 
   // SERVICES
@@ -2354,13 +2376,22 @@ class Store {
 
   updateService(id, fields) {
     if (!this.data.services) this.data.services = [...DEFAULT_DATA.services];
-    const idx = this.data.services.findIndex(s => s.id === id);
+    const idx = this.data.services.findIndex(s => s.id === id || String(s.id) === String(id) || s.slug === id);
     if (idx !== -1) {
       this.data.services[idx] = { ...this.data.services[idx], ...fields };
       this.save();
       if (window.cmsClient && typeof window.cmsClient.saveService === 'function') {
         window.cmsClient.saveService(this.data.services[idx]);
       }
+    }
+  }
+
+  deleteService(id) {
+    if (!this.data.services) return;
+    this.data.services = this.data.services.filter(s => s.id !== id && String(s.id) !== String(id) && s.slug !== id);
+    this.save();
+    if (window.cmsClient && typeof window.cmsClient.deleteService === 'function') {
+      window.cmsClient.deleteService(id);
     }
   }
 
