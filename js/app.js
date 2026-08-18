@@ -1801,9 +1801,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <!-- Highlights Micro-Badges -->
                         <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1">
                           ${idx === 0 ? `
-                            <button type="button" onclick="window.openAwardsModal('dr-lingadalli')" class="px-2.5 py-0.5 rounded-md bg-amber-400/20 hover:bg-amber-400/35 text-amber-300 text-[10px] font-bold border border-amber-400/40 transition-colors cursor-pointer inline-flex items-center gap-1">
-                              <span>🏆 Rajyotsava Awardee (View All 3 Awards)</span>
-                            </button>
+                            <span class="px-2 py-0.5 rounded-md bg-amber-400/20 text-amber-300 text-[10px] font-bold border border-amber-400/30">Rajyotsava Awardee</span>
                             <span class="px-2 py-0.5 rounded-md bg-teal-500/20 text-teal-200 text-[10px] font-bold border border-teal-500/30">25+ Yrs Legacy</span>
                           ` : `
                             <span class="px-2 py-0.5 rounded-md bg-teal-500/20 text-teal-200 text-[10px] font-bold border border-teal-500/30">20+ Yrs Governance</span>
@@ -1836,7 +1834,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <!-- Direct Link to Leadership Directory -->
             <div class="text-center pt-2">
               <a href="#/about-us/leadership" class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-teal-900 dark:bg-teal-800 hover:bg-teal-950 text-white font-bold text-xs transition-all shadow-lg hover:scale-105">
-                <span>View Complete Leadership & Conferred Awards Directory</span>
+                <span>View Complete Leadership Directory</span>
                 <span>&rarr;</span>
               </a>
             </div>
@@ -2219,7 +2217,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
             <h3 class="text-xl font-bold text-teal-950 dark:text-white font-heading group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">Hospital Founders & Leadership &rarr;</h3>
             <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
-              Explore profiles of Founder & Chairman Dr. Prabhugouda B. Lingadalli, Medical Director Dr. Malini P L, and the 12 conferred state & national honors.
+              Explore profiles and clinical leadership of Founder & Chairman Dr. Prabhugouda B. Lingadalli and Medical Director Dr. Malini P L.
             </p>
           </a>
 
@@ -2435,9 +2433,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
 
                 <!-- CARD 4: SPECIALTIES & HONORS -->
-                <div class="p-6 rounded-2xl bg-[#edf5f3] dark:bg-teal-950/60 border border-teal-100 dark:border-teal-900/50 space-y-3">
+                <div class="p-6 rounded-2xl bg-[#edf5f3] dark:bg-teal-950/60 border border-teal-100 dark:border-teal-900/50 space-y-4">
                   <div class="inline-block px-4 py-1.5 rounded-full bg-[#0f766e] text-white font-extrabold text-xs uppercase tracking-wider shadow-sm">
-                    Specialties & State Honors
+                    Specialties & Honors
                   </div>
 
                   <div class="space-y-2 text-xs text-slate-700 dark:text-slate-300">
@@ -2446,54 +2444,17 @@ document.addEventListener("DOMContentLoaded", () => {
                       <div class="text-[11px] text-slate-500 dark:text-slate-400">Micro-incision cataract surgery</div>
                     </div>
                     <div class="border-b border-teal-200/50 pb-1.5">
-                      <div class="font-bold text-amber-800 dark:text-amber-300">3 Conferred State & National Awards</div>
-                      <div class="text-[11px] text-slate-600 dark:text-slate-400 font-medium">
-                        1. Rajyostava Award (2021)<br/>
-                        2. Kengal Hanumantayya Award (2020)<br/>
-                        3. Vaidya Vikrama Award (2019)
-                      </div>
+                      <div class="font-bold text-amber-800 dark:text-amber-300">Karnataka Rajyotsava Awardee</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400">Govt of Karnataka State Honor (2021)</div>
                     </div>
-                    <div class="pt-1">
-                      <button 
-                        type="button" 
-                        onclick="window.openAwardsModal('dr-lingadalli')" 
-                        class="btn-shine-glow w-full py-2 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-[11px] transition-all shadow flex items-center justify-center gap-1.5 cursor-pointer"
-                      >
-                        <span>🏆 View All 3 Conferred State & National Awards</span>
-                        <span>&rarr;</span>
-                      </button>
+                    <div>
+                      <div class="font-bold text-teal-950 dark:text-teal-200">${stats.outreachCamps} Outreach Camps</div>
+                      <div class="text-[11px] text-slate-500 dark:text-slate-400">Reaching ~10 Lakh regional patients</div>
                     </div>
                   </div>
                 </div>
 
               </div>
-
-              <!-- 12 CONFERRED AWARDS ACCORDION / TOGGLE -->
-              ${chairman.awards && chairman.awards.length > 0 ? `
-                <details class="p-5 rounded-2xl bg-teal-900/10 border border-teal-200 dark:border-teal-800 space-y-3 cursor-pointer group">
-                  <summary class="font-extrabold text-teal-950 dark:text-white text-sm font-heading flex items-center justify-between outline-none">
-                    <span class="flex items-center gap-2">
-                      <span class="text-amber-500">🏆</span>
-                      <span>View All 3 Conferred State & National Awards & 12 Institutional Honors</span>
-                    </span>
-                    <span class="w-6 h-6 rounded-full bg-teal-800 text-white flex items-center justify-center text-xs font-bold shrink-0 transition-transform group-open:rotate-180">+</span>
-                  </summary>
-                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-teal-200 dark:border-teal-800 text-xs">
-                    ${chairman.awards.map((award, aIdx) => `
-                      <div class="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-teal-100 dark:border-teal-900 flex items-start gap-2.5 shadow-sm">
-                        <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300 font-mono font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
-                          ${aIdx < 3 ? (aIdx === 0 ? '🥇' : aIdx === 1 ? '🥈' : '🥉') : (aIdx + 1)}
-                        </span>
-                        <div class="space-y-1">
-                          <div class="font-bold text-teal-950 dark:text-white text-xs">${award.title}</div>
-                          <div class="text-[11px] text-emerald-800 dark:text-emerald-300 font-semibold">${award.organization} ${award.year && award.year !== '-' ? `(${award.year})` : ''}</div>
-                          ${award.desc ? `<p class="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">${award.desc}</p>` : ''}
-                        </div>
-                      </div>
-                    `).join('')}
-                  </div>
-                </details>
-              ` : ''}
 
             </div>
 
@@ -2781,18 +2742,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed pt-2 line-clamp-4">
                       ${doc.bio || ''}
                     </p>
-                    ${doc.awards && doc.awards.length > 0 ? `
-                      <div class="pt-2">
-                        <button 
-                          type="button"
-                          onclick="window.openAwardsModal('${doc.id}')" 
-                          class="w-full py-2 px-3 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-900 dark:text-amber-300 font-bold text-[11px] border border-amber-500/30 transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
-                        >
-                          <span>🏆 View All 3 Conferred State & National Awards</span>
-                          <span>&rarr;</span>
-                        </button>
-                      </div>
-                    ` : ''}
                   </div>
 
                   <!-- Actions -->
@@ -4689,164 +4638,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.setGalleryCategory = function(cat) {
     window.activeGalleryCategory = cat;
     render();
-  };
-
-  // =========================================================================
-  // DOCTOR AWARDS & HONORS MODAL ENGINE (State, National & Institutional)
-  // =========================================================================
-  window.openAwardsModal = function(doctorId) {
-    doctorId = doctorId || 'dr-lingadalli';
-    const leaders = store.getLeadership();
-    const doc = leaders.find(l => l.id === doctorId) || leaders[0];
-    if (!doc || !doc.awards || doc.awards.length === 0) return;
-
-    window.awardsModalLastFocused = document.activeElement;
-
-    // Remove existing modal if present
-    const existing = document.getElementById('awards-modal-backdrop');
-    if (existing) existing.remove();
-
-    const top3Awards = doc.awards.slice(0, 3);
-    const allAwards = doc.awards;
-
-    const modalHtml = `
-      <div id="awards-modal-backdrop" onclick="if(event.target === this) window.closeAwardsModal()" class="fixed inset-0 z-[999999] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 transition-opacity duration-300 opacity-0" role="dialog" aria-modal="true" aria-labelledby="awards-modal-title">
-        <div class="relative w-full max-w-2xl bg-white dark:bg-[#06241f] rounded-3xl border border-teal-200 dark:border-teal-800 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col transform scale-95 transition-transform duration-300">
-          
-          <!-- Modal Header -->
-          <div class="p-6 bg-gradient-to-r from-teal-950 to-emerald-950 text-white flex items-center justify-between border-b border-emerald-800/60 shrink-0">
-            <div class="space-y-1">
-              <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-mono text-[10px] font-bold border border-amber-400/30">
-                <span>🏆 Official Conferred Honors</span>
-              </div>
-              <h2 id="awards-modal-title" class="text-xl sm:text-2xl font-extrabold font-heading text-white">
-                State & National Conferred Awards
-              </h2>
-              <p class="text-xs text-slate-300 font-sans">
-                ${window.escapeHTML(doc.name)} &bull; ${window.escapeHTML(doc.title || 'Founder & Chairman')}
-              </p>
-            </div>
-
-            <button 
-              onclick="window.closeAwardsModal()" 
-              aria-label="Close Awards Dialog" 
-              class="w-10 h-10 rounded-2xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors font-bold text-lg cursor-pointer"
-            >
-              &times;
-            </button>
-          </div>
-
-          <!-- Modal Body with Scrollable Awards List -->
-          <div class="p-6 overflow-y-auto space-y-6 flex-1 text-xs">
-            
-            <!-- Top 3 Conferred State & National Awards Highlight Section -->
-            <div class="space-y-3">
-              <div class="flex items-center justify-between">
-                <span class="font-extrabold text-teal-950 dark:text-emerald-300 uppercase tracking-wider text-[11px] font-mono">
-                  Primary State & National Honors (Top 3)
-                </span>
-                <span class="px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 font-bold text-[10px]">
-                  Highest State Accolades
-                </span>
-              </div>
-
-              <div class="space-y-3">
-                ${top3Awards.map((a, i) => `
-                  <div class="p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 to-teal-500/5 dark:from-amber-950/30 dark:to-teal-950/30 border border-amber-300/40 dark:border-amber-700/40 space-y-1.5 shadow-sm">
-                    <div class="flex items-start justify-between gap-2">
-                      <div class="font-bold text-sm text-teal-950 dark:text-white font-heading flex items-center gap-2">
-                        <span class="w-6 h-6 rounded-full bg-amber-500 text-slate-950 font-extrabold text-xs flex items-center justify-center shrink-0 shadow">
-                          ${i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉'}
-                        </span>
-                        <span>${window.escapeHTML(a.title)}</span>
-                      </div>
-                      ${a.year && a.year !== '-' ? `<span class="px-2.5 py-0.5 rounded-full bg-teal-900 dark:bg-teal-800 text-emerald-300 font-mono font-bold text-[10px] shrink-0">${a.year}</span>` : ''}
-                    </div>
-                    <div class="text-emerald-800 dark:text-emerald-300 font-semibold text-[11px] pl-8">
-                      Conferred by: <strong>${window.escapeHTML(a.organization)}</strong>
-                    </div>
-                    ${a.desc ? `<p class="text-slate-600 dark:text-slate-400 pl-8 leading-relaxed text-[11px]">${window.escapeHTML(a.desc)}</p>` : ''}
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-
-            <!-- Full List of Conferred Honors -->
-            <div class="space-y-3 pt-4 border-t border-teal-100 dark:border-teal-900/60">
-              <div class="flex items-center justify-between">
-                <span class="font-extrabold text-teal-950 dark:text-emerald-300 uppercase tracking-wider text-[11px] font-mono">
-                  All ${allAwards.length} Conferred Honors & Institutional Citations
-                </span>
-                <span class="text-slate-500 text-[10px] font-mono">2010 – 2026 Archive</span>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                ${allAwards.map((a, i) => `
-                  <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 space-y-1">
-                    <div class="flex items-center justify-between gap-1">
-                      <span class="font-bold text-teal-950 dark:text-white text-[11px] leading-tight line-clamp-1">${i + 1}. ${window.escapeHTML(a.title)}</span>
-                      ${a.year && a.year !== '-' ? `<span class="text-[9px] font-mono text-slate-500 dark:text-slate-400 shrink-0 font-bold">(${a.year})</span>` : ''}
-                    </div>
-                    <div class="text-[10px] text-slate-500 dark:text-slate-400 leading-tight truncate">
-                      ${window.escapeHTML(a.organization)}
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Modal Footer -->
-          <div class="p-4 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0">
-            <span class="text-[11px] text-slate-500 dark:text-slate-400">
-              Authoritative data from official hospital archive & state gazette citations.
-            </span>
-            <button 
-              onclick="window.closeAwardsModal()" 
-              class="px-5 py-2 rounded-xl bg-teal-900 hover:bg-teal-950 text-white font-bold text-xs transition-colors shadow cursor-pointer"
-            >
-              Close
-            </button>
-          </div>
-
-        </div>
-      </div>
-    `;
-
-    document.body.insertAdjacentHTML('beforeend', modalHtml);
-    const modalEl = document.getElementById('awards-modal-backdrop');
-    const boxEl = modalEl.querySelector('div');
-
-    requestAnimationFrame(() => {
-      modalEl.classList.remove('opacity-0');
-      modalEl.classList.add('opacity-100');
-      if (boxEl) {
-        boxEl.classList.remove('scale-95');
-        boxEl.classList.add('scale-100');
-      }
-    });
-
-    window.awardsModalKeyHandler = function(ev) {
-      if (ev.key === 'Escape') {
-        window.closeAwardsModal();
-      }
-    };
-    window.addEventListener('keydown', window.awardsModalKeyHandler);
-  };
-
-  window.closeAwardsModal = function() {
-    const modalEl = document.getElementById('awards-modal-backdrop');
-    if (!modalEl) return;
-    modalEl.classList.remove('opacity-100');
-    modalEl.classList.add('opacity-0');
-    window.removeEventListener('keydown', window.awardsModalKeyHandler);
-    setTimeout(() => {
-      modalEl.remove();
-      if (window.awardsModalLastFocused && typeof window.awardsModalLastFocused.focus === 'function') {
-        window.awardsModalLastFocused.focus();
-      }
-    }, 250);
   };
 
   window.openLightbox = function(index) {
