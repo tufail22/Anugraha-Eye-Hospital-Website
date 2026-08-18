@@ -5409,8 +5409,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Configurable Size Validation: Default 5-10 MB limit
-    const maxMB = options?.maxMB || 10;
+    // Configurable Size Validation: Default 5 MB limit
+    const maxMB = options?.maxMB || 5;
     const maxSizeBytes = maxMB * 1024 * 1024;
     if (file.size > maxSizeBytes) {
       const err = `Image exceeds the ${maxMB} MB maximum file size. Please choose a smaller JPG or PNG image.`;

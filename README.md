@@ -60,7 +60,7 @@ npx serve -p 8080 .
 | `/#/videos` | **Video Desk**: Embed-ready surgical video grid (Honest Empty-State) | Public |
 | `/#/careers` | **Careers**: Honest Empty-State with direct contact fallback | Public |
 | `/#/contact` | **Contact & Helplines**: Location maps, phone numbers, email client mailto form | Public |
-| `/#/admin` | **Admin Portal Login**: Gated sign-in page (`web@admin` / `Admin@2001`) | Footer Link |
+| `/#/admin` | **Admin Portal Login**: Gated sign-in page (Supabase Auth protected) | Footer Link |
 | `/#/admin/dashboard` | **Admin CMS Console**: Full No-Code Content Management Shell | Authenticated Gated |
 
 ---

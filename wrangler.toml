@@ -1,7 +1,0 @@
-name = "anugraha-eye-hospital-website"
-compatibility_date = "2024-01-01"
-
-# Cloudflare Static Assets Configuration (Wrangler 3.109+ & 4.x / Workers / Pages)
-[assets]
-directory = "."
-binding = "ASSETS"
