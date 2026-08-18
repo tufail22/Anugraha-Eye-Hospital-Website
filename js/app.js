@@ -96,9 +96,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Technical SEO Engine (Dynamic Title, Meta Description, Canonical, OG, Twitter Cards & JSON-LD Schemas)
   function updatePageSEO(path) {
+    const brand = typeof store !== 'undefined' && store.getBrand ? store.getBrand() : (window.appStore ? window.appStore.getBrand() : null);
+    const logoAsset = brand?.logo || "assets/official_logo.jpg";
+    const image = logoAsset.startsWith('http') ? logoAsset : `https://anugrahaeyehospital.com/${logoAsset.replace(/^\.?\/?/, '')}`;
+
     let title = "Anugraha Eye Hospital | Authentic. Affectionate. Affordable. Eye Care";
     let description = "Anugraha Eye Hospital founded in 2001 by Dr. Prabhugouda B. Lingadalli. Super-specialty eye care base hospitals in Vijayapura & Kalaburagi, and 8 rural Vision Centers across Karnataka.";
-    let image = "https://anugrahaeyehospital.com/assets/official_logo.jpg";
     let jsonLdSchema = null;
 
     if (path === '/') {
@@ -107,9 +110,9 @@ document.addEventListener("DOMContentLoaded", () => {
       jsonLdSchema = {
         "@context": "https://schema.org",
         "@type": "MedicalOrganization",
-        "name": "Anugraha Eye Hospital",
+        "name": brand?.name || "Anugraha Eye Hospital",
         "url": "https://anugrahaeyehospital.com",
-        "logo": "https://anugrahaeyehospital.com/assets/official_logo.jpg",
+        "logo": image,
         "foundingDate": "2001",
         "founder": {
           "@type": "Person",
@@ -293,6 +296,12 @@ document.addEventListener("DOMContentLoaded", () => {
     setMeta('meta[name="twitter:title"]', 'content', title);
     setMeta('meta[name="twitter:description"]', 'content', description);
     setMeta('meta[name="twitter:image"]', 'content', image);
+
+    // Dynamic Favicon & Apple Touch Icon Synchronization
+    const favIcon = document.querySelector('link[rel="icon"]');
+    if (favIcon && logoAsset) favIcon.setAttribute('href', logoAsset);
+    const appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
+    if (appleIcon && logoAsset) appleIcon.setAttribute('href', logoAsset);
 
     // Update or Inject Canonical URL Tag
     let canonicalLink = document.querySelector('link[rel="canonical"]');
@@ -3352,6 +3361,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const vc = store.getFacilityById(lookupId);
     if (!vc) return render404Page();
 
+    const brand = store.getBrand();
     const status = getVisionCenterLiveStatus(vc);
     const cleanPhone = vc.phone.replace(/[^0-9+]/g, '');
     const whatsappNum = (vc.whatsappPhone || "+91 94481 20646").replace(/[^0-9]/g, '');
@@ -3489,7 +3499,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="p-6 rounded-3xl bg-teal-950 text-white space-y-3 border border-teal-800 shadow-lg">
             <div class="flex items-center gap-3">
               <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center p-0.5 shadow-md overflow-hidden shrink-0">
-                <img src="assets/official_logo.jpg" alt="Official Logo" class="w-full h-full object-contain" />
+                <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
               </div>
               <div class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Part of the Anugraha Eye Hospital Network</div>
             </div>
@@ -4149,7 +4159,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="text-center space-y-4 max-w-3xl mx-auto">
           <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full badge-amber font-semibold text-xs uppercase tracking-wider">
             <div class="w-4 h-4 rounded-full bg-white flex items-center justify-center p-0.5 overflow-hidden shrink-0">
-              <img src="assets/official_logo.jpg" alt="Official Logo" class="w-full h-full object-contain" />
+              <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
             </div>
             <span>Academic & Medical Education Hub</span>
           </div>
@@ -4163,7 +4173,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="p-6 rounded-3xl bg-teal-950 text-white border border-teal-800 shadow-xl space-y-4">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center p-0.5 shadow-md overflow-hidden shrink-0">
-              <img src="assets/official_logo.jpg" alt="Official Hospital Logo" class="w-full h-full object-contain" />
+              <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
             </div>
             <div>
               <div class="text-xs font-extrabold text-emerald-400 uppercase tracking-wider">Institutional Accreditations & Recognitions</div>
@@ -4198,7 +4208,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     ${prog.credibilityBadge || 'Academic Program'}
                   </span>
                   <div class="w-8 h-8 rounded-full bg-white p-0.5 shadow-md overflow-hidden shrink-0">
-                    <img src="assets/official_logo.jpg" alt="Official Logo" class="w-full h-full object-contain" />
+                    <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
                   </div>
                 </div>
 
@@ -4266,7 +4276,7 @@ document.addEventListener("DOMContentLoaded", () => {
               </span>
               <div class="flex items-center gap-2">
                 <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center p-0.5 shadow-sm border border-teal-900/20 overflow-hidden">
-                  <img src="assets/official_logo.jpg" alt="Official Logo" class="w-full h-full object-contain" />
+                  <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
                 </div>
                 <span class="text-xs font-extrabold text-teal-900">${prog.campus}</span>
               </div>
@@ -4370,7 +4380,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="p-6 rounded-3xl bg-teal-950 text-white space-y-3 border border-teal-800 shadow-lg">
             <div class="flex items-center gap-3">
               <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center p-0.5 shadow-md overflow-hidden shrink-0">
-                <img src="assets/official_logo.jpg" alt="Official Logo" class="w-full h-full object-contain" />
+                <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
               </div>
               <div class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Part of the Anugraha Eye Hospital Education Network</div>
             </div>
@@ -4475,6 +4485,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 9. EMPANELMENTS & INSURANCE View (Category Grouped Logo Grid)
   function renderEmpanelmentsPage() {
     const empanelments = store.getEmpanelments().filter(e => e.published !== false);
+    const brand = store.getBrand();
     const categories = ["All", "Government Schemes", "Insurance Providers", "TPAs & Corporate"];
     
     const activeCat = window.activeEmpanelmentCategory || "All";
@@ -4491,7 +4502,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="text-center space-y-4 max-w-3xl mx-auto">
           <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full badge-teal font-semibold text-xs uppercase tracking-wider">
             <div class="w-4 h-4 rounded-full bg-white flex items-center justify-center p-0.5 overflow-hidden shrink-0">
-              <img src="assets/official_logo.jpg" alt="Official Logo" class="w-full h-full object-contain" />
+              <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
             </div>
             <span>Patient Financial Resources</span>
           </div>
@@ -4577,7 +4588,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="p-6 rounded-3xl bg-teal-950 text-white space-y-3 border border-teal-800 shadow-xl">
           <div class="flex items-center gap-3">
             <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center p-0.5 shadow-md overflow-hidden shrink-0">
-              <img src="assets/official_logo.jpg" alt="Official Logo" class="w-full h-full object-contain" />
+              <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
             </div>
             <div class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Insurance Desk Help & Cashless Authorization</div>
           </div>
@@ -4919,7 +4930,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="text-center space-y-4 max-w-3xl mx-auto">
           <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full badge-teal font-semibold text-xs uppercase tracking-wider">
             <div class="w-4 h-4 rounded-full bg-white flex items-center justify-center p-0.5 overflow-hidden shrink-0">
-              <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="Official Logo" class="w-full h-full object-contain" />
+              <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
             </div>
             <span>Hospital Communications Portal</span>
           </div>
@@ -6343,7 +6354,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <!-- Logo Branding Header (Jobie Style) -->
             <div class="flex items-center gap-3 border-b border-teal-800/60 pb-4">
               <div class="w-10 h-10 rounded-full bg-white p-0.5 shadow-lg overflow-hidden shrink-0">
-                <img src="${window.appStore.getBrand().logo || 'assets/official_logo.jpg'}" alt="Logo" class="w-full h-full object-contain" />
+                <img src="${window.appStore.getBrand().logo || 'assets/official_logo.jpg'}" alt="${window.appStore.getBrand().name} Official Logo" class="w-full h-full object-contain" />
               </div>
               <div>
                 <div class="font-extrabold text-base text-white font-heading tracking-tight">Anugraha CMS</div>
@@ -6385,7 +6396,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="w-full md:hidden bg-[#093327] text-white p-4 sticky top-0 z-50 flex items-center justify-between shadow-lg border-b border-teal-800/60">
           <div class="flex items-center gap-3">
             <div class="w-8 h-8 rounded-full bg-white p-0.5 overflow-hidden shrink-0 shadow">
-              <img src="${window.appStore.getBrand().logo || 'assets/official_logo.jpg'}" alt="Logo" class="w-full h-full object-contain" />
+              <img src="${window.appStore.getBrand().logo || 'assets/official_logo.jpg'}" alt="${window.appStore.getBrand().name} Official Logo" class="w-full h-full object-contain" />
             </div>
             <div class="font-extrabold text-sm text-white font-heading">Anugraha CMS</div>
           </div>
@@ -6405,7 +6416,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="flex items-center justify-between border-b border-teal-800 pb-4">
                 <div class="flex items-center gap-3">
                   <div class="w-9 h-9 rounded-full bg-white p-0.5 shadow overflow-hidden shrink-0">
-                    <img src="${window.appStore.getBrand().logo || 'assets/official_logo.jpg'}" alt="Logo" class="w-full h-full object-contain" />
+                    <img src="${window.appStore.getBrand().logo || 'assets/official_logo.jpg'}" alt="${window.appStore.getBrand().name} Official Logo" class="w-full h-full object-contain" />
                   </div>
                   <span class="font-extrabold text-base text-white font-heading">CMS Navigation</span>
                 </div>
@@ -6487,7 +6498,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <!-- Brand Identity Header -->
             <div class="space-y-4 relative z-10">
               <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md p-2.5 border border-white/20 shadow-xl flex items-center justify-center">
-                <img src="${window.appStore.getBrand().logo || 'assets/official_logo.jpg'}" alt="Logo" class="w-full h-full object-contain" />
+                <img src="${window.appStore.getBrand().logo || 'assets/official_logo.jpg'}" alt="${window.appStore.getBrand().name} Official Logo" class="w-full h-full object-contain" />
               </div>
 
               <div>
@@ -8981,9 +8992,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.openImageCropModal(file, { context: 'brand', defaultRatio: '1:1' }, async (finalUrl, meta) => {
       try {
-        const store = window.appStore;
-        await window.preloadImage(finalUrl);
+        const store = window.appStore || store;
+        
+        // 1. Preload image in browser memory before updating UI
+        if (window.preloadImage) {
+          await window.preloadImage(finalUrl);
+        }
+
+        // 2. Update preview element in Admin DOM if present
+        const preview = document.getElementById('admin-logo-preview');
+        if (preview) preview.src = finalUrl;
+
+        // 3. Atomically persist to Store & Supabase Cloud PostgreSQL
         await store.updateBrand({ logo: finalUrl });
+
+        // 4. Update Document Head Favicons & OpenGraph Tags Dynamically
+        const favIcon = document.querySelector('link[rel="icon"]');
+        if (favIcon) favIcon.setAttribute('href', finalUrl);
+        const appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
+        if (appleIcon) appleIcon.setAttribute('href', finalUrl);
+        const ogImage = document.querySelector('meta[property="og:image"]');
+        if (ogImage) ogImage.setAttribute('content', finalUrl);
+        const twitterImage = document.querySelector('meta[name="twitter:image"]');
+        if (twitterImage) twitterImage.setAttribute('content', finalUrl);
+
+        // 5. Register in Media Gallery
         store.addGalleryItem({
           title: "Hospital Official Logo",
           category: "Branding",
@@ -8994,9 +9027,11 @@ document.addEventListener("DOMContentLoaded", () => {
           dimensions: meta.dimensions,
           uploadDate: new Date().toLocaleDateString('en-IN')
         });
-        window.showAdminToast("Official logo uploaded & published permanently!", "success");
+
+        window.showAdminToast("Official logo updated & published across the entire website!", "success");
         render();
       } catch (err) {
+        console.error("[Logo Upload Error]:", err);
         window.showAdminToast("Logo upload failed. Previous logo preserved.", "error");
       }
     });
