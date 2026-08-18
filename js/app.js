@@ -1349,17 +1349,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 <span>${home.heroEyebrow || (brand.tagline + ' • Est. 2001 Vijayapura')}</span>
               </div>
 
-              <!-- Word-by-Word Stagger H1 Headline -->
+              <!-- Dynamic Stagger H1 Headline -->
               <h1 class="hero-h1 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] font-heading text-white">
-                ${home.heroHeading ? `<span>${home.heroHeading}</span>` : `
-                  <span class="hero-word-span ${window.hasHeroEntered ? 'is-revealed' : ''}">Authentic.</span> 
-                  <span class="hero-word-span ${window.hasHeroEntered ? 'is-revealed' : ''}">Affectionate.</span><br/>
-                  <span class="hero-word-span ${window.hasHeroEntered ? 'is-revealed' : ''} text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-amber-300 to-emerald-200">Affordable.</span> 
-                  <span class="hero-word-span ${window.hasHeroEntered ? 'is-revealed' : ''}">Eye</span> 
-                  <span class="hero-word-span ${window.hasHeroEntered ? 'is-revealed' : ''}">Care</span> 
-                  <span class="hero-word-span ${window.hasHeroEntered ? 'is-revealed' : ''}">for</span> 
-                  <span class="hero-word-span ${window.hasHeroEntered ? 'is-revealed' : ''}">All.</span>
-                `}
+                <span class="${window.hasHeroEntered ? 'is-revealed' : ''}">${home.heroHeading || 'Restoring Sight, Enriching Lives Across North Karnataka'}</span>
               </h1>
 
               <!-- Subheadline -->
@@ -1369,16 +1361,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
               <!-- Hero Direct Contact CTAs with Magnetic Effect and easeSpring Settle -->
               <div class="hero-ctas flex flex-wrap items-center gap-4 pt-2 ${window.hasHeroEntered ? 'opacity-100 transform-none' : 'opacity-0 transform translate-y-6'} transition-all duration-500">
-                <a href="${home.primaryCta?.link || `tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}`}" class="btn-call-now btn-shine-glow magnetic-btn px-6 py-4 rounded-2xl font-bold text-sm shadow-xl flex items-center gap-3 group">
+                <a href="${home.primaryCta?.link || '#/contact'}" class="btn-call-now btn-shine-glow magnetic-btn px-6 py-4 rounded-2xl font-bold text-sm shadow-xl flex items-center gap-3 group">
                   <div class="w-8 h-8 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                   </div>
-                  <span>${home.primaryCta?.text || `Call Hospital: ${brand.fallbackPhone}`}</span>
+                  <span>${home.primaryCta?.text || 'Book an Appointment'}</span>
                 </a>
 
-                <a href="${home.secondaryCta?.link || '#/vision-centers'}" class="btn-shine-glow magnetic-btn px-6 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm shadow-md transition-all flex items-center gap-2 border border-white/20 backdrop-blur-md group">
+                <a href="${home.secondaryCta?.link || '#/services'}" class="btn-shine-glow magnetic-btn px-6 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm shadow-md transition-all flex items-center gap-2 border border-white/20 backdrop-blur-md group">
                   <svg class="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                  <span>${home.secondaryCta?.text || `Explore ${visionCenters.length} Vision Centers`}</span>
+                  <span>${home.secondaryCta?.text || 'Explore Specialties'}</span>
                   <span class="icon-shift-right">&rarr;</span>
                 </a>
               </div>
@@ -6729,27 +6721,27 @@ document.addEventListener("DOMContentLoaded", () => {
       const stats = store.getStats();
 
       return `
-        <div class="space-y-6 text-xs">
+        <div class="space-y-6 text-xs font-sans">
           
           <!-- Header Actions -->
           <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm flex items-center justify-between">
             <div>
               <h2 class="text-lg font-extrabold text-slate-900 dark:text-white font-heading">Homepage Complete Editor</h2>
-              <p class="text-slate-500">Edit hero banner, CTA buttons, stats counters, logo, and section visibility.</p>
+              <p class="text-slate-500">Edit hero banner, CTA buttons, stats counters, logo, and section visibility with permanent PostgreSQL & Cloud Storage persistence.</p>
             </div>
-            <a href="#/" target="_blank" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+            <a href="#/" target="_blank" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5 transition-colors">
               <span>Preview Live</span>
               <span>&nearr;</span>
             </a>
           </div>
 
-          <form onsubmit="window.saveHomepageAdmin(event)" class="space-y-6">
+          <form id="admin-homepage-form" onsubmit="window.saveHomepageAdmin(event)" class="space-y-6">
             
             <!-- Section 1: Logo & Branding Asset -->
             <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-4 shadow-sm">
               <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
                 <h3 class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">1. Website Logo</h3>
-                <span class="text-[10px] text-slate-400 font-mono">Only JPG, JPEG, PNG</span>
+                <span class="text-[10px] text-slate-400 font-mono">JPG, JPEG, PNG, WebP</span>
               </div>
 
               <div class="flex flex-col sm:flex-row items-center gap-6">
@@ -6758,76 +6750,183 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 <div class="space-y-2 flex-1">
                   <label class="block font-bold text-slate-700 dark:text-slate-300">Upload New Official Logo</label>
-                  <label class="inline-block px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs cursor-pointer shadow">
-                    Choose Image File (.jpg, .png)
-                    <input type="file" accept="image/jpeg, image/png" onchange="window.handleAdminLogoUpload(event)" class="hidden" />
+                  <label class="inline-block px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs cursor-pointer shadow transition-colors">
+                    Choose Image File
+                    <input type="file" accept="image/jpeg, image/png, image/webp" onchange="window.handleAdminLogoUpload(event)" class="hidden" />
                   </label>
-                  <div class="text-[11px] text-slate-400">Strictly validates MIME type and .jpg, .jpeg, .png extensions.</div>
+                  <div class="text-[11px] text-slate-400">Strictly validates file format and uploads to Cloud Storage with automatic WebP conversion.</div>
                 </div>
               </div>
             </div>
 
-            <!-- Section 2: Hero Content Block -->
+            <!-- Section 2: Hero Content Block (Canonical Hero Data Model) -->
             <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-4 shadow-sm">
               <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
-                <h3 class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">2. Hero Banner Content</h3>
-                <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-[10px] font-bold">Enabled</span>
+                <div>
+                  <h3 class="font-extrabold text-slate-900 dark:text-white text-sm font-heading">2. Hero Banner Content</h3>
+                  <p class="text-[11px] text-slate-500 mt-0.5">Controls the primary hero banner heading, taglines, CTAs, and background image on the public homepage.</p>
+                </div>
+                <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-[10px] font-bold">
+                  ● Cloud Synchronized
+                </span>
               </div>
 
               <div class="space-y-4">
+                <!-- Hero Eyebrow Tagline -->
                 <div>
-                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Hero Eyebrow Tagline</label>
-                  <input type="text" id="admin-hero-eyebrow" value="${home.heroEyebrow || brand.tagline}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
-                </div>
-
-                <div>
-                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Hero Main Heading (H1)</label>
-                  <input type="text" id="admin-hero-heading" value="${home.heroHeading || 'Restoring Sight, Enriching Lives Across North Karnataka'}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
-                </div>
-
-                <div>
-                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Hero Description Paragraph</label>
-                  <textarea id="admin-hero-desc" rows="3" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800">${home.heroDescription}</textarea>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Primary CTA Button Text</label>
-                    <input type="text" id="admin-hero-cta1-text" value="${home.primaryCta?.text || 'Book an Appointment'}" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
-                  </div>
-                  <div>
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Primary CTA Link</label>
-                    <input type="text" id="admin-hero-cta1-link" value="${home.primaryCta?.link || '#/contact'}" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
-                  </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Secondary CTA Button Text</label>
-                    <input type="text" id="admin-hero-cta2-text" value="${home.secondaryCta?.text || 'Explore Specialties'}" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
-                  </div>
-                  <div>
-                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Secondary CTA Link</label>
-                    <input type="text" id="admin-hero-cta2-link" value="${home.secondaryCta?.link || '#/services'}" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
-                  </div>
-                </div>
-
-                <!-- Hero Image Upload -->
-                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div class="flex items-center gap-3 min-w-0">
-                    <div class="w-20 h-14 rounded-xl bg-slate-900 overflow-hidden flex items-center justify-center border border-slate-200 dark:border-slate-700 shrink-0">
-                      <img id="admin-hero-img-preview" src="${home.heroImage || 'assets/hero-bg.png'}" alt="Hero Background Preview" class="w-full h-full object-cover" />
-                    </div>
-                    <div class="truncate">
-                      <div class="font-bold text-slate-900 dark:text-white text-xs">Hero Background Asset</div>
-                      <div class="text-[10px] text-slate-400">Strictly JPG, JPEG, PNG only (Max 10MB)</div>
-                    </div>
-                  </div>
-                  <label class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs cursor-pointer shrink-0 shadow-sm transition-all flex items-center gap-1.5">
-                    <span>📤 Replace Hero Image</span>
-                    <input type="file" id="admin-hero-file-input" accept=".jpg, .jpeg, .png, image/jpeg, image/png, image/jpg" onchange="window.handleAdminHeroImageUpload(event)" class="hidden" />
+                  <label for="admin-hero-eyebrow" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    Hero Eyebrow Tagline <span class="text-slate-400 font-normal">(Top badge above heading)</span>
                   </label>
+                  <input 
+                    type="text" 
+                    id="admin-hero-eyebrow" 
+                    value="${window.escapeHTML(home.heroEyebrow || brand.tagline || 'Authentic. Affectionate. Affordable. Eye Care')}" 
+                    required 
+                    oninput="window.markAdminDirty()"
+                    placeholder="e.g. Authentic. Affectionate. Affordable. Eye Care"
+                    class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none transition-all" 
+                  />
                 </div>
+
+                <!-- Hero Main Heading (H1) -->
+                <div>
+                  <label for="admin-hero-heading" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    Hero Main Heading (H1) <span class="text-rose-500">*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    id="admin-hero-heading" 
+                    value="${window.escapeHTML(home.heroHeading || 'Restoring Sight, Enriching Lives Across North Karnataka')}" 
+                    required 
+                    oninput="window.markAdminDirty()"
+                    placeholder="e.g. Restoring Sight, Enriching Lives Across North Karnataka"
+                    class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none font-bold text-sm transition-all" 
+                  />
+                </div>
+
+                <!-- Hero Description Paragraph -->
+                <div>
+                  <label for="admin-hero-desc" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    Hero Description Paragraph <span class="text-rose-500">*</span>
+                  </label>
+                  <textarea 
+                    id="admin-hero-desc" 
+                    rows="3" 
+                    required 
+                    oninput="window.markAdminDirty()"
+                    placeholder="Enter comprehensive hero introduction paragraph..."
+                    class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none leading-relaxed transition-all"
+                  >${window.escapeHTML(home.heroDescription || '')}</textarea>
+                </div>
+
+                <!-- CTA Button 1 (Primary) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="admin-hero-cta1-text" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                      Primary CTA Button Text <span class="text-rose-500">*</span>
+                    </label>
+                    <input 
+                      type="text" 
+                      id="admin-hero-cta1-text" 
+                      value="${window.escapeHTML(home.primaryCta?.text || 'Book an Appointment')}" 
+                      required
+                      oninput="window.markAdminDirty()"
+                      placeholder="e.g. Book an Appointment"
+                      class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none transition-all" 
+                    />
+                  </div>
+                  <div>
+                    <label for="admin-hero-cta1-link" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Primary CTA Destination Link</label>
+                    <input 
+                      type="text" 
+                      id="admin-hero-cta1-link" 
+                      value="${window.escapeHTML(home.primaryCta?.link || '#/contact')}" 
+                      required
+                      oninput="window.markAdminDirty()"
+                      placeholder="e.g. #/contact or tel:08352-220646"
+                      class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none font-mono text-[11px] transition-all" 
+                    />
+                  </div>
+                </div>
+
+                <!-- CTA Button 2 (Secondary) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="admin-hero-cta2-text" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                      Secondary CTA Button Text <span class="text-rose-500">*</span>
+                    </label>
+                    <input 
+                      type="text" 
+                      id="admin-hero-cta2-text" 
+                      value="${window.escapeHTML(home.secondaryCta?.text || 'Explore Specialties')}" 
+                      required
+                      oninput="window.markAdminDirty()"
+                      placeholder="e.g. Explore Specialties"
+                      class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none transition-all" 
+                    />
+                  </div>
+                  <div>
+                    <label for="admin-hero-cta2-link" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Secondary CTA Destination Link</label>
+                    <input 
+                      type="text" 
+                      id="admin-hero-cta2-link" 
+                      value="${window.escapeHTML(home.secondaryCta?.link || '#/services')}" 
+                      required
+                      oninput="window.markAdminDirty()"
+                      placeholder="e.g. #/services or #/vision-centers"
+                      class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none font-mono text-[11px] transition-all" 
+                    />
+                  </div>
+                </div>
+
+                <!-- Hero Background Asset Container -->
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <!-- Hidden Input storing canonical image URL -->
+                  <input type="hidden" id="admin-hero-image-url" value="${window.escapeHTML(home.heroImage || 'assets/services/cataract_surgery.jpg')}" />
+
+                  <div class="flex items-center gap-3 min-w-0 flex-1">
+                    <div class="w-24 h-16 rounded-xl bg-slate-900 overflow-hidden flex items-center justify-center border border-slate-200 dark:border-slate-700 shrink-0 shadow-inner">
+                      <img 
+                        id="admin-hero-img-preview" 
+                        src="${home.heroImage || 'assets/services/cataract_surgery.jpg'}" 
+                        data-stored-url="${window.escapeHTML(home.heroImage || 'assets/services/cataract_surgery.jpg')}" 
+                        alt="Hero Background Preview" 
+                        class="w-full h-full object-cover" 
+                      />
+                    </div>
+                    <div class="truncate space-y-1">
+                      <div class="font-bold text-slate-900 dark:text-white text-xs">Hero Background Asset</div>
+                      <div class="text-[10px] text-slate-400 flex items-center gap-1.5 font-mono truncate">
+                        <span class="w-1.5 h-1.5 rounded-full ${String(home.heroImage || '').startsWith('http') ? 'bg-emerald-500' : 'bg-blue-500'} shrink-0"></span>
+                        <span class="truncate" title="${home.heroImage || 'assets/services/cataract_surgery.jpg'}">
+                          ${String(home.heroImage || '').startsWith('http') ? 'Cloud CDN Asset: ' + (home.heroImage || '').split('/').pop() : (home.heroImage || 'assets/services/cataract_surgery.jpg')}
+                        </span>
+                      </div>
+                      <div class="text-[10px] text-emerald-600 dark:text-emerald-400">JPG, JPEG, PNG, WebP (Auto-optimized to 1920px 16:9 WebP)</div>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-2 shrink-0">
+                    <label class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs cursor-pointer shadow-sm transition-all flex items-center gap-1.5">
+                      <span>📤 Select & Optimize Image</span>
+                      <input type="file" id="admin-hero-file-input" accept=".jpg, .jpeg, .png, .webp, image/jpeg, image/png, image/webp" onchange="window.handleAdminHeroImageUpload(event)" class="hidden" />
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Instant Save Hero Section CTA -->
+                <div class="pt-2 flex items-center justify-between border-t border-slate-100 dark:border-slate-800">
+                  <span class="text-[11px] text-slate-500">Save Hero section independently or use the button below for all settings.</span>
+                  <button 
+                    type="button" 
+                    id="admin-hero-save-btn" 
+                    onclick="window.saveHeroBannerSection(event)" 
+                    class="px-5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs shadow transition-all flex items-center gap-1.5"
+                  >
+                    <span>💾 Save Hero Banner Only</span>
+                  </button>
+                </div>
+
               </div>
             </div>
 
@@ -6837,16 +6936,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Lifetime Surgeries Count</label>
-                  <input type="text" id="admin-home-surgeries" value="${stats.lifetimeSurgeries}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  <label for="admin-home-surgeries" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Lifetime Surgeries Count</label>
+                  <input type="text" id="admin-home-surgeries" value="${window.escapeHTML(stats.lifetimeSurgeries || '2,28,951+')}" required oninput="window.markAdminDirty()" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
                 </div>
                 <div>
-                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Outreach Camps Count</label>
-                  <input type="text" id="admin-home-camps" value="${stats.outreachCamps}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  <label for="admin-home-camps" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Outreach Camps Count</label>
+                  <input type="text" id="admin-home-camps" value="${window.escapeHTML(stats.outreachCamps || '2,715')}" required oninput="window.markAdminDirty()" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
                 </div>
                 <div>
-                  <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Free Cataract Surgeries</label>
-                  <input type="text" id="admin-home-free" value="${stats.freeCataracts}" required class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
+                  <label for="admin-home-free" class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Free Cataract Surgeries</label>
+                  <input type="text" id="admin-home-free" value="${window.escapeHTML(stats.freeCataracts || '50,000+')}" required oninput="window.markAdminDirty()" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800" />
                 </div>
               </div>
             </div>
@@ -6870,9 +6969,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   { key: 'faqs', label: 'Patient FAQs' },
                   { key: 'finalCta', label: 'Final CTA Banner' }
                 ].map(sec => `
-                  <label class="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-center justify-between cursor-pointer">
+                  <label class="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-center justify-between cursor-pointer hover:border-emerald-400/40 transition-colors">
                     <span class="font-bold text-slate-800 dark:text-slate-200">${sec.label}</span>
-                    <input type="checkbox" id="admin-sec-${sec.key}" ${home.sections?.[sec.key] !== false ? 'checked' : ''} class="w-4 h-4 text-emerald-600 rounded" />
+                    <input type="checkbox" id="admin-sec-${sec.key}" onchange="window.markAdminDirty()" ${home.sections?.[sec.key] !== false ? 'checked' : ''} class="w-4 h-4 text-emerald-600 rounded" />
                   </label>
                 `).join('')}
               </div>
@@ -6880,10 +6979,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
             <!-- Save & Cancel Form Bar -->
             <div class="flex items-center gap-3 pt-2">
-              <button type="submit" class="px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-lg">
-                Save All Homepage Settings
+              <button 
+                type="submit" 
+                id="admin-homepage-save-btn" 
+                class="px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] disabled:opacity-50 text-white font-extrabold text-xs shadow-lg transition-all flex items-center gap-2"
+              >
+                <span id="admin-homepage-save-btn-text">Save All Homepage Settings</span>
+                <svg id="admin-homepage-save-spinner" class="w-4 h-4 text-white animate-spin hidden" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
               </button>
-              <button type="button" onclick="render()" class="px-6 py-3.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs">
+              <button type="button" onclick="render()" class="px-6 py-3.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs transition-colors">
                 Cancel
               </button>
             </div>
@@ -8558,21 +8665,139 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 3200);
   };
 
-  // HOMEPAGE HANDLERS
-  window.saveHomepageAdmin = function(e) {
+  // HOMEPAGE & HERO PERSISTENCE HANDLERS
+
+  window.saveHeroBannerSection = async function(e) {
     if (e) e.preventDefault();
+    const btn = document.getElementById('admin-hero-save-btn');
+    const origText = btn ? btn.innerHTML : '<span>💾 Save Hero Banner Only</span>';
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = `<span>⏳ Saving to Cloud CMS...</span>`;
+    }
+
+    const store = window.appStore;
+    const heroEyebrow = (document.getElementById('admin-hero-eyebrow')?.value || '').trim();
+    const heroHeading = (document.getElementById('admin-hero-heading')?.value || '').trim();
+    const heroDescription = (document.getElementById('admin-hero-desc')?.value || '').trim();
+    const cta1Text = (document.getElementById('admin-hero-cta1-text')?.value || '').trim();
+    const cta1Link = (document.getElementById('admin-hero-cta1-link')?.value || '').trim();
+    const cta2Text = (document.getElementById('admin-hero-cta2-text')?.value || '').trim();
+    const cta2Link = (document.getElementById('admin-hero-cta2-link')?.value || '').trim();
+    const heroImage = (document.getElementById('admin-hero-image-url')?.value || store.getHomepage()?.heroImage || 'assets/services/cataract_surgery.jpg').trim();
+
+    // 1. Validation
+    if (!heroHeading) {
+      window.showAdminToast("Hero Main Heading is required.", "error");
+      if (btn) { btn.disabled = false; btn.innerHTML = origText; }
+      return;
+    }
+    if (!heroDescription) {
+      window.showAdminToast("Hero Description is required.", "error");
+      if (btn) { btn.disabled = false; btn.innerHTML = origText; }
+      return;
+    }
+    if (!cta1Text) {
+      window.showAdminToast("Primary CTA button text is required.", "error");
+      if (btn) { btn.disabled = false; btn.innerHTML = origText; }
+      return;
+    }
+    if (!cta2Text) {
+      window.showAdminToast("Secondary CTA button text is required.", "error");
+      if (btn) { btn.disabled = false; btn.innerHTML = origText; }
+      return;
+    }
+
+    const existingHome = store.getHomepage() || {};
+    const heroPayload = {
+      ...existingHome,
+      heroEyebrow: heroEyebrow || store.getBrand().tagline || 'Authentic. Affectionate. Affordable. Eye Care',
+      heroHeading,
+      heroDescription,
+      heroImage,
+      primaryCta: {
+        text: cta1Text || 'Book an Appointment',
+        link: cta1Link || '#/contact'
+      },
+      secondaryCta: {
+        text: cta2Text || 'Explore Specialties',
+        link: cta2Link || '#/services'
+      }
+    };
+
+    try {
+      const res = await store.updateHomepage(heroPayload);
+      if (res && res.error) {
+        window.showAdminToast("Unable to save Hero content. Please try again: " + res.error, "error");
+      } else {
+        window.clearAdminDirty();
+        window.showAdminToast("Hero Banner content saved permanently!", "success");
+        render();
+      }
+    } catch (err) {
+      console.error("[Hero Save Error]:", err);
+      window.showAdminToast("Unable to save Hero content. Please try again.", "error");
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = origText;
+      }
+    }
+  };
+
+  window.saveHomepageAdmin = async function(e) {
+    if (e) e.preventDefault();
+    const btn = document.getElementById('admin-homepage-save-btn');
+    const btnText = document.getElementById('admin-homepage-save-btn-text');
+    const spinner = document.getElementById('admin-homepage-save-spinner');
+
+    if (btn) btn.disabled = true;
+    if (btnText) btnText.textContent = "Saving to Cloud CMS...";
+    if (spinner) spinner.classList.remove('hidden');
+
     const store = window.appStore;
     
-    const heroEyebrow = document.getElementById('admin-hero-eyebrow')?.value;
-    const heroHeading = document.getElementById('admin-hero-heading')?.value;
-    const heroDescription = document.getElementById('admin-hero-desc')?.value;
-    const cta1Text = document.getElementById('admin-hero-cta1-text')?.value;
-    const cta1Link = document.getElementById('admin-hero-cta1-link')?.value;
-    const cta2Text = document.getElementById('admin-hero-cta2-text')?.value;
-    const cta2Link = document.getElementById('admin-hero-cta2-link')?.value;
-    const surgeries = document.getElementById('admin-home-surgeries')?.value;
-    const camps = document.getElementById('admin-home-camps')?.value;
-    const free = document.getElementById('admin-home-free')?.value;
+    const heroEyebrow = (document.getElementById('admin-hero-eyebrow')?.value || '').trim();
+    const heroHeading = (document.getElementById('admin-hero-heading')?.value || '').trim();
+    const heroDescription = (document.getElementById('admin-hero-desc')?.value || '').trim();
+    const cta1Text = (document.getElementById('admin-hero-cta1-text')?.value || '').trim();
+    const cta1Link = (document.getElementById('admin-hero-cta1-link')?.value || '').trim();
+    const cta2Text = (document.getElementById('admin-hero-cta2-text')?.value || '').trim();
+    const cta2Link = (document.getElementById('admin-hero-cta2-link')?.value || '').trim();
+    const surgeries = (document.getElementById('admin-home-surgeries')?.value || '').trim();
+    const camps = (document.getElementById('admin-home-camps')?.value || '').trim();
+    const free = (document.getElementById('admin-home-free')?.value || '').trim();
+    const heroImage = (document.getElementById('admin-hero-image-url')?.value || store.getHomepage()?.heroImage || 'assets/services/cataract_surgery.jpg').trim();
+
+    // 1. Validation
+    if (!heroHeading) {
+      window.showAdminToast("Hero Main Heading is required.", "error");
+      if (btn) btn.disabled = false;
+      if (btnText) btnText.textContent = "Save All Homepage Settings";
+      if (spinner) spinner.classList.add('hidden');
+      return;
+    }
+    if (!heroDescription) {
+      window.showAdminToast("Hero Description is required.", "error");
+      if (btn) btn.disabled = false;
+      if (btnText) btnText.textContent = "Save All Homepage Settings";
+      if (spinner) spinner.classList.add('hidden');
+      return;
+    }
+    if (!cta1Text) {
+      window.showAdminToast("Primary CTA button text is required.", "error");
+      if (btn) btn.disabled = false;
+      if (btnText) btnText.textContent = "Save All Homepage Settings";
+      if (spinner) spinner.classList.add('hidden');
+      return;
+    }
+    if (!cta2Text) {
+      window.showAdminToast("Secondary CTA button text is required.", "error");
+      if (btn) btn.disabled = false;
+      if (btnText) btnText.textContent = "Save All Homepage Settings";
+      if (spinner) spinner.classList.add('hidden');
+      return;
+    }
 
     const sections = {
       whyAnugraha: document.getElementById('admin-sec-whyAnugraha')?.checked ?? true,
@@ -8589,46 +8814,71 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const existingHome = store.getHomepage() || {};
-    const heroImagePreview = document.getElementById('admin-hero-img-preview')?.src;
-    const heroImage = heroImagePreview || existingHome.heroImage || 'assets/hero-bg.png';
-
-    store.updateHomepage({
-      heroEyebrow,
+    const homepagePayload = {
+      ...existingHome,
+      heroEyebrow: heroEyebrow || store.getBrand().tagline || 'Authentic. Affectionate. Affordable. Eye Care',
       heroHeading,
       heroDescription,
       heroImage,
-      primaryCta: { text: cta1Text, link: cta1Link },
-      secondaryCta: { text: cta2Text, link: cta2Link },
+      primaryCta: { 
+        text: cta1Text || 'Book an Appointment', 
+        link: cta1Link || '#/contact' 
+      },
+      secondaryCta: { 
+        text: cta2Text || 'Explore Specialties', 
+        link: cta2Link || '#/services' 
+      },
       sections
-    });
+    };
 
-    if (surgeries && camps && free) {
-      store.updateStats({ lifetimeSurgeries: surgeries, outreachCamps: camps, freeCataracts: free });
+    try {
+      const res = await store.updateHomepage(homepagePayload);
+
+      if (surgeries && camps && free) {
+        await store.updateStats({ lifetimeSurgeries: surgeries, outreachCamps: camps, freeCataracts: free });
+      }
+
+      if (res && res.error) {
+        window.showAdminToast("Unable to save Hero content. Please try again: " + res.error, "error");
+      } else {
+        window.clearAdminDirty();
+        window.showAdminToast("Homepage & Hero content saved permanently!", "success");
+        render();
+      }
+    } catch (err) {
+      console.error("[Homepage Save Error]:", err);
+      window.showAdminToast("Unable to save Hero content. Please try again.", "error");
+    } finally {
+      if (btn) btn.disabled = false;
+      if (btnText) btnText.textContent = "Save All Homepage Settings";
+      if (spinner) spinner.classList.add('hidden');
     }
-
-    window.showAdminToast("Homepage settings saved successfully!", "success");
-    render();
   };
 
   window.handleAdminLogoUpload = function(event) {
     const file = event.target.files[0];
     if (!file) return;
 
-    window.openImageCropModal(file, { context: 'brand', defaultRatio: '1:1' }, (finalUrl, meta) => {
-      const store = window.appStore;
-      store.updateBrand({ logo: finalUrl });
-      store.addGalleryItem({
-        title: "Hospital Official Logo",
-        category: "Branding",
-        src: finalUrl,
-        filename: meta.filename || file.name,
-        type: meta.type || file.type,
-        size: meta.size,
-        dimensions: meta.dimensions,
-        uploadDate: new Date().toLocaleDateString('en-IN')
-      });
-      window.showAdminToast("Official logo uploaded & published!", "success");
-      render();
+    window.openImageCropModal(file, { context: 'brand', defaultRatio: '1:1' }, async (finalUrl, meta) => {
+      try {
+        const store = window.appStore;
+        await window.preloadImage(finalUrl);
+        await store.updateBrand({ logo: finalUrl });
+        store.addGalleryItem({
+          title: "Hospital Official Logo",
+          category: "Branding",
+          src: finalUrl,
+          filename: meta.filename || file.name,
+          type: meta.type || file.type,
+          size: meta.size,
+          dimensions: meta.dimensions,
+          uploadDate: new Date().toLocaleDateString('en-IN')
+        });
+        window.showAdminToast("Official logo uploaded & published permanently!", "success");
+        render();
+      } catch (err) {
+        window.showAdminToast("Logo upload failed. Previous logo preserved.", "error");
+      }
     });
   };
 
@@ -8637,34 +8887,47 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!file) return;
 
     window.openImageCropModal(file, { context: 'hero', defaultRatio: '16:9' }, async (finalUrl, meta) => {
-      const preview = document.getElementById('admin-hero-img-preview');
-      if (preview) preview.src = finalUrl;
+      try {
+        const preview = document.getElementById('admin-hero-img-preview');
+        if (preview) preview.src = finalUrl;
+        const hiddenInput = document.getElementById('admin-hero-image-url');
+        if (hiddenInput) hiddenInput.value = finalUrl;
 
-      // 1. Preload image in memory before updating hero view
-      await window.preloadImage(finalUrl);
+        // 1. Preload image in memory before updating hero view
+        await window.preloadImage(finalUrl);
 
-      // 2. Smoothly update hero background in DOM if present
-      const heroContainer = document.getElementById('hero-banner-container');
-      if (heroContainer) {
-        heroContainer.style.backgroundImage = `url("${finalUrl}")`;
+        // 2. Smoothly update hero background in DOM if present
+        const heroContainer = document.getElementById('hero-banner-container');
+        if (heroContainer) {
+          heroContainer.style.backgroundImage = `url("${finalUrl}")`;
+        }
+
+        // 3. Atomically update store and Cloud database
+        const store = window.appStore;
+        const res = await store.updateHomepage({ heroImage: finalUrl });
+
+        store.addGalleryItem({
+          title: "Homepage Hero Background",
+          category: "Homepage Hero",
+          src: finalUrl,
+          filename: meta.filename || file.name,
+          type: meta.type || file.type,
+          size: meta.size,
+          dimensions: meta.dimensions,
+          uploadDate: new Date().toLocaleDateString('en-IN')
+        });
+
+        if (res && res.error) {
+          window.showAdminToast("Image uploaded, but metadata save had an issue: " + res.error, "error");
+        } else {
+          window.clearAdminDirty();
+          window.showAdminToast("Hero background asset uploaded & saved permanently!", "success");
+        }
+        render();
+      } catch (err) {
+        console.error("[Hero Image Upload Error]:", err);
+        window.showAdminToast("Hero image upload failed. Your existing Hero image has been preserved.", "error");
       }
-
-      // 3. Update store and gallery
-      const store = window.appStore;
-      store.updateHomepage({ heroImage: finalUrl });
-      store.addGalleryItem({
-        title: "Homepage Hero Background",
-        category: "Homepage Hero",
-        src: finalUrl,
-        filename: meta.filename || file.name,
-        type: meta.type || file.type,
-        size: meta.size,
-        dimensions: meta.dimensions,
-        uploadDate: new Date().toLocaleDateString('en-IN')
-      });
-
-      window.showAdminToast("Hero background asset uploaded & published!", "success");
-      render();
     });
   };
 

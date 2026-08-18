@@ -2100,9 +2100,13 @@ class Store {
     return this.data.brand || DEFAULT_DATA.brand;
   }
 
-  updateBrand(fields) {
+  async updateBrand(fields) {
     this.data.brand = { ...this.getBrand(), ...fields };
     this.save();
+    if (window.cmsClient && typeof window.cmsClient.saveSetting === 'function') {
+      return await window.cmsClient.saveSetting('brand', this.data.brand);
+    }
+    return { success: true };
   }
 
   // HOMEPAGE
@@ -2110,9 +2114,13 @@ class Store {
     return this.data.homepage || DEFAULT_DATA.homepage;
   }
 
-  updateHomepage(fields) {
+  async updateHomepage(fields) {
     this.data.homepage = { ...this.getHomepage(), ...fields };
     this.save();
+    if (window.cmsClient && typeof window.cmsClient.saveSetting === 'function') {
+      return await window.cmsClient.saveSetting('homepage', this.data.homepage);
+    }
+    return { success: true };
   }
 
   // ABOUT US
@@ -2120,9 +2128,13 @@ class Store {
     return this.data.about || DEFAULT_DATA.about;
   }
 
-  updateAbout(fields) {
+  async updateAbout(fields) {
     this.data.about = { ...this.getAbout(), ...fields };
     this.save();
+    if (window.cmsClient && typeof window.cmsClient.saveSetting === 'function') {
+      return await window.cmsClient.saveSetting('about', this.data.about);
+    }
+    return { success: true };
   }
 
   // STATS
@@ -2130,9 +2142,13 @@ class Store {
     return this.data.stats || DEFAULT_DATA.stats;
   }
 
-  updateStats(fields) {
+  async updateStats(fields) {
     this.data.stats = { ...this.getStats(), ...fields };
     this.save();
+    if (window.cmsClient && typeof window.cmsClient.saveSetting === 'function') {
+      return await window.cmsClient.saveSetting('stats', this.data.stats);
+    }
+    return { success: true };
   }
 
   // LEADERSHIP
