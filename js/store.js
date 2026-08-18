@@ -122,18 +122,90 @@ const DEFAULT_DATA = {
       seoDesc: "Profile and clinical leadership of Dr. Prabhugouda B. Lingadalli, Chairman & Founder of Anugraha Eye Hospital with 25+ years experience.",
       bio: "Founder of Anugraha Eye Hospital across both campuses; pioneered a high-quality, high-volume, low-cost service delivery model restoring sight to thousands. MBBS from B M Patil Medical College, Vijayapura; Ophthalmology training at Vijayanagar Institute of Medical and Science, Bellary (1998); cleared DNB exam in 2000. Spent 2 years at Aravind Eye Hospital, Madurai. Progressed from Lecturer to Professor at B M Patil Medical College over a decade. Founded Anugraha in 2001 and pioneered mobile eye camps treating ~10,000 patients annually free of cost, reaching nearly 10 lakh individuals over 25 years.",
       awards: [
-        { title: "Amrut Mahotsava Rajyostava Award", year: "2021", organization: "Government of Karnataka" },
-        { title: "Kengal Hanumantayya State Award", year: "2020", organization: "Samarth Sahitya and Sanskrit Pratishthan" },
-        { title: "Vaidya Vikrama Award", year: "2019", organization: "Pandit Puttaraj Gavayigala Ganabhana Vijayapur" },
-        { title: "Nayana Bharghava Award", year: "2018", organization: "Muddebihal Press Club" },
-        { title: "Rajat Sadhakaru Award", year: "2017", organization: "Kannad Prabha & Suvarna News" },
-        { title: "Netra Rakshak Award", year: "2016", organization: "Rotary Club" },
-        { title: "Sadbhavana Award", year: "2015", organization: "State Human Rights Welfare Association" },
-        { title: "Kayak Ratna Award", year: "2014", organization: "Shree Shivalingeshwar Viraktmath" },
-        { title: "Shree Siddeshwar Ratna Award", year: "2013", organization: "Shri Siddeshwar Samsthe" },
-        { title: "Achievers of Karnataka Award", year: "2012", organization: "Vijaya Karnataka Press" },
-        { title: "Vishw Mannya Kannadiga Award", year: "2011", organization: "Mysore Organization" },
-        { title: "Basava Vibhushana Award", year: "2010", organization: "Basava Janmabhoomi Pratishtana" }
+        { 
+          title: "Amrut Mahotsava Rajyostava Award", 
+          year: "2021", 
+          organization: "Government of Karnataka", 
+          category: "State Honor",
+          desc: "Conferred by the Government of Karnataka in recognition of 25 years of selfless community eye care and 50,000+ free cataract surgeries for rural North Karnataka." 
+        },
+        { 
+          title: "Kengal Hanumantayya State Award", 
+          year: "2020", 
+          organization: "Samarth Sahitya and Sanskrit Pratishthan", 
+          category: "State Award",
+          desc: "Prestigious state-level citation recognizing outstanding public health leadership and philanthropic ophthalmic service." 
+        },
+        { 
+          title: "Vaidya Vikrama Award", 
+          year: "2019", 
+          organization: "Pandit Puttaraj Gavayigala Ganabhana Vijayapur", 
+          category: "Medical Excellence",
+          desc: "Honored for pioneering high-volume, low-cost micro-incision phaco cataract surgery across underprivileged populations." 
+        },
+        { 
+          title: "Nayana Bharghava Award", 
+          year: "2018", 
+          organization: "Muddebihal Press Club", 
+          category: "Civic Honor",
+          desc: "Regional media and community citation honoring extensive rural outreach vision camps." 
+        },
+        { 
+          title: "Rajat Sadhakaru Award", 
+          year: "2017", 
+          organization: "Kannad Prabha & Suvarna News", 
+          category: "Media Award",
+          desc: "Statewide media honor celebrating significant healthcare contributions in North Karnataka." 
+        },
+        { 
+          title: "Netra Rakshak Award", 
+          year: "2016", 
+          organization: "Rotary Club", 
+          category: "Humanitarian Award",
+          desc: "Conferred for establishing mobile rural screening units and preventive blindness eradication." 
+        },
+        { 
+          title: "Sadbhavana Award", 
+          year: "2015", 
+          organization: "State Human Rights Welfare Association", 
+          category: "Social Justice",
+          desc: "Honoring equitable medical services delivered without distinction of caste, creed, or economic background." 
+        },
+        { 
+          title: "Kayak Ratna Award", 
+          year: "2014", 
+          organization: "Shree Shivalingeshwar Viraktmath", 
+          category: "Institutional Honor",
+          desc: "Spiritual and community honor for dedicated humanitarian service in healthcare." 
+        },
+        { 
+          title: "Shree Siddeshwar Ratna Award", 
+          year: "2013", 
+          organization: "Shri Siddeshwar Samsthe", 
+          category: "Institutional Honor",
+          desc: "Institutional citation recognizing extensive free school screening drives and cataract relief work." 
+        },
+        { 
+          title: "Achievers of Karnataka Award", 
+          year: "2012", 
+          organization: "Vijaya Karnataka Press", 
+          category: "State Honor",
+          desc: "Recognizing transformative healthcare impact across Vijayapura and Kalaburagi districts." 
+        },
+        { 
+          title: "Vishw Mannya Kannadiga Award", 
+          year: "2011", 
+          organization: "Mysore Organization", 
+          category: "State Honor",
+          desc: "Conferred for outstanding dedication to statewide eye care literacy and surgical outreach." 
+        },
+        { 
+          title: "Basava Vibhushana Award", 
+          year: "2010", 
+          organization: "Basava Janmabhoomi Pratishtana", 
+          category: "Civic Honor",
+          desc: "Honoring compassionate public health service inspired by the philosophical tenets of Basava philosophy." 
+        }
       ]
     },
     {
@@ -382,8 +454,8 @@ const DEFAULT_DATA = {
       name: "Kalaburagi Campus",
       description: "Tertiary eye care base hospital offering specialized clinical care and the RGUHS-affiliated Anugraha Institute of Optometry.",
       address: "Ring Road Junction, Opposite District Court Complex, Kalaburagi, Karnataka – 585105",
-      phone: "08472-245646",
-      email: "kalaburagi@anugrahaeyehospital.com",
+      phone: "08352-220646",
+      email: "contactus@anugrahaeyehospital.com",
       hours: "8:00 AM – 8:00 PM daily",
       emergencyInfo: "24x7 Emergency Ophthalmic Care Service.",
       googleMapsUrl: "https://maps.google.com/?q=Anugraha+Eye+Hospital+Kalaburagi",
