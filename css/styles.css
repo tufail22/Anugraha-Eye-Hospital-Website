@@ -280,6 +280,79 @@ html.dark .admin-upload-zone {
   border-color: rgba(16, 185, 129, 0.3) !important;
 }
 
+/* ==========================================================================
+   MOBILE FULL-SCREEN NAVIGATION DRAWER & BACKDROP
+   ========================================================================== */
+.mobile-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 14, 12, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 99998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-drawer-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-drawer-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(88vw, 360px);
+  height: 100%;
+  height: 100dvh;
+  background: linear-gradient(180deg, #062c26 0%, #031c18 100%);
+  border-left: 1px solid rgba(16, 185, 129, 0.25);
+  box-shadow: -15px 0 35px -5px rgba(0, 0, 0, 0.65);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-drawer-panel.is-open {
+  transform: translateX(0);
+}
+
+/* ==========================================================================
+   CONSOLIDATED MOBILE BOTTOM ACTION BAR
+   ========================================================================== */
+.mobile-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background: rgba(6, 44, 38, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(16, 185, 129, 0.3);
+  box-shadow: 0 -10px 25px -5px rgba(0, 0, 0, 0.4);
+  padding: 8px 12px;
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (min-width: 1024px) {
+  .mobile-bottom-bar {
+    display: none !important;
+  }
+}
+
 /* Linear/Apple-inspired Spotlight Card Hover Effect */
 .spotlight-card {
   position: relative;
@@ -910,24 +983,6 @@ html.lenis, html.lenis body {
 .group:hover .mega-menu-dropdown a:nth-child(4) { transition-delay: 120ms; }
 .group:hover .mega-menu-dropdown a:nth-child(5) { transition-delay: 150ms; }
 .group:hover .mega-menu-dropdown a:nth-child(6) { transition-delay: 180ms; }
-
-/* STICKY HERO-AWARE MOBILE BOTTOM CONTACT BAR */
-.mobile-bottom-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 45;
-  transform: translateY(100%);
-  opacity: 0;
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
-  will-change: transform, opacity;
-}
-
-.mobile-bottom-bar.is-visible {
-  transform: translateY(0%) !important;
-  opacity: 1 !important;
-}
 
 /* RECURRING GENTLE WHATSAPP PULSE (SLOW, SPRING-BASED INVITATION) */
 .whatsapp-gentle-pulse {

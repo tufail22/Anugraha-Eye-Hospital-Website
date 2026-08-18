@@ -397,9 +397,8 @@ document.addEventListener("DOMContentLoaded", () => {
     store.sync();
 
     // Close any open navigation drawers
-    window.isMobileDrawerOpen = false;
+    window.closeMobileDrawer();
     window.isAdminMobileDrawerOpen = false;
-    document.body.style.overflow = '';
 
     // Re-render view with fresh data
     render();
@@ -419,16 +418,40 @@ document.addEventListener("DOMContentLoaded", () => {
   // Handle hash changes in URL bar directly (single canonical route handler)
   window.addEventListener('hashchange', handleHashRoute);
 
-  // Mobile Drawer Toggle State
-  window.isMobileDrawerOpen = window.isMobileDrawerOpen || false;
+  // Mobile Drawer Toggle State & High-Performance Class Switcher
+  window.isMobileDrawerOpen = false;
+
   window.toggleMobileDrawer = function() {
     window.isMobileDrawerOpen = !window.isMobileDrawerOpen;
-    if (window.isMobileDrawerOpen) {
-      document.body.style.overflow = 'hidden';
+    const backdrop = document.getElementById('mobile-drawer-backdrop');
+    const drawer = document.getElementById('mobile-navigation-drawer');
+    const hamburger = document.getElementById('mobile-hamburger-btn');
+    if (backdrop && drawer) {
+      if (window.isMobileDrawerOpen) {
+        backdrop.classList.add('is-open');
+        drawer.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+        if (hamburger) hamburger.setAttribute('aria-expanded', 'true');
+      } else {
+        backdrop.classList.remove('is-open');
+        drawer.classList.remove('is-open');
+        document.body.style.overflow = '';
+        if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
+      }
     } else {
-      document.body.style.overflow = '';
+      render();
     }
-    render();
+  };
+
+  window.closeMobileDrawer = function() {
+    window.isMobileDrawerOpen = false;
+    const backdrop = document.getElementById('mobile-drawer-backdrop');
+    const drawer = document.getElementById('mobile-navigation-drawer');
+    const hamburger = document.getElementById('mobile-hamburger-btn');
+    if (backdrop) backdrop.classList.remove('is-open');
+    if (drawer) drawer.classList.remove('is-open');
+    if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
   };
 
   // =========================================================================
@@ -571,27 +594,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // Render Header
   function renderHeader() {
     const brand = store.getBrand();
-    const dataGaps = store.getDataGaps();
     const isScrolled = window.scrollY > 80;
-    const isDark = window.currentTheme === 'dark';
 
     return `
       <!-- Main Sticky Condensing Navigation Header -->
-      <header class="sticky top-0 z-50 px-2 sm:px-4 max-w-7xl mx-auto pt-3">
-        <nav id="main-nav" class="header-nav glass-card rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between shadow-xl transition-all border border-white/60 ${isScrolled ? 'is-scrolled' : ''}">
+      <header class="sticky top-0 z-50 px-2 sm:px-4 max-w-7xl mx-auto pt-2 sm:pt-3">
+        <nav id="main-nav" class="header-nav glass-card rounded-2xl px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-xl transition-all border border-white/60 ${isScrolled ? 'is-scrolled' : ''}">
           
-          <!-- Logo & Brand Name (Admin Editable) -->
-          <a href="#/" class="flex items-center gap-3 group shrink-0">
-            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center p-0.5 shadow-md group-hover:scale-105 transition-transform border border-teal-900/20 overflow-hidden shrink-0">
+          <!-- Logo & Brand Name -->
+          <a href="#/" class="flex items-center gap-2 sm:gap-3 group shrink-0 min-w-0 max-w-[62%] sm:max-w-none">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white flex items-center justify-center p-0.5 shadow-md group-hover:scale-105 transition-transform border border-teal-900/20 overflow-hidden shrink-0">
               <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
             </div>
-            <div>
-              <div class="brand-title font-extrabold text-base sm:text-lg text-teal-950 tracking-tight leading-none font-heading transition-colors">${brand.name}</div>
-              <div class="brand-subtitle text-[10px] sm:text-[11px] font-semibold text-teal-700 tracking-wider uppercase mt-0.5 transition-colors">${brand.tagline}</div>
+            <div class="min-w-0 truncate">
+              <div class="brand-title font-extrabold text-xs sm:text-base lg:text-lg text-teal-950 dark:text-white tracking-tight leading-none font-heading transition-colors truncate">${brand.name}</div>
+              <div class="brand-subtitle text-[8.5px] sm:text-[11px] font-semibold text-teal-700 dark:text-emerald-400 tracking-wider uppercase mt-0.5 transition-colors truncate">${brand.tagline}</div>
             </div>
           </a>
 
-          <!-- Primary Navigation Mega-Menus (Center / Right) -->
+          <!-- Primary Navigation Mega-Menus (Center Desktop Only) -->
           <div class="hidden lg:flex items-center gap-1 font-medium text-sm text-slate-700">
             
             <!-- Home -->
@@ -664,13 +685,20 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
           <!-- Header Right Utilities (Uiverse.io Theme Toggle + Mobile Hamburger) -->
-          <div class="flex items-center gap-2.5">
+          <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             
             <!-- Uiverse.io Custom Theme Toggle -->
             ${window.renderThemeToggle('desktop')}
 
-            <!-- Mobile Hamburger Button -->
-            <button onclick="window.toggleMobileDrawer()" aria-label="Open navigation menu" class="lg:hidden p-2 rounded-xl text-slate-800 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50 transition-colors">
+            <!-- Accessible Mobile Hamburger Button -->
+            <button 
+              id="mobile-hamburger-btn"
+              onclick="window.toggleMobileDrawer()" 
+              aria-label="${window.isMobileDrawerOpen ? 'Close navigation menu' : 'Open navigation menu'}" 
+              aria-expanded="${window.isMobileDrawerOpen ? 'true' : 'false'}"
+              aria-controls="mobile-navigation-drawer"
+              class="lg:hidden p-2 rounded-xl text-slate-800 dark:text-slate-200 hover:bg-teal-50 dark:hover:bg-teal-900/50 active:scale-95 transition-all flex items-center justify-center min-w-[40px] min-h-[40px]"
+            >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
 
@@ -679,110 +707,119 @@ document.addEventListener("DOMContentLoaded", () => {
         </nav>
       </header>
 
-      <!-- STICKY HERO-AWARE MOBILE BOTTOM CONTACT BAR (Appears only after hero scrolls past >450px) -->
-      <div id="mobile-bottom-bar" class="mobile-bottom-bar lg:hidden p-3 bg-[#062c26]/95 backdrop-blur-xl border-t border-teal-800/80 shadow-2xl">
-        <div class="max-w-md mx-auto flex items-center gap-2">
-          <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="flex-1 py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all">
-            <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-            <span>Call Helpline: ${brand.fallbackPhone}</span>
-          </a>
+      <!-- MOBILE FULL-HEIGHT SLIDE-OVER DRAWER & BACKDROP -->
+      <div 
+        id="mobile-drawer-backdrop" 
+        class="mobile-drawer-backdrop lg:hidden ${window.isMobileDrawerOpen ? 'is-open' : ''}" 
+        onclick="window.closeMobileDrawer()"
+        aria-hidden="${window.isMobileDrawerOpen ? 'false' : 'true'}"
+      ></div>
+
+      <div 
+        id="mobile-navigation-drawer" 
+        class="mobile-drawer-panel lg:hidden p-5 sm:p-6 ${window.isMobileDrawerOpen ? 'is-open' : ''}"
+        role="dialog" 
+        aria-modal="true" 
+        aria-label="Mobile Navigation Drawer"
+      >
+        <div class="space-y-5">
           
-          <a href="https://wa.me/${brand.whatsappPhone.replace(/[^0-9]/g, '')}" target="_blank" rel="noopener noreferrer" title="WhatsApp Direct Chat" class="whatsapp-gentle-pulse w-12 h-12 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-lg active:scale-95 transition-all border border-emerald-400/40">
-            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          <!-- Drawer Header -->
+          <div class="flex items-center justify-between border-b border-teal-800/80 pb-4">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center p-0.5 shadow-md overflow-hidden shrink-0">
+                <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
+              </div>
+              <span class="font-extrabold text-base font-heading text-white truncate">${brand.name}</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              ${window.renderThemeToggle('mobile')}
+              <button onclick="window.closeMobileDrawer()" aria-label="Close navigation menu" class="w-9 h-9 rounded-xl bg-teal-900/90 hover:bg-teal-800 text-white flex items-center justify-center active:scale-95 transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Drawer Navigation Links -->
+          <nav class="space-y-1.5 font-heading font-semibold text-sm">
+            <a href="#/" onclick="window.closeMobileDrawer()" class="flex items-center px-3.5 py-2.5 rounded-xl bg-teal-900/40 text-emerald-300 min-h-[44px]">
+              <span>Home</span>
+            </a>
+            
+            <!-- About Us Accordion -->
+            <details class="group rounded-xl bg-teal-950/40 border border-teal-900/50">
+              <summary class="flex items-center justify-between px-3.5 py-2.5 text-white cursor-pointer min-h-[44px] outline-none select-none">
+                <span>About Us</span>
+                <svg class="w-4 h-4 text-emerald-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </summary>
+              <div class="px-3 pb-2 space-y-1 text-xs border-t border-teal-900/40 pt-1.5">
+                <a href="#/about-us" onclick="window.closeMobileDrawer()" class="flex items-center py-2 px-2.5 rounded-lg text-slate-200 hover:text-white hover:bg-teal-900/50 min-h-[38px]">Our Story & Overview</a>
+                <a href="#/about-us/leadership" onclick="window.closeMobileDrawer()" class="flex items-center py-2 px-2.5 rounded-lg text-slate-200 hover:text-white hover:bg-teal-900/50 min-h-[38px]">Leadership & Awards</a>
+                <a href="#/about-us/clinical-faculty" onclick="window.closeMobileDrawer()" class="flex items-center py-2 px-2.5 rounded-lg text-emerald-300 font-bold hover:text-white hover:bg-teal-900/50 min-h-[38px]">Clinical Faculty & Consultants</a>
+                <a href="#/about-us/administration" onclick="window.closeMobileDrawer()" class="flex items-center py-2 px-2.5 rounded-lg text-slate-200 hover:text-white hover:bg-teal-900/50 min-h-[38px]">Administration Team (6)</a>
+              </div>
+            </details>
+
+            <!-- Hospitals & Vision Centers Accordion -->
+            <details class="group rounded-xl bg-teal-950/40 border border-teal-900/50">
+              <summary class="flex items-center justify-between px-3.5 py-2.5 text-white cursor-pointer min-h-[44px] outline-none select-none">
+                <span>Hospitals & Vision Centers</span>
+                <svg class="w-4 h-4 text-emerald-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </summary>
+              <div class="px-3 pb-2 space-y-1 text-xs border-t border-teal-900/40 pt-1.5">
+                <a href="#/hospitals/vijayapura" onclick="window.closeMobileDrawer()" class="flex items-center py-2 px-2.5 rounded-lg text-slate-200 hover:text-white min-h-[38px]">Vijayapura Base Hospital</a>
+                <a href="#/hospitals/kalaburagi" onclick="window.closeMobileDrawer()" class="flex items-center py-2 px-2.5 rounded-lg text-slate-200 hover:text-white min-h-[38px]">Kalaburagi Base Hospital</a>
+                <a href="#/vision-centers" onclick="window.closeMobileDrawer()" class="flex items-center py-2 px-2.5 rounded-lg text-amber-300 hover:text-amber-200 font-bold min-h-[38px]">All 8 Vision Centers Directory</a>
+              </div>
+            </details>
+
+            <a href="#/services" onclick="window.closeMobileDrawer()" class="flex items-center px-3.5 py-2.5 rounded-xl bg-teal-950/40 text-white min-h-[44px]">
+              <span>Services & Specialties</span>
+            </a>
+
+            <a href="#/academics" onclick="window.closeMobileDrawer()" class="flex items-center px-3.5 py-2.5 rounded-xl bg-teal-950/40 text-white min-h-[44px]">
+              <span>Academics & Training</span>
+            </a>
+
+            <a href="#/patient-resources/empanelments-and-insurance" onclick="window.closeMobileDrawer()" class="flex items-center px-3.5 py-2.5 rounded-xl bg-teal-950/40 text-white min-h-[44px]">
+              <span>Empanelments & Insurance</span>
+            </a>
+
+            <a href="#/gallery" onclick="window.closeMobileDrawer()" class="flex items-center px-3.5 py-2.5 rounded-xl bg-teal-950/40 text-white min-h-[44px]">
+              <span>Media Gallery</span>
+            </a>
+
+            <a href="#/contact" onclick="window.closeMobileDrawer()" class="flex items-center px-3.5 py-2.5 rounded-xl bg-teal-950/40 text-white min-h-[44px]">
+              <span>Contact Us</span>
+            </a>
+          </nav>
+
+        </div>
+
+        <!-- Drawer Bottom Action Helpline -->
+        <div class="pt-4 border-t border-teal-900/80">
+          <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs sm:text-sm min-h-[44px] shadow-lg active:scale-95 transition-all">
+            <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+            <span>Helpline: ${brand.fallbackPhone}</span>
           </a>
         </div>
-           <!-- Mobile Full-Height Accordion Drawer (300ms Ease Slide-In) -->
-      ${window.isMobileDrawerOpen ? `
-        <div class="mobile-drawer-overlay p-6 overflow-y-auto lg:hidden flex flex-col justify-between">
-          <div class="space-y-6">
-            
-            <!-- Drawer Header -->
-            <div class="flex items-center justify-between border-b border-teal-800/80 pb-4">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center p-0.5 shadow-md overflow-hidden shrink-0">
-                  <img src="${brand.logo || 'assets/official_logo.jpg'}" alt="${brand.name} Official Logo" class="w-full h-full object-contain" />
-                </div>
-                <span class="font-extrabold text-lg font-heading text-white">${brand.name}</span>
-              </div>
-              <div class="flex items-center gap-2">
-                ${window.renderThemeToggle('mobile')}
-                <button onclick="window.toggleMobileDrawer()" aria-label="Close Menu" class="w-10 h-10 rounded-xl bg-teal-900/90 text-white flex items-center justify-center min-h-[40px]">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-              </div>
-            </div>
+      </div>
 
-            <!-- Drawer Accordion Navigation (Min 48px Tap Height, 16px Font) -->
-            <div class="space-y-3 font-heading font-semibold text-base">
-              <a href="#/" onclick="window.toggleMobileDrawer()" class="flex items-center px-4 py-3.5 rounded-xl bg-teal-900/40 text-emerald-300 min-h-[48px]">
-                <span>Home</span>
-              </a>
-              
-              <!-- About Us Accordion -->
-              <details class="group rounded-xl bg-teal-950/40 border border-teal-900/50">
-                <summary class="flex items-center justify-between px-4 py-3.5 text-white cursor-pointer min-h-[48px] outline-none">
-                  <span>About Us</span>
-                  <svg class="w-4 h-4 text-emerald-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </summary>
-                <div class="px-4 pb-3 space-y-1 text-sm border-t border-teal-900/40 pt-2">
-                  <a href="#/about-us" onclick="window.toggleMobileDrawer()" class="flex items-center py-2.5 px-3 rounded-lg text-slate-200 hover:text-white hover:bg-teal-900/50 min-h-[44px]">Our Story & Overview</a>
-                  <a href="#/about-us/leadership" onclick="window.toggleMobileDrawer()" class="flex items-center py-2.5 px-3 rounded-lg text-slate-200 hover:text-white hover:bg-teal-900/50 min-h-[44px]">Leadership & Awards</a>
-                  <a href="#/about-us/clinical-faculty" onclick="window.toggleMobileDrawer()" class="flex items-center py-2.5 px-3 rounded-lg text-emerald-300 font-bold hover:text-white hover:bg-teal-900/50 min-h-[44px]">Clinical Faculty & Consultants</a>
-                  <a href="#/about-us/administration" onclick="window.toggleMobileDrawer()" class="flex items-center py-2.5 px-3 rounded-lg text-slate-200 hover:text-white hover:bg-teal-900/50 min-h-[44px]">Administration Team (6)</a>
-                </div>
-              </details>
-
-              <!-- Hospitals & Vision Centers Accordion -->
-              <details class="group rounded-xl bg-teal-950/40 border border-teal-900/50">
-                <summary class="flex items-center justify-between px-4 py-3.5 text-white cursor-pointer min-h-[48px] outline-none">
-                  <span>Hospitals & Vision Centers</span>
-                  <svg class="w-4 h-4 text-emerald-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </summary>
-                <div class="px-4 pb-3 space-y-1 text-sm border-t border-teal-900/40 pt-2">
-                  <a href="#/hospitals/vijayapura" onclick="window.toggleMobileDrawer()" class="flex items-center py-2.5 px-3 rounded-lg text-slate-200 hover:text-white min-h-[44px]">Vijayapura Base Hospital</a>
-                  <a href="#/hospitals/kalaburagi" onclick="window.toggleMobileDrawer()" class="flex items-center py-2.5 px-3 rounded-lg text-slate-200 hover:text-white min-h-[44px]">Kalaburagi Base Hospital</a>
-                  <a href="#/vision-centers" onclick="window.toggleMobileDrawer()" class="flex items-center py-2.5 px-3 rounded-lg text-amber-300 hover:text-amber-200 font-bold min-h-[44px]">All 8 Vision Centers Directory</a>
-                </div>
-              </details>
-
-              <a href="#/services" onclick="window.toggleMobileDrawer()" class="flex items-center px-4 py-3.5 rounded-xl bg-teal-950/40 text-white min-h-[48px]">
-                <span>Services & Specialties</span>
-              </a>
-
-              <a href="#/academics" onclick="window.toggleMobileDrawer()" class="flex items-center px-4 py-3.5 rounded-xl bg-teal-950/40 text-white min-h-[48px]">
-                <span>Academics & Training</span>
-              </a>
-
-              <a href="#/patient-resources/empanelments-and-insurance" onclick="window.toggleMobileDrawer()" class="flex items-center px-4 py-3.5 rounded-xl bg-teal-950/40 text-white min-h-[48px]">
-                <span>Empanelments & Insurance</span>
-              </a>
-
-              <a href="#/contact" onclick="window.toggleMobileDrawer()" class="flex items-center px-4 py-3.5 rounded-xl bg-teal-950/40 text-white min-h-[48px]">
-                <span>Contact Us</span>
-              </a>
-            </div>
-
-          </div>
-
-          <!-- Drawer Bottom Call & Appointment Action Panel -->
-          <div class="pt-6 border-t border-teal-900/80 space-y-3">
-            <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-amber-500 text-slate-950 font-extrabold text-base min-h-[48px] shadow-lg">
-              <svg class="w-5 h-5 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-              <span>Call Helpline: ${brand.fallbackPhone}</span>
-            </a>
-          </div>
-        </div>
-      ` : ''}
-
-      <!-- Sticky Mobile Bottom Bar (Call Now & Book Appointment - Pinned to Bottom) -->
-      <div class="fixed bottom-0 left-0 right-0 z-50 lg:hidden p-3 bg-[#062c26]/95 backdrop-blur-md border-t border-teal-800/60 flex items-center justify-between gap-3 shadow-2xl">
-        <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="flex-1 min-h-[48px] py-3 px-4 rounded-xl bg-amber-500 text-slate-950 font-extrabold text-sm text-center flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all">
-          <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-          <span>Call Now</span>
+      <!-- SINGLE CONSOLIDATED FIXED MOBILE BOTTOM ACTION BAR -->
+      <div id="mobile-bottom-bar" class="mobile-bottom-bar lg:hidden">
+        <a href="tel:${brand.fallbackPhone.replace(/[^0-9+]/g, '')}" class="flex-1 py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all min-h-[44px]">
+          <svg class="w-4 h-4 text-slate-950 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+          <span class="truncate">Call Now</span>
         </a>
 
-        <a href="#/contact" class="flex-1 min-h-[48px] py-3 px-4 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-sm text-center flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all">
-          <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <a href="#/contact" class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all min-h-[44px]">
+          <svg class="w-4 h-4 text-slate-950 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span class="truncate">Appointment</span>
+        </a>
+        
+        <a href="https://wa.me/${brand.whatsappPhone.replace(/[^0-9]/g, '')}" target="_blank" rel="noopener noreferrer" title="WhatsApp Direct Chat" aria-label="Chat on WhatsApp" class="w-11 h-11 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white flex items-center justify-center shrink-0 shadow-md active:scale-95 transition-all border border-emerald-300/40 min-h-[44px] min-w-[44px]">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+        </a>
       </div>
     `;
   }
@@ -842,7 +879,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       </section>
 
-      <footer class="bg-[#041a17] text-slate-300 pt-16 pb-16 mt-16 border-t border-teal-900/60 font-sans relative z-10">
+      <footer class="bg-[#041a17] text-slate-300 pt-16 pb-28 sm:pb-32 lg:pb-16 mt-16 border-t border-teal-900/60 font-sans relative z-10">
         <div class="max-w-7xl mx-auto px-4">
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-teal-900/60">
             
